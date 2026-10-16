@@ -39,6 +39,19 @@ CHART = os.path.join(DATA, 'brief-history-chart.json')
 KST = ZoneInfo('Asia/Seoul')
 ET = ZoneInfo('America/New_York')
 GEN_SOURCE = 'own_archive'
+# ── 인사이트 타임스(2026-10-16) ──────────────────────────────────────────
+# 같은 필자가 운영하는 insightimes.com 을 이 코너의 근거 글로 쓴다(운영 지시:
+# 네이버 프리미엄보다 자기 사이트로 잇는다). 인사이트 타임스에는 2026-09-01 부터
+# 글이 있고, 2026-09-14 부터 매일 장 마감 정리(분류 '시황')가 올라온다.
+#   IT_FROM      이날부터 그날 카드에 인사이트 타임스 글을 함께 싣는다.
+#   IT_ONLY_FROM 이날부터는 인사이트 타임스 글만 근거로 쓴다(그날 글이 있으면).
+#                그 전 2주는 시황이 없어 네이버 시황을 앞에 두고 인사이트 타임스를 뒤에 단다
+#                - 카드 브리핑은 그날 장 마감 정리를 재료로 쓰기 때문이다.
+IT_ARCHIVE = os.path.join(DATA, 'insightimes-archive.json')
+IT_FROM = '2026-09-01'
+IT_ONLY_FROM = '2026-09-14'
+IT_WRAP_CAT = '시황'
+IT_LISTEN = 'https://insightimes.com/listen/{}'
 # 카드에 등락을 얹을 지수. 차트 범례와 같은 순서로 둔다.
 MOVE_SYMBOLS = [('QQQ', 'QQQ'), ('SPY', 'SPY(VOO)'), ('SOXX', 'SOXX')]
 ID_RE = re.compile(r'(\d{12})')
@@ -97,6 +110,24 @@ def market_date(pub_kst, trading_days, last_day):
     return cand.isoformat()
 
 
+def it_published_kst(a):
+    """인사이트 타임스 글의 발행 시각(KST). 시각이 없으면 편집 날짜 정오(KST)로 둔다
+    - 그러면 뉴욕 기준 전날 밤이 되어, 아침 시황과 같은 쪽으로 기운다."""
+    p = a.get('published')
+    if p:
+        try:
+            return datetime.fromisoformat(str(p).replace('Z', '+00:00')).astimezone(KST)
+        except ValueError:
+            pass
+    d = a.get('day')
+    if d:
+        try:
+            return datetime.strptime(d, '%Y-%m-%d').replace(hour=12, tzinfo=KST)
+        except ValueError:
+            return None
+    return None
+
+
 def build_moves(chart, date_str):
     """그날 지수 등락(%) — 차트 데이터의 전일 대비. 없는 날이면 빈 dict."""
     try:
@@ -153,6 +184,7 @@ def main():
     curated = [e for e in events if e.get('source') != GEN_SOURCE]
     for e in curated:
         e.pop('moreArticles', None)
+        e.pop('listen', None)
 
     trading_days = set(chart['dates'])
     last_day = datetime.strptime(chart['dates'][-1], '%Y-%m-%d').date()
@@ -175,18 +207,64 @@ def main():
         if not d:
             skipped += 1
             continue
-        grouped.setdefault(d, []).append({'t': a['title'], 'u': a['url'], 'p': pub})
+        grouped.setdefault(d, []).append({'t': a['title'], 'u': a['url'], 'p': pub, 'src': 'naver'})
+
+    # 인사이트 타임스 - 같은 장 날짜 규칙(발행 시각을 뉴욕으로 옮겨 거래일로 스냅)
+    it_doc = load(IT_ARCHIVE, {}) or {}
+    it_arts = it_doc.get('articles') or []
+    linked_urls = {e.get('link') for e in curated if e.get('link')}
+    it_wrap_day = {}              # slug -> 장 날짜 (시황만) - 음성 브리핑 연결에 쓴다
+    it_n = 0
+    for a in it_arts:
+        if not a.get('url') or a['url'] in linked_urls:
+            continue
+        pub = it_published_kst(a)
+        if not pub:
+            skipped += 1
+            continue
+        d = market_date(pub, trading_days, last_day)
+        if not d or d < IT_FROM:
+            continue
+        wrap = a.get('cat') == IT_WRAP_CAT
+        grouped.setdefault(d, []).append({'t': a.get('title') or '', 'u': a['url'], 'p': pub,
+                                          'src': 'it', 'wrap': wrap})
+        if wrap:
+            it_wrap_day[a.get('slug')] = d
+        it_n += 1
+
+    # 아침 편지의 음성 브리핑 - 그 편지가 묶은 '시황'이 다룬 장에 붙인다.
+    # 편지 날짜(KST)가 아니라 장 날짜에 붙여야 카드와 같은 날을 가리킨다.
+    listen_by_day = {}
+    for ldate in sorted((it_doc.get('listen') or {}).keys()):
+        days = sorted({it_wrap_day[s] for s in it_doc['listen'][ldate] if s in it_wrap_day})
+        days = [x for x in days if x <= ldate]
+        if days and days[-1] not in listen_by_day:
+            listen_by_day[days[-1]] = IT_LISTEN.format(ldate)
 
     made, attached = [], 0
     for d, arts in grouped.items():
         arts.sort(key=lambda x: x['p'])
+        nv = [x for x in arts if x['src'] == 'naver']
+        it = [x for x in arts if x['src'] == 'it']
+        # 인사이트 타임스는 장 마감 정리(시황)를 맨 앞에 - 카드 제목·대표 링크·브리핑 재료가 된다
+        it = [x for x in it if x.get('wrap')] + [x for x in it if not x.get('wrap')]
+        if d >= IT_ONLY_FROM and it:
+            arts = it
+        elif d >= IT_FROM and it:
+            arts = nv + it
+        else:
+            arts = nv
+        if not arts:
+            continue
         items = [{'t': x['t'] or '제목 없음', 'u': x['u']} for x in arts]
         if d in by_date_curated:
             # 손으로 쓴 카드가 이미 있는 날 — 그 카드 아래에 링크만 붙인다.
             by_date_curated[d][0]['moreArticles'] = items
+            if d in listen_by_day:
+                by_date_curated[d][0]['listen'] = listen_by_day[d]
             attached += len(items)
             continue
-        made.append({
+        entry = {
             'date': d,
             'title': items[0]['t'] if len(items) == 1 else f'이 날의 글 {len(items)}건',
             'summary': '',
@@ -195,11 +273,16 @@ def main():
             'link': items[0]['u'],
             'articles': items,
             'source': GEN_SOURCE,
-        })
+            'publisher': 'insightimes' if arts[0]['src'] == 'it' else 'naver',
+        }
+        if d in listen_by_day:
+            entry['listen'] = listen_by_day[d]
+        made.append(entry)
 
     merged = curated + made
     merged.sort(key=lambda e: e['date'])
 
+    print(f'인사이트 타임스 글 {it_n}건(장 날짜 {IT_FROM} 이후) · 음성 브리핑 {len(listen_by_day)}일')
     print(f'네이버 글 {len(pool)}건 · 신규 기록 {len(made)}일 · '
           f'기존 카드에 덧붙임 {attached}건 · 건너뜀 {skipped}건')
     print(f'이슈 총 {len(merged)}건 (손으로 쓴 것 {len(curated)} + 기록 {len(made)})')

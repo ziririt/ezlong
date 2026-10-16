@@ -52,6 +52,12 @@ jobs:
           pip install yfinance --quiet 2>/dev/null || pip install yfinance
           python3 scripts/fetch-brief-history-chart.py
 
+      # 2026-10-16: 근거 글 원천에 인사이트 타임스를 더했다. merge 가 이 목록을 읽어
+      # 2026-09-14 이후 장은 인사이트 타임스 글(시황 우선)로 카드를 만든다.
+      # 실패하면 지난 목록으로 돈다(스크립트가 파일을 지우지 않는다).
+      - name: 인사이트 타임스 글 목록 갱신
+        continue-on-error: true
+        run: node scripts/sync-insightimes-archive.mjs
       # 이슈(A Brief History)의 날짜축에 새 글을 얹는다. 손으로 쓴 항목은 건드리지
       # 않고, source=own_archive 만 매번 다시 만든다(멱등).
       # 아래 단계들이 깨져도 원래 있던 naver-content.json 갱신은 그대로 커밋되게
@@ -112,7 +118,7 @@ jobs:
           # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
           # 새 글이 실제로 생겼는가 — naver-content.json 은 updatedAt 때문에 매번
           # 달라지므로 신선도 판정에는 쓸 수 없다. 목록·소사가 바뀌었는지로 본다.
-          git add data/naver-archive.json data/brief-history.json data/brief-history-*.json \
+          git add data/naver-archive.json data/insightimes-archive.json data/brief-history.json data/brief-history-*.json \
                   data/brief-history-chart.json data/brief-history-verdicts.json \
                   en/brief-history.html ja/brief-history.html zh/brief-history.html \
                   es/brief-history.html pt/brief-history.html

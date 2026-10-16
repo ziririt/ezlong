@@ -292,6 +292,10 @@ window.BH_T = {
     text-wrap: pretty;
   }
   .bh-brand-lede + .bh-brand-lede { margin-top: 10px; }
+  .bh-it-credit { font-size: 16px; color: var(--ez-text2); }
+  .bh-it-credit a { color: var(--ez-blue); font-weight: 600; text-decoration: none; }
+  .bh-it-credit a:hover { text-decoration: underline; }
+  .bh-event-foot { display: flex; flex-wrap: wrap; gap: 6px 16px; }
 
   .bh-main { max-width: var(--ez-max-w-wide); margin: 0 auto; padding: 28px 20px 60px; }
 
@@ -641,6 +645,7 @@ window.BH_T = {
     <h1 class="bh-brand-title">那一天发生了什么</h1>
     <p class="bh-brand-lede">시간이 지나면 잊습니다. 이 날은 왜 바닥을 치고 반등했을까: 차트에서 그 날짜를 누르면 그날을 브리핑합니다.</p>
     <p class="bh-brand-lede">下跌行情里坏消息接连不断，可其中总有反弹的那一天。看似涨不完的行情里连坏消息都被当作利好，第二天调整就开始了。回头看就会发现，利好上涨、利空下跌这样的一对一等式并不成立。</p>
+    <p class="bh-brand-lede bh-it-credit" id="bh-it-credit" hidden></p>
   </div>
 </div>
 
@@ -771,6 +776,11 @@ window.BH_T = {
   const T = window.BH_T;
   const BH_DATA = window.BH_DATA;
   const fmt = (tpl, vars) => String(tpl).replace(/\{(\w+)\}/g, (_, k) => vars[k]);
+  /* 근거 글 안내(2026-10-16). 사전에 문구가 있는 판(한국어)에서만 그린다. */
+  (function () {
+    const cr = document.getElementById('bh-it-credit');
+    if (cr && T.itCredit) { cr.innerHTML = fmt(T.itCredit, { since: T.itCreditSince || '' }); cr.hidden = false; }
+  })();
   const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches;
   const COLORS = {
@@ -1851,9 +1861,14 @@ window.BH_T = {
     // 아래 '원문 보기'만 붙인다. 둘 이상일 때만 목록이 의미가 있다.
     const many = e.articles && e.articles.length > 1;
     const showFootLink = e.link && !many;
-    const sourceTag = showFootLink
-      ? `<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">${T.readOriginal}</a>`
-      : '';
+    // 인사이트 타임스 글이면 어디로 가는지 이름을 적는다. 번역판 사전에는 readIT 가 없다.
+    const isIT = e.link && /insightimes\.com/.test(e.link) && T.readIT;
+    const footParts = [];
+    if (showFootLink) footParts.push(`<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">${isIT ? T.readIT : T.readOriginal}</a>`);
+    if (e.listen && T.listenIT && /^https:\/\/insightimes\.com\/listen\//.test(e.listen)) {
+      footParts.push(`<a class="bh-event-link" href="${e.listen}" target="_blank" rel="noopener">${T.listenIT}</a>`);
+    }
+    const sourceTag = footParts.join('');
     // 2024-10-29 이후 이슈는 summaryGroups(소제목+닷블릿) 구조로 표시,
     // 그 이전 이슈는 기존 한 문장 요약(summary) 그대로 유지
     const bodyHtml = (e.summaryGroups && e.summaryGroups.length)

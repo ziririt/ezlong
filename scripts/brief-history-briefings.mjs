@@ -90,7 +90,31 @@ const ENTITIES = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;
 
 /* 네이버 스마트에디터는 문단을 se-text-paragraph 로 감싼다. 이 안의 글자만
    가져온다 — 사이드바·추천글·푸터가 섞이면 브리핑이 엉뚱해진다. */
-function extractBody(html) {
+/* 인사이트 타임스(2026-10-16): 본문이 <div class="prose"> 안에 있다. 광고 칸(aside)과
+   카드 스타일(style)을 걷어내고, 오른쪽 관련 글 목록(rail) 앞에서 자른다.
+   전문이 공개라 네이버보다 재료가 많다 - MAX_BODY 에서 잘린다. */
+function extractInsightTimes(html) {
+  const start = html.indexOf('class="prose');
+  if (start < 0) return [];
+  let seg = html.slice(start);
+  const cut = ['class="rail', 'rail-item', '</article>']
+    .map((k) => seg.indexOf(k)).filter((i) => i > 0);
+  if (cut.length) seg = seg.slice(0, Math.min(...cut));
+  seg = seg.replace(/<(style|script|aside|figure)[\s\S]*?<\/\1>/g, ' ');
+  const out = [];
+  const re = /<(p|li|h2|h3)[^>]*>([\s\S]*?)<\/\1>/g;
+  let m;
+  while ((m = re.exec(seg)) !== null) {
+    let t = m[2].replace(/<[^>]+>/g, '');
+    t = t.replace(/&[a-z#0-9]+;/gi, (e) => ENTITIES[e] || ' ').replace(/\s+/g, ' ').trim();
+    if (!t || t.startsWith('http')) continue;
+    out.push(m[1].startsWith('h') ? `[${t}]` : t);
+  }
+  return out;
+}
+
+function extractBody(html, url = '') {
+  if (/insightimes\.com/.test(url)) return extractInsightTimes(html);
   const out = [];
   const re = /<p[^>]*class="[^"]*se-text-paragraph[^"]*"[^>]*>([\s\S]*?)<\/p>/g;
   let m;
@@ -351,7 +375,7 @@ async function main() {
         try {
           const html = await httpGet(a.u);
           fetched++;
-          const paras = extractBody(html);
+          const paras = extractBody(html, a.u);
           if (paras.length) docs.push({ t: a.t, body: paras.join('\n') });
           await sleep(350);   // 남의 서버다 — 몰아치지 않는다
         } catch (err) {
