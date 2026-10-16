@@ -1,6 +1,6 @@
 # HANDOFF: ezlong.com
 
-최종 갱신: 2026-10-16(금) 00:55 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션 - 2-3c 절만 보탰다. 나머지 절은 09-14 그대로다)
+최종 갱신: 2026-10-16(금) 17:25 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션 - 2-3c 절만 보탰다. 나머지 절은 09-14 그대로다)
 기준 커밋: `51b73ec51` (인사이트 타임스 - 지면 순서 · 썸네일)
 성격: **최신 상태 한 장.** 이력을 밑에 쌓지 않는다. 인수인계할 때마다 통째로 덮어쓴다.
 과거 이력이 필요하면 `CHANGELOG.md`(2026-06-19부터, 57개 세션)를 본다.
@@ -233,8 +233,21 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   애드센스가 '복사 콘텐츠'로 본다. 끝에 원고 링크 + JSON-LD `isBasedOn`. 남은 원고 10편.
 - 글 빌더 패턴: 기존 글의 head 를 틀로 쓰고 JSON-LD 3블록(Article/Breadcrumb/FAQ)을 새로 쓴다.
 
+**그날 무슨 일이 있었나 - 근거 글을 인사이트 타임스로(10/16, 성동님 지시)**
+- 새 스크립트 `scripts/sync-insightimes-archive.mjs`: insightimes.com `search.json` 으로 글 목록을 받고,
+  새 글만 본문에서 `datePublished` 를 읽는다. `/listen/YYYY-MM-DD`(아침 브리핑)는 2026-09-14부터 날짜별로 확인.
+  결과는 `data/insightimes-archive.json`. 실패하면 기존 파일을 그대로 둔다. `naver-sync.yml` 의 merge 앞 단계.
+- `merge-naver-archive.py`: 장 날짜 매핑은 네이버 글과 같은 규칙(발행 시각 → ET 날짜 → 거래일).
+  **2026-09-14부터는 인사이트 타임스만**, 09-01~09-13은 네이버 먼저 + 인사이트 타임스 뒤에, 그 전은 네이버만.
+  같은 날 안에서는 '시황' 카테고리가 주 글. 카드에 `publisher`·`listen` 필드.
+- `brief-history-briefings.mjs`: insightimes 본문 추출기(`extractInsightTimes`, `.prose` 구간) 추가.
+- 화면: "인사이트 타임스에서 전문 읽기 →" + "그날 아침 브리핑 듣기 →", 상단에 출처·뉴스레터 안내 한 줄.
+  번역판에는 이 문구 키가 없어서 아무것도 안 나온다(번역 데이터에는 URL 자체가 없다).
+- 09-01~09-13 정책은 성동님 확인 대기(`docs/PENDING.md` P-009).
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
-`cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness`
+`cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
+`stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
 
 ### 2-3b. 09-11~12에 한 일 (가장 최근)
 
