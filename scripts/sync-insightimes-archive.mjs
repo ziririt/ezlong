@@ -124,6 +124,10 @@ async function main() {
       title: String(r.t || '').trim(),
       cat: String(r.c || '').trim(),
       day: String(r.p || '').trim(),           // 사이트의 편집 날짜(달력에 쓰는 날)
+      // 그 글이 나올 때 마지막으로 끝난 미국 장(ET). 인사이트 타임스가 직접 계산해 싣는다
+      // (2026-10-16 search.json 에 m 칸 신설). 장 날짜는 이 값이 정답이다 - 발행 시각은
+      // 일괄 이관한 글에서 이관 시각이라 실제 날짜와 다르다(9월 5일 하루에 8월 글이 몰려 있다).
+      market: /^\d{4}-\d{2}-\d{2}$/.test(String(r.m || '')) ? String(r.m) : null,
       published: published || null,            // UTC ISO - 장 날짜 판정에 쓴다
     });
   }
