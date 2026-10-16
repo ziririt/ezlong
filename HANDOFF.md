@@ -247,6 +247,15 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - 인사이트 타임스 글의 장 날짜는 `search.json` 의 `m` 칸을 쓴다(발행 시각 계산은 네이버 글에만).
   화면 링크에 `utm_source=ezlong` 꼬리. 상세는 `docs/RULES-REF.md` 43항.
 
+**모델 포트폴리오 '주요 일정' 자동화(10/16, 지시: 지난 일정이 떠 있었다)**
+- `scripts/fetch-mp-calendar.py`: 핵심 20종목(`top20`)의 다음 실적 발표일을 Yahoo(yfinance info) +
+  TradingView 공개 스크리너(`scanner.tradingview.com/global/scan`)에서 받아 `calendar` 를 다시 쓴다.
+  **'확정'은 TradingView publication_type 12·13 일 때만.** Yahoo 의 `isEarningsDateEstimate` 는 틀렸다
+  (엔비디아·아마존을 '추정 아님'이라 했고 둘 다 공지 전이었다). 나머지는 화면에 '예상' 배지.
+- 사람이 쓰는 칸: `calendarFocus`(종목별 한 줄), `calendarHot`, `calendarManual`(락업·인도량, `until` 지나면 빠짐).
+- 화면이 지난 일정을 스스로 거른다(미국 종목은 뉴욕 날짜, 한국 종목은 한국 날짜). 갱신이 밀려도 지난 날짜는 안 뜬다.
+- `model-portfolio.yml` 에 수요일 슬롯 추가(주 2회) + 일정 단계 `continue-on-error`.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
