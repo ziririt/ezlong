@@ -11,10 +11,13 @@ on:
   schedule:
     - cron: '0 20 * * 0'   # 일 20:00 UTC = 월 05:00 KST — 본실행
     - cron: '0 23 * * 0'   # 일 23:00 UTC = 월 08:00 KST — 보조
+    # 2026-10-16: 주중 한 번 더 - 실적 시즌에는 발표일 공지가 주중에 쏟아진다.
+    # 수 21:00 UTC = 목 06:00 KST (수요일 뉴욕장 마감 후). 감시견은 월요일만 본다.
+    - cron: '0 21 * * 3'
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/fetch-model-portfolio.py', '.github/workflows/model-portfolio.yml']
+    paths: ['scripts/fetch-model-portfolio.py', 'scripts/fetch-mp-calendar.py', '.github/workflows/model-portfolio.yml']
 
 concurrency:
   group: model-portfolio
@@ -38,6 +41,13 @@ jobs:
 
       - name: 시세·주간 RSI 갱신
         run: python3 scripts/fetch-model-portfolio.py
+
+      # 주요 일정(핵심 20종목 실적 발표일). 실패해도 시세 갱신은 커밋한다 -
+      # 화면이 지난 일정을 스스로 거르므로 한 주 밀려도 거짓말은 안 한다.
+      - name: 주요 일정 갱신
+        continue-on-error: true
+        timeout-minutes: 6     # 멈추면 잡 전체 제한(20분)에 걸려 시세 커밋까지 날아간다
+        run: python3 scripts/fetch-mp-calendar.py
 
       - name: 커밋 & 푸시
         run: |
