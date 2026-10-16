@@ -243,7 +243,9 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - `brief-history-briefings.mjs`: insightimes 본문 추출기(`extractInsightTimes`, `.prose` 구간) 추가.
 - 화면: "인사이트 타임스에서 전문 읽기 →" + "그날 아침 브리핑 듣기 →", 상단에 출처·뉴스레터 안내 한 줄.
   번역판에는 이 문구 키가 없어서 아무것도 안 나온다(번역 데이터에는 URL 자체가 없다).
-- 09-01~09-13 정책은 성동님 확인 대기(`docs/PENDING.md` P-009).
+- 09-01~09-13 정책: 지금대로(네이버 시황이 주 글 + 인사이트 타임스 뒤에) - 성동님 확정.
+- 인사이트 타임스 글의 장 날짜는 `search.json` 의 `m` 칸을 쓴다(발행 시각 계산은 네이버 글에만).
+  화면 링크에 `utm_source=ezlong` 꼬리. 상세는 `docs/RULES-REF.md` 43항.
 
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·

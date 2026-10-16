@@ -128,6 +128,33 @@ def it_published_kst(a):
     return None
 
 
+def it_market_date(a, pub, trading_days, last_day):
+    """인사이트 타임스 글의 장 날짜. 사이트가 싣는 `market`(search.json 의 m)이 우선이다.
+
+    m = '그 글이 나올 때 마지막으로 끝난 미국 장'(ET). 발행 시각으로 계산하지 않는 이유:
+      · 일괄 이관한 글은 발행 시각이 이관 시각이다. 8월 말~9월 초 글 다수가 9월 5일 하루에
+        몰려 있어 시각으로 계산하면 엉뚱한 날 카드에 붙는다(실측 2026-10-16: 304편 중 146편이 달랐다).
+      · 두 사이트가 같은 날짜에 같은 글을 묶어야 독자가 오가며 헷갈리지 않는다.
+    네이버 글은 m 이 없으므로 위 market_date(발행 시점의 뉴욕 날짜) 규칙을 그대로 쓴다.
+    m 이 없거나 이상하면 같은 규칙으로 되돌아간다."""
+    m = a.get('market')
+    if m and re.fullmatch(r'\d{4}-\d{2}-\d{2}', str(m)):
+        if m in trading_days or m > last_day.isoformat():
+            return m
+        # 우리 달력에 없는 날이면 그 앞 거래일로 붙인다(휴장 판정 차이 대비)
+        try:
+            cand = datetime.strptime(m, '%Y-%m-%d').date()
+        except ValueError:
+            cand = None
+        for _ in range(10):
+            if cand is None:
+                break
+            cand -= timedelta(days=1)
+            if cand.isoformat() in trading_days:
+                return cand.isoformat()
+    return market_date(pub, trading_days, last_day)
+
+
 def build_moves(chart, date_str):
     """그날 지수 등락(%) — 차트 데이터의 전일 대비. 없는 날이면 빈 dict."""
     try:
@@ -222,7 +249,7 @@ def main():
         if not pub:
             skipped += 1
             continue
-        d = market_date(pub, trading_days, last_day)
+        d = it_market_date(a, pub, trading_days, last_day)
         if not d or d < IT_FROM:
             continue
         wrap = a.get('cat') == IT_WRAP_CAT

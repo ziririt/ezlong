@@ -1833,12 +1833,23 @@ window.BH_T = {
 
   /* 그날 올라간 글 목록. 제목이 곧 링크다: 카드 아래 '원문 보기'를 여러 개
      늘어놓는 것보다 무엇을 여는지가 분명하다. */
+  /* 인사이트 타임스로 가는 링크에는 출처 꼬리를 단다. 저쪽 통계에서 이 코너에서
+     건너온 독자가 따로 보인다(저쪽에서 이쪽으로 오는 링크에도 같은 꼬리가 붙는다).
+     데이터의 URL 은 건드리지 않는다: 중복 판정·브리핑 캐시 키가 URL 이다. */
+  function itHref(u) {
+    if (!u || !/^https:\/\/insightimes\.com\//.test(u) || /[?&]utm_source=/.test(u)) return u;
+    const i = u.indexOf('#');
+    const base = i < 0 ? u : u.slice(0, i), hash = i < 0 ? '' : u.slice(i);
+    return base + (base.indexOf('?') < 0 ? '?' : '&')
+      + 'utm_source=ezlong&utm_medium=referral&utm_campaign=brief-history' + hash;
+  }
+
   function renderArticleList(items, heading) {
     if (!items || !items.length) return '';
     const head = heading ? `<div class="bh-article-head">${escapeHtml(heading)}</div>` : '';
     // 링크가 없는 판(번역본)에서는 글자만 남긴다: href="undefined" 를 만들지 않는다
     const li = items.map(a => a.u
-      ? `<li><a href="${a.u}" target="_blank" rel="noopener">${escapeHtml(a.t)}</a></li>`
+      ? `<li><a href="${itHref(a.u)}" target="_blank" rel="noopener">${escapeHtml(a.t)}</a></li>`
       : `<li>${escapeHtml(a.t)}</li>`
     ).join('');
     return `${head}<ul class="bh-article-list">${li}</ul>`;
@@ -1865,9 +1876,9 @@ window.BH_T = {
     // 인사이트 타임스 글이면 어디로 가는지 이름을 적는다. 번역판 사전에는 readIT 가 없다.
     const isIT = e.link && /insightimes\.com/.test(e.link) && T.readIT;
     const footParts = [];
-    if (showFootLink) footParts.push(`<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">${isIT ? T.readIT : T.readOriginal}</a>`);
+    if (showFootLink) footParts.push(`<a class="bh-event-link" href="${itHref(e.link)}" target="_blank" rel="noopener">${isIT ? T.readIT : T.readOriginal}</a>`);
     if (e.listen && T.listenIT && /^https:\/\/insightimes\.com\/listen\//.test(e.listen)) {
-      footParts.push(`<a class="bh-event-link" href="${e.listen}" target="_blank" rel="noopener">${T.listenIT}</a>`);
+      footParts.push(`<a class="bh-event-link" href="${itHref(e.listen)}" target="_blank" rel="noopener">${T.listenIT}</a>`);
     }
     const sourceTag = footParts.join('');
     // 2024-10-29 이후 이슈는 summaryGroups(소제목+닷블릿) 구조로 표시,
