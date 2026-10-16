@@ -737,7 +737,6 @@
     });
     var calMeta = D.calendarMeta || {};
     out += '<section><h2>주요 일정 · 핵심 20종목 한정</h2>' +
-      '<p class="h2sub">비중이 작거나 시장 영향이 제한적인 종목의 일정은 싣지 않는다.</p>' +
       '<div class="card"><ul class="cal">' +
       (cal.length ? cal.map(function (c) {
         return '<li' + (c.hot ? ' class="hot"' : '') + '><span class="dt">' + esc(c.d) + '</span>' +
