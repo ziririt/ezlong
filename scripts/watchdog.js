@@ -205,6 +205,24 @@ const MONITORS = [
     }
   },
   {
+    // 2026-10-18 추가: 스윙 시그널 '다음 장 체크포인트'. 평일 장 마감 후 한 번 쓴다.
+    // 같은 장이면 파일을 안 바꾸므로(멱등) generatedAt 은 '마지막으로 바뀐 때'다.
+    // 월요일 휴장(금 → 화 저녁)을 견디게 74시간. 하루 이틀 빠진 장은 다음 실행이
+    // 스스로 메운다(생성기의 빠진 장 메우기) - 감시견은 여러 날 멈췄을 때의 안전망이다.
+    id:             'swing-checkpoints',
+    name:           '스윙 체크포인트',
+    workflow:       'swing-checkpoints.yml',
+    checkFile:      'swing-checkpoints.json',
+    timestampField: 'generatedAt',
+    maxAgeHours:    74.0,
+    // UTC 화~토 00:00~14:00 = KST 화~토 09:00~23:00 (뉴욕 월~금 장 마감 다음 날)
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day >= 2 && day <= 6 && h >= 0.0 && h <= 14.0;
+    }
+  },
+  {
     // 2026-08-09 추가 — 네이버 채널 동기화. 이 파이프라인이 멎으면 소사
     // (brief-history)의 최신 글이 조용히 안 올라온다. 화면은 멀쩡하고
     // 며칠 전 글까지만 보이는 종류의 고장이라 아무도 눈치채지 못한다.

@@ -1,0 +1,69 @@
+name: 스윙 시그널 다음 장 체크포인트
+# 뉴욕 장이 끝나면 가격선을 새로 긋고, 직전 장의 가격선을 채점한다.
+# 기준선·채점은 코드가 완결 일봉으로 계산한다(모델 없음). scripts/generate-swing-checkpoints.py
+#
+# 시각: 21:40 UTC = EDT 17:40 / EST 16:40 (장 마감 후). 23:40 UTC 는 보조.
+# 깃허브 예약 실행은 밀리거나 빠진다(10월 실측) - 감시견(swing-checkpoints)이 안전망이다.
+# 같은 장을 두 번 돌아도 파일이 바뀌지 않으면 커밋·배포하지 않는다(멱등).
+
+on:
+  schedule:
+    - cron: '40 21 * * 1-5'
+    - cron: '40 23 * * 1-5'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/generate-swing-checkpoints.py', '.github/workflows/swing-checkpoints.yml']
+
+concurrency:
+  group: swing-checkpoints
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: yfinance 설치
+        run: pip install yfinance --break-system-packages 2>/dev/null || pip install yfinance
+
+      - name: 가격선 긋기·채점
+        timeout-minutes: 8
+        run: python3 scripts/generate-swing-checkpoints.py
+
+      - name: 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/swing-checkpoints.json data/swing-checkpoints-ledger.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 - 커밋 생략"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: 스윙 체크포인트 ${KST}"
+            bash scripts/git-push-retry.sh
+            echo "fresh=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 봇(GITHUB_TOKEN) push 는 firebase-hosting.yml 을 깨우지 않는다(깃허브 정책).
+      - name: 바뀌었으면 배포
+        if: steps.commit.outputs.fresh == 'yes'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          for i in 1 2 3; do npm install -g firebase-tools@15 --quiet && break; sleep 30; done
+          for i in 1 2 3; do
+            firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" && break
+            sleep 30
+          done || true
