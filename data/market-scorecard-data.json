@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-10-17-16:47",
+      "timestamp_kst": "2026-10-17(토) 16:47 KST",
+      "key_event": {
+        "name": "고유가 및 금리 상승 압력 지속",
+        "name_en": "Sustained High Oil Prices & Rising Rates",
+        "time": "직전 거래일 마감 기준",
+        "why": "기술주 전반 하락, 투자 심리 위축, 중동 지정학적 긴장",
+        "why_en": "Tech sell-off, dampened investor sentiment, Middle East tensions"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "AI 밸류에이션 우려 및 고유가 지속으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to AI valuation concerns and high oil prices",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 기술주 선방",
+          "name_en": "Select Tech Stocks Outperform",
+          "desc": "AAPL +0.57% 등 일부 종목은 시장 하락 속에서도 상승 마감",
+          "desc_en": "AAPL +0.57% and other stocks closed higher despite overall market decline",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "AI 밸류에이션 우려 지속",
+          "name_en": "Persistent AI Valuation Concerns",
+          "desc": "SOXX -3.31%, QQQ -2.27% 등 기술주 전반 하락, 투자 심리 위축",
+          "desc_en": "Broad tech sell-off including SOXX -3.31%, QQQ -2.27%, dampening investor sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "고유가 지속 및 중동 긴장",
+          "name_en": "Sustained High Oil & Middle East Tensions",
+          "desc": "WTI 원유 101.41달러(+6.00%) 기록, 중동 지정학적 긴장 고조로 인플레이션 압력",
+          "desc_en": "WTI crude at $101.41 (+6.00%), rising Middle East geopolitical tensions fuel inflation concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 25,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward Pressure on US Treasury Yields",
+          "desc": "미10년 국채금리 5.10%(+0.18%), 미30년 국채금리 5.44%(+0.13%) 기록: 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year yield at 5.10% (+0.18%), 30-year yield at 5.44% (+0.13%), increasing discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "주요 기술 기업 실적 발표 대기",
+          "name_en": "Anticipation for Major Tech Earnings",
+          "desc": "META, TSLA 실적 발표(10월 21일(수) 장 마감 후 ET)를 앞두고 관망세 형성",
+          "desc_en": "Market awaits META and TSLA earnings (Oct 21st, Wed after market close ET), leading to a wait-and-see approach",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "Fed 금리 정책 불확실성",
+          "name_en": "Fed Rate Policy Uncertainty",
+          "desc": "Fed 의장의 금리 신호 유보 발언과 높은 인플레이션 지표로 금리 향방에 대한 의견 엇갈림",
+          "desc_en": "Fed Chair's withholding of rate signals and high inflation data lead to divided opinions on future rate direction",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: AI 밸류에이션 우려와 고유가 지속으로 부정적 심리가 우세하며, 총점 긍정 20대 부정 80으로 부정 우위 지속.\n- 주요 하락 요인: 고유가 및 금리 상승 압력이 지속되며 기술주 전반의 하락을 주도하고 투자 심리 위축 심화.\n- 지정학적 긴장 고조: 중동 지정학적 긴장이 고조되며 유가 상승을 부추기고 인플레이션 압력 가중.\n- 관망세 형성: 주요 기술 기업 실적 발표와 Fed 금리 정책 불확실성으로 시장 전반에 관망세 형성.",
+        "positive": "- 일부 기술주 선방: 시장 전반의 하락 속에서도 애플(AAPL)이 0.57% 상승 마감하는 등 일부 종목은 선방하며 제한적인 긍정 요인으로 작용.",
+        "negative": "- AI 밸류에이션 우려 지속: 필라델피아 반도체 지수(SOXX) -3.31%, 나스닥 100 지수(QQQ) -2.27%를 기록하며 기술주 전반의 하락을 주도, AI 관련 기업들의 고평가 우려가 투자 심리를 위축.\n- 고유가 지속 및 중동 긴장: 서부 텍사스산 원유(WTI) 가격이 6.00% 상승한 101.41달러를 기록하며 고유가가 지속, 중동 지역의 지정학적 긴장 고조가 인플레이션 압력을 가중하며 시장에 부정적 영향.\n- 미 국채금리 상승 압력: 미국 10년물 국채금리가 5.10%(+0.18%) 상승한 5.10%, 30년물 국채금리가 5.44%(+0.13%) 상승한 5.44%를 기록하며 성장주 할인율 부담을 가중, 주식 시장에 하방 압력으로 작용.",
+        "mixed": "- 주요 기술 기업 실적 발표 대기: 메타(META)와 테슬라(TSLA)의 실적 발표(10월 21일(수) 장 마감 후 ET)를 앞두고 투자자들의 관망세가 형성되며 주가 방향성에 대한 불확실성 증대.\n- Fed 금리 정책 불확실성: Fed 의장의 금리 신호 유보 발언과 근원 PCE 물가상승률 3.01%, CPI 소비자물가 상승률 3.72% 등 높은 인플레이션 지표가 혼재하며 금리 향방에 대한 의견이 엇갈려 시장에 혼조세 유발.",
+        "watch": "- 유가 및 국채금리 추이: WTI 원유 가격 및 미국 국채금리(10년물, 30년물)의 추가적인 상승 여부가 시장의 인플레이션 우려와 성장주 할인율 부담에 미칠 영향 확인.\n- Fed 금리 정책 관련 발언: 향후 Fed 관계자들의 금리 정책 관련 발언이 금리 인상 우려 변화 및 시장 변동성에 미칠 영향 확인."
+      },
+      "report_at": "2026-10-17(토) 16:47 KST"
+    },
+    {
       "id": "2026-10-17-08:20",
       "timestamp_kst": "2026-10-17(토) 08:20 KST",
       "key_event": {
@@ -570,76 +645,8 @@
         "watch": "- 10년물 국채금리 추이: 9월 PPI 예상치 상회에도 불구하고 국채금리가 하락세를 보인 만큼, 향후 12시간 동안 10년물 국채금리의 추가 하락 또는 반등 여부가 시장 방향성에 중요한 지표로 작용.\n- 유가 변동성: 지정학적 리스크와 공급 우려가 상존하는 가운데, 유가(USCrude)의 급격한 변동은 인플레이션 압력에 영향을 미치며 시장 심리를 좌우할 가능성 잔존.\n- 주요 지수 선물 흐름: S&P 500, 다우, 나스닥 선물 지수의 장 초반 움직임은 개장 후 시장의 전반적인 방향성을 가늠하는 중요한 신호로 작용."
       },
       "report_at": "2026-10-16(금) 13:52 KST"
-    },
-    {
-      "id": "2026-10-16-11:50",
-      "timestamp_kst": "2026-10-16(금) 11:50 KST",
-      "key_event": {
-        "name": "9월 PPI 예상치 상회 지속",
-        "name_en": "September PPI Exceeds Expectations",
-        "time": "2026-10-15 08:30 ET 발표 완료",
-        "why": "인플레이션 압력 지속, Fed 추가 금리 인상 우려",
-        "why_en": "Persistent inflation pressure, Fed rate hike concerns"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "9월 PPI 예상치 상회에도 국채금리 하락으로 혼조세, 부정 우위 지속",
-      "summary_en": "Despite September PPI exceeding expectations, bond yields fell, leading to mixed sentiment with a continued negative bias.",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 5.09%(-1.95%) 하락, 성장주 할인율 부담 완화",
-          "desc_en": "US 10-year Treasury yield fell to 5.09% (-1.95%), easing discount rate pressure on growth stocks.",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "9월 PPI 예상치 상회",
-          "name_en": "September PPI Exceeds Forecast",
-          "desc": "9월 PPI 생산자물가 예상치 상회, 인플레이션 압력 지속 우려",
-          "desc_en": "September Producer Price Index (PPI) surpassed expectations, raising concerns about persistent inflationary pressures.",
-          "category": "macro_data"
-        },
-        {
-          "score": 25,
-          "name": "WTI 유가 상승",
-          "name_en": "WTI Oil Prices Rise",
-          "desc": "WTI 원유 95.81(+1.91%) 상승, 인플레이션 압력 가중 우려",
-          "desc_en": "WTI crude oil rose to $95.81 (+1.91%), increasing concerns about inflationary pressures.",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 관련주 혼조세",
-          "name_en": "Mixed Performance in AI-related Stocks",
-          "desc": "일부 AI 관련주 하락(-0.54% NVDA, -1.19% AAPL)에도 불구하고, 다른 AI 관련주 상승(+1.12% MSFT, +1.08% GOOGL)으로 혼조",
-          "desc_en": "While some AI-related stocks declined (NVDA -0.54%, AAPL -1.19%), others rose (MSFT +1.12%, GOOGL +1.08%), leading to mixed sentiment.",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "report": {
-        "overview": "- 10월15일(목, 뉴욕) 미국 증시는 9월 생산자물가지수(PPI)의 예상치 상회에도 불구하고, 국채금리 하락에 힘입어 혼조세를 보이며 부정 우위로 마감\n- 핵심 이슈는 9월 PPI가 예상치를 웃돌며 인플레이션 압력이 지속되고 연방준비제도(Fed)의 추가 금리 인상 우려가 커진 점\n- 미 10년물 국채금리가 하락하며 성장주 할인율 부담을 완화한 점이 긍정적 요인으로 작용했으나, 유가 상승과 PPI 상회가 이를 상쇄\n- 인플레이션 압력 지속과 Fed의 긴축 기조 유지 가능성이 시장 전반의 하방 압력으로 잔존",
-        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 5.09%(-1.95%)로 10월14일(수, 뉴욕) 대비 1.95% 하락하며, 성장주에 대한 할인율 부담을 완화하여 기술주 중심의 시장에 긍정적으로 작용.",
-        "negative": "- 9월 PPI 예상치 상회: 9월 생산자물가지수(PPI)가 시장 예상치를 웃돌며 인플레이션 압력이 지속될 수 있다는 우려를 증폭, 이는 연방준비제도(Fed)의 추가 금리 인상 가능성을 높이는 요인으로 작용.\n- WTI 유가 상승: 서부 텍사스산 원유(WTI) 가격이 배럴당 95.81달러로 10월14일(수, 뉴욕) 대비 1.91% 상승하며, 에너지 가격 상승이 전반적인 인플레이션 압력을 가중시킬 것이라는 우려 확산.",
-        "mixed": "- AI 관련주 혼조세: 엔비디아(-0.54% NVDA)와 애플(-1.19% AAPL) 등 일부 AI 관련주가 하락했음에도 불구하고, 마이크로소프트(+1.12% MSFT)와 구글(+1.08% GOOGL) 등 다른 AI 관련주가 상승하며 섹터 전반적으로 뚜렷한 방향성 없이 혼조세를 보임.",
-        "watch": "- 미 국채금리 추이: 미 10년물 국채금리의 추가적인 하락 또는 반등 여부가 성장주 및 시장 전반의 투자 심리에 미칠 영향 확인.\n- WTI 유가 변동성: 국제 유가의 추가적인 상승 또는 하락 추이가 인플레이션 압력과 에너지 관련주에 미칠 영향 주시.\n- AI 관련주 흐름: 주요 AI 관련 기업들의 주가 움직임이 섹터 전반의 투자 심리에 미칠 파급 효과 확인."
-      },
-      "report_at": "2026-10-16(금) 11:50 KST"
     }
   ],
-  "updated_at": "2026-10-16T23:21:04Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-10-17(토) 11:50 KST",
-    "at_utc": "2026-10-17T02:51:07Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-10-17T07:48:27Z",
+  "max_entries": 10
 }
