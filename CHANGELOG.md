@@ -5,6 +5,12 @@
 
 ---
 
+## [2026-10-17] 전자책 독자용 프롬프트 페이지 book/vibe/ 첫 배포
+
+- 책 『AI가 바뀌어도 통하는 바이브코딩』 본문의 → 복사: ezlong.com/book/vibe/#Pxx-xx 주소가 가리키는 페이지
+- 원본은 전자책 폴더 site/prompts.html. 그대로 book/vibe/index.html 로 복사(프롬프트 77개, 독립 페이지)
+- 갱신은 같은 방식으로 덮어쓰기. 사이트맵에는 넣지 않음
+
 ## [2026-09-22] 앱 페이지 세 번째 칸 — Insight Times
 
 성동님: "https://ezlong.com/app/ 맨 위에 3번째 앱 서비스로 insightimes.com 홍보 소개해줘.
