@@ -29,6 +29,8 @@ import sys
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, '..', 'data')
 ARCHIVE = os.path.join(DATA, 'naver-archive.json')
@@ -101,7 +103,21 @@ def market_date(pub_kst, trading_days, last_day):
     et = pub_kst.astimezone(ET)
     cand = et.date()
     if cand > last_day:
-        # 차트 데이터가 아직 못 따라온 최근 며칠 — 달력·목록에는 그대로 싣는다.
+        # 차트 데이터가 아직 못 따라온 최근 며칠 - 달력·목록에는 싣되, 주말·휴장일이면
+        # NYSE 달력으로 직전 거래일에 붙인다. 2026-10-18 증상: 토요일(KST) 오후에 올라간
+        # 시황이 ET 10-17(토)로 계산돼 장이 없던 날짜에 카드가 생겼고, 페이지가 그
+        # 카드를 '가장 최근'으로 열었다.
+        try:
+            from ez_calendar import is_trading_day
+            for _ in range(10):
+                if is_trading_day(cand):
+                    break
+                cand -= timedelta(days=1)
+        except Exception:
+            while cand.weekday() >= 5:
+                cand -= timedelta(days=1)
+        if cand <= last_day and cand.isoformat() not in trading_days:
+            return None
         return cand.isoformat()
     while cand.isoformat() not in trading_days:
         cand -= timedelta(days=1)
@@ -275,7 +291,10 @@ def main():
         it = [x for x in arts if x['src'] == 'it']
         # 인사이트 타임스는 장 마감 정리(시황)를 맨 앞에 - 카드 제목·대표 링크·브리핑 재료가 된다
         it = [x for x in it if x.get('wrap')] + [x for x in it if not x.get('wrap')]
-        if d >= IT_ONLY_FROM and it:
+        if d >= IT_ONLY_FROM:
+            # 9월 14일부터는 인사이트 타임스 글만 근거로 쓴다. 그날 인사이트 타임스 글이
+            # 없어도 네이버 글로 카드를 만들지 않는다(10-18 증상: 네이버 글만 있는 날에
+            # '원문 보기'가 네이버로 걸린 카드가 생겼다).
             arts = it
         elif d >= IT_FROM and it:
             arts = nv + it
