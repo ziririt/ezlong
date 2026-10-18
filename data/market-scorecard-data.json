@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-10-18-23:20",
+      "timestamp_kst": "2026-10-18(일) 23:20 KST",
+      "key_event": {
+        "name": "고유가 및 금리 상승 압력 지속",
+        "name_en": "Persistent High Oil Prices and Rising Interest Rates",
+        "time": "직전 장 마감 기준 및 다음 주 전망",
+        "why": "인플레이션 압력, 성장주 할인율 부담, 투자 심리 위축",
+        "why_en": "Inflationary pressure, growth stock discount rate burden, weakened investor sentiment"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "고유가 및 금리 상승 압력 지속으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to ongoing high oil prices and rising interest rates",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "Fed Warsh 발언: 금리 동결 기대",
+          "name_en": "Fed Warsh's Comments: Rate Freeze Expectations",
+          "desc": "Fed Warsh, 물가 안정 강조하며 금리 인상 신호 회피 발언",
+          "desc_en": "Fed's Warsh emphasized price stability, avoiding signals for further rate hikes",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "지정학적 긴장 고조: 유가 상승 압력",
+          "name_en": "Heightened Geopolitical Tensions: Upward Oil Price Pressure",
+          "desc": "미국의 이란 발사대 공격으로 WTI 원유 99.02(+3.50%) 상승, 공급 불안정 심화",
+          "desc_en": "US strikes on Iranian launchers led to WTI crude rising to $99.02 (+3.50%), deepening supply instability",
+          "category": "geopolitics"
+        },
+        {
+          "score": 35,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued Rise in US Treasury Yields",
+          "desc": "미10년 국채금리 5.10%(+0.18%), 미30년 국채금리 5.44%(+0.13%) 상승, 성장주 할인율 부담",
+          "desc_en": "US 10-year Treasury yield rose to 5.10% (+0.18%), 30-year to 5.44% (+0.13%), increasing growth stock discount rate burden",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 밸류에이션 우려 지속",
+          "name_en": "Ongoing AI Valuation Concerns",
+          "desc": "AI 랠리 불안정 및 주요 기술주 하락, 실적 발표 대기하며 밸류에이션 압박",
+          "desc_en": "AI rally wobbles and major tech stocks decline, with earnings reports awaited amid valuation pressure",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 10월16일(금, 뉴욕)장 총평: 고유가와 금리 상승 압력 지속으로 부정적 시장 분위기 우위 지속, 총점 긍정 15 대 부정 85로 마감.\n- 주요 원인: 중동 지정학적 긴장 고조에 따른 유가 급등과 미 국채금리 상승이 인플레이션 압력 및 성장주 할인율 부담 가중.\n- 시장 심리: Fed의 금리 동결 기대감은 일부 긍정적 요인으로 작용했으나, 전반적인 투자 심리 위축을 상쇄하기에는 역부족.\n- 하방 압력: 근원 PCE 물가 3.01%, CPI 3.72% 등 주요 물가 지표의 상승세 지속이 Fed의 긴축 기조 유지 가능성을 높이는 상황.",
+        "positive": "- Fed Warsh 발언: Fed Warsh 이사가 물가 안정을 강조하면서도 금리 인상 신호를 회피하는 발언으로 시장에 금리 동결 기대감 조성, 이는 단기적으로 투자 심리 안정에 기여.",
+        "negative": "- 지정학적 긴장 고조: 미국의 이란 발사대 공격 소식에 WTI 원유 가격이 99.02달러로 3.50% 급등, 중동 지역 공급 불안정 심화로 유가 상승 압력 가중 및 인플레이션 우려 증폭.\n- 미 국채금리 상승 지속: 미 10년 국채금리 5.10%(+0.18%p), 미 30년 국채금리 5.44%(+0.13%p)로 동반 상승, 이는 성장주 밸류에이션 할인율 부담을 높여 기술주 중심의 시장 하방 압력으로 작용.",
+        "mixed": "",
+        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인, 금리 상승세 지속 시 성장주 및 기술주에 대한 매도 압력 심화 가능성 잔존.\n- 유가 변동성: WTI 원유 가격의 99달러 선 유지 여부 및 추가 상승 동향 주시, 중동 지정학적 리스크 관련 뉴스 플로우에 따른 유가 변동성 확대 가능성.\n- 주요 지수 선물 흐름: S&P 500, Nasdaq 등 주요 지수 선물의 장전 흐름 확인, 전반적인 투자 심리 및 시장 방향성 가늠."
+      },
+      "report_at": "2026-10-18(일) 23:20 KST"
+    },
+    {
       "id": "2026-10-18-18:20",
       "timestamp_kst": "2026-10-18(일) 18:20 KST",
       "key_event": {
@@ -622,83 +682,8 @@
         "watch": "- 미 국채금리 추이: 미 10년물 국채금리가 5.10%(+0.18%)를 돌파하며 상승 압력이 지속되는지 여부 확인.\n- 유가 변동성: WTI 원유 가격이 99.04 USD 이상에서 추가 상승하는지, 혹은 중동 지정학적 리스크 완화로 하락 전환하는지 여부 확인.\n- AI 관련 기술주 동향: SOXX 지수 등 AI 관련 기술주들이 추가 하락세를 보이는지, 혹은 저가 매수세 유입으로 반등하는지 여부 확인."
       },
       "report_at": "2026-10-17(토) 07:00 KST"
-    },
-    {
-      "id": "2026-10-17-03:44",
-      "timestamp_kst": "2026-10-17(토) 03:44 KST",
-      "key_event": {
-        "name": "AI 밸류에이션 우려 지속",
-        "name_en": "Persistent AI Valuation Concerns",
-        "time": "2026-10-16 정규장",
-        "why": "기술주 전반 하락, 투자 심리 위축",
-        "why_en": "Broad tech sector decline, dampened investor sentiment"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "AI 밸류에이션 우려 및 높은 금리 수준으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to AI valuation concerns and high interest rates",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "Fed Warsh 발언, 금리 동결 기대",
-          "name_en": "Fed Warsh's Remarks, Rate Freeze Expectations",
-          "desc": "Fed Warsh, 인플레이션 억제 의지 표명에도 금리 동결 기대감 유지",
-          "desc_en": "Despite Fed Warsh's commitment to tame inflation, rate freeze expectations remain",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "AI 밸류에이션 우려 지속",
-          "name_en": "Ongoing AI Valuation Concerns",
-          "desc": "S&P 500 및 Nasdaq, AI 관련 우려로 주간 손실 기록: 기술주 전반 하락",
-          "desc_en": "S&P 500 and Nasdaq face weekly losses due to AI jitters: broad tech sector decline",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Under Upward Pressure",
-          "desc": "미10년 국채금리 5.11%(+0.33%), 미30년 국채금리 5.44%(+0.20%) 상승: 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield at 5.11%(+0.33%) and 30-year at 5.44%(+0.20%): pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 99.23(+3.72%) 상승: 지정학적 리스크 고조로 인한 공급 우려와 인플레이션 압력 상존",
-          "desc_en": "WTI crude oil rises to 99.23(+3.72%): geopolitical risks heighten supply concerns while inflation pressures persist",
-          "category": "oil_energy"
-        },
-        {
-          "name": "중국 AI 기술 수출 통제",
-          "name_en": "China's AI Tech Export Controls",
-          "desc": "중국, AI 기술 수출 통제 움직임: 글로벌 AI 공급망 불확실성 및 지정학적 긴장 고조",
-          "desc_en": "China moves to control AI tech exports: increasing global AI supply chain uncertainty and geopolitical tensions",
-          "category": "geopolitics"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: AI 밸류에이션 우려와 높은 금리 수준이 지속되며 부정적인 시장 분위기 우위 지속.\n- 주요 하락 요인: AI 관련 기술주 전반의 하락세가 투자 심리 위축을 심화하며 S&P 500 및 Nasdaq의 주간 손실 기록.\n- 금리 압박: 미 국채금리 상승 압력이 성장주 할인율에 부담으로 작용하며 시장 전반에 부정적 영향.\n- 혼조 요인: 지정학적 리스크와 글로벌 AI 공급망 불확실성이 유가 상승 및 시장 변동성 확대에 기여.",
-        "positive": "- Fed Warsh 발언, 금리 동결 기대: Fed Warsh 이사의 인플레이션 억제 의지 표명에도 불구하고, 시장은 연방준비제도(Fed)의 금리 동결 기대감을 유지하며 긍정적 요인으로 작용. (CNBC, Axios, USA Today 보도).",
-        "negative": "- AI 밸류에이션 우려 지속: AI 관련 기술주들의 높은 밸류에이션에 대한 우려가 지속되며 S&P 500 및 Nasdaq 지수가 주간 손실을 기록. 기술주 전반의 하락세가 투자 심리를 위축시키는 주요 원인. (Reuters, StoneX 보도).\n- 미 국채금리 상승 압력: 미 10년 국채금리가 5.11%(+0.33%p), 미 30년 국채금리가 5.44%(+0.20%p)로 상승하며 성장주들의 할인율에 압박을 가하는 상황. 이는 높은 금리 수준이 지속될 것이라는 시장의 우려를 반영. (WSJ, mpa.com 보도).",
-        "mixed": "- WTI 원유 가격 상승: WTI 원유 가격이 99.23달러(+3.72%)로 상승하며 지정학적 리스크 고조로 인한 공급 우려와 인플레이션 압력이 상존. 중동 지역의 안보 위협 고조가 유가 상승을 부추기는 요인.\n- 중국 AI 기술 수출 통제: 중국의 AI 기술 수출 통제 움직임은 글로벌 AI 공급망의 불확실성을 높이고 지정학적 긴장을 고조시키는 요인. 이는 AI 관련 기업들의 사업 환경에 복합적인 영향을 미칠 가능성.",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리가 현재 수준에서 추가 상승 압력을 받을지 여부 확인. 금리 상승은 성장주에 지속적인 부담으로 작용할 전망.\n- WTI 원유 가격 변동: WTI 원유 가격이 지정학적 리스크와 공급 우려 속에서 100달러 선을 돌파하며 추가 상승할지 여부 확인. 유가 상승은 인플레이션 압력을 가중시킬 수 있음."
-      },
-      "report_at": "2026-10-17(토) 03:44 KST"
     }
   ],
-  "updated_at": "2026-10-18T09:21:04Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-10-18(일) 21:50 KST",
-    "at_utc": "2026-10-18T12:51:14Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-10-18T14:21:24Z",
+  "max_entries": 10
 }
