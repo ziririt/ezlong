@@ -1779,8 +1779,6 @@ li.gear-other-sep { display: none !important; }
      그 메타보다 뒤에서 실행돼야 한다. -->
 <!-- 반등·반락 판별 패널 (2026-09-13). 원안은 외부 세션(Codex) 미리보기 -->
 <link rel="stylesheet" href="/swing-reversal.css">
-<!-- 다음 장 체크포인트 (2026-10-18). 가격선·채점은 scripts/generate-swing-checkpoints.py -->
-<link rel="stylesheet" href="/swing-checkpoints.css">
 </head>
 
 <body>
@@ -1874,11 +1872,6 @@ li.gear-other-sep { display: none !important; }
            나눠 본다. 판정은 코드가 한다 - 모델을 부르지 않는다. -->
       <div id="reversal-panel"></div>
       <script src="/swing-reversal.js"></script>
-
-      <!-- 다음 장 체크포인트: 위아래 가장 가까운 가격선 + 그 거리의 평소 비율 + 다음 장 채점.
-           상위 판정(상방·하방)은 바로 위 패널이다. 여기는 하루 단위 관찰선. -->
-      <div id="checkpoint-panel"></div>
-      <script src="/swing-checkpoints.js" defer></script>
 
       <!-- 시그널 히스토리 (최근 4회) -->
       <div id="history-wrap"></div>
@@ -2305,9 +2298,6 @@ li.gear-other-sep { display: none !important; }
            (IntersectionObserver: TradingView 위젯 동시 로드 방지).
            칩은 해당 섹션으로 스크롤 이동. 하단에 칩 바 한 벌 더(#top9-chip-bar-bottom). -->
       <div id="top9-chip-bar" class="top9-chips"></div>
-
-      <!-- TOP9 다음 장 체크포인트 (2026-10-18) - swing-checkpoints.js 가 그린다 -->
-      <div id="checkpoint-panel-top9"></div>
 
       <!-- ── TSLA 섹션 ── -->
       <div class="king-section is-lead">
