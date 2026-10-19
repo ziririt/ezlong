@@ -3,8 +3,8 @@
   "name": "나스닥 100 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-10-16T23:04:37.506Z",
-  "analysisAt": "2026-10-16T23:04:37.506Z",
+  "updatedAt": "2026-10-19T08:19:39.790Z",
+  "analysisAt": "2026-10-19T08:19:39.790Z",
   "analysisPreserved": false,
   "price": {
     "current": 87.72,
@@ -13,7 +13,7 @@
     "high52": 101.62,
     "low52": 56.6,
     "pos52": 69.1,
-    "marketState": "POST",
+    "marketState": "PRE",
     "quoteTime": 1792180800,
     "extPrice": null,
     "extChange": null,
@@ -38,11 +38,11 @@
     },
     "adx": {
       "plusDI": 17.55,
-      "minusDI": 41.38,
+      "minusDI": 41.37,
       "adx": 16.95,
       "status": "무추세(충격 가능)"
     },
-    "atr": 2.7085
+    "atr": 2.7081
   },
   "levels": {
     "swingResistance": 92.14,
@@ -52,7 +52,7 @@
       "r1": 97.21,
       "r2": 106.7,
       "s1": 82.64,
-      "s2": 77.55
+      "s2": 77.56
     }
   },
   "analysis": {
@@ -68,51 +68,51 @@
     "buyScore": 6,
     "scoreReason": "RSI 과매도 탈출 + 피보 0.618 지지 확인",
     "scoreReasonEn": "RSI exiting oversold + Fibonacci 0.618 support confirmed",
-    "rsiTrajectory": "60.0 → 34.3 (과매도탈출)",
+    "rsiTrajectory": "60.0 → 34.3 (과매도 탈출)",
     "rsiTrajectoryEn": "60.0 → 34.3 (exiting oversold)",
     "macdTrajectory": "히스토 0.2240 → -1.1920 (악화)",
     "macdTrajectoryEn": "histogram 0.2240 → -1.1920 (worsening)",
-    "pricePattern": "Higher Low 패턴 형성 가능성",
-    "pricePatternEn": "Potential Higher Low pattern formation",
-    "volComment": "거래량비 1.79 (급증)",
+    "pricePattern": "Higher Low 회복 신호",
+    "pricePatternEn": "Higher Low recovery signal",
+    "volComment": "거래량비 1.81 (급증)",
     "bbPosition": "하단근처",
-    "reason": "직전 판단(10/16)에서 RSI 34.3으로 과매도 탈출 및 피보 0.618 지지 확인 후 매수 진입. 현재가 $87.72는 스윙 지지선 $87.54에 근접. 5일 평균 대비 거래량 비율 1.79로 움직임에 힘 실림.",
-    "reasonEn": "Entered buy on 10/16 after RSI exited oversold at 34.3 and Fibonacci 0.618 support was confirmed. Current price $87.72 is near swing support at $87.54. Volume ratio of 1.79 to 5-day average indicates strong momentum.",
+    "reason": "최근 5거래일 -10.67% 급락으로 RSI 34.3 과매도 구간 진입. 피보나치 0.618 되돌림 레벨인 91.85 부근에서 지지 확인. 5일 평균 대비 1.81배 거래량 동반된 반등 시도.",
+    "reasonEn": "Recent 5-day -10.67% sharp decline led RSI to 34.3 oversold territory. Support confirmed around Fibonacci 0.618 retracement level of 91.85. Attempting a rebound accompanied by 1.81x average daily volume.",
     "entry": 87.72,
-    "stop": 85,
-    "target": 92,
-    "invalidation": 85.81,
-    "weeklyConflict": "주봉 ADX 12.7로 무추세 구간이나, 일봉 RSI 과매도 탈출 및 피보 0.618 지지 확인 신호 우선 적용.",
-    "weeklyConflictEn": "Weekly ADX at 12.7 indicates a non-trending phase, but daily RSI exiting oversold and Fibonacci 0.618 support confirmation signals take precedence.",
-    "profitTarget1": 92,
-    "profitTarget2": 95.21,
-    "stopLoss": 85,
-    "narrative": "[추세 위치]\n· 현재가($87.72) vs SMA5($93.23)/SMA20($96.32)/SMA50($92.60): 단기·중기 추세 하회 진단\n· SMA100($91.91)/SMA200($82.39) 대비 위치: 중장기 추세 혼조 진단\n· 52주 위치(69.1%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (60.0→34.3): 과매도 탈출 구간 진입\n· MACD 히스토그램 궤적 (0.2240→-1.1920): 약세 수렴 지속, 개선 신호 미확인\n· 볼린저밴드 현재가 위치 (하단 $90.53): 하단 접근 구간, 밴드폭 12.02%로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($87.54): 피벗 S1($82.64) 및 52주 저가($56.60) 기반\n· 스윙 저항선 ($92.14): SMA50($92.60) 및 피벗 PP($92.13) 기반\n· 5일/20일 고가·저가 패턴 (Lower Low): 하락 추세 지속 가능성\n[거래량·결론]\n· 거래량 비율 (1.79배): 움직임에 힘 실림, 신뢰도 상승\n· 현 구간 진단 (하락추세): RSI 과매도 탈출 및 지지선 근접으로 인한 단기 반등 기대, 진입 조건 충족",
-    "narrativeEn": "[Trend Position]\n· Current Price ($87.72) vs SMA5 ($93.23)/SMA20 ($96.32)/SMA50 ($92.60): Diagnosing short-to-mid term downtrend\n· Position relative to SMA100 ($91.91)/SMA200 ($82.39): Mixed mid-to-long term trend diagnosis\n· 52-week position (69.1%) + Current price level near historical lows\n[Momentum Indicators]\n· RSI Trajectory (60.0→34.3): Entering oversold territory exit\n· MACD Histogram Trajectory (0.2240→-1.1920): Continued bearish convergence, no improvement signal confirmed\n· Bollinger Band Current Price Position (Lower Band $90.53): Approaching lower band, 12.02% band width suggests potential for increased volatility\n[Support & Resistance Structure]\n· Swing Support ($87.54): Based on Pivot S1 ($82.64) and 52-week low ($56.60)\n· Swing Resistance ($92.14): Based on SMA50 ($92.60) and Pivot PP ($92.13)\n· 5-day/20-day High/Low Pattern (Lower Low): Potential for continued downtrend\n[Volume & Conclusion]\n· Volume Ratio (1.79x): Movement is gaining strength, increasing reliability\n· Current Phase Diagnosis (Downtrend): Short-term rebound expected due to RSI oversold exit and proximity to support line, entry conditions met",
-    "patternNote": "일봉상 5일 저가($87.04)가 20일 저가($87.04)와 같아 새로운 저점 형성 없이 횡보 구간 진입 가능성.",
-    "patternNoteEn": "The 5-day low ($87.04) is equal to the 20-day low ($87.04), indicating potential for a sideways consolidation without forming a new low.",
+    "stop": 85.01,
+    "target": 91.85,
+    "invalidation": 85.01,
+    "weeklyConflict": "주봉 RSI 49.7 중립 구간이나 일봉 과매도 탈출 신호 우선",
+    "weeklyConflictEn": "Weekly RSI at 49.7 neutral zone, but daily oversold exit signal takes precedence",
+    "profitTarget1": 91.85,
+    "profitTarget2": 94.95,
+    "stopLoss": 85.01,
+    "narrative": "[추세 위치]\n· 현재가($87.72) vs SMA5($93.23)/SMA20($96.32)/SMA50($92.60): 단기·중기 추세 하회, 약세 위치 진단\n· SMA100($91.91)/SMA200($82.39) 대비 위치: 중장기 추세 약화, SMA200 상회 중\n· 52주 위치(69.1%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (60.0→34.3): 과매도 탈출 구간 진입, 반등 모멘텀 기대\n· MACD 히스토그램 궤적 (0.2240→-1.1920): 약세 지속, 추세 전환 신호 미확인\n· 볼린저밴드 현재가 위치 (하단 $90.53): 하단 접근 구간, 과매도 압력 시사\n[지지·저항 구조]\n· 스윙 지지선 ($87.54): 피벗 S1($82.64) 및 5일 저가($87.05) 기반 지지 확인\n· 스윙 저항선 ($92.14): 피벗 PP($92.13) 및 피보나치 0.618 레벨($91.85) 저항 구간\n· 5일/20일 고가·저가 패턴 (Higher Low): 회복 신호 확인, 추세 전환 가능성\n[거래량·결론]\n· 거래량 비율 (1.81배): 반등 시도 시 거래량 증가, 움직임 신뢰도 상승\n· 현 구간 진단 (축적구간): 과매도 탈출 후 반등 시도, 단기 반등 기대 구간",
+    "narrativeEn": "[Trend Position]\n· Current Price($87.72) vs SMA5($93.23)/SMA20($96.32)/SMA50($92.60): Below short/mid-term trends, indicating weak positioning.\n· Position vs SMA100($91.91)/SMA200($82.39): Mid-to-long-term trend weakening, above SMA200.\n· 52-week Position (69.1%) + Current price level near historical lows.\n[Momentum Indicators]\n· RSI Trajectory (60.0→34.3): Entering oversold territory, expecting rebound momentum.\n· MACD Histogram Trajectory (0.2240→-1.1920): Weakness continues, trend reversal signal unconfirmed.\n· Bollinger Band Current Price Position (Lower Band $90.53): Approaching lower band, suggesting oversold pressure.\n[Support & Resistance Structure]\n· Swing Support ($87.54): Support confirmed based on Pivot S1($82.64) and 5-day low($87.05).\n· Swing Resistance ($92.14): Resistance zone at Pivot PP($92.13) and Fibonacci 0.618 level($91.85).\n· 5-day/20-day High/Low Pattern (Higher Low): Recovery signal confirmed, potential for trend reversal.\n[Volume & Conclusion]\n· Volume Ratio (1.81x): Increased volume on rebound attempt, enhancing conviction in movement.\n· Current Phase Diagnosis (Accumulation Phase): Attempting rebound after exiting oversold, expecting short-term bounce.",
+    "patternNote": "피보나치 0.618 되돌림 레벨 지지 확인 및 5일 저가 기준 Higher Low 패턴 형성",
+    "patternNoteEn": "Support confirmed at Fibonacci 0.618 retracement level and Higher Low pattern formed based on 5-day low",
     "keyPoints": [
-      "RSI 34.3으로 과매도 구간 탈출 확인",
-      "스윙 지지선 $87.54 근접, 5일 평균 대비 거래량 1.79배로 강한 움직임",
-      "주봉 ADX 12.7로 추세 미형성 구간, 충격성 변동 가능성"
+      "RSI 34.3 과매도 구간 탈출 및 5일 평균 대비 1.81배 거래량 동반",
+      "피보나치 0.618 되돌림 레벨 91.85 부근 지지 확인",
+      "5일 저가 기준 Higher Low 패턴 형성으로 단기 반등 기대"
     ],
     "keyPointsEn": [
-      "RSI confirmed exiting oversold at 34.3",
-      "Approaching swing support at $87.54 with strong momentum indicated by 1.79x 5-day average volume ratio",
-      "Non-trending phase with weekly ADX at 12.7, suggesting potential for shock-like volatility"
+      "RSI exiting oversold at 34.3 with 1.81x average volume",
+      "Support confirmed near Fibonacci 0.618 retracement level of 91.85",
+      "Short-term rebound expected with Higher Low pattern formation based on 5-day low"
     ],
-    "riskNote": "MACD 히스토그램 악화 지속으로 추세 전환 신호 미확인 상태.",
-    "riskNoteEn": "MACD histogram continues to worsen, indicating no confirmed trend reversal signal.",
-    "continuity": "직전 판단(10/16)에서 RSI 과매도 탈출 및 피보 0.618 지지 확인 후 매수 진입. 오늘까지 2거래일 연속 매수 판독 지속.",
-    "continuityEn": "The buy action continues for the second consecutive session, following the previous read on 10/16 which confirmed RSI exiting oversold and Fibonacci 0.618 support.",
+    "riskNote": "MACD 히스토그램 약세 지속으로 추세 전환 신호 미확인 상태",
+    "riskNoteEn": "MACD histogram weakness persists, trend reversal signal remains unconfirmed",
+    "continuity": "직전 2거래일 관망 유지 후, 금일 RSI 과매도 탈출 및 피보 0.618 지지 확인으로 매수 전환",
+    "continuityEn": "After holding a wait-and-see stance for the past 2 sessions, switching to a buy action today with RSI exiting oversold and Fibonacci 0.618 support confirmed",
     "confluenceChecklist": {
       "volumeConfirmed": true,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
       "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
-      "score": "4/5",
-      "verdict": "진짜 반등/추세 가능성 높음"
+      "score": "3/5",
+      "verdict": "초기 단계: 확인 관문 남음"
     }
   }
 }
