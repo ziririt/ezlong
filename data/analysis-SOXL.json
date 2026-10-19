@@ -3,56 +3,56 @@
   "name": "반도체 3X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-10-19T14:20:58.604Z",
-  "analysisAt": "2026-10-19T14:20:58.604Z",
+  "updatedAt": "2026-10-19T17:20:57.351Z",
+  "analysisAt": "2026-10-19T17:20:57.351Z",
   "analysisPreserved": false,
   "price": {
-    "current": 102.01,
-    "change": 8.34,
-    "changePct": 8.9,
+    "current": 100.225,
+    "change": 6.555,
+    "changePct": 7,
     "high52": 302,
     "low52": 28.12,
-    "pos52": 27,
+    "pos52": 26.3,
     "marketState": "REGULAR",
-    "quoteTime": 1792419651,
+    "quoteTime": 1792430450,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 139.4895,
-    "sma50": 128.5701,
-    "sma100": 159.6287,
-    "sma200": 122.3327,
-    "rsi": 35.57,
+    "sma20": 139.4002,
+    "sma50": 128.5344,
+    "sma100": 159.6109,
+    "sma200": 122.3238,
+    "rsi": 34.45,
     "macd": {
-      "macd": -6.715288,
-      "signal": 0.050593,
-      "histogram": -6.765881
+      "macd": -6.857681,
+      "signal": 0.022115,
+      "histogram": -6.879796
     },
     "bb": {
-      "upper": 180.8844,
-      "middle": 139.4895,
-      "lower": 98.0946,
-      "bandwidth": 0.5935
+      "upper": 181.1244,
+      "middle": 139.4002,
+      "lower": 97.6761,
+      "bandwidth": 0.5986
     },
     "adx": {
-      "plusDI": 17.43,
-      "minusDI": 37.93,
-      "adx": 21.13,
+      "plusDI": 17.89,
+      "minusDI": 37.72,
+      "adx": 21.03,
       "status": "추세 형성 초기"
     },
-    "atr": 12.7793
+    "atr": 12.8507
   },
   "levels": {
     "swingResistance": 128.48,
     "swingSupport": 99.87,
     "pivot": {
-      "pp": 121.76,
-      "r1": 150.08,
-      "r2": 198.14,
-      "s1": 73.7,
-      "s2": 45.38
+      "pp": 121.17,
+      "r1": 148.89,
+      "r2": 197.55,
+      "s1": 72.51,
+      "s2": 44.79
     }
   },
   "analysis": {
@@ -67,44 +67,44 @@
     "action": "관망",
     "buyScore": 4,
     "scoreReason": "RSI 극단 과매도 구간 진입, ADX 추세 미형성",
-    "scoreReasonEn": "RSI entering extreme oversold, ADX trend formation nascent",
-    "rsiTrajectory": "43.4 → 35.6 (과매도 구간 진입 중)",
-    "rsiTrajectoryEn": "43.4 → 35.6 (entering oversold territory)",
-    "macdTrajectory": "히스토 -1.8225 → -6.7659 (악화 지속)",
-    "macdTrajectoryEn": "histogram -1.8225 → -6.7659 (worsening)",
-    "pricePattern": "5일 저가 갱신 없음, 20일 저가 대비 하락 추세 유지",
-    "pricePatternEn": "No new 5-day low, maintaining downtrend vs 20-day low",
-    "volComment": "거래량비 0.39 (위축)",
+    "scoreReasonEn": "RSI in extreme oversold, ADX no trend formation",
+    "rsiTrajectory": "43.4 → 34.5 (과매도탈출 시도)",
+    "rsiTrajectoryEn": "43.4 → 34.5 (attempting to exit oversold)",
+    "macdTrajectory": "히스토 -1.8225 → -6.8798 (악화)",
+    "macdTrajectoryEn": "histogram -1.8225 → -6.8798 (worsening)",
+    "pricePattern": "5일 저가 갱신 없음, 20일 저가 대비 상승",
+    "pricePatternEn": "No new 5-day low, higher relative to 20-day low",
+    "volComment": "거래량비 0.67 (위축)",
     "bbPosition": "하단근처",
-    "reason": "현재가 $102.01은 SMA200 $122.33 대비 -16.61% 하회. RSI 35.6으로 과매도 구간 진입 시도 중. MACD 히스토그램은 -6.7659로 악화 지속. ADX 21.1로 추세 형성 초기 단계이나 -DI가 +DI 대비 우위. 5일 평균 거래량 대비 비율 0.39로 위축된 거래량은 하락세 지속 가능성 시사.",
-    "reasonEn": "Current price $102.01 is -16.61% below SMA200 $122.33. RSI at 35.6 attempting to enter oversold territory. MACD histogram worsening at -6.7659. ADX at 21.1 in early trend formation stage with -DI leading +DI. Volume ratio of 0.39 to 5-day average suggests continued downward momentum.",
-    "entry": 102.01,
-    "stop": 73.7,
-    "target": 158.63,
-    "invalidation": 73.7,
-    "weeklyConflict": "주봉 SMA20 $150.96 대비 -32.43% 하회하나, 주봉 ADX 18.9로 무추세 구간. 일봉 기준 하락세 우선.",
-    "weeklyConflictEn": "Weekly SMA20 at $150.96, current price is -32.43% below. However, weekly ADX at 18.9 indicates a non-trending phase. Daily signals take precedence for a downtrend.",
-    "profitTarget1": 158.63,
-    "profitTarget2": 201.09,
-    "stopLoss": 73.7,
-    "narrative": "[추세 위치]\n· 현재가($102.01) vs SMA5/20/50($108.23/$139.49/$128.57): 단기·중기 추세 하회, 약세 우위\n· SMA100/200($159.63/$122.33) 대비 위치: 중장기 추세 하회, 약세 지속\n· 52주 위치(27.0%) + 현 가격대 역사적 저점 구간 근접\n[모멘텀 지표]\n· RSI 궤적 (43.4→35.6): 과매도 구간 진입 중, 하락 모멘텀 지속\n· MACD 히스토그램 궤적 (-1.8225→-6.7659): 악화 지속, 약세 추세 강화\n· 볼린저밴드 현재가 위치 (하단 $98.09): 하단 접근 구간, 하방 압력 존재\n[지지·저항 구조]\n· 스윙 지지선 ($99.87): 5일 저가 대비 회복 시도 가능성\n· 스윙 저항선 ($128.48): 단기 반등 시 저항 구간\n· 5일/20일 고가·저가 패턴 (5일 저가 갱신 없음, 20일 저가 대비 하락 추세 유지): 약세 추세 지속\n[거래량·결론]\n· 거래량 비율 (0.39): 위축된 거래량, 하락세 신뢰도 하락\n· 현 구간 진단 (하락추세): 관망 유지, 추가 하락 시 지지선 확인",
-    "narrativeEn": "[Trend Position]\n· Current price ($102.01) vs SMA5/20/50 ($108.23/$139.49/$128.57): below short/mid-term trends, bearish bias.\n· SMA100/200 ($159.63/$122.33) position: below long-term trends, bearish continuation.\n· 52-week position (27.0%) + current price level near historical lows.\n[Momentum Indicators]\n· RSI trajectory (43.4→35.6): entering oversold territory, downward momentum continues.\n· MACD histogram trajectory (-1.8225→-6.7659): worsening, bearish trend strengthening.\n· Bollinger Band current price position (Lower $98.09): approaching lower band, downward pressure present.\n[Support & Resistance Structure]\n· Swing support ($99.87): potential for attempted recovery vs 5-day low.\n· Swing resistance ($128.48): resistance zone on short-term bounces.\n· 5-day/20-day high/low pattern (No new 5-day low, maintaining downtrend vs 20-day low): bearish trend continuation.\n[Volume & Conclusion]\n· Volume ratio (0.39): subdued volume, reduced conviction in downward move.\n· Current phase diagnosis (Downtrend): maintain observation, confirm support on further decline.",
-    "patternNote": "5일 저가 갱신 없는 하락 추세 속에서 RSI 과매도 구간 진입 시도 중.",
-    "patternNoteEn": "Attempting oversold entry within a downtrend lacking new 5-day lows.",
+    "reason": "RSI 34.5로 극단 과매도 구간 진입, 5일 저가 갱신 없음. ADX 21.0으로 추세 형성 초기 단계. 주봉 RSI 44.1로 중립 구간. 4시간봉 RSI 30.6으로 과매도 구간. 매수 진입 근거 부족.",
+    "reasonEn": "RSI at 34.5 in extreme oversold, no new 5-day low. ADX at 21.0 in early trend formation. Weekly RSI at 44.1 in neutral. 4H RSI at 30.6 in oversold. Insufficient grounds for buy entry.",
+    "entry": 100.22,
+    "stop": 72.51,
+    "target": 155.65,
+    "invalidation": 72.51,
+    "weeklyConflict": "주봉 SMA20 하회 중이나, 일봉상 과매도 탈출 시도.",
+    "weeklyConflictEn": "Below weekly SMA20, but daily shows oversold escape attempt.",
+    "profitTarget1": 155.65,
+    "profitTarget2": 197.22,
+    "stopLoss": 72.51,
+    "narrative": "[추세 위치]\n· 현재가($100.22) vs SMA5($107.87)/SMA20($139.40)/SMA50($128.53): 단기 약세, 중기 약세\n· SMA100($159.61)/SMA200($122.32) 대비 위치: 중장기 약세\n· 52주 위치(26.3%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (43.4→34.5): 과매도 구간 진입, 하락 지속\n· MACD 히스토그램 궤적 (-1.8225→-6.8798): 악화 지속, 약세 수렴\n· 볼린저밴드 현재가 위치 (하단 $97.68 근처): 하단 접근, 밴드폭 59.86%\n[지지·저항 구조]\n· 스윙 지지선 ($99.87): 52주 저가 및 볼린저 하단 근접\n· 스윙 저항선 ($128.48): SMA50 및 볼린저 중단 근접\n· 5일/20일 고가·저가 패턴 (5일 저가 갱신 없음, 20일 저가 대비 상승): 약한 반등 시도\n[거래량·결론]\n· 거래량 비율 (0.67배): 움직임의 신뢰도 하락\n· 현 구간 진단 (하락추세): 관망 유지, 매수점수 4",
+    "narrativeEn": "[Trend Position]\n· Current price ($100.22) vs SMA5 ($107.87)/SMA20 ($139.40)/SMA50 ($128.53): short-term bearish, mid-term bearish\n· Position relative to SMA100 ($159.61)/SMA200 ($122.32): long-term bearish\n· 52-week position (26.3%) + current price level near historical lows\n[Momentum Indicators]\n· RSI trajectory (43.4→34.5): entering oversold, continued decline\n· MACD histogram trajectory (-1.8225→-6.8798): continued worsening, bearish convergence\n· Bollinger Band current price position (near lower band $97.68): approaching lower band, bandwidth 59.86%\n[Support & Resistance Structure]\n· Swing support ($99.87): near 52-week low and lower Bollinger band\n· Swing resistance ($128.48): near SMA50 and middle Bollinger band\n· 5-day/20-day high/low pattern (no new 5-day low, higher relative to 20-day low): weak rebound attempt\n[Volume & Conclusion]\n· Volume ratio (0.67x): decreased confidence in movement\n· Current phase diagnosis (downtrend): maintain wait-and-see, buy score 4",
+    "patternNote": "하락 채널 하단부에서 약한 반등 시도 구간.",
+    "patternNoteEn": "Attempting a weak rebound near the lower boundary of a downtrend channel.",
     "keyPoints": [
-      "현재가 $102.01은 SMA200 $122.33 대비 -16.61% 하회하며 약세 구간 지속.",
-      "RSI 35.6으로 과매도 구간 진입 시도 중이나, MACD 히스토그램은 -6.7659로 악화 지속.",
-      "ADX 21.1로 추세 형성 초기 단계이나 -DI가 +DI 대비 우위이며 거래량 위축."
+      "RSI 34.5로 극단 과매도 구간 진입, 5일 저가 갱신 없음.",
+      "ADX 21.0으로 추세 형성 초기 단계, 방향성 불확실.",
+      "주봉 RSI 44.1, 4시간봉 RSI 30.6으로 과매도 구간 진입."
     ],
     "keyPointsEn": [
-      "Current price $102.01 remains -16.61% below SMA200 $122.33, continuing bearish territory.",
-      "RSI at 35.6 attempts oversold entry, but MACD histogram worsens to -6.7659.",
-      "ADX at 21.1 in early trend formation with -DI leading +DI and subdued volume."
+      "RSI at 34.5 entering extreme oversold, no new 5-day low.",
+      "ADX at 21.0 in early trend formation, directional uncertainty.",
+      "Weekly RSI at 44.1, 4H RSI at 30.6 entering oversold territory."
     ],
-    "riskNote": "ADX 21.1로 추세 미형성 구간에서 RSI 과매도 진입은 되돌림 가능성 시사하나, MACD 악화 및 거래량 위축은 하락세 지속 가능성 내포.",
-    "riskNoteEn": "ADX at 21.1 indicates nascent trend, RSI oversold entry suggests potential bounce, but MACD worsening and low volume imply continued decline.",
-    "continuity": "직전 3거래일 연속 관망 판독 지속. 금일 RSI 과매도 구간 진입 시도 및 MACD 악화 지속으로 관망 유지.",
-    "continuityEn": "The wait-and-see stance has been maintained for the past 3 trading sessions. Today's attempt to enter oversold territory on RSI and continued MACD deterioration support maintaining this stance.",
+    "riskNote": "ADX 21.0으로 추세 미형성 구간, 충격성 변동 가능성 상존.",
+    "riskNoteEn": "ADX at 21.0 indicates no trend formation, risk of shock-like volatility remains.",
+    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 34.5로 과매도 구간 진입, 5일 저가 갱신 없음으로 매수 전환 근거는 아직 미흡.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 3 trading sessions. Today's RSI at 34.5 entering oversold and no new 5-day low provide insufficient grounds for a shift to a buy action.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 0.31 < 1.5"
+    "levelsAdjustedReason": "손절폭 ATR 0.65배 < 1"
   }
 }
