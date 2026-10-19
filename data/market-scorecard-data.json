@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-10-20-07:00",
+      "timestamp_kst": "2026-10-20(화) 07:00 KST",
+      "key_event": {
+        "name": "AI·반도체 기술주 반등",
+        "name_en": "AI & Semiconductor Tech Rebound",
+        "time": "2026-10-19 포스트마켓",
+        "why": "주요 기술 기업 실적 기대감, 투자 심리 회복",
+        "why_en": "Anticipation for major tech earnings, improved investor sentiment"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "기술주 실적 기대감 및 AI 관련 투자 심리 회복으로 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues, driven by tech earnings anticipation and AI investment recovery",
+      "positive_factors": [
+        {
+          "score": 60,
+          "name": "시장 변동성 완화",
+          "name_en": "Market Volatility Easing",
+          "desc": "VIX 공포지수 18.44로 -7.71% 하락: 시장 불안감 진정",
+          "desc_en": "VIX 'fear index' fell 7.71% to 18.44, indicating reduced market anxiety",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "연준 인플레이션 경계",
+          "name_en": "Fed's Inflation Vigilance",
+          "desc": "Fed, AI 붐이 인플레이션 압력 가중 우려: 추가 금리 인상 가능성 시사",
+          "desc_en": "Fed expresses concern that the AI boom could add to inflation, hinting at further rate hikes",
+          "category": "fed_policy"
+        },
+        {
+          "name": "유가 상승 및 중동 긴장",
+          "name_en": "Rising Oil Prices & Middle East Tensions",
+          "desc": "WTI 원유 98.24 USD (+0.90%) 상승: 중동 지정학적 위기 고조, 에너지 안보 우려 지속",
+          "desc_en": "WTI crude oil rose to $98.24 (+0.90%): Escalating geopolitical crisis in the Middle East, ongoing energy security concerns",
+          "category": "geopolitics",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 시장 둔화 조짐",
+          "name_en": "Signs of Labor Market Slowdown",
+          "desc": "실업률 4.20%(+0.10%p) 상승: 경기 둔화 우려와 Fed 긴축 완화 기대 혼재",
+          "desc_en": "Unemployment rate rose to 4.20% (+0.10%p): Mixed signals of economic slowdown concerns and hopes for Fed easing",
+          "category": "macro_data"
+        },
+        {
+          "name": "기술주 실적 기대감",
+          "name_en": "Tech Earnings Optimism",
+          "desc": "META, TSLA 실적 발표 임박(10월 21일(수) 장 마감 후 ET): 시장 방향성 결정 기대",
+          "desc_en": "META and TSLA earnings due (Oct 21st, after market close ET): Expected to set market direction",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 총평: 기술주 실적 기대감과 AI 관련 투자 심리 회복에 힘입어 긍정적 시장 분위기 지속.\n- 주요 원인: AI 및 반도체 기술주가 지난주 하락세를 딛고 반등하며 시장 전반의 투자 심리 개선에 기여.\n- 하방 지지: VIX 공포지수가 하락하며 시장의 전반적인 불안감이 완화되는 모습.",
+        "positive": "- 시장 변동성 완화: VIX 공포지수가 18.44로 7.71% 하락하며 시장의 불안감 진정, 투자 심리 개선에 긍정적 영향.\n- AI·반도체 기술주 반등: 주요 기술 기업들의 실적 발표를 앞두고 AI 및 반도체 관련 주식들이 반등하며 투자 심리 회복. TradingView에 따르면 Nasdaq은 1.1% 상승하며 칩 주식들이 지난주 AI 매도세 이후 반등.",
+        "negative": "- 연준 인플레이션 경계: 연방준비제도(Fed)는 AI 붐이 인플레이션 압력을 가중시킬 수 있다는 우려를 표명하며 추가 금리 인상 가능성을 시사.\n- 유가 상승 및 중동 긴장: 서부 텍사스산 원유(WTI) 가격이 98.24 USD로 0.90% 상승하며 중동 지역의 지정학적 위기 고조 및 에너지 안보 우려 지속. The Washington Post에 따르면 이란 관리들은 유가 상승을 통해 미국의 중간선거에 영향을 미치려 한다고 언급. EnergyNow.com은 이란 전쟁이 글로벌 에너지 안보를 영구적으로 재편할 수 있다고 분석.",
+        "mixed": "- 고용 시장 둔화 조짐: 실업률이 4.20%로 0.10%p 상승하며 경기 둔화 우려와 연준의 긴축 완화 기대가 혼재. The New York Times는 흑인 실업률이 실제 고용 시장이 보이는 것보다 더 나쁜 상태임을 시사한다고 보도. PYMNTS.com은 새로운 데이터가 고용 시장이 소비자 지출을 억제하고 있음을 보여준다고 분석.\n- 기술주 실적 기대감: META와 TSLA의 실적 발표(10월 21일(수) 장 마감 후 ET)가 임박하며 시장의 방향성을 결정할 중요한 변수로 작용할 것으로 기대. CNBC는 기술주들이 월요일 좋은 반등을 보였지만, 이번 주 실적이 실제 반등 여부를 결정할 것이라고 언급.",
+        "watch": "- META 실적 발표: 10월 21일(수) 장 마감 후 ET (약 46시간 뒤) 예정. 실적 결과 및 가이던스가 기술주 전반의 투자 심리에 큰 영향을 미칠 것으로 예상.\n- TSLA 실적 발표: 10월 21일(수) 장 마감 후 ET (약 46시간 뒤) 예정. 전기차 시장의 동향과 AI 관련 투자 심리에 대한 단서를 제공하며 시장 방향성에 영향을 줄 것으로 전망.\n- VIX 공포지수 추이: 현재 18.44 수준에서 추가적인 하락 또는 반등 여부가 시장의 불안감 완화 지속 여부를 판단하는 중요한 지표."
+      },
+      "report_at": "2026-10-20(화) 07:00 KST"
+    },
+    {
       "id": "2026-10-20-05:30",
       "timestamp_kst": "2026-10-20(화) 05:30 KST",
       "key_event": {
@@ -607,68 +674,8 @@
         "watch": "- 유가 및 국채금리 추이: 지정학적 긴장 및 인플레이션 압력 지속 여부를 가늠할 WTI 원유 가격과 미 국채금리(특히 10년물 및 30년물)의 다음 주 개장 시점 추이."
       },
       "report_at": "2026-10-19(월) 01:05 KST"
-    },
-    {
-      "id": "2026-10-18-23:20",
-      "timestamp_kst": "2026-10-18(일) 23:20 KST",
-      "key_event": {
-        "name": "고유가 및 금리 상승 압력 지속",
-        "name_en": "Persistent High Oil Prices and Rising Interest Rates",
-        "time": "직전 장 마감 기준 및 다음 주 전망",
-        "why": "인플레이션 압력, 성장주 할인율 부담, 투자 심리 위축",
-        "why_en": "Inflationary pressure, growth stock discount rate burden, weakened investor sentiment"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "고유가 및 금리 상승 압력 지속으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to ongoing high oil prices and rising interest rates",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "Fed Warsh 발언: 금리 동결 기대",
-          "name_en": "Fed Warsh's Comments: Rate Freeze Expectations",
-          "desc": "Fed Warsh, 물가 안정 강조하며 금리 인상 신호 회피 발언",
-          "desc_en": "Fed's Warsh emphasized price stability, avoiding signals for further rate hikes",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 50,
-          "name": "지정학적 긴장 고조: 유가 상승 압력",
-          "name_en": "Heightened Geopolitical Tensions: Upward Oil Price Pressure",
-          "desc": "미국의 이란 발사대 공격으로 WTI 원유 99.02(+3.50%) 상승, 공급 불안정 심화",
-          "desc_en": "US strikes on Iranian launchers led to WTI crude rising to $99.02 (+3.50%), deepening supply instability",
-          "category": "geopolitics"
-        },
-        {
-          "score": 35,
-          "name": "미 국채금리 상승 지속",
-          "name_en": "Continued Rise in US Treasury Yields",
-          "desc": "미10년 국채금리 5.10%(+0.18%), 미30년 국채금리 5.44%(+0.13%) 상승, 성장주 할인율 부담",
-          "desc_en": "US 10-year Treasury yield rose to 5.10% (+0.18%), 30-year to 5.44% (+0.13%), increasing growth stock discount rate burden",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 우려 지속",
-          "name_en": "Ongoing AI Valuation Concerns",
-          "desc": "AI 랠리 불안정 및 주요 기술주 하락, 실적 발표 대기하며 밸류에이션 압박",
-          "desc_en": "AI rally wobbles and major tech stocks decline, with earnings reports awaited amid valuation pressure",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "report": {
-        "overview": "- 10월16일(금, 뉴욕)장 총평: 고유가와 금리 상승 압력 지속으로 부정적 시장 분위기 우위 지속, 총점 긍정 15 대 부정 85로 마감.\n- 주요 원인: 중동 지정학적 긴장 고조에 따른 유가 급등과 미 국채금리 상승이 인플레이션 압력 및 성장주 할인율 부담 가중.\n- 시장 심리: Fed의 금리 동결 기대감은 일부 긍정적 요인으로 작용했으나, 전반적인 투자 심리 위축을 상쇄하기에는 역부족.\n- 하방 압력: 근원 PCE 물가 3.01%, CPI 3.72% 등 주요 물가 지표의 상승세 지속이 Fed의 긴축 기조 유지 가능성을 높이는 상황.",
-        "positive": "- Fed Warsh 발언: Fed Warsh 이사가 물가 안정을 강조하면서도 금리 인상 신호를 회피하는 발언으로 시장에 금리 동결 기대감 조성, 이는 단기적으로 투자 심리 안정에 기여.",
-        "negative": "- 지정학적 긴장 고조: 미국의 이란 발사대 공격 소식에 WTI 원유 가격이 99.02달러로 3.50% 급등, 중동 지역 공급 불안정 심화로 유가 상승 압력 가중 및 인플레이션 우려 증폭.\n- 미 국채금리 상승 지속: 미 10년 국채금리 5.10%(+0.18%p), 미 30년 국채금리 5.44%(+0.13%p)로 동반 상승, 이는 성장주 밸류에이션 할인율 부담을 높여 기술주 중심의 시장 하방 압력으로 작용.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인, 금리 상승세 지속 시 성장주 및 기술주에 대한 매도 압력 심화 가능성 잔존.\n- 유가 변동성: WTI 원유 가격의 99달러 선 유지 여부 및 추가 상승 동향 주시, 중동 지정학적 리스크 관련 뉴스 플로우에 따른 유가 변동성 확대 가능성.\n- 주요 지수 선물 흐름: S&P 500, Nasdaq 등 주요 지수 선물의 장전 흐름 확인, 전반적인 투자 심리 및 시장 방향성 가늠."
-      },
-      "report_at": "2026-10-18(일) 23:20 KST"
     }
   ],
-  "updated_at": "2026-10-19T20:31:30Z",
+  "updated_at": "2026-10-19T22:01:57Z",
   "max_entries": 10
 }
