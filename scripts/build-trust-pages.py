@@ -127,7 +127,7 @@ write('about.html',
 <li><a href="/atmr-dashboard.html">스윙 시그널 대시보드</a> — QQQ·VOO·SOXX의 매수·매도 점수와 3-3-4 분할 진입 전략</li>
 <li><a href="/market-vs.html">긍정 vs 부정 몇대몇</a> — 지금 시장을 움직이는 재료를 긍정·부정으로 나눠 점수화. 하루 다섯 번 갱신</li>
 <li><a href="/chart-analysis.html">AI 차트분석</a> — 50여 종목의 RSI·MACD·볼린저밴드 해석</li>
-<li><a href="/analyst-reports.html">월가 목표주가</a> · <a href="/market-cycle.html">마켓 사이클</a> · <a href="/stocks.html">심플 주가</a></li>
+<li><a href="/analyst-reports.html">월가 목표주가</a> · <a href="/market-cycle.html">마켓 사이클</a><!-- [보류 2026-10-19: 심플 주가] · <a href="/stocks.html">심플 주가</a> --></li>
 </ul>
 <h3>계산하는 도구</h3>
 <ul>

@@ -256,6 +256,12 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - 화면이 지난 일정을 스스로 거른다(미국 종목은 뉴욕 날짜, 한국 종목은 한국 날짜). 갱신이 밀려도 지난 날짜는 안 뜬다.
 - `model-portfolio.yml` 에 수요일 슬롯 추가(주 2회) + 일정 단계 `continue-on-error`.
 
+**심플 주가 숨김(10/19, 운영 결정: Massive 해지)**
+- 페이지·스크립트는 그대로 두고 숨겼다: 메뉴·푸터·메인 카드·관련 링크 주석 처리, 사이트맵 제외,
+  `firebase.json` 301(stocks → chart-analysis, 6개 언어 + stocks_v2), 시세 워크플로 2개 예약 중지, 감시견 2항목 주석.
+- 모든 자리에 `[보류 2026-10-19: 심플 주가]` 표시. 복구 순서는 `docs/RESTORE-stocks.md`.
+- 부수 효과: 장중 15분마다 오던 전체 배포가 사라져, 배포를 직접 하지 않는 봇의 `/data/` 파일은 다른 봇 배포 때 함께 올라간다.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`

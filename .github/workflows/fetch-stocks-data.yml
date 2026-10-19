@@ -1,9 +1,10 @@
 name: Fetch Stocks Data
 
 on:
-  schedule:
+  # [보류 2026-10-19: 심플 주가] 예약 실행 중지. 수동 실행(workflow_dispatch)만 남긴다. 복구 절차: docs/RESTORE-stocks.md
+  # schedule:
     # 매일 22:00 UTC (KST 07:00) — 미장 마감(16:00 ET) 후 약 2시간 여유
-    - cron: '0 22 * * 1-5'
+  #  - cron: '0 22 * * 1-5'
   workflow_dispatch:  # 수동 실행 허용
 
 jobs:

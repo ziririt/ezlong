@@ -38,7 +38,8 @@
       ['/en/atmr-dashboard.html#top9',           L.top9,     L.top9],
       [p + 'market-vs.html',      L.vs,       L.vs],
       [p + 'brief-history.html',  L.events,   L.events],
-      [p + 'stocks.html',         L.prices,   L.prices],
+      /* [보류 2026-10-19: 심플 주가] 메뉴에서 숨김. Massive 시세 API 해지로 장중 시세를 받을 수 없다. 복구 절차: docs/RESTORE-stocks.md
+      [p + 'stocks.html',         L.prices,   L.prices], */
       [p + 'chart-analysis.html', L.chart,    L.chart],
       [p + 'analyst-reports.html', L.targets, L.targets],
       [p + 'market-cycle.html',   L.cycle,    L.cycle],
@@ -84,7 +85,8 @@
     ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive: Big Tech'],
     ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear: AI Market Read'],
     ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day: US Market Events'],
-    ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
+    /* [보류 2026-10-19: 심플 주가] 복구 절차: docs/RESTORE-stocks.md
+    ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'], */
     ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
     ['/en/analyst-reports.html',       'Price Targets',   'Wall Street Price Targets'],
     ['/en/market-cycle.html',          'Market Cycle',    'Market Cycle Monitor'],
@@ -113,7 +115,8 @@
     ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇: AI 시황 분석'],
     ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
-    ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
+    /* [보류 2026-10-19: 심플 주가] 복구 절차: docs/RESTORE-stocks.md
+    ['/stocks.html',                '심플 주가',      '심플 주가 정보'], */
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
     ['/model-portfolio.html',       'AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', 'AI포트폴리오 점검: 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],

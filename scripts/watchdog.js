@@ -115,6 +115,8 @@ const MONITORS = [
     maxAgeHours:    8.0,
     isActive: () => true   // 매일 5회 (주말 포함 설계)
   },
+  /* [보류 2026-10-19: 심플 주가] 시세 수집 두 작업의 예약 실행을 멈췄으므로 감시도 멈춘다.
+     복구 절차: docs/RESTORE-stocks.md
   {
     id:             'stocks-prices',
     name:           '심플 주가 실시간',
@@ -147,6 +149,7 @@ const MONITORS = [
     maxAgeHours:    26.0,
     isActive: (now) => { const day = now.getUTCDay(); return day >= 1 && day <= 5; }
   },
+  */
   {
     id:             'market-cycle',
     name:           '마켓 사이클 주봉',

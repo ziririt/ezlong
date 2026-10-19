@@ -169,6 +169,8 @@ grep -n "interval.*range\|range.*interval" atmr-dashboard.html | grep -v "//\|#"
 
 ## 17. Massive API 보안 규칙 및 이중 JSON 아키텍처 (2026-06-18 명문화)
 
+> **2026-10-19 상태: 숨김(보류).** Massive 해지로 심플 주가를 메뉴에서 숨기고 주소를 AI 차트분석으로 301 이동했다. 복구 절차는 `docs/RESTORE-stocks.md`.
+
 **배경:** stocks.html에 실시간 주가를 표시하기 위해 Massive API (구 Polygon.io) 도입. API 키를 클라이언트 코드에 절대 노출하지 않는 구조로 확정.
 
 ### API 키 보안 — 절대 규칙
