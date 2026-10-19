@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-10-19-22:47",
+      "timestamp_kst": "2026-10-19(월) 22:47 KST",
+      "key_event": {
+        "name": "기술주 실적 발표 기대감",
+        "name_en": "Tech Earnings Anticipation",
+        "time": "10월 21일(수) 장 마감 후 ET",
+        "why": "주요 기술 기업 실적 발표 임박, 시장 방향성 결정 요인",
+        "why_en": "Impending major tech earnings, key market direction driver"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "기술주 실적 기대감 및 AI 관련 투자 심리 회복으로 긍정 우위 전환",
+      "summary_en": "Positive sentiment shift due to tech earnings anticipation and renewed AI investment confidence",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 관련 기술주 투자 심리 회복",
+          "name_en": "AI-related tech stock sentiment recovery",
+          "desc": "S&P 500, Nasdaq 선물 상승 및 AI 관련주 반등, 투자 심리 개선",
+          "desc_en": "S&P 500, Nasdaq futures rise and AI stocks rebound, improving investor sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "시장 변동성 완화",
+          "name_en": "Market volatility easing",
+          "desc": "VIX 공포지수 18.02(-9.81%) 하락, 투자 심리 안정",
+          "desc_en": "VIX fear index drops to 18.02 (-9.81%), stabilizing investor sentiment",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "지속되는 고금리 수준",
+          "name_en": "Persistently high interest rates",
+          "desc": "미10년 국채금리 5.10%(+0.08%) 상승, 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rises to 5.10% (+0.08%), maintaining discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "Fed 추가 금리 인상 가능성",
+          "name_en": "Potential for further Fed rate hikes",
+          "desc": "Fed의 인플레이션 대응 의지 및 추가 금리 인상 가능성 언급",
+          "desc_en": "Fed's commitment to combating inflation and mentions of potential further rate hikes",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미국-IMF 부채 전망 이견",
+          "name_en": "US-IMF debt forecast disagreement",
+          "desc": "미국과 IMF 간 부채 전망에 대한 이견, 거시경제 불확실성 증폭",
+          "desc_en": "Disagreement between the US and IMF on debt forecasts, increasing macroeconomic uncertainty",
+          "category": "macro_data"
+        },
+        {
+          "name": "주요 기술 기업 실적 기대감",
+          "name_en": "Major tech earnings anticipation",
+          "desc": "META, TSLA 실적 발표(10월 21일(수) ET) 임박, 시장 기대감 형성",
+          "desc_en": "META, TSLA earnings (Oct 21st ET) approaching, building market anticipation",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 총평: 기술주 실적 기대감과 AI 관련 투자 심리 회복에 힘입어 긍정 우위로 전환, 시장 변동성 완화.\n- 주요 동인: 다가오는 주요 기술 기업의 실적 발표에 대한 기대감이 시장의 방향성을 결정하는 핵심 요인으로 부상.\n- 하방 압력: 지속적인 고금리 수준과 연방준비제도(Fed)의 추가 금리 인상 가능성 언급이 성장주에 대한 할인율 부담으로 작용.\n- 거시경제 불확실성: 미국과 국제통화기금(IMF) 간 부채 전망에 대한 이견이 거시경제 불확실성을 증폭시키는 요인으로 잔존.",
+        "positive": "- AI 관련 기술주 투자 심리 회복: S&P 500 및 Nasdaq 선물 상승, AI 관련주 반등으로 투자 심리 개선. Reuters에 따르면, AI 관련주가 실적 발표를 앞두고 반등하며 S&P 500과 Nasdaq이 상승 출발할 것으로 전망.\n- 시장 변동성 완화: VIX 공포지수가 18.02로 9.81% 하락하며 투자 심리 안정. 이는 시장의 불확실성 감소와 투자자들의 위험 회피 심리 완화를 시사.",
+        "negative": "- 지속되는 고금리 수준: 미 10년 국채금리가 5.10%(+0.08%)로 0.08% 상승하며 성장주에 대한 할인율 부담 지속. 이는 높은 금리가 기업의 미래 현금 흐름 가치를 낮춰 성장주 투자 매력을 감소시키는 요인.\n- Fed 추가 금리 인상 가능성: 연방준비제도(Fed)의 인플레이션 대응 의지 및 추가 금리 인상 가능성 언급. Scripps News는 Fed가 인플레이션과 싸우기 위해 추가 금리 인상이 있을 수 있다고 보도. 9월 CPI 소비자물가 상승률이 3.72%로 전월 대비 0.36%p 상승한 점이 Fed의 매파적 스탠스를 지지.",
+        "mixed": "- 미국-IMF 부채 전망 이견: 미국과 IMF 간 부채 전망에 대한 이견이 거시경제 불확실성을 증폭. Geopolitical Monitor에 따르면, 양측의 부채 전망에 대한 상이한 시각은 글로벌 경제의 건전성에 대한 우려를 야기.\n- 주요 기술 기업 실적 기대감: META와 TSLA의 실적 발표(10월 21일(수) 장 마감 후 ET) 임박. Yahoo Finance는 AI 자금 조달 우려와 주요 기술 기업 실적이 이번 주 시장의 주요 의제가 될 것이라고 언급. 실적 결과에 따라 시장의 방향성이 크게 좌우될 가능성.",
+        "watch": "- 미 10년 국채금리 추이: 현재 5.10%(+0.08%) 수준에서 추가 상승 여부 확인. 금리 상승은 성장주에 대한 할인율 부담을 가중시켜 시장에 부정적인 영향을 미칠 수 있음.\n- VIX 공포지수 변동: 현재 18.02 수준에서 추가 하락 또는 반등 여부 확인. VIX 지수의 안정적인 하락은 시장의 위험 선호 심리 회복을, 반등은 불확실성 증가를 시사."
+      },
+      "report_at": "2026-10-19(월) 22:47 KST"
+    },
+    {
       "id": "2026-10-19-18:20",
       "timestamp_kst": "2026-10-19(월) 18:20 KST",
       "key_event": {
@@ -585,91 +660,8 @@
         "watch": "- 유가 변동성: WTI 원유 가격의 추가적인 상승 또는 하락 추이 확인. 중동 지정학적 긴장 완화 기대감에 따른 유가 하락 가능성도 잔존.\n- 미 10년 국채금리 추이: 5.10%(+0.18%)를 기록한 미 10년 국채금리의 추가 상승 여부 확인. 금리 상승은 성장주 할인율에 지속적인 부담으로 작용."
       },
       "report_at": "2026-10-18(일) 07:26 KST"
-    },
-    {
-      "id": "2026-10-17-23:20",
-      "timestamp_kst": "2026-10-17(토) 23:20 KST",
-      "key_event": {
-        "name": "고유가 및 금리 상승 압력 지속",
-        "name_en": "Persistent High Oil Prices and Rising Interest Rates",
-        "time": "2026-10-17 직전 거래일 마감 기준",
-        "why": "인플레이션 압력, 성장주 할인율 부담, 투자 심리 위축",
-        "why_en": "Inflationary pressure, growth stock discount rate burden, dampened investor sentiment"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "AI 밸류에이션 우려 및 고유가 지속으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to AI valuation concerns and sustained high oil prices",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "미-이란 평화 협상 기대감",
-          "name_en": "US-Iran Peace Deal Optimism",
-          "desc": "미국과 이란 간 평화 협상 타결 소식, 지정학적 긴장 완화 기대",
-          "desc_en": "News of a peace deal between the US and Iran, easing geopolitical tensions",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "고유가 지속 및 인플레이션 압력",
-          "name_en": "Sustained High Oil Prices and Inflationary Pressure",
-          "desc": "WTI 원유 101.41(+6.00%) 기록, 중동 지정학적 긴장 지속으로 유가 상승 압력",
-          "desc_en": "WTI crude oil at $101.41 (+6.00%), rising oil prices due to ongoing Middle East geopolitical tensions",
-          "category": "oil_energy"
-        },
-        {
-          "score": 30,
-          "name": "미국 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.10%(+0.18%), 미30년 국채금리 5.44%(+0.13%) 상승, 성장주 할인율 부담",
-          "desc_en": "US 10-year Treasury yield at 5.10%(+0.18%) and 30-year yield at 5.44%(+0.13%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 15,
-          "name": "Fed 추가 금리 인상 가능성",
-          "name_en": "Fed's Potential for Further Rate Hikes",
-          "desc": "Fed 금리 정책 불확실성 지속, 금리 인하 기대보다 인상 가능성 시사 발언",
-          "desc_en": "Continued uncertainty in Fed's rate policy, with comments suggesting potential for further hikes rather than cuts",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "주요 기술 기업 실적 발표 대기",
-          "name_en": "Anticipation of Major Tech Earnings",
-          "desc": "META, TSLA 실적 발표(10월 21일(수) 장 마감 후 ET) 앞두고 관망세, 시장 방향성 탐색",
-          "desc_en": "Wait-and-see approach ahead of META and TSLA earnings (Oct 21st (Wed) after market close ET), market seeking direction",
-          "category": "earnings_bellwether"
-        },
-        {
-          "name": "AI 밸류에이션 우려 지속",
-          "name_en": "Ongoing AI Valuation Concerns",
-          "desc": "높은 금리에도 AI 붐 지속, 밸류에이션 부담에 대한 시장의 상반된 시각",
-          "desc_en": "AI boom continues despite high interest rates, mixed market views on valuation pressures",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: AI 밸류에이션 우려와 고유가 지속으로 긍정 20점 대 부정 80점의 부정 우위 지속.\n- 핵심 이슈: 고유가 및 금리 상승 압력이 지속되며 인플레이션 압력 가중, 성장주 할인율 부담 심화, 전반적인 투자 심리 위축.\n- 인플레이션 압력: WTI 원유 가격이 101.41달러(+6.00%)를 기록하며 고유가 지속, CPI 소비자물가 상승률이 3.72%(+0.36%p)로 전월 대비 상승하며 인플레이션 우려 고조.\n- 금리 상승 부담: 미10년 국채금리 5.10%(+0.18%), 미30년 국채금리 5.44%(+0.13%) 상승으로 성장주 할인율 부담이 커지고, Fed의 추가 금리 인상 가능성 시사 발언으로 불확실성 증대.",
-        "positive": "- 미-이란 평화 협상 기대감: 미국과 이란 간 평화 협상 타결 소식이 전해지며 지정학적 긴장 완화에 대한 기대감 형성. (Stocktwits 보도에 따르면 S&P 500, Nasdaq, Dow 지수가 상승 마감).",
-        "negative": "- 고유가 지속 및 인플레이션 압력: WTI 원유 가격이 101.41달러(+6.00%)를 기록하며 100달러를 돌파, 중동 지정학적 긴장 지속으로 유가 상승 압력이 이어지는 상황. (Washington Post는 이란 전쟁으로 인한 소매 가격 영향이 미국 가계에 불균등하게 영향을 미친다고 보도).\n- 미국 국채금리 상승: 미10년 국채금리가 5.10%(+0.18%)로 상승하고 미30년 국채금리도 5.44%(+0.13%)로 오르며 성장주에 대한 할인율 부담이 가중. (South China Morning Post에 따르면 중국은 8월 미국 국채 보유량을 18년 만에 최저치로 줄임).\n- Fed 추가 금리 인상 가능성: Fed의 금리 정책 불확실성이 지속되는 가운데, 금리 인하 기대보다는 인상 가능성을 시사하는 발언들이 나옴. (MarketWatch는 Fed의 이달 금리 결정이 시장 예상보다 더 박빙이라고 보도했으며, Barron's는 Fed가 10월에 금리를 동결하더라도 추가 인상이 필요할 것이라고 전망).",
-        "mixed": "- 주요 기술 기업 실적 발표 대기: META와 TSLA의 실적 발표(10월 21일(수) 장 마감 후 ET)를 앞두고 시장의 관망세가 짙어지며 방향성 탐색 중.\n- AI 밸류에이션 우려 지속: 높은 금리 환경에도 불구하고 AI 붐이 지속되면서 AI 관련 기업들의 밸류에이션 부담에 대한 시장의 상반된 시각이 공존.",
-        "watch": "- 국채금리 추이: 미10년 국채금리가 5.10%(+0.18%) 이상에서 추가 상승하는지, 혹은 하락 안정화되는지 여부.\n- 유가 변동성: WTI 원유 가격이 101.41달러 수준에서 추가 상승하여 인플레이션 압력을 가중시키는지 여부."
-      },
-      "report_at": "2026-10-17(토) 23:20 KST"
     }
   ],
-  "updated_at": "2026-10-19T09:21:14Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-10-19(월) 21:50 KST",
-    "at_utc": "2026-10-19T12:51:06Z",
-    "kind": "event_wait",
-    "count": 1,
-    "reason": "한쪽 편이 '결과를 기다리는 중'인 재료뿐이라, 점수를 매길 근거가 없었습니다.",
-    "reason_en": "One side consisted only of \"awaiting the result\" items, which carry no verdict."
-  }
+  "updated_at": "2026-10-19T13:47:48Z",
+  "max_entries": 10
 }
