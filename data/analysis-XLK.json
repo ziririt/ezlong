@@ -3,8 +3,8 @@
   "name": "IT 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-10-21T22:26:39.037Z",
-  "analysisAt": "2026-10-21T22:26:39.037Z",
+  "updatedAt": "2026-10-21T22:46:01.895Z",
+  "analysisAt": "2026-10-21T22:46:01.895Z",
   "analysisPreserved": false,
   "price": {
     "current": 188.54,
@@ -67,17 +67,17 @@
     "action": "관망",
     "buyScore": 5,
     "scoreReason": "RSI 중립 구간 유지, ADX 추세 미형성",
-    "scoreReasonEn": "RSI neutral zone, ADX trend formation",
+    "scoreReasonEn": "RSI neutral zone, ADX no trend formation",
     "rsiTrajectory": "43.2 → 44.5 (중립지속 중)",
     "rsiTrajectoryEn": "43.2 → 44.5 (staying neutral)",
     "macdTrajectory": "히스토 -0.9227 → -1.7335 (악화)",
-    "macdTrajectoryEn": "histo -0.9227 → -1.7335 (worsening)",
-    "pricePattern": "5일 고가/저가 패턴 없음, 20일 고가/저가 패턴 없음",
-    "pricePatternEn": "No clear 5-day or 20-day high/low pattern",
+    "macdTrajectoryEn": "histogram -0.9227 → -1.7335 (worsening)",
+    "pricePattern": "5일 고가 < 20일 고가 * 0.995 → Lower High 약화 신호",
+    "pricePatternEn": "5-day high < 20-day high * 0.995 → Lower High weakening signal",
     "volComment": "거래량비 0.81 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "ADX 23.4로 추세 형성 초기 단계, -DI가 +DI보다 우위. RSI 44.5로 중립 구간 유지. 거래량 0.81로 위축. 5일 연속 관망 판독 유지.",
-    "reasonEn": "ADX at 23.4 in early trend formation, -DI leads +DI. RSI at 44.5 in neutral zone. Volume at 0.81, indicating contraction. Maintaining wait-and-see stance for 5 consecutive sessions.",
+    "bbPosition": "중단",
+    "reason": "현재가 $188.54는 SMA50 $189.81 하회, SMA100 $186.38 상회하며 중립 구간. RSI 44.5로 방향성 부재. MACD 히스토그램 악화 지속(-1.7335)으로 매수세 약화. ADX 23.4로 추세 형성 초기 단계이나 -DI 우위로 하방 압력 우세. 5일간 변동률 +1.67%, -0.28%, +1.36%, -3.02%, -0.65%로 방향성 불확실. 관망 유지.",
+    "reasonEn": "Current price $188.54 is below SMA50 $189.81 and above SMA100 $186.38, indicating a neutral zone. RSI at 44.5 shows no directional bias. MACD histogram continues to worsen (-1.7335), signaling weakening buying pressure. ADX at 23.4 is in the early stages of trend formation, but -DI dominance suggests downward pressure. 5-day volatility (+1.67%, -0.28%, +1.36%, -3.02%, -0.65%) shows directional uncertainty. Maintaining a wait-and-see approach.",
     "entry": 188.54,
     "stop": 182.08,
     "target": 201.46,
@@ -87,24 +87,24 @@
     "profitTarget1": 201.46,
     "profitTarget2": 211.15,
     "stopLoss": 182.08,
-    "narrative": "[추세 위치]\n· 현재가($188.54) vs SMA5($186.52)/SMA20($194.50)/SMA50($189.81): 하회, 단기 추세 약화 진단\n· SMA100($186.38)/SMA200($167.82) 대비 위치: 중장기 추세 강도 유지\n· 52주 위치(80.8%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (43.2 → 44.5): 중립 구간 지속 중, 과매도 탈출 신호 미확인\n· MACD 히스토그램 궤적 (-0.9227 → -1.7335): 악화, 약세 수렴 신호 지속\n· 볼린저밴드 현재가 위치 (중단 $194.50): 중단 부근 횡보, 밴드폭 11.09%로 변동성 축소\n[지지·저항 구조]\n· 스윙 지지선 ($182.08): 20일 저가 기반\n· 스윙 저항선 ($188.74): 5일 고가 기반, 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 없음: 횡보 국면 지속\n[거래량·결론]\n· 거래량 비율 (0.81배): 움직임의 신뢰도 위축\n· 현 구간 진단 (축적구간): 관망 조건: RSI 50 이상 회복 및 MACD 개선 확인",
-    "narrativeEn": "[Trend Position]\n· Current price ($188.54) vs SMA5 ($186.52)/SMA20 ($194.50)/SMA50 ($189.81): Below, indicating short-term trend weakening.\n· Position relative to SMA100 ($186.38)/SMA200 ($167.82): Maintaining medium-to-long-term trend strength.\n· 52-week position (80.8%) + Current price level near historical highs.\n[Momentum Indicators]\n· RSI trajectory (43.2 → 44.5): Staying in neutral zone, oversold exit signal unconfirmed.\n· MACD histogram trajectory (-0.9227 → -1.7335): Worsening, bearish convergence signal continuing.\n· Bollinger Band current price position (Midline $194.50): Trading near the midline, band width at 11.09% indicating reduced volatility.\n[Support & Resistance Structure]\n· Swing support ($182.08): Based on 20-day low.\n· Swing resistance ($188.74): Based on 5-day high, potential for short-term bounce on breakout.\n· No clear 5-day/20-day high/low pattern: Sideways consolidation continuing.\n[Volume & Conclusion]\n· Volume ratio (0.81x): Low confidence in price movement.\n· Current phase diagnosis (Accumulation phase): Conditions for entry: RSI recovery above 50 and MACD improvement confirmed.",
-    "patternNote": "볼린저밴드 중단 부근 횡보, 추세 형성 미약",
-    "patternNoteEn": "Trading near Bollinger Band midline, weak trend formation",
+    "narrative": "[추세 위치]\n· 현재가($188.54) vs SMA5/20/50($186.52/$194.50/$189.81): 중단 부근 위치, 단기·중기 추세 혼조\n· SMA100($186.38) 상회, SMA200($167.82) 상회: 중장기 추세 강도 유지\n· 52주 위치(80.8%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (43.2→44.5): 중립 구간 지속, 방향성 부재 진단\n· MACD 히스토그램 궤적 (-0.9227→-1.7335): 악화 지속, 약세 수렴 신호\n· 볼린저밴드 현재가 위치 (중단 $194.50): 중단 부근 횡보, 밴드폭 11.09%로 변동성 보통 수준\n[지지·저항 구조]\n· 스윙 지지선 ($182.08): 20일 저가 기반, 하단 접근 시 매수 고려\n· 스윙 저항선 ($188.74): 5일 고가 기반, 돌파 시 상승 전환 기대\n· 5일/20일 고가·저가 패턴 (Lower High): 약화 신호, 추세 전환 불확실\n[거래량·결론]\n· 거래량 비율 (0.81배): 움직임의 신뢰도 위축\n· 현 구간 진단 (축적구간): 방향성 확인 후 진입 필요",
+    "narrativeEn": "[Trend Position]\n· Current price ($188.54) vs SMA5/20/50 ($186.52/$194.50/$189.81): near mid-band, mixed short-term/mid-term trend\n· Above SMA100 ($186.38), above SMA200 ($167.82): mid-to-long term trend strength maintained\n· 52-week position (80.8%) + current price level near historical highs\n[Momentum Indicators]\n· RSI trajectory (43.2→44.5): neutral zone continuation, diagnosed as lacking direction\n· MACD histogram trajectory (-0.9227→-1.7335): continued worsening, signaling bearish convergence\n· Bollinger Band current price position (mid-band $194.50): sideways near mid-band, band width 11.09% indicating moderate volatility\n[Support & Resistance Structure]\n· Swing support ($182.08): based on 20-day low, consider buying on approach to lower band\n· Swing resistance ($188.74): based on 5-day high, expect upward reversal on breakout\n· 5-day/20-day high/low pattern (Lower High): weakening signal, uncertain trend reversal\n[Volume & Conclusion]\n· Volume ratio (0.81x): reduced confidence in price movement\n· Current phase diagnosis (Accumulation): entry requires directional confirmation",
+    "patternNote": "5일 고가 $189.51, 20일 고가 $203.25 대비 낮은 Lower High 패턴 형성, 약세 신호 지속.",
+    "patternNoteEn": "A Lower High pattern formed, with the 5-day high at $189.51 and 20-day high at $203.25, indicating a continued bearish signal.",
     "keyPoints": [
-      "ADX 23.4로 추세 형성 초기, -DI 우위로 하방 압력 지속",
-      "RSI 44.5로 중립 구간, 50 이상 회복 시 매수 신호 강화",
-      "거래량 0.81로 위축, 방향성 확인 필요"
+      "RSI 44.5로 중립 구간 유지, 방향성 부재.",
+      "MACD 히스토그램 악화 지속(-1.7335)으로 매수세 약화.",
+      "ADX 23.4로 추세 형성 초기 단계이나 -DI 우위로 하방 압력 우세."
     ],
     "keyPointsEn": [
-      "ADX at 23.4 in early trend formation, -DI leading indicates continued downside pressure",
-      "RSI at 44.5 in neutral zone, stronger buy signal on recovery above 50",
-      "Volume at 0.81, contraction requires directional confirmation"
+      "RSI remains in neutral territory at 44.5, showing no directional bias.",
+      "MACD histogram continues to worsen (-1.7335), signaling weakening buying pressure.",
+      "ADX is in the early stages of trend formation at 23.4, but -DI dominance suggests downward pressure."
     ],
-    "riskNote": "ADX 23.4로 추세 미형성 구간, 충격성 변동 가능성",
-    "riskNoteEn": "ADX at 23.4 indicates a non-trending phase, susceptible to shock-like moves",
-    "continuity": "직전 4거래일 연속 관망 판독 유지. 금일 RSI 43.2→44.5 소폭 상승했으나 중립 구간 지속, MACD 히스토그램 -0.9227→-1.7335 악화로 관망 유지.",
-    "continuityEn": "The wait-and-see read has now held for 4 consecutive sessions. Today's RSI slightly rose from 43.2 to 44.5 but remains in neutral territory, and MACD histogram worsened from -0.9227 to -1.7335, maintaining the cautious stance.",
+    "riskNote": "ADX 23.4로 추세 미형성 구간에서 -DI 우위로 인한 하방 충격 가능성.",
+    "riskNoteEn": "Risk of downward shock due to -DI dominance in an untrended ADX phase at 23.4.",
+    "continuity": "직전 4거래일 연속 관망 판독 유지. 금일 RSI 44.5로 중립 구간 유지, MACD 히스토그램 악화(-1.7335)로 매수 점수 5점 유지하며 관망 지속.",
+    "continuityEn": "The wait-and-see read has now held for 4 consecutive sessions. Today, with RSI remaining neutral at 44.5 and MACD histogram worsening (-1.7335), the buy score remains 5, continuing the wait-and-see stance.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "방향 불일치 · 손익비 0.30 < 1.5"
+    "levelsAdjustedReason": "손익비 1.02 < 1.5"
   }
 }
