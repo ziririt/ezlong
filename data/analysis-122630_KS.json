@@ -3,8 +3,8 @@
   "name": "KODEX 레버리지",
   "assetType": "etf_leveraged",
   "market": "kr",
-  "updatedAt": "2026-10-21T08:24:01.842Z",
-  "analysisAt": "2026-10-21T08:24:01.842Z",
+  "updatedAt": "2026-10-21T10:03:04.274Z",
+  "analysisAt": "2026-10-21T10:03:04.274Z",
   "analysisPreserved": false,
   "price": {
     "current": 71740,
@@ -67,17 +67,17 @@
     "action": "관망",
     "buyScore": 4,
     "scoreReason": "RSI 과매도 진입 지속, ADX 추세 강화 미흡",
-    "scoreReasonEn": "RSI remains in oversold territory, ADX trend strength lacking",
-    "rsiTrajectory": "30.0 → 32.1 (과매도탈출)",
-    "rsiTrajectoryEn": "30.0 → 32.1 (exiting oversold)",
+    "scoreReasonEn": "RSI remains oversold, ADX trend strengthening insufficient",
+    "rsiTrajectory": "30.0 → 32.1 (과매도 구간 진입 지속)",
+    "rsiTrajectoryEn": "30.0 → 32.1 (continues entering oversold territory)",
     "macdTrajectory": "히스토 -3227.9465 → -3648.2026 (악화)",
     "macdTrajectoryEn": "histogram -3227.9465 → -3648.2026 (worsening)",
-    "pricePattern": "5일 저가 64,920원, 20일 저가 64,920원: 횡보",
-    "pricePatternEn": "5-day low $64,920, 20-day low $64,920: sideways",
-    "volComment": "거래량비 1.05 (정상)",
+    "pricePattern": "Higher Low 또는 Lower High 또는 횡보: 5일 저가 64,920원, 20일 저가 64,920원, 5일 고가 74,365원, 20일 고가 120,080원. 5일 고가 < 20일 고가 * 0.995 조건 충족, Lower High 패턴 확인",
+    "pricePatternEn": "Higher Low or Lower High or sideways: 5-day low 64,920, 20-day low 64,920, 5-day high 74,365, 20-day high 120,080. Meets 5-day high < 20-day high * 0.995 condition, Lower High pattern confirmed",
+    "volComment": "거래량 비율 1.04 (정상)",
     "bbPosition": "하단근처",
-    "reason": "직전 3거래일 연속 관망 유지. RSI 32.1로 과매도 구간 진입 지속, ADX 26.9로 추세는 뚜렷하나 -DI(40.4)가 +DI(13.9)를 크게 상회하며 하락 압력 우위. MACD 히스토그램 또한 악화되며 약세 수렴 중. 52주 저가 대비 16.1% 위치로 하락 추세 지속.",
-    "reasonEn": "Maintained a wait-and-see approach for the past 3 consecutive trading days. RSI at 32.1 continues to be in oversold territory, and ADX at 26.9 indicates a clear trend, but -DI (40.4) significantly exceeds +DI (13.9), showing downward pressure dominance. MACD histogram is also worsening, indicating a bearish convergence. At 16.1% of the 52-week low, the downtrend persists.",
+    "reason": "3거래일 연속 관망 유지. RSI 과매도 진입 지속, ADX 추세 강화 미흡. MACD 히스토그램 악화. 5일 고가 < 20일 고가 * 0.995 조건 충족으로 Lower High 패턴 확인. 71,740원 현재가 기준, 스윙 지지선 68,045원, 스윙 저항선 80,380원 구간 내 횡보 가능성.",
+    "reasonEn": "Maintaining a wait-and-see approach for 3 consecutive trading days. RSI continues to enter oversold territory, ADX trend strengthening is insufficient. MACD histogram is worsening. Meets the condition of 5-day high < 20-day high * 0.995, confirming a Lower High pattern. Based on the current price of 71,740 KRW, potential sideways movement within the swing support of 68,045 KRW and swing resistance of 80,380 KRW.",
     "entry": 71740,
     "stop": 51080,
     "target": 113060,
@@ -87,24 +87,24 @@
     "profitTarget1": 113060,
     "profitTarget2": 144050,
     "stopLoss": 51080,
-    "narrative": "[추세 위치]\n· 현재가(71,740원) vs SMA5(69,873원)/SMA20(96,898원)/SMA50(101,569원): 단기 추세 상회, 중기 추세 하회 진단\n· SMA100(132,840원)/SMA200(112,026원) 대비 위치: 중장기 추세 하회, 약세 강도 유지\n· 52주 위치(16.1%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (30.0→32.1) + 과매도 구간 진입 지속 + 하락 압력 완화 신호\n· MACD 히스토그램 궤적 (-3227.9465→-3648.2026) + 악화 진단 + 약세 수렴 지속\n· 볼린저밴드 현재가 위치 (하단 60,213원 근처) + 밴드폭 75.72% 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 (68,045원) + 피벗 S1(51,080원) 기반 지지 기대\n· 스윙 저항선 (80,380원) + 돌파 시 추세 전환 가능성\n· 5일/20일 고가·저가 패턴 (5일 저가 64,920원, 20일 저가 64,920원): 횡보 패턴 확인\n[거래량·결론]\n· 거래량 비율 (1.05배) + 움직임의 신뢰도 정상 수준\n· 현 구간 진단 (하락추세) + 관망 조건 유지",
-    "narrativeEn": "[Trend Position]\n· Current price ($71,740) vs SMA5 ($69,873)/SMA20 ($96,898)/SMA50 ($101,569): diagnosing short-term trend above, mid-term trend below\n· Position relative to SMA100 ($132,840)/SMA200 ($112,026): below mid-to-long-term trend, maintaining strong bearishness\n· 52-week position (16.1%) + current price level near historical lows\n[Momentum Indicators]\n· RSI trajectory (30.0→32.1) + continued entry into oversold territory + signal of easing downward pressure\n· MACD histogram trajectory (-3227.9465→-3648.2026) + diagnosed worsening + continued bearish convergence\n· Bollinger Band current price position (near lower band $60,213) + interpreting band width at 75.72%\n[Support & Resistance Structure]\n· Swing support line ($68,045) + support expected based on Pivot S1 ($51,080)\n· Swing resistance line ($80,380) + potential trend reversal upon breakout\n· 5-day/20-day high/low pattern (5-day low $64,920, 20-day low $64,920): confirming sideways pattern\n[Volume & Conclusion]\n· Volume ratio (1.05x) + normal reliability of movement\n· Current phase diagnosis (downtrend) + maintaining conditions for observation",
-    "patternNote": "5일 및 20일 저가가 64,920원으로 동일한 수준을 유지하며 횡보 구간 확인.",
-    "patternNoteEn": "Both 5-day and 20-day lows remain at the same level of $64,920, confirming a sideways range.",
+    "narrative": "[추세 위치]\n· 현재가(71,740원) vs SMA5/20/50(69,873원/96,898원/101,569원): 단기 추세 하회, 중기 추세 하회\n· SMA100/200(132,840원/112,026원) 대비 위치: 중장기 추세 하회\n· 52주 위치(16.1%) + 현 가격대 역사적 저점 구간\n[모멘텀 지표]\n· RSI 궤적 (30.0→32.1) + 과매도 구간 진입 지속 + 하락세 둔화 가능성\n· MACD 히스토그램 궤적 (-3227.9465→-3648.2026) + 악화 진단 + 약세 추세 유지\n· 볼린저밴드 현재가 위치 (하단 60,213원) + 하단 접근 구간\n[지지·저항 구조]\n· 스윙 지지선 (68,045원) + 5일 저가 기반\n· 스윙 저항선 (80,380원) + 5일 고가 기반\n· 5일/20일 고가·저가 패턴 (Lower High) + 약세 추세 확인\n[거래량·결론]\n· 거래량 비율 (1.04배) + 움직임의 신뢰도 정상\n· 현 구간 진단 (하락추세) + 관망 조건 명시",
+    "narrativeEn": "[Trend Position]\n· Current price (71,740 KRW) vs SMA5/20/50 (69,873 KRW / 96,898 KRW / 101,569 KRW): below short-term trend, below mid-term trend\n· Position relative to SMA100/200 (132,840 KRW / 112,026 KRW): below long-term trend\n· 52-week position (16.1%) + current price range in historical low territory\n[Momentum Indicators]\n· RSI trajectory (30.0→32.1) + continued entry into oversold territory + potential slowdown in downtrend\n· MACD histogram trajectory (-3227.9465→-3648.2026) + worsening diagnosis + weak trend maintenance\n· Bollinger Band current price position (lower band 60,213 KRW) + approaching lower band territory\n[Support & Resistance Structure]\n· Swing support line (68,045 KRW) + based on 5-day low\n· Swing resistance line (80,380 KRW) + based on 5-day high\n· 5-day/20-day high/low pattern (Lower High) + weak trend confirmed\n[Volume & Conclusion]\n· Volume ratio (1.04x) + normal reliability of movement\n· Current phase diagnosis (downtrend) + specifying conditions for observation",
+    "patternNote": "5일 고가 < 20일 고가 * 0.995 조건 충족으로 Lower High 패턴 확인, 약세 추세 지속 가능성.",
+    "patternNoteEn": "Meets the condition of 5-day high < 20-day high * 0.995, confirming a Lower High pattern, indicating potential continuation of the weak trend.",
     "keyPoints": [
-      "RSI 32.1로 과매도 구간 진입 지속, 30선 하회는 미확인",
-      "ADX 26.9로 추세는 뚜렷하나 -DI 우위로 하락 압력 지속",
-      "MACD 히스토그램 악화, 약세 수렴 구간 진입"
+      "3거래일 연속 관망 유지, RSI 과매도 진입 지속.",
+      "MACD 히스토그램 악화, 약세 추세 유지.",
+      "스윙 지지선 68,045원, 스윙 저항선 80,380원 구간 내 횡보 가능성."
     ],
     "keyPointsEn": [
-      "RSI remains in oversold territory at 32.1, failure to break below 30 not confirmed",
-      "ADX at 26.9 shows a clear trend, but downward pressure persists with -DI dominance",
-      "MACD histogram worsening, entering a bearish convergence phase"
+      "Wait-and-see approach maintained for 3 consecutive trading days, RSI continues to enter oversold territory.",
+      "MACD histogram worsening, weak trend maintained.",
+      "Potential sideways movement within the swing support of 68,045 KRW and swing resistance of 80,380 KRW."
     ],
-    "riskNote": "ADX 26.9로 추세는 뚜렷하나 -DI가 +DI를 크게 상회하여 하락 추세 강화 가능성.",
-    "riskNoteEn": "ADX at 26.9 indicates a clear trend, but the significant outperformance of -DI over +DI suggests a potential strengthening of the downtrend.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 32.1로 과매도 구간 진입 지속, ADX 추세 강화 미흡으로 관망 기조 유지.",
-    "continuityEn": "The wait-and-see read has now held for 3 consecutive trading days. Today, with RSI remaining in oversold territory at 32.1 and ADX trend strength lacking, the wait-and-see stance is maintained.",
+    "riskNote": "ADX 26.9로 뚜렷한 추세 형성 중이나, -DI(40.4)가 +DI(13.9)보다 높아 하락 압력 우위 지속.",
+    "riskNoteEn": "ADX at 26.9 indicates a clear trend formation, but -DI (40.4) is higher than +DI (13.9), suggesting continued downward pressure dominance.",
+    "continuity": "직전 3거래일 연속 관망 판독 지속. RSI 과매도 진입 지속, ADX 추세 강화 미흡, MACD 히스토그램 악화 등 이전 지표 흐름 유지.",
+    "continuityEn": "The wait-and-see read has now held for 3 straight trading sessions. Previous indicator trends persist, including RSI continuing to enter oversold territory, insufficient ADX trend strengthening, and MACD histogram worsening.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "방향 불일치 · 손익비 0.30 < 1.5"
+    "levelsAdjustedReason": "손절폭 ATR 0.47배 < 1"
   }
 }
