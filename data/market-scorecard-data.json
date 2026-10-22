@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-10-22-14:14",
+      "timestamp_kst": "2026-10-22(목) 14:14 KST",
+      "key_event": {
+        "name": "기술주 실적 발표 대기",
+        "name_en": "Anticipation for Tech Earnings",
+        "time": "10월 28일(수) 장 마감 후 ET",
+        "why": "주요 기술 기업 실적 발표, 시장 방향성 결정, 변동성 확대",
+        "why_en": "Major tech earnings to set market direction, increase volatility"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "기술주 실적 발표 대기 속 AI 투자 심리 회복으로 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained due to AI investment recovery amid tech earnings anticipation.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 관련 투자 심리 회복",
+          "name_en": "AI Investment Sentiment Recovery",
+          "desc": "SpaceX, Super Micro 등 AI 관련 기업 호재로 투자 심리 개선: Nasdaq 1.05% 상승",
+          "desc_en": "Investment sentiment improved by positive news from AI-related companies like SpaceX, Super Micro: Nasdaq up 1.05%.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "약한 고용 지표 발표",
+          "name_en": "Weak Jobs Report Release",
+          "desc": "예상보다 약한 고용 지표 발표로 금리 인상 압력 완화 기대: Dow Jones 상승",
+          "desc_en": "Weaker-than-expected jobs report raises hopes for eased rate hike pressure: Dow Jones rises.",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued US Treasury Yield Rise",
+          "desc": "미10년 국채금리 5.15%(+0.57%), 미30년 국채금리 5.44%(+0.26%) 상승: 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield at 5.15% (+0.57%) and 30-year at 5.44% (+0.26%): pressuring growth stock valuations.",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Heightened Geopolitical Tensions",
+          "desc": "중동 지정학적 리스크 재부각: 유가 상승 압력 및 시장 불확실성 증대",
+          "desc_en": "Resurgence of Middle East geopolitical risks: increasing oil price pressure and market uncertainty.",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 대기",
+          "name_en": "Anticipation for FOMC Rate Decision",
+          "desc": "10월 28일(수) 14:00 ET FOMC 금리 결정을 앞두고 관망세: 시장 방향성 탐색",
+          "desc_en": "Market awaits FOMC rate decision on Oct 28 (Wed) 14:00 ET: searching for direction.",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 기술주 실적 발표 대기 속 AI 투자 심리 회복으로 긍정 우위(총점 긍정 55 대 부정 45) 유지.\n- 시장 방향성: 주요 기술 기업 실적 발표를 앞두고 시장 변동성 확대 및 방향성 탐색 지속.\n- 주요 동인: AI 관련 기업들의 호재와 예상보다 약한 고용 지표가 긍정적 요인으로 작용.\n- 하방 압력: 미 국채금리 상승과 중동 지정학적 긴장 고조가 시장에 부정적 영향.",
+        "positive": "- AI 관련 투자 심리 회복: SpaceX와 Super Micro 등 AI 관련 기업들의 긍정적 소식으로 투자 심리가 개선되며 Nasdaq 지수 1.05% 상승. Amkor Technology의 AI 칩 패키징 생산 능력 확장 소식 또한 AI 산업 전반에 대한 기대를 높이는 요인.\n- 약한 고용 지표 발표: 예상치를 하회하는 고용 지표 발표(실업률 4.20%, 전월 대비 +0.10%p)로 인해 연방준비제도(Fed)의 추가 금리 인상 압력이 완화될 것이라는 기대감 형성. 이는 Dow Jones 지수 상승에 기여.",
+        "negative": "- 미 국채금리 상승 지속: 미 10년 국채금리 5.15%(+0.57%), 미 30년 국채금리 5.44%(+0.26%)로 상승세 지속. 이는 성장주에 대한 할인율을 높여 주식 시장에 하방 압력으로 작용하며, 채권 시장의 위험 신호로 인식.\n- 지정학적 긴장 고조: 중동 지역의 지정학적 리스크가 재부각되며 유가 상승 압력(WTI 유가 상승) 및 시장 불확실성 증대. 이는 인플레이션 재점화 우려와 함께 투자 심리를 위축시키는 요인.",
+        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 연방공개시장위원회(FOMC) 금리 결정을 앞두고 시장은 관망세를 유지. 약한 고용 지표는 금리 인상 압력을 완화할 수 있지만, 여전히 높은 근원 PCE 물가상승률(3.01%)과 CPI 소비자물가 상승률(3.72%)은 Fed의 매파적 스탠스를 유지할 가능성을 남겨두며 시장의 방향성 탐색 지속.",
+        "watch": "- 미 국채금리 추이: 미 10년 국채금리의 추가 상승 여부 및 5%대 유지 여부가 성장주 투자 심리에 미치는 영향 지속 확인.\n- 유가 및 중동 정세: 중동 지정학적 긴장 고조에 따른 유가 변동성 및 국제 유가(WTI)의 추가 상승 여부가 인플레이션 기대와 시장 불확실성에 미치는 영향 확인."
+      },
+      "report_at": "2026-10-22(목) 14:14 KST"
+    },
+    {
       "id": "2026-10-22-11:50",
       "timestamp_kst": "2026-10-22(목) 11:50 KST",
       "key_event": {
@@ -575,60 +643,8 @@
         "watch": "- 주요 기술 기업 실적 발표: META 및 TSLA 실적 발표(10월 21일(수) 장 마감 후 ET)를 앞두고 관련 기술주들의 주가 변동성 확대 가능성. InvestingLive에 따르면, 메타가 메가캡 기술 기업 실적 발표를 시작하며 AI 관련 투자 심리 테스트가 예상.\n- 유가 및 국채금리 추이: WTI 유가 98달러대 유지 여부와 10년물 국채금리 변동성 확인. Bloomingbit에 따르면, 미국-이란 전쟁 종료 협상 관련 상충되는 보도 속 WTI 유가가 98달러 근처에서 등락을 거듭하는 상황.\n- AI 관련 주식 흐름: SpaceX 실적 호조 이후 AI 관련 주식의 매수세 지속 여부 확인. Yahoo Finance에 따르면, SpaceX의 기록적인 분기 실적 발표 이후 나스닥 및 S&P 500 선물 상승세가 관찰."
       },
       "report_at": "2026-10-21(수) 14:11 KST"
-    },
-    {
-      "id": "2026-10-21-10:47",
-      "timestamp_kst": "2026-10-21(수) 10:47 KST",
-      "key_event": {
-        "name": "기술주 실적 발표 대기",
-        "name_en": "Anticipation for Tech Earnings",
-        "time": "10월 21일(수) 장 마감 후 ET",
-        "why": "주요 기술 기업 실적 발표, 시장 방향성 결정",
-        "why_en": "Major tech earnings releases to determine market direction"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "고유가 및 금리 인상 우려 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to ongoing oil price and interest rate hike concerns",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "일부 기술주 실적 기대감",
-          "name_en": "Optimism for Select Tech Earnings",
-          "desc": "일부 기술 기업 실적 발표 기대감, TSLA (+3.16%), NVDA (+1.75%) 등 포스트마켓 상승",
-          "desc_en": "Anticipation for some tech earnings, with TSLA (+3.16%) and NVDA (+1.75%) rising in post-market",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "고유가 지속 우려",
-          "name_en": "Persistent High Oil Price Concerns",
-          "desc": "WTI 원유 98.85달러 (+0.26%)로 높은 수준 유지, 인플레이션 압력 지속",
-          "desc_en": "WTI crude oil remains high at $98.85 (+0.26%), sustaining inflation pressure",
-          "category": "oil_energy"
-        },
-        {
-          "score": 30,
-          "name": "금리 인상 압력 지속",
-          "name_en": "Continued Interest Rate Hike Pressure",
-          "desc": "인플레이션 지속으로 12월 Fed 금리 인상 가능성 제기, 성장주 밸류에이션 부담",
-          "desc_en": "Persistent inflation raises possibility of December Fed rate hike, pressuring growth stock valuations",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 현재 시황 총점: 긍정 40 대 부정 60으로 부정 우위 지속.\n- 주요 원인: 고유가 및 금리 인상 우려가 지속되며 시장 전반에 하방 압력 작용.\n- 핵심 이슈: 주요 기술 기업 실적 발표 대기하며 시장 방향성 결정될 전망.\n- 하방 지지: 일부 기술주 실적에 대한 기대감이 존재하며 하락폭 제한.",
-        "positive": "- 일부 기술주 실적 기대감: 주요 기술 기업들의 실적 발표를 앞두고 일부 종목에서 기대감이 형성, TSLA가 3.16%, NVDA가 1.75% 상승하며 포스트마켓에서 강세 시현.",
-        "negative": "- 고유가 지속 우려: WTI 원유 가격이 98.85달러로 높은 수준을 유지하며 인플레이션 압력 지속 우려 잔존, 지정학적 위험과 공급 우려로 유가 상승 압력 유지.\n- 금리 인상 압력 지속: 8월 PCE 물가상승률 3.42%, 9월 CPI 소비자물가 상승률 3.72%로 인플레이션 지속 확인, 이에 따라 12월 Fed 금리 인상 가능성이 제기되며 성장주 밸류에이션에 부담 가중, 9월 Fed 기준금리 3.75% 유지에도 불구하고 시장은 추가 인상 가능성 경계.",
-        "mixed": "",
-        "watch": "- META 실적 발표: 10월 21일(수) 장 마감 후 ET (약 19시간 뒤) 예정, AI 관련 투자 및 수익성 개선 여부가 시장 전반의 기술주 심리에 영향 미칠 전망.\n- TSLA 실적 발표: 10월 21일(수) 장 마감 후 ET (약 19시간 뒤) 예정, 전기차 수요 둔화 우려 속 실적 발표가 성장주 투자 심리에 중요한 지표가 될 전망.\n- 유가 및 국채금리 추이: WTI 원유 가격 98.85달러 수준 유지 여부 및 10년물 국채금리 변동 추이, 인플레이션과 금리 인상 우려 완화 또는 심화 여부 확인."
-      },
-      "report_at": "2026-10-21(수) 10:47 KST"
     }
   ],
-  "updated_at": "2026-10-22T02:51:16Z",
+  "updated_at": "2026-10-22T05:15:42Z",
   "max_entries": 10
 }
