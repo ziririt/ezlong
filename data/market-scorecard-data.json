@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-10-23-17:11",
+      "timestamp_kst": "2026-10-23(금) 17:11 KST",
+      "key_event": {
+        "name": "AI 비용 우려 및 기술주 하락 지속",
+        "name_en": "Persistent AI Cost Concerns & Tech Selloff",
+        "time": "프리마켓 진행 중",
+        "why": "나스닥 및 반도체 섹터 하락, 투자 심리 위축",
+        "why_en": "Nasdaq & semiconductor sector decline, investor sentiment weakened"
+      },
+      "positive_total": 25,
+      "negative_total": 75,
+      "summary": "AI 비용 우려 및 지정학적 긴장 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to AI cost concerns and ongoing geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.95%(-3.75%), 미30년 국채금리 5.29%(-2.79%) 하락",
+          "desc_en": "US 10-year Treasury yield at 4.95% (-3.75%), 30-year at 5.29% (-2.79%)",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "AI 비용 우려 지속",
+          "name_en": "Ongoing AI Cost Concerns",
+          "desc": "AI 투자 부담 및 밸류에이션 재평가 압력 지속, 기술주 하락 주도",
+          "desc_en": "AI investment burden and valuation reassessment pressure persist, leading tech decline",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 35,
+          "name": "중동 지정학적 긴장 고조",
+          "name_en": "Escalating Middle East Tensions",
+          "desc": "WSJ 보도: 중동 긴장 고조로 유가 상승, 아시아 증시 하락",
+          "desc_en": "WSJ reports rising Middle East tensions push oil prices up, Asian stocks down",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "유가 상승 압력",
+          "name_en": "Upward Oil Price Pressure",
+          "desc": "WTI 원유 100.56 USD (+0.57%) 상승, 사우디 공격으로 공급 위험 증가",
+          "desc_en": "WTI crude oil at $100.56 (+0.57%), Saudi attacks fan supply risks",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 10월22일(목, 뉴욕) 미국 증시는 AI 비용 우려와 중동 지정학적 긴장 고조로 인한 투자 심리 위축으로 부정적 우위 지속\n- 기술주 중심의 나스닥 및 반도체 섹터가 크게 하락하며 시장 전반의 약세 주도\n- 미 국채금리 하락이 긍정적 재료로 작용했으나, AI 관련 우려와 유가 상승 압력이 이를 상쇄\n- 총점은 긍정 25점 대 부정 75점으로, 부정적 요인이 압도적인 상황",
+        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.95%(-3.75%)로 3.75% 하락하고, 미 30년 국채금리도 5.29%(-2.79%)로 2.79% 하락하며 채권 시장의 안정화 신호 포착. 이는 기술주 하락 속에서 채권 매수세 유입 및 금리 인상 압력 완화 기대감 반영.",
+        "negative": "- AI 비용 우려 지속: AI 기술 투자에 대한 막대한 비용 부담과 기업들의 밸류에이션 재평가 압력이 지속되며 기술주 하락을 주도. 로이터 통신과 야후 파이낸스 보도에 따르면 S&P 500과 나스닥이 AI 관련 의구심으로 급락했으며, 무무(Moomoo)는 SOX 지수가 6.7% 급락했음에도 실적 호조가 AI 주식을 구하지 못하고 있다고 분석.\n- 중동 지정학적 긴장 고조: 월스트리트저널(WSJ) 보도에 따르면 중동 긴장 고조로 유가가 상승하고 아시아 증시가 하락하는 등 글로벌 투자 심리 위축. 이는 지정학적 불확실성 증대로 안전자산 선호 심리 강화 및 위험 회피 경향 확산.",
+        "mixed": "- 유가 상승 압력: WTI 원유가 100.56 USD로 0.57% 상승하며 유가 상승 압력 지속. 블룸버그 통신은 사우디 공격으로 인한 공급 위험 증가를 언급하며 유가 상승 요인으로 작용. 이는 에너지 기업에는 긍정적일 수 있으나, 전반적인 인플레이션 압력을 가중시켜 증시에는 부정적 영향 우려.",
+        "watch": "- 미 국채금리 및 유가 변동성: 미 10년 국채금리의 추가 하락 여부와 WTI 원유 가격의 지속적인 상승 압력 여부가 시장 전반의 방향성에 미칠 영향 확인."
+      },
+      "report_at": "2026-10-23(금) 17:11 KST"
+    },
+    {
       "id": "2026-10-23-14:13",
       "timestamp_kst": "2026-10-23(금) 14:13 KST",
       "key_event": {
@@ -555,60 +615,8 @@
         "watch": "- 미 국채금리 추이: 미 10년 국채금리의 추가 상승 여부 및 5%대 유지 여부가 성장주 투자 심리에 미치는 영향 지속 확인.\n- 유가 및 중동 정세: 중동 지정학적 긴장 고조에 따른 유가 변동성 및 국제 유가(WTI)의 추가 상승 여부가 인플레이션 기대와 시장 불확실성에 미치는 영향 확인."
       },
       "report_at": "2026-10-22(목) 14:14 KST"
-    },
-    {
-      "id": "2026-10-22-11:50",
-      "timestamp_kst": "2026-10-22(목) 11:50 KST",
-      "key_event": {
-        "name": "기술주 실적 발표 대기",
-        "name_en": "Anticipation for Tech Earnings",
-        "time": "10월 28일(수) ET",
-        "why": "주요 기술 기업 실적 발표, 시장 방향성 결정, 변동성 확대",
-        "why_en": "Major tech earnings to determine market direction, increased volatility"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "기술주 실적 발표 대기 속 AI 투자 심리 회복으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained amid AI investment recovery, awaiting tech earnings",
-      "positive_factors": [
-        {
-          "score": 70,
-          "name": "약한 고용 보고서에 따른 금리 인상 완화 기대",
-          "name_en": "Weak Jobs Report Cools Rate Hike Bets",
-          "desc": "약한 고용 보고서 발표로 Fed의 금리 인상 압력 완화 기대감 형성",
-          "desc_en": "Weak jobs report fuels expectations of eased Fed rate hike pressure",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "미 국채 금리 상승 압력 지속",
-          "name_en": "Continued US Treasury Yields Upward Pressure",
-          "desc": "미10년 국채금리 5.15%(+0.57%), 미30년 국채금리 5.44%(+0.26%) 상승, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield at 5.15%(+0.57%), 30-year at 5.44%(+0.26%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 대기",
-          "name_en": "Awaiting FOMC Rate Decision",
-          "desc": "10월 28일(수) 14:00 ET FOMC 금리 결정 발표를 앞두고 시장 관망세",
-          "desc_en": "Market in wait-and-see mode ahead of FOMC rate decision on Oct 28 (Wed) 14:00 ET",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 판세: 기술주 실적 발표를 앞두고 AI 투자 심리 회복에 힘입어 긍정적인 시장 분위기 유지.\n- 긍정 요인: 예상보다 약한 고용 보고서 발표로 연방준비제도(Fed)의 금리 인상 압력 완화 기대감 형성.\n- 부정 요인: 미 국채 금리 상승세 지속으로 성장주 밸류에이션에 대한 할인율 압박 가중.\n- 주요 대기 이벤트: 다음 주 예정된 주요 기술 기업들의 실적 발표와 FOMC 금리 결정에 대한 관망세 확산.",
-        "positive": "- 약한 고용 보고서에 따른 금리 인상 완화 기대: 예상치를 하회하는 고용 보고서 발표로 Fed의 추가 금리 인상 가능성 감소 우려 형성, S&P 500, Nasdaq, Dow 지수 상승 견인.\n- 기술주 강세: 유가 하락과 AI 투자 심리 개선에 힘입어 Nasdaq 100 지수 상승, 특히 SpaceX 실적 발표 후 약 8% 상승하며 기술주 반등에 기여 (조선일보, TradingKey 보도).",
-        "negative": "- 미 국채 금리 상승 압력 지속: 미 10년 국채금리 5.15%(+0.57%), 미 30년 국채금리 5.44%(+0.26%) 상승하며 성장주 가치 평가에 부정적인 영향, 월스트리트의 위험 경고 촉발 (Stocktwits 보도).\n- 중동 지정학적 리스크 및 유가 변동성: 중동 지역의 지정학적 긴장 고조로 유가가 6주 최고치 근접, 인플레이션 재점화 우려가 Fed의 금리 인하 기대감을 약화시키는 요인으로 작용 (Reuters, EnergyNow.com 보도).",
-        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 FOMC 금리 결정 발표를 앞두고 시장 전반의 관망세가 짙어지는 상황, 금리 동결 또는 인상 여부에 따라 시장 방향성 결정 예상.",
-        "watch": "- 미 국채 금리 추이: 미 10년물 및 30년물 국채 금리의 추가 상승 여부 및 이에 따른 성장주 밸류에이션 압박 변화 확인."
-      },
-      "report_at": "2026-10-22(목) 11:50 KST"
     }
   ],
-  "updated_at": "2026-10-23T05:14:22Z",
+  "updated_at": "2026-10-23T08:12:27Z",
   "max_entries": 10
 }
