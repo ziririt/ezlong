@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-23T20:37:43.047308+00:00",
-  "generatedAtKST": "2026-10-24 05:37 KST",
+  "generatedAt": "2026-10-23T20:52:26.683133+00:00",
+  "generatedAtKST": "2026-10-24 05:52 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -201,12 +201,12 @@
       "rsi": 52.6,
       "macd": {
         "macd": 1.317,
-        "signal": -0.2795,
+        "signal": -0.2796,
         "histogram": 1.5966
       },
       "high52": 540.9948,
       "low52": 448.0915,
-      "dev200": 3.7689,
+      "dev200": 3.7688,
       "dev5": -0.511,
       "dev20": 0.9496,
       "gear": 3,
@@ -688,7 +688,7 @@
     "prevClose": 20,
     "prev1Week": 22,
     "prev1Month": 33,
-    "timestamp": "2026-10-23T20:20:00+00:00"
+    "timestamp": "2026-10-23T20:38:21+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 103.16,
-      "change": 3.69,
-      "changePct": 3.7097,
+      "price": 103.38,
+      "change": 3.91,
+      "changePct": 3.9308,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 101.816,
-      "change": 0.206,
-      "changePct": 0.2027,
+      "price": 101.835,
+      "change": 0.225,
+      "changePct": 0.2214,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4010.6001,
-      "change": -49.7998,
-      "changePct": -1.2265,
+      "price": 4007.2,
+      "change": -53.2,
+      "changePct": -1.3102,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-10-23T20:37:43.047308+00:00",
+      "atKST": "2026-10-24 05:37 KST",
+      "qqq": {
+        "rsi": 36.59,
+        "macdHist": -5.1683,
+        "dev5": -1.3462,
+        "dev200": 4.186,
+        "gear": 3,
+        "buyScore": 65,
+        "sellScore": 11,
+        "price": 704.4
+      },
+      "soxxMacdHist": -9.3379,
+      "fearAndGreed": 21,
+      "yield10y": 4.988
+    },
     {
       "at": "2026-10-23T20:31:16.966962+00:00",
       "atKST": "2026-10-24 05:31 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -8.5425,
       "fearAndGreed": 31,
       "yield10y": 5.146
-    },
-    {
-      "at": "2026-10-21T20:07:42.485291+00:00",
-      "atKST": "2026-10-22 05:07 KST",
-      "qqq": {
-        "rsi": 46.07,
-        "macdHist": -4.2939,
-        "dev5": 0.7505,
-        "dev200": 7.3941,
-        "gear": 3,
-        "buyScore": 63,
-        "sellScore": 27,
-        "price": 725.2
-      },
-      "soxxMacdHist": -8.5425,
-      "fearAndGreed": 32,
-      "yield10y": 5.146
     }
   ],
-  "swingContinuity": null,
-  "swingContinuityEn": null
+  "swingContinuity": "10\uc6d4 22\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 64, 10\uc6d4 23\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 68 \ub300\ube44 10\uc6d423\uc77c(\uae08, \ub274\uc695) \ub9e4\uc218\uc810\uc218 65\ub294 \uc18c\ud3ed \ud558\ub77d\ud558\uba70 \ud6a1\ubcf4 \uad6c\uac04\uc744 \uc720\uc9c0\ud588\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 +1.21% \u2192 -0.10% \u2192 +1.05% \u2192 -2.86% \u2192 -0.01%\ub85c \ub4f1\ub77d\ub960 \ubcc0\ub3d9\uc131\uc774 \ud070 \ud750\ub984\uc744 \ubcf4\uc600\uc73c\uba70, \ud2b9\ud788 SOXX, TSLA, NVDA \ub4f1 \ubc18\ub3c4\uccb4 \uad00\ub828 \uc885\ubaa9\ub4e4\uc774 \uc9c0\ub09c \uba70\uce60\uac04 \uc0c1\ub300\uc801\uc73c\ub85c \ub354 \ud070 \ud558\ub77d\ud3ed\uc744 \uae30\ub85d\ud55c \uc810\uc774 \ud2b9\uc9d5\uc785\ub2c8\ub2e4.",
+  "swingContinuityEn": "Compared to the buy score of 64 on Oct 22 (NY) and 68 on Oct 23 (NY), today's buy score of 65 slightly decreased, maintaining a sideways trend. QQQ's daily returns over the last 5 trading days showed significant volatility: +1.21% \u2192 -0.10% \u2192 +1.05% \u2192 -2.86% \u2192 -0.01%. Notably, semiconductor-related stocks like SOXX, TSLA, and NVDA experienced larger declines in recent days."
 }
