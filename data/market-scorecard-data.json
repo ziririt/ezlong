@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-10-23-14:13",
+      "timestamp_kst": "2026-10-23(금) 14:13 KST",
+      "key_event": {
+        "name": "AI 비용 우려 및 기술주 하락 지속",
+        "name_en": "Persistent AI Cost Concerns & Tech Selloff",
+        "time": "직전 정규장 마감 기준",
+        "why": "나스닥 2% 이상 하락, 반도체 섹터 급락, 투자 심리 위축",
+        "why_en": "Nasdaq down over 2%, semiconductor sector plunges, investor sentiment weakens"
+      },
+      "positive_total": 10,
+      "negative_total": 90,
+      "summary": "AI 비용 우려 및 지정학적 긴장 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment maintained due to ongoing AI cost concerns and geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 10,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.95%(-3.75%) 하락: 성장주 투자 매력 소폭 개선",
+          "desc_en": "US 10-year Treasury yield at 4.95% (-3.75%) decline: Slightly improved appeal for growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "AI 밸류에이션 우려 심화",
+          "name_en": "Deepening AI Valuation Concerns",
+          "desc": "AI 관련 기술주 전반 하락: NVDA -3.14%, SOXX -5.94% 등 반도체 섹터 급락",
+          "desc_en": "Broad decline in AI-related tech stocks: NVDA -3.14%, SOXX -5.94%, leading to a sharp drop in the semiconductor sector",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 40,
+          "name": "중동 지정학적 긴장 고조",
+          "name_en": "Escalating Middle East Geopolitical Tensions",
+          "desc": "이란, 호르무즈 해협 유조선 공격 주장: 유가 상승 압력, WTI 원유 100.26 USD (+0.48%)",
+          "desc_en": "Iran claims attacks on oil tankers in Strait of Hormuz: Upward pressure on oil prices, WTI crude at $100.26 (+0.48%)",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 대기",
+          "name_en": "Awaiting FOMC Interest Rate Decision",
+          "desc": "FOMC 금리 결정(10월 28일(수) 14:00 ET) 앞두고 신중한 접근: 통화정책 불확실성 지속",
+          "desc_en": "Cautious approach ahead of FOMC rate decision (Oct 28, 2 PM ET): Continued monetary policy uncertainty",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 10월22일(목, 뉴욕)장 총평: AI 비용 우려와 중동 지정학적 긴장 지속으로 부정적 시장 분위기 우위 유지.\n- 주요 하락 요인: AI 관련 기술주 전반의 밸류에이션 우려 심화 및 반도체 섹터 급락, 나스닥 2% 이상 하락 마감.\n- 지정학적 리스크: 이란의 호르무즈 해협 유조선 공격 주장으로 유가 상승 압력 가중, WTI 원유 100달러 돌파.\n- 시장 관망세: 다가오는 FOMC 금리 결정 및 주요 기술 기업 실적 발표를 앞두고 투자자들의 신중한 접근 지속.",
+        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.95%(-3.75%)로 3.75% 하락하며 성장주 투자 매력 소폭 개선, 채권 시장의 연준 금리 인상 베팅 완화 영향.",
+        "negative": "- AI 밸류에이션 우려 심화: AI 기술의 높은 비용 부담에 대한 의구심이 커지며 AI 관련 기술주 전반 하락, 엔비디아(NVDA) -3.14%, 반도체 지수(SOXX) -5.94% 등 반도체 섹터 급락으로 투자 심리 위축.\n- 중동 지정학적 긴장 고조: 이란이 호르무즈 해협에서 유조선을 공격했다고 주장하며 중동 지역의 긴장감이 고조, 유가 상승 압력으로 WTI 원유 가격이 0.48% 상승한 100.26 USD 기록.",
+        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장은 관망세 유지, 통화정책의 불확실성이 지속되며 투자자들의 신중한 접근 유도.",
+        "watch": "- 유가 및 국채금리 변동성: 중동 지정학적 리스크 지속 여부 및 미 10년 국채금리 추이를 통해 시장 전반의 인플레이션 압력 및 성장주 투자 심리 변화 확인."
+      },
+      "report_at": "2026-10-23(금) 14:13 KST"
+    },
+    {
       "id": "2026-10-23-11:50",
       "timestamp_kst": "2026-10-23(금) 11:50 KST",
       "key_event": {
@@ -547,68 +607,8 @@
         "watch": "- 미 국채 금리 추이: 미 10년물 및 30년물 국채 금리의 추가 상승 여부 및 이에 따른 성장주 밸류에이션 압박 변화 확인."
       },
       "report_at": "2026-10-22(목) 11:50 KST"
-    },
-    {
-      "id": "2026-10-22-08:20",
-      "timestamp_kst": "2026-10-22(목) 08:20 KST",
-      "key_event": {
-        "name": "기술주 실적 발표 대기",
-        "name_en": "Anticipation for Tech Earnings",
-        "time": "10월 28일(수) 장 마감 후 ET",
-        "why": "주요 기술 기업 실적 발표, 시장 방향성 결정, 변동성 확대",
-        "why_en": "Major tech earnings, market direction, increased volatility"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "기술주 실적 발표 대기 속 AI 투자 심리 회복으로 부정 우위 유지",
-      "summary_en": "Positive sentiment maintained amid AI investment recovery, awaiting tech earnings",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "AI 관련 투자 심리 회복",
-          "name_en": "AI Investment Sentiment Recovery",
-          "desc": "SpaceX 및 Super Micro 등 AI 관련 기업 호조 소식, Nasdaq 지수 상승 견인",
-          "desc_en": "Positive news from AI-related companies like SpaceX and Super Micro, driving Nasdaq gains",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Upward Pressure",
-          "desc": "미10년 국채금리 5.15%(+0.57%), 미30년 국채금리 5.44%(+0.26%) 상승",
-          "desc_en": "US 10-year Treasury yield at 5.15% (+0.57%), 30-year at 5.44% (+0.26%)",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 25,
-          "name": "고유가 지속 우려",
-          "name_en": "Persistent High Oil Price Concerns",
-          "desc": "WTI 원유 97.88달러 수준 유지, 인플레이션 압력 지속 가능성",
-          "desc_en": "WTI crude oil remains at $97.88, indicating potential for sustained inflation pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 대기",
-          "name_en": "Anticipation for FOMC Rate Decision",
-          "desc": "10월 28일(수) FOMC 금리 결정 앞두고 관망세, 시장 방향성 불확실성",
-          "desc_en": "Market awaiting FOMC rate decision on Oct 28 (Wed), leading to uncertainty in market direction",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 10월21일(수, 뉴욕)장 총점: 기술주 실적 발표를 앞두고 AI 투자 심리 회복세가 나타났으나, 미 국채금리 상승 압력과 고유가 지속 우려가 더 큰 영향력을 행사하며 부정 우위로 마감.\n- 시장 방향성: 주요 기술 기업들의 실적 발표를 대기하며 시장의 변동성이 확대되는 양상.\n- 하방 압력: 미 10년물 국채금리가 5.15%(+0.57%)로 상승하고 WTI 원유 가격이 97.88달러 수준을 유지하며 인플레이션 압력과 고금리 환경에 대한 우려가 지속.",
-        "positive": "- AI 관련 투자 심리 회복: SpaceX의 실적 호조와 Super Micro의 AI 관련 사업 기대감이 Nasdaq 지수 상승을 견인하며 AI 테마에 대한 투자 심리 회복 조짐. TradingKey에 따르면 SpaceX는 실적 발표 후 약 8% 상승하며 기술주 랠리를 주도.",
-        "negative": "- 미 국채금리 상승 압력: 미 10년물 국채금리가 5.15%(+0.57%)로, 미 30년물 국채금리가 5.44%(+0.26%)로 각각 상승하며 증시에 부담. Fidelity Investments에 따르면 높은 채권 수익률이 투자자들의 자금 이탈을 유도하고 있으며, Seeking Alpha의 한 경제학자는 지속적인 인플레이션에 대한 보험으로 금리 인상이 필요하다고 언급.\n- 고유가 지속 우려: WTI 원유 가격이 97.88달러 수준을 유지하며 인플레이션 압력 지속 가능성. Reuters는 높은 유가가 식료품부터 주택 대출에 이르기까지 일상생활에 영향을 미친다고 보도하며 인플레이션 우려를 강화.",
-        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장의 관망세가 짙어지며 방향성 불확실성 증대. CME Group은 20년물 국채 입찰을 앞두고 시장의 금리 전망에 대한 관심이 높아지고 있다고 보도.",
-        "watch": "- 미 국채금리 추이: 현재 높은 수준을 유지하고 있는 미 10년물 및 30년물 국채금리의 추가 상승 또는 하락 여부가 시장의 투자 심리에 즉각적인 영향을 미칠 것으로 예상.\n- WTI 원유 가격 변동: WTI 원유 가격이 97.88달러 수준을 유지하는 가운데, 지정학적 리스크 및 공급망 이슈에 따른 추가적인 유가 변동이 인플레이션 우려를 심화시키거나 완화시킬지 주목."
-      },
-      "report_at": "2026-10-22(목) 08:20 KST"
     }
   ],
-  "updated_at": "2026-10-23T02:51:17Z",
+  "updated_at": "2026-10-23T05:14:22Z",
   "max_entries": 10
 }
