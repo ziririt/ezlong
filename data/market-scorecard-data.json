@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-10-25-08:20",
+      "timestamp_kst": "2026-10-25(일) 08:20 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 대기",
+        "name_en": "Anticipation for FOMC Rate Decision",
+        "time": "10월 28일(수) 14:00 ET",
+        "why": "향후 통화정책 방향, 시장 변동성 확대 (10월 28일(수) 14:00 ET)",
+        "why_en": "Future monetary policy direction, increased market volatility (Oct 28 (Wed) 14:00 ET)"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "지정학적 긴장 및 고유가 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment maintained due to ongoing geopolitical tensions and high oil prices",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 기술주 실적 기대감",
+          "name_en": "Optimism for some tech earnings",
+          "desc": "MSFT (+0.56%) 등 일부 기술주 직전 장 상승 마감, 실적 발표 기대감 반영",
+          "desc_en": "Some tech stocks like MSFT (+0.56%) closed higher in the last session, reflecting earnings anticipation",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Ongoing Middle East geopolitical tensions",
+          "desc": "미-이란 전쟁 우려 재점화, 유가 급등 및 시장 불확실성 확대",
+          "desc_en": "Renewed US-Iran war fears, surging oil prices and increased market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 35,
+          "name": "고유가 지속 및 인플레이션 압력",
+          "name_en": "Sustained high oil prices and inflation pressure",
+          "desc": "WTI 원유 103.27달러 (+3.28%) 기록, 인플레이션 압력 가중 및 금리 인상 우려",
+          "desc_en": "WTI crude oil at $103.27 (+3.28%), increasing inflation pressure and rate hike concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 대기",
+          "name_en": "Anticipation for FOMC Rate Decision",
+          "desc": "10월 28일(수) 14:00 ET 예정, 향후 통화정책 방향에 대한 관망세 확산",
+          "desc_en": "Scheduled for October 28 (Wed) 14:00 ET, spreading wait-and-see attitude on future monetary policy direction",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총점: 지정학적 긴장과 고유가 지속으로 부정적 심리가 우세한 상황.\n- 주요 원인: 중동 지역의 지정학적 불안정성 심화와 국제 유가 급등이 시장 불확실성을 증폭.\n- 하방 압력: 인플레이션 압력 가중 및 연방준비제도(Fed)의 추가 금리 인상 가능성 잔존.\n- 관망세 확산: 다가오는 연방공개시장위원회(FOMC) 금리 결정에 대한 투자자들의 관망세 확산.",
+        "positive": "- 일부 기술주 실적 기대감: 마이크로소프트(MSFT)가 직전 장에서 0.56% 상승 마감하는 등 일부 기술주에 대한 실적 발표 기대감이 반영, 인공지능(AI) 관련 성장 기대감 일부 잔존.",
+        "negative": "- 중동 지정학적 긴장 지속: 미국과 이란 간의 전쟁 우려가 재점화되며 시장 불확실성 확대, 도널드 트럼프 전 대통령의 이란에 대한 'Epic Fury' 작전 가능성 언급으로 긴장 고조.\n- 고유가 지속 및 인플레이션 압력: 서부 텍사스산 원유(WTI) 가격이 103.27달러로 3.28% 급등, 유가 상승이 인플레이션 압력을 가중시키고 연준의 추가 금리 인상 우려를 높이는 상황.\n- 인플레이션 지표 상승: 2026년 9월 소비자물가지수(CPI)가 전년 동월 대비 3.72% 상승하며 전기 대비 0.36%p 증가, 연준의 기준 지표인 8월 근원 개인소비지출(PCE) 물가상승률도 3.01% 기록하며 인플레이션 압력 지속.\n- 기술주 약세: S&P 500 지수가 주간 하락세를 보이며 기술주가 하락을 주도, 나스닥 지수는 4개월 만에 최악의 하루를 기록하며 인공지능(AI) 관련 우려가 시장에 반영.",
+        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 연방공개시장위원회(FOMC) 금리 결정에 대한 관망세 확산, 연준의 향후 통화정책 방향에 따라 시장 변동성 확대 가능성 상존.",
+        "watch": "- 유가 및 국채금리 추이: 중동 지정학적 긴장 고조에 따른 국제 유가(WTI)의 추가 상승 여부 및 인플레이션 압력에 반응하는 미국 10년물 국채금리 추이 확인."
+      },
+      "report_at": "2026-10-25(일) 08:20 KST"
+    },
+    {
       "id": "2026-10-25-07:00",
       "timestamp_kst": "2026-10-25(일) 07:00 KST",
       "key_event": {
@@ -563,68 +623,8 @@
         "watch": "- 유가 및 국채금리 변동성: 중동 지정학적 리스크 지속 여부 및 미 10년 국채금리 추이를 통해 시장 전반의 인플레이션 압력 및 성장주 투자 심리 변화 확인."
       },
       "report_at": "2026-10-23(금) 14:13 KST"
-    },
-    {
-      "id": "2026-10-23-11:50",
-      "timestamp_kst": "2026-10-23(금) 11:50 KST",
-      "key_event": {
-        "name": "AI 비용 우려 및 기술주 하락",
-        "name_en": "AI Cost Concerns & Tech Selloff",
-        "time": "2026-10-22 정규장 마감 후",
-        "why": "나스닥 2% 이상 하락, 반도체 섹터 급락, 투자 심리 위축",
-        "why_en": "Nasdaq down over 2%, semiconductor sector plunges, investor sentiment weakens"
-      },
-      "positive_total": 10,
-      "negative_total": 90,
-      "summary": "AI 비용 우려 및 지정학적 긴장 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to AI cost concerns and ongoing geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.95%(-3.75%) 하락: 장기 금리 하락으로 성장주 부담 완화",
-          "desc_en": "US 10-year Treasury yield fell to 4.95% (-3.75%), easing pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 65,
-          "name": "AI 비용 우려 및 기술주 매도세",
-          "name_en": "AI Cost Concerns & Tech Selloff",
-          "desc": "S&P 500, Nasdaq 급락: AI 관련 의구심 재점화로 기술주 전반 매도세 심화",
-          "desc_en": "S&P 500, Nasdaq sharply lower: Renewed AI doubts ignite broad tech selloff",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "중동 지정학적 긴장 고조",
-          "name_en": "Escalating Middle East Tensions",
-          "desc": "WTI 원유 100.25 USD(+1.76%) 상승: 미국-이란 적대감 심화로 유가 상승 압력 지속",
-          "desc_en": "WTI crude oil rose to $100.25 (+1.76%): US-Iran hostilities intensify, sustaining oil price pressure",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 대기",
-          "name_en": "Awaiting FOMC Rate Decision",
-          "desc": "10월 28일(수) 14:00 ET FOMC 금리 결정 앞두고 관망세: 시장 방향성 탐색",
-          "desc_en": "Market awaits FOMC rate decision on Oct 28 (Wed) 14:00 ET, leading to cautious sentiment and search for direction",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: AI 비용 우려 및 지정학적 긴장 지속으로 부정 우위 유지, 총점 긍정 10대 부정 90으로 마감.\n- 주요 하락 요인: AI 기술주 전반에 대한 매도세 심화와 중동 지정학적 긴장 고조로 인한 유가 상승 압력 지속.\n- 기술주 하락: 나스닥 2% 이상 하락, 반도체 섹터 급락하며 투자 심리 위축.\n- 긍정적 요인: 미 국채금리 하락으로 장기 성장주 부담 완화.",
-        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.95%(-3.75%)로 3.75% 하락하며 장기 금리 하락으로 성장주 투자 부담 완화. 채권 시장에서는 연방준비제도(Fed)의 금리 인상 베팅 철회 움직임 관측.",
-        "negative": "- AI 비용 우려 및 기술주 매도세: S&P 500 및 나스닥 지수가 급락하며 AI 관련 의구심이 재점화, 기술주 전반에 걸친 매도세 심화. 로이터 통신 및 StoneX 분석에 따르면, AI 관련 비용 우려가 기술주 하락을 주도하며 S&P 500 지수의 주간 하락을 이끔.\n- 중동 지정학적 긴장 고조: 서부 텍사스산 원유(WTI) 가격이 100.25달러로 1.76% 상승하며 미국-이란 적대감 심화로 인한 유가 상승 압력 지속. EnergyNow.com에 따르면, 미국-이란 적대감 심화와 홍해 폐쇄 위협이 유가 상승을 부추김.",
-        "mixed": "- FOMC 금리 결정 대기: 10월 28일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장은 관망세 유지. 투자자들은 연방준비제도(Fed)의 향후 통화 정책 방향을 탐색하며 신중한 포지셔닝.",
-        "watch": "- 미국 국채금리 및 유가 추이: 미 10년물 국채금리와 WTI 원유 가격의 추가적인 변동성 확인 필요. 특히 중동 지정학적 긴장 고조에 따른 유가 상승 압력 지속 여부 주시."
-      },
-      "report_at": "2026-10-23(금) 11:50 KST"
     }
   ],
-  "updated_at": "2026-10-24T22:01:31Z",
+  "updated_at": "2026-10-24T23:21:04Z",
   "max_entries": 10
 }
