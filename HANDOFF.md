@@ -277,6 +277,12 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   나머지 404 는 8월 이전 잡음(본문 문장이 주소로 잘못 읽힌 것 등). '리디렉션 오류' `/app` 은 지금 301 -> `/app/` 200 으로 정상.
 - 메일이 두 통 온 것은 서치콘솔 속성이 둘(도메인 속성 `ezlong.com` + URL 접두어 `https://ezlong.com/`)이라서다. 같은 사이트다.
 
+**insightimes 와의 통합 협의(10/27, 오너가 insightimes 세션에 "ezlong 도구를 웹진에 흡수통합" 지시)**
+- ezlong 쪽 제안서 `docs/INTEGRATION-insightimes.md`: 도구 목록 · 데이터 계약(JSON 8종) · 3층 융합안(데이터 → 삽입 → 동선) ·
+  도메인 흡수를 지금 권하지 않는 이유(검색 노출 62%가 번역판 계산기, 애드센스 재검토 위험, 봇·앱 결합).
+- `firebase.json`: `/data/**` 에 `Access-Control-Allow-Origin: *` 추가(공개 데이터, raw.githubusercontent 는 원래 `*`).
+- 통로는 `_ops/board/ezlong.md` ↔ `board/insightimes.md`. 다음 ezlong 몫: `embed/dca` 시안(iframe + postMessage 높이).
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
