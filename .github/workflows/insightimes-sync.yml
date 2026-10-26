@@ -60,16 +60,22 @@ jobs:
           fi
           git commit -m "chore: insight times sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
 
-          # 다른 워크플로나 사람이 그 사이 push 했을 수 있다. 한 번은 다시 얹어 본다.
+          # 다른 워크플로나 사람이 그 사이 push 했을 수 있다. 얹어서 다시 보낸다.
           # 이 파일은 기계가 통째로 다시 만드는 것이라 우리 쪽을 살려도 잃을 것이 없다.
-          git push origin main || {
+          # ★ 다섯 번까지, 사이사이 5~20초 쉬며 ★ (2026-10-27) — 01:18 KST 에 ATMR · Naver 등
+          # 여러 워크플로가 같은 분에 main 으로 밀어 넣어, 한 번 다시 얹은 뒤에도 또 밀려 실패했다
+          for i in 1 2 3 4 5; do
+            if git push origin main; then exit 0; fi
+            echo "push 밀림 - ${i}번째 다시 얹기"
+            sleep $(( 5 + RANDOM % 16 ))
             git fetch origin main
             git merge -X ours origin/main --no-edit || {
               echo "::error::원격과 합류하지 못했다 - 다음 회차에 다시 만든다"
               exit 1
             }
-            git push origin main
-          }
+          done
+          echo "::error::다섯 번 다시 얹어도 push 가 밀렸다 - 다음 회차에 다시 만든다"
+          exit 1
 
       # 화면은 저장소 원본(raw.githubusercontent.com)을 직접 읽는다.
       # 그래서 이 파일이 커밋되면 배포를 기다리지 않고 바로 반영된다 -
