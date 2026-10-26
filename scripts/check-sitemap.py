@@ -7,7 +7,7 @@
   0자였다. 그 상태로 재검토를 신청해 애드센스가 두 번째로 거절했다.
   채우는 일은 했는데 **다시 얇아지는 것을 보는 눈**이 없었다. 이 검사가 그 눈이다.
 
-무엇을 보나 — 확실한 결함 넷만 본다. 애매한 판정은 사람에게 넘긴다.
+무엇을 보나 - 확실한 결함 여섯만 본다. 애매한 판정은 사람에게 넘긴다.
   1) 사이트맵에 있는데 noindex 다        — 서로 반대되는 말을 하고 있다
   2) 사이트맵에 있는데 파일이 없다        — 404 를 색인해 달라고 내놓은 셈
   3) 사이트맵에 있는데 정적 본문이 너무 짧다 — 렌더하면 두꺼운 페이지는 예외 목록에 둔다
@@ -24,6 +24,16 @@
      되돌렸다. 오너 지시 원문 — "robots.txt 로 막지는 말고, ezlong.com 의
      사이트맵에서만 빼라." **사이트맵에서 빼는 것과 색인을 막는 것은 다른 일이다.**
      여기에 걸린다고 색인을 막지 않는다. 이 목록은 사이트맵만 본다.
+  5) 사이트맵(본 주소·hreflang 대체 주소)에 있는데 firebase.json 이 다른 곳으로 보낸다
+  6) 사이트맵에 있는데 그 페이지의 canonical 이 다른 주소를 가리킨다
+
+     5·6 은 2026-10-27 추가. 서치콘솔이 '사이트맵에 포함된 페이지의 색인이 생성되지
+     않습니다' 메일을 보냈다. 원인은 10-19 에 숨긴 페이지(301)의 번역판 셋이었다.
+     그때는 사이트맵에서도 함께 뺐지만, 둘 중 하나만 했으면 이 경고가 계속 왔을 것이다.
+     **리디렉션을 걸 때는 사이트맵에서도 뺀다. 사이트맵에는 200 으로 끝나는 주소만 싣는다.**
+     canonical 이 다른 곳을 가리키면 구글은 '적절한 표준 태그가 포함된 대체 페이지'로
+     분류하고 색인하지 않는다. 사이트맵이 '이 주소를 색인하라'고 하면서 페이지는
+     '저 주소가 진짜'라고 하는 셈이다.
 
 정적 글자수만 센다. 렌더까지 하려면 브라우저가 필요해 배포 앞단에 두기 무겁다.
 대신 '정적이 짧은데 예외 목록에 없는' 페이지를 잡아 사람이 렌더로 확인하게 한다.
@@ -31,7 +41,7 @@
 실행: python3 scripts/check-sitemap.py        (통과 0, 실패 1)
       python3 scripts/check-sitemap.py --list (전수 글자수만 출력)
 """
-import os, re, sys, urllib.parse
+import fnmatch, json, os, re, sys, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MIN_STATIC = 300          # 이보다 짧으면 렌더로 확인해야 한다
@@ -69,11 +79,58 @@ def local_path(url: str):
         rel += 'index.html'
     return path, os.path.join(ROOT, rel)
 
+def redirect_sources():
+    """firebase.json 의 리디렉션 출발지(glob). ':param' 이 든 패턴은 건너뛴다."""
+    try:
+        doc = json.load(open(os.path.join(ROOT, 'firebase.json'), encoding='utf-8'))
+    except Exception:
+        return []
+    hosting = doc.get('hosting') or {}
+    hostings = hosting if isinstance(hosting, list) else [hosting]
+    out = []
+    for h in hostings:
+        for r in h.get('redirects') or []:
+            src = r.get('source') or ''
+            if src and ':' not in src:
+                out.append((src, r.get('destination', '')))
+    return out
+
+def redirected(path, sources):
+    for src, dst in sources:
+        if path == src or fnmatch.fnmatchcase(path, src.replace('**', '*')):
+            return dst
+    return None
+
+def canonical_of(html):
+    for tag in re.findall(r'<link[^>]+>', html, re.I):
+        if re.search(r'rel=["\']canonical["\']', tag, re.I):
+            m = re.search(r'href=["\']([^"\']+)', tag, re.I)
+            return m.group(1) if m else None
+    return None
+
+def same_url(a, b):
+    def norm(u):
+        p = urllib.parse.urlparse(urllib.parse.urljoin('https://ezlong.com/', u))
+        path = p.path or '/'
+        if path.endswith('/index.html'):
+            path = path[:-len('index.html')]
+        return (p.netloc.lower().removeprefix('www.'), path)
+    return norm(a) == norm(b)
+
 def main():
     sm = open(os.path.join(ROOT, 'sitemap.xml'), encoding='utf-8').read()
     urls = re.findall(r'<loc>([^<]+)</loc>', sm)
+    alts = re.findall(r'<xhtml:link[^>]*href="([^"]+)"', sm)
     listing = '--list' in sys.argv
     rows, fails = [], []
+
+    sources = redirect_sources()
+    for u in sorted(set(urls) | set(alts)):
+        path = urllib.parse.unquote(urllib.parse.urlparse(u).path)
+        dst = redirected(path, sources)
+        if dst:
+            fails.append(f'사이트맵에 있는데 리디렉션된다: {path} -> {dst}'
+                         '  (사이트맵에서 빼거나 hreflang 을 도착 주소로 바꾼다)')
 
     for u in urls:
         path, fp = local_path(u)
@@ -89,6 +146,9 @@ def main():
         if re.search(r'<meta[^>]+name=["\']robots["\'][^>]*content=["\'][^"\']*noindex', html, re.I):
             fails.append(f'사이트맵에 있는데 noindex 다: {path}')
             continue
+        canon = canonical_of(html)
+        if canon and not same_url(canon, u):
+            fails.append(f'사이트맵에 있는데 canonical 이 다른 주소다: {path} -> {canon}')
         n = static_text_len(html)
         rows.append((n, path))
         if n < MIN_STATIC and path not in RENDER_OK:

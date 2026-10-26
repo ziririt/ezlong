@@ -268,6 +268,15 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   부수 효과 있는 스크립트 실행 금지, PR 전 검사 4종, 커밋 끝 줄 `Claude-Session: supergrok`.
   `*.md` 는 `firebase.json` ignore 대상이라 사이트에 실리지 않는다.
 
+**서치콘솔 '사이트맵 페이지 색인 안 됨' 메일(10/27)**
+- 원인: 제출된 페이지 중 3장(`en`·`pt`·`zh` 의 `stocks.html`)이 '리디렉션이 포함된 페이지'. 10/19 심플 주가 숨김의 301 이다.
+  사이트맵에서는 이미 뺐고, 구글은 10/26 에 새 사이트맵(131장)을 읽었다. 보고서가 10/23 자료라 다음 갱신에서 빠진다.
+- 라이브 실측: 사이트맵 131장 전부 200 · canonical 자기 자신 · noindex 없음.
+- 재발 방지: `check-sitemap.py` 에 5) 사이트맵 주소가 `firebase.json` 리디렉션 출발지면 실패 6) canonical 이 다른 주소면 실패.
+- 사이트맵 밖 항목(알려진 페이지): 404 의 `market-regime.html`·`job.html` 은 일부러 내린 페이지라 404 가 맞다.
+  나머지 404 는 8월 이전 잡음(본문 문장이 주소로 잘못 읽힌 것 등). '리디렉션 오류' `/app` 은 지금 301 -> `/app/` 200 으로 정상.
+- 메일이 두 통 온 것은 서치콘솔 속성이 둘(도메인 속성 `ezlong.com` + URL 접두어 `https://ezlong.com/`)이라서다. 같은 사이트다.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
