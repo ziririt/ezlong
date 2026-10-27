@@ -3,56 +3,56 @@
   "name": "테슬라",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-10-27T19:33:10.162Z",
-  "analysisAt": "2026-10-27T19:33:10.162Z",
+  "updatedAt": "2026-10-27T22:17:54.658Z",
+  "analysisAt": "2026-10-27T22:17:54.658Z",
   "analysisPreserved": false,
   "price": {
-    "current": 408.16,
-    "change": 16.54,
-    "changePct": 4.22,
+    "current": 407.46,
+    "change": 15.84,
+    "changePct": 4.04,
     "high52": 498.83,
     "low52": 297.38,
-    "pos52": 55,
-    "marketState": "REGULAR",
-    "quoteTime": 1793129583,
+    "pos52": 54.6,
+    "marketState": "POST",
+    "quoteTime": 1793131200,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 374.3415,
-    "sma50": 366.1324,
-    "sma100": 367.8174,
-    "sma200": 385.9422,
-    "rsi": 65.68,
+    "sma20": 374.3065,
+    "sma50": 366.1184,
+    "sma100": 367.8104,
+    "sma200": 385.9387,
+    "rsi": 65.48,
     "macd": {
-      "macd": 6.310058,
-      "signal": 3.669261,
-      "histogram": 2.640798
+      "macd": 6.254217,
+      "signal": 3.658092,
+      "histogram": 2.596125
     },
     "bb": {
-      "upper": 399.5328,
-      "middle": 374.3415,
-      "lower": 349.1502,
-      "bandwidth": 0.1346
+      "upper": 399.311,
+      "middle": 374.3065,
+      "lower": 349.302,
+      "bandwidth": 0.1336
     },
     "adx": {
-      "plusDI": 36.48,
+      "plusDI": 36.49,
       "minusDI": 21.11,
-      "adx": 13.5,
+      "adx": 13.51,
       "status": "무추세(충격 가능)"
     },
-    "atr": 13.7066
+    "atr": 13.7081
   },
   "levels": {
     "swingResistance": 409.28,
     "swingSupport": 393.63,
     "pivot": {
-      "pp": 387.49,
-      "r1": 429.1,
-      "r2": 450.04,
-      "s1": 366.55,
-      "s2": 324.94
+      "pp": 387.26,
+      "r1": 428.65,
+      "r2": 449.83,
+      "s1": 366.08,
+      "s2": 324.69
     }
   },
   "analysis": {
@@ -67,54 +67,52 @@
     "action": "매수",
     "buyScore": 7,
     "scoreReason": "RSI 과매수 진입 + MACD 강세 확산 지속",
-    "scoreReasonEn": "RSI enters overbought + MACD bullish expansion continues",
-    "rsiTrajectory": "60.1 → 65.7 (과매수 진입 중)",
-    "rsiTrajectoryEn": "60.1 → 65.7 (entering overbought)",
-    "macdTrajectory": "히스토 0.8791 → 2.6408 (강세 확산)",
-    "macdTrajectoryEn": "histogram 0.8791 → 2.6408 (bullish expansion)",
+    "scoreReasonEn": "RSI entering overbought + MACD strong bullish expansion",
+    "rsiTrajectory": "60.1 → 65.5 (과매수 진입 중)",
+    "rsiTrajectoryEn": "60.1 → 65.5 (entering overbought)",
+    "macdTrajectory": "히스토 2.5961 → 2.5961 (유지)",
+    "macdTrajectoryEn": "histogram 2.5961 → 2.5961 (holding steady)",
     "pricePattern": "Higher Low 확인 후 상승 지속",
-    "pricePatternEn": "Higher Low confirmed, continuing upward",
-    "volComment": "거래량비 0.84 (정상)",
+    "pricePatternEn": "Higher Low confirmed, followed by continued ascent",
+    "volComment": "거래량비 1.02 (정상)",
     "bbPosition": "상단돌파",
-    "reason": "RSI 65.7로 과매수 구간 진입, MACD 히스토그램 2.6408로 강세 확산 지속. 5일 연속 양봉 마감하며 상승 추세 강화. 52주 고가 대비 55% 위치에서 추가 상승 여력 존재.",
-    "reasonEn": "RSI at 65.7 enters overbought territory, MACD histogram at 2.6408 continues bullish expansion. Five consecutive daily closes in the green strengthen the uptrend. Positioned at 55.0% of the 52-week range suggests further upside potential.",
-    "entry": 408.16,
+    "reason": "RSI 60.1 → 65.5 상승으로 과매수 구간 진입, MACD 히스토그램 2.5961로 강세 확산 지속. 5일 저가($365.27)가 20일 저가($345.88)보다 높아 Higher Low 패턴 확인. 거래량비 1.02로 움직임 신뢰도 유지.",
+    "reasonEn": "RSI rose from 60.1 to 65.5, entering overbought territory, while MACD histogram at 2.5961 continues strong bullish expansion. The 5-day low ($365.27) is higher than the 20-day low ($345.88), confirming a Higher Low pattern. Volume ratio of 1.02 maintains confidence in the move.",
+    "entry": 407.46,
     "stop": 393.63,
-    "target": 437.22,
+    "target": 428.65,
     "invalidation": 393.63,
-    "weeklyConflict": "충돌 없음",
-    "weeklyConflictEn": "No conflict",
-    "profitTarget1": 437.22,
-    "profitTarget2": 459.02,
+    "weeklyConflict": "주봉 SMA50($395.04) 상회 중이나 일봉 강세 신호 우선",
+    "weeklyConflictEn": "Above weekly SMA50 ($395.04), but daily bullish signals take precedence",
+    "profitTarget1": 428.65,
+    "profitTarget2": 444.54,
     "stopLoss": 393.63,
-    "narrative": "[추세 위치]\n· 현재가($408.16) vs SMA5/20/50($386.61/$374.34/$366.13): 단기·중기 추세 상회, 강세 위치 확인\n· SMA100/200($367.82/$385.94) 대비 위치: 중장기 추세 강도 상회, 강세 유지\n· 52주 위치(55.0%) + 현 가격대 역사적 중간 수준 위치\n[모멘텀 지표]\n· RSI 궤적 (60.1→65.7) + 과매수 구간 진입 중, 상승 모멘텀 유지\n· MACD 히스토그램 궤적 (0.8791→2.6408) + 강세 확산, 상승 추세 강화 신호\n· 볼린저밴드 현재가 위치 (상단 $399.53) + 상단 돌파, 강세 확장 국면\n[지지·저항 구조]\n· 스윙 지지선 ($393.63) + 피벗 S1 기반 지지력 확인\n· 스윙 저항선 ($409.28) + 돌파 시 추가 상승 가능성 시사\n· 5일/20일 고가·저가 패턴 (Higher Low 확인 후 상승 지속) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.84배) + 정상 수준 거래량, 움직임 신뢰도 유지\n· 현 구간 진단 (상승추세) + 409.28 돌파 시 매수 진입, 393.63 이탈 시 손절",
-    "narrativeEn": "[Trend Position]\n· Current Price($408.16) vs SMA5/20/50($386.61/$374.34/$366.13): Above short/mid-term trends, confirming bullish position\n· SMA100/200($367.82/$385.94) Position: Above long-term trends, maintaining bullish strength\n· 52-week Position (55.0%) + Current price level at historical midpoint\n[Momentum Indicators]\n· RSI Trajectory (60.1→65.7) + Entering overbought, maintaining upward momentum\n· MACD Histogram Trajectory (0.8791→2.6408) + Bullish expansion, signaling strengthening uptrend\n· Bollinger Band Current Price Position (Upper Band $399.53) + Breaking above upper band, indicating bullish expansion phase\n[Support & Resistance Structure]\n· Swing Support ($393.63) + Support confirmed based on Pivot S1\n· Swing Resistance ($409.28) + Breakout suggests potential for further upside\n· 5-day/20-day High/Low Pattern (Higher Low confirmed, continuing upward) + Interpreted as a recovery trend\n[Volume & Conclusion]\n· Volume Ratio (0.84x) + Normal volume levels, maintaining confidence in price movement\n· Current Phase Diagnosis (Uptrend) + Enter on breakout above 409.28, stop loss on break below 393.63",
-    "patternNote": "5일 연속 양봉 마감하며 상승 채널 상단 돌파 시도",
-    "patternNoteEn": "Attempting to break above the upper trend channel with five consecutive daily closes in the green",
+    "narrative": "[추세 위치]\n· 현재가($407.46) vs SMA5($386.47)/SMA20($374.31)/SMA50($366.12): 단기·중기 추세 상회 확인\n· SMA100($367.81)/SMA200($385.94) 대비 위치: 중장기 추세 강도 유지\n· 52주 위치(54.6%) + 현 가격대 역사적 중간 구간 위치\n[모멘텀 지표]\n· RSI 궤적 (60.1 → 65.5): 과매수 진입 중, 상승 모멘텀 유지\n· MACD 히스토그램 궤적 (2.5961 → 2.5961): 강세 확산 유지, 추세 전환 신호 없음\n· 볼린저밴드 현재가 위치 (상단 $399.31): 상단 돌파, 강세 확장 구간\n[지지·저항 구조]\n· 스윙 지지선 ($393.63): 피벗 S1($366.08) 및 SMA200($385.94) 기반 지지력 확인\n· 스윙 저항선 ($409.28): 돌파 시 추가 상승 여력 확보\n· 5일/20일 고가·저가 패턴 (Higher Low 확인): 상승 추세 강화\n[거래량·결론]\n· 거래량 비율 (1.02배): 움직임의 신뢰도 정상 수준 유지\n· 현 구간 진단 (상승추세): 407.46 진입, 393.63 손절, 428.65 목표",
+    "narrativeEn": "[Trend Position]\n· Current price ($407.46) vs SMA5 ($386.47)/SMA20 ($374.31)/SMA50 ($366.12): confirms short-to-mid term uptrend position.\n· Position relative to SMA100 ($367.81)/SMA200 ($385.94): maintains mid-to-long term trend strength.\n· 52-week position (54.6%) + current price level is in the historical middle range.\n[Momentum Indicators]\n· RSI trajectory (60.1 → 65.5): entering overbought, maintaining upward momentum.\n· MACD histogram trajectory (2.5961 → 2.5961): continues strong expansion, no trend reversal signal.\n· Bollinger Band current price position (Upper Band $399.31): breaking upper band, strong expansion phase.\n[Support & Resistance Structure]\n· Swing Support ($393.63): confirmed support based on Pivot S1 ($366.08) and SMA200 ($385.94).\n· Swing Resistance ($409.28): breaking resistance secures further upside potential.\n· 5-day/20-day High/Low Pattern (Higher Low confirmed): strengthening uptrend.\n[Volume & Conclusion]\n· Volume ratio (1.02x): maintains normal confidence level for the move.\n· Current phase diagnosis (Uptrend): entry at 407.46, stop at 393.63, target at 428.65.",
+    "patternNote": "Higher Low 패턴 확인 후 볼린저밴드 상단 돌파하며 상승 추세 강화 국면",
+    "patternNoteEn": "Uptrend strengthening phase after Higher Low pattern confirmation and breaking the upper Bollinger Band",
     "keyPoints": [
-      "RSI 65.7 과매수 구간 진입, 상승 모멘텀 지속",
-      "MACD 히스토그램 2.6408 강세 확산, 추세 강화",
-      "볼린저밴드 상단 돌파, 추가 상승 기대"
+      "RSI 65.5로 과매수 진입, 상승 모멘텀 지속",
+      "MACD 히스토그램 2.5961로 강세 확산 유지",
+      "볼린저밴드 상단($399.31) 돌파, 추가 상승 가능성 시사"
     ],
     "keyPointsEn": [
-      "RSI at 65.7 enters overbought territory, sustaining upward momentum",
-      "MACD histogram at 2.6408 shows bullish expansion, reinforcing the trend",
-      "Bollinger Band upper band breached, anticipating further gains"
+      "RSI at 65.5 entering overbought, sustaining upward momentum",
+      "MACD histogram at 2.5961 holding strong bullish expansion",
+      "Breaking upper Bollinger Band ($399.31) suggests further upside potential"
     ],
     "riskNote": "RSI 과매수 구간 진입으로 단기 되돌림 가능성 상존",
-    "riskNoteEn": "Potential for short-term pullback exists due to RSI entering overbought territory",
-    "continuity": "직전 2거래일 연속 매수 판독 유지, 금일 RSI 60.1→65.7 상승 및 MACD 히스토그램 개선(0.8791→2.6408)으로 상승 추세 강화 확인, 매수 판독 지속.",
-    "continuityEn": "The buy read has been maintained for the past two sessions. Today's RSI rise from 60.1 to 65.7 and MACD histogram improvement from 0.8791 to 2.6408 confirm strengthening uptrend, continuing the buy read.",
+    "riskNoteEn": "RSI entering overbought territory poses risk of short-term pullback",
+    "continuity": "직전 2거래일 연속 매수 판독 유지, RSI 60.1→65.5 상승 및 MACD 히스토그램 개선으로 상승 추세 강화 확인",
+    "continuityEn": "Buy read maintained for the past 2 consecutive sessions, confirmed by RSI rising from 60.1 to 65.5 and MACD histogram improvement, reinforcing the uptrend.",
     "confluenceChecklist": {
-      "volumeConfirmed": false,
+      "volumeConfirmed": true,
       "resistanceReclaimed": true,
       "adxLowRisk": true,
       "higherTimeframeAligned": true,
       "oversoldExtremeOrigin": false,
-      "score": "3/5",
-      "verdict": "초기 단계: 확인 관문 남음"
-    },
-    "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.44 < 1.5"
+      "score": "4/5",
+      "verdict": "진짜 반등/추세 가능성 높음"
+    }
   }
 }
