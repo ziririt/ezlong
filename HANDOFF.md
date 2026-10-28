@@ -283,6 +283,15 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - `firebase.json`: `/data/**` 에 `Access-Control-Allow-Origin: *` 추가(공개 데이터, raw.githubusercontent 는 원래 `*`).
 - 통로는 `_ops/board/ezlong.md` ↔ `board/insightimes.md`. 다음 ezlong 몫: `embed/dca` 시안(iframe + postMessage 높이).
 
+**복리계산기 6개 언어판 검색 스니펫 손질(10/29, 오너 선택 '검색 유입 1번')**
+- 바꾼 것: `<title>` · meta description · og/twitter · 첫 문단(`hero-sub`/`page-sub`). 계산 로직·JSON-LD 는 그대로.
+- 방향: 일반어 'compound interest calculator' 정면 승부 대신 **매월 적립(monthly contributions) + 설정 3가지 나란히 비교**를 앞에 세웠다.
+  둘 다 도구에 원래 있는 기능이다(기간 단위 연·월·일, 설정 A·B·C 비교). 옛 첫 문단은 '일시금(lump-sum)'만 말해 기능과 어긋났다.
+- 사이트맵 lastmod 6장 2026-10-29.
+- **기준선(서치콘솔 3개월, 10/24까지):** en 노출 2,184·클릭 3·순위 22.9 / es 2,107·5·8.3 / ja 772·1·8.4 / ko 545·0·7.9 /
+  zh 381·1·7.0 / pt 348·1·8.1. 보이는 검색어는 1% 남짓이고 대부분 익명 롱테일이다.
+- **11월 말에 28일 클릭률(CTR)을 같은 표로 다시 잰다.** 오르지 않으면 제목을 한 번 더 바꾸는 게 아니라 다른 페이지로 옮겨 간다.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
