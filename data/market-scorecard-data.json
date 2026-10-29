@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-10-29-15:18",
+      "timestamp_kst": "2026-10-29(목) 15:18 KST",
+      "key_event": {
+        "name": "FOMC 금리 동결 및 구글 실적",
+        "name_en": "FOMC Rate Hold and Google Earnings",
+        "time": "10월 28일(수) 14:00 ET 발표 완료",
+        "why": "통화정책 불확실성 해소, AI 관련 기업 실적 우려 확대",
+        "why_en": "Monetary policy uncertainty resolved, AI-related earnings concerns rise"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "FOMC 금리 동결에도 구글 실적 부진으로 AI 관련 기업 우려 확대되며 부정 우위",
+      "summary_en": "Despite FOMC rate hold, Google's weak earnings raise concerns for AI-related companies, leading to a negative bias",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "FOMC 금리 동결",
+          "name_en": "FOMC Holds Rates Steady",
+          "desc": "Fed 기준금리 3.75% 유지: 통화정책 불확실성 해소, 시장 안도감 형성",
+          "desc_en": "Fed benchmark rate maintained at 3.75%: Monetary policy uncertainty resolved, market relief",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "구글(GOOGL) 실적 부진",
+          "name_en": "Google (GOOGL) Earnings Disappoint",
+          "desc": "GOOGL -9.60% 하락: 주요 기술 기업 실적 우려 확대, AI 관련주 투자 심리 위축",
+          "desc_en": "GOOGL down -9.60%: Broad tech earnings concerns rise, dampening AI-related stock sentiment",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 5.05%(+1.04%), 미30년 국채금리 5.36%(+1.06%) 상승: 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield at 5.05% (+1.04%), 30-year at 5.36% (+1.06%) rise: Continued pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Middle East Geopolitical Tensions Persist",
+          "desc": "사우디 공격 및 미-이란 리스크 지속: 유가 변동성 확대 및 위험 회피 심리 자극",
+          "desc_en": "Attacks on Saudi Arabia and US-Iran risks persist: Fueling oil price volatility and risk aversion",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "PCE·GDP 지표 발표 대기",
+          "name_en": "PCE and GDP Data Awaited",
+          "desc": "PCE 개인소비지출(9월분)·GDP 속보치(3분기) 10월 29일(목) 08:30 ET 발표 대기: 경기 및 물가 방향성 불확실성 잔존",
+          "desc_en": "PCE Personal Consumption Expenditures (September) and Q3 GDP Advance Estimate due 10/29 (Thu) 08:30 ET: Uncertainty remains regarding economic and inflation trajectory",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 10월28일(수, 뉴욕) 장 총점: FOMC 금리 동결에도 불구하고 구글의 실적 부진으로 AI 관련 기업 전반에 대한 우려가 확산되며 부정적인 흐름이 우세한 하루 마감.\n- 주요 원인: 연방공개시장위원회(FOMC)의 기준금리 동결 결정으로 통화정책 불확실성이 일부 해소되었으나, 구글의 실적 실망감으로 기술주 및 AI 관련주의 투자 심리가 크게 위축.\n- 시장 하방 압력: 미 국채금리 상승세 지속과 중동 지역의 지정학적 긴장 고조가 위험 회피 심리를 자극하며 시장 전반에 하방 압력으로 작용.\n- 향후 관망세: 핵심 경제 지표인 PCE 개인소비지출 및 GDP 속보치 발표를 앞두고 시장의 관망세가 짙어지는 양상.",
+        "positive": "- FOMC 금리 동결: 연방준비제도(Fed)가 기준금리를 3.75%로 유지하며 통화정책 불확실성 해소에 기여, 시장에 단기적인 안도감 형성.",
+        "negative": "- 구글(GOOGL) 실적 부진: 구글의 모회사 알파벳(GOOGL) 주가가 9.60% 하락하며 주요 기술 기업 실적에 대한 우려를 증폭, 특히 AI 관련주 전반의 투자 심리 위축. (Bloomberg.com 보도).\n- 미 국채금리 상승: 미 10년물 국채금리가 5.05%(+1.04%), 미 30년물 국채금리가 5.36%(+1.06%) 상승하며 성장주 할인율에 지속적인 압박 가중. (WSJ, IndraStra Global 보도).\n- 중동 지정학적 긴장 지속: 사우디아라비아 공격 및 미국-이란 간 리스크가 지속되며 유가 변동성 확대 및 투자자들의 위험 회피 심리 자극. (WSJ, EnergyNow 보도).",
+        "mixed": "- PCE·GDP 지표 발표 대기: 9월 PCE 개인소비지출과 3분기 GDP 속보치 발표(10월 29일(목) 08:30 ET)를 앞두고 있어, 경기 및 물가 방향성에 대한 불확실성이 잔존하며 시장의 혼조세 유발.",
+        "watch": "- PCE 개인소비지출(9월분)·GDP 속보치(3분기) 발표: 10월 29일(목) 08:30 ET 발표 예정. 이 지표들이 예상치를 상회하거나 하회할 경우, 인플레이션 및 경기 둔화 우려가 심화되거나 완화되며 시장 방향성 결정에 중요한 영향.\n- 아마존(AMZN) 실적 발표: 10월 29일(목) 장 마감 후 ET 발표 예정. 구글 실적 부진 이후 빅테크 기업들의 실적에 대한 관심이 고조된 상황에서, 아마존의 실적 결과가 기술주 및 AI 관련주 전반의 투자 심리에 큰 영향을 미칠 전망."
+      },
+      "report_at": "2026-10-29(목) 15:18 KST"
+    },
+    {
       "id": "2026-10-29-11:50",
       "timestamp_kst": "2026-10-29(목) 11:50 KST",
       "key_event": {
@@ -560,68 +628,8 @@
         "watch": "- FOMC 금리 결정: 10월 28일(수) 14:00 ET에 예정된 연준의 금리 결정 발표가 시장의 향방을 결정할 주요 변수. 동결 시 시장의 안도 랠리, 인상 시 급격한 변동성 확대 가능성.\n- MSFT, GOOGL 실적 발표: 10월 28일(수) 장 마감 후 ET에 예정된 마이크로소프트와 구글의 실적 발표가 기술주 전반의 투자 심리에 큰 영향. AI 관련 사업 성과 및 향후 가이던스가 시장 기대치를 충족하는지 여부 주목.\n- 국채금리 및 유가 추이: 미 10년 국채금리의 4.99%(+0.04%) 돌파 여부와 WTI 유가의 추가 상승 여부가 시장의 주요 부담 요인으로 작용할지 지속적인 확인 필요."
       },
       "report_at": "2026-10-28(수) 21:50 KST"
-    },
-    {
-      "id": "2026-10-28-18:14",
-      "timestamp_kst": "2026-10-28(수) 18:14 KST",
-      "key_event": {
-        "name": "FOMC 금리 결정 임박",
-        "name_en": "FOMC Rate Decision Imminent",
-        "time": "10월 28일(수) 14:00 ET (약 9시간 뒤)",
-        "why": "향후 통화정책 방향, 시장 변동성 확대 (10월 28일(수) 14:00 ET)",
-        "why_en": "Future monetary policy direction, increased market volatility (Oct 28 (Wed) 14:00 ET)"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "FOMC 금리 동결 기대감 및 AI 모멘텀 지속으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained due to FOMC rate freeze expectations and sustained AI momentum",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "FOMC 금리 동결 기대감",
-          "name_en": "FOMC Rate Freeze Expectations",
-          "desc": "연준의 금리 동결 가능성 시사, 시장 불확실성 완화",
-          "desc_en": "Fed signals potential rate freeze, easing market uncertainty",
-          "category": "fed_policy"
-        },
-        {
-          "score": 30,
-          "name": "AI 모멘텀 지속",
-          "name_en": "Sustained AI Momentum",
-          "desc": "월스트리트 AI 모멘텀 재점화, 반도체 섹터 강세 지속",
-          "desc_en": "Wall Street AI momentum reignited, semiconductor sector strength continues",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "미국 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.99%(+0.14%) 상승, 성장주에 부담",
-          "desc_en": "US 10-year Treasury yield rises to 4.99%(+0.14%), burdening growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 15,
-          "name": "중동 지정학적 긴장 고조",
-          "name_en": "Escalating Middle East Geopolitical Tensions",
-          "desc": "미국 중간선거 이후 이란 전쟁 재개 가능성 경고, 유가 상승 압력",
-          "desc_en": "US warns of potential Iran war renewal after midterms, pushing oil prices up",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 10월27일(화, 뉴욕) 미국 증시는 FOMC 금리 동결 기대감과 AI 모멘텀 지속에 힘입어 긍정적 흐름 유지\n- 연방준비제도(Fed)의 금리 동결 가능성 시사와 월스트리트의 AI 관련 투자 심리 재점화가 주요 상승 동력으로 작용\n- 다만, 미국 국채금리 상승과 중동 지정학적 긴장 고조로 인한 유가 상승 압력이 시장에 부담으로 작용하며 상승폭 제한",
-        "positive": "- FOMC 금리 동결 기대감: 연방준비제도(Fed)가 금리를 동결할 것이라는 시장의 기대감이 확산. 이는 높은 인플레이션 수치(PCE 물가상승률 3.42%, CPI 소비자물가 상승률 3.72%)에도 불구하고, Fed가 당분간 통화정책을 유지할 것이라는 전망에 기반. NBC News, AFP.com 등 다수 언론이 Fed의 금리 동결 가능성을 보도하며 시장의 불확실성 완화에 기여.\n- AI 모멘텀 지속: 월스트리트에서 인공지능(AI) 관련 투자 심리가 재점화되며 반도체 섹터의 강세가 지속. Reuters는 AI 모멘텀 부활로 증시가 상승 마감했다고 보도. SK Hynix의 실적 발표가 아시아 증시의 AI 관련주 상승을 견인하는 등, 기술주 전반에 긍정적인 영향을 미치고 RealMoney Pro는 AI 광풍이 월스트리트를 강타하고 있다고 분석.",
-        "negative": "- 미국 국채금리 상승: 미 10년물 국채금리가 4.99%(+0.14%)로 상승하며 성장주에 부담으로 작용. WSJ은 프랑스 국채금리가 다년래 최고치를 기록하고 미국 국채금리도 상승했다고 보도. 이는 기업의 자금 조달 비용 증가와 미래 현금흐름 할인율 상승으로 이어져 기술주 등 성장주 투자 심리를 위축시키는 요인.\n- 중동 지정학적 긴장 고조: 미국 중간선거 이후 이란과의 전쟁 재개 가능성이 경고되며 유가 상승 압력이 고조. WSJ은 미국이 걸프 지역에 이란과의 단기적이고 강렬한 전쟁 재개 가능성을 경고했다고 보도. Yahoo Finance는 유가 트레이더들이 미국 선거 이후 이란의 긴장 고조에 대비하고 있다고 전하며, 이는 글로벌 에너지 안보에 대한 우려를 증폭시키고 유가 상승을 통해 인플레이션 압력을 가중시킬 가능성.",
-        "mixed": "",
-        "watch": "- FOMC 금리 결정(10월 28일(수) 14: 00 ET): 연방준비제도(Fed)의 금리 결정과 함께 발표될 통화정책 성명서 및 제롬 파월 의장의 기자회견 내용이 향후 시장 방향성을 결정할 가장 중요한 변수. 금리 동결 여부와 함께 향후 금리 인상 또는 인하에 대한 Fed의 스탠스 변화가 시장 변동성을 확대할 가능성.\n- MSFT 실적 발표(10월 28일(수) 장 마감 후 ET): 마이크로소프트(MSFT)의 실적 발표는 AI 관련 기술 기업들의 실적 전망과 시장 전반의 기술주 투자 심리에 중요한 영향을 미칠 전망. 클라우드 컴퓨팅 및 AI 부문의 성장세가 시장 기대치를 충족하는지 여부가 관건.\n- GOOGL 실적 발표(10월 28일(수) 장 마감 후 ET): 구글(GOOGL)의 실적 발표는 디지털 광고 시장의 건전성과 AI 기술 개발 및 상용화에 대한 시장의 기대를 반영. 특히 AI 경쟁 심화 속에서 구글의 전략과 성과가 기술주 전반에 미치는 파급 효과 주목."
-      },
-      "report_at": "2026-10-28(수) 18:14 KST"
     }
   ],
-  "updated_at": "2026-10-29T02:51:15Z",
+  "updated_at": "2026-10-29T06:18:34Z",
   "max_entries": 10
 }
