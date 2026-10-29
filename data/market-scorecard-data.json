@@ -1,6 +1,97 @@
 {
   "entries": [
     {
+      "id": "2026-10-30-00:55",
+      "timestamp_kst": "2026-10-30(금) 00:55 KST",
+      "key_event": {
+        "name": "FOMC 금리 동결 및 경제 지표 발표",
+        "name_en": "FOMC Rate Hold & Economic Data Release",
+        "time": "10월 28일(수) 14:00 ET, 10월 29일(목) 08:30 ET",
+        "why": "통화정책 불확실성 해소, 인플레이션 및 성장률 지표 확인",
+        "why_en": "Monetary policy clarity, inflation and growth data confirmed"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "FOMC 금리 동결에도 PCE·GDP 지표 혼조 및 빅테크 실적 우려로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists despite FOMC rate hold, due to mixed PCE/GDP data and big tech earnings concerns",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "FOMC 금리 동결",
+          "name_en": "FOMC Holds Interest Rates",
+          "desc": "연방준비제도, 기준금리 3.75%로 동결 결정: 통화정책 불확실성 해소",
+          "desc_en": "Federal Reserve keeps benchmark rate at 3.75%: monetary policy uncertainty eased",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Fall",
+          "desc": "미10년 국채금리 4.98%(-1.21%) 하락: 성장주 투자 매력 증가",
+          "desc_en": "US 10-year Treasury yield drops to 4.98% (-1.21%): boosts appeal of growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "PCE 물가 상승률 상승",
+          "name_en": "PCE Inflation Rate Rises",
+          "desc": "9월 PCE 물가상승률 3.65%(+0.20%p) 상승: 인플레이션 압력 지속 우려",
+          "desc_en": "September PCE inflation rises to 3.65% (+0.20%p): concerns about persistent inflationary pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "일부 빅테크 실적 부진",
+          "name_en": "Select Big Tech Earnings Disappoint",
+          "desc": "MSFT(-4.29%), GOOGL(-2.09%) 하락: 기업 실적 기대치 미달 및 AI 관련 우려",
+          "desc_en": "MSFT (-4.29%), GOOGL (-2.09%) decline: corporate earnings miss expectations, AI concerns",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "AI 투자 심리 균열",
+          "name_en": "Cracks in AI Investment Sentiment",
+          "desc": "Nasdaq 100 1.5% 하락 및 'AI Trade Shows New Cracks' 뉴스: AI 관련 투자 심리 위축",
+          "desc_en": "Nasdaq 100 falls 1.5% and 'AI Trade Shows New Cracks' news: AI investment sentiment weakens",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "높은 인플레이션 지속 경계",
+          "name_en": "Persistent High Inflation Concerns",
+          "desc": "Fed 금리 동결에도 'inflation remains high' 및 'Fed Risks Having to Play Catch-Up' 뉴스: 인플레이션 경계감 유지",
+          "desc_en": "Despite Fed rate hold, 'inflation remains high' and 'Fed Risks Having to Play Catch-Up' news: inflation caution persists",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "GDP 속보치 발표",
+          "name_en": "GDP Advance Estimate Release",
+          "desc": "3분기 GDP 속보치 발표 완료: 경제 성장률에 대한 혼조된 해석",
+          "desc_en": "Q3 GDP advance estimate released: mixed interpretations on economic growth rate",
+          "category": "macro_data"
+        },
+        {
+          "name": "AMZN 실적 발표 대기",
+          "name_en": "Anticipation for AMZN Earnings",
+          "desc": "AMZN 실적 발표 10월 29일(목) 장 마감 후 ET 예정: 시장의 기대와 우려 교차",
+          "desc_en": "AMZN earnings due after market close on Oct 29 (Thu) ET: mixed market expectations and concerns",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 시장 판세: FOMC 금리 동결에도 불구하고 PCE 물가 상승률과 일부 빅테크 실적 부진, AI 투자 심리 균열 등으로 부정적 요인이 우세한 상황 지속.\n- 주요 원인: 연방준비제도(Fed)의 금리 동결로 통화정책 불확실성은 일부 해소되었으나, 여전히 높은 인플레이션 압력과 기업 실적에 대한 우려가 시장을 압박.\n- 시장 반응: S&P 500, Nasdaq, Dow Jones 지수 모두 하락세를 보이며 투자자들의 경계심이 높은 상태.\n- 하방 지지: 미 국채금리 하락이 성장주 투자 매력을 일부 높였으나, 전반적인 부정적 심리를 상쇄하기에는 역부족.",
+        "positive": "- FOMC 금리 동결: 연방준비제도(Fed)가 기준금리를 3.75%로 동결 결정하며, 통화정책의 불확실성이 해소되는 긍정적 영향. 이는 중앙은행들이 금리 인상을 잠시 멈추는 추세와도 일치.\n- 미 국채금리 하락: 미 10년 국채금리가 4.98%(-1.21%)로 1.21% 하락하며, 성장주에 대한 투자 매력이 증가. 이는 채권 시장으로의 자금 유입과도 연결.",
+        "negative": "- PCE 물가 상승률 상승: 9월 PCE 물가상승률이 전년 동월 대비 3.65%로 0.20%p 상승하며 인플레이션 압력이 지속될 수 있다는 우려 증폭.\n- 일부 빅테크 실적 부진: 마이크로소프트(MSFT)가 4.29%, 알파벳(GOOGL)이 2.09% 하락하는 등 일부 빅테크 기업의 실적이 시장 기대치를 밑돌며 기술주 전반에 대한 우려 확산. 이는 Nasdaq Futures 하락으로 이어짐.\n- AI 투자 심리 균열: Nasdaq 100 지수가 1.5% 하락하고 블룸버그 통신에서 AI 관련 투자 심리에 새로운 균열이 나타났다는 보도가 나오면서 AI 관련 투자 심리가 위축. ETF Database는 투자자들이 AI를 넘어 다른 투자처를 찾고 있다고 언급.\n- 높은 인플레이션 지속 경계: Fed의 금리 동결에도 불구하고 인플레이션이 여전히 높다는 우려가 지속. Fed가 인플레이션을 억제하기 위해 뒤늦게 대응해야 할 위험이 있다는 분석이 제기되며 인플레이션 경계감이 유지.",
+        "mixed": "- GDP 속보치 발표: 3분기 GDP 속보치 발표가 완료되었으나, 경제 성장률에 대한 시장의 해석이 혼조된 상황. 일부에서는 미국 경제가 강하지만 과열되지는 않았다고 평가하는 반면, 다른 시각에서는 인플레이션과 함께 경제가 뜨겁게 돌아가고 있다고 분석.\n- AMZN 실적 발표 대기: 아마존(AMZN)의 실적 발표가 10월 29일(목) 장 마감 후 ET로 예정되어 있어, 시장에서는 기대와 우려가 교차하는 상황. 실적 결과에 따라 시장의 방향성이 달라질 수 있는 중요한 변수.",
+        "watch": "- AMZN 실적 발표: 10월 29일(목) 장 마감 후 ET (약 5시간 뒤) 예정된 아마존(AMZN) 실적 발표 결과에 따라 기술주 전반 및 시장 투자 심리 변화 확인.\n- 미 국채금리 추이: 미 10년 국채금리 변동성 지속 여부 확인. 금리 하락세가 유지될 경우 성장주에 긍정적, 반등 시 시장에 부정적 영향 예상.\n- 유가 변동성: 중동 분쟁 고조 우려에 따른 유가 상승 가능성 및 공급 우려 완화에 따른 유가 하락 가능성 등 유가 추이 확인. 이는 인플레이션 압력에 직접적인 영향을 미칠 수 있음."
+      },
+      "report_at": "2026-10-30(금) 00:55 KST"
+    },
+    {
       "id": "2026-10-29-23:20",
       "timestamp_kst": "2026-10-29(목) 23:20 KST",
       "key_event": {
@@ -598,68 +689,8 @@
         "watch": "- PCE 개인소비지출(9월분)·GDP 속보치(3분기) 발표: 10월 29일(목) 08:30 ET에 발표될 주요 경제 지표들이 연방준비제도(Fed)의 향후 통화정책 방향과 경기 판단에 결정적인 영향을 미칠 것으로 예상. 예상치를 상회하거나 하회하는 결과에 따라 시장의 변동성 확대 가능성.\n- 아마존(AMZN) 실적 발표: 10월 29일(목) 장 마감 후 ET에 예정된 아마존(AMZN)의 실적 발표는 빅테크 기업들의 실적 흐름과 인공지능(AI) 관련 투자 심리에 추가적인 영향을 미칠 것으로 전망. 마이크로소프트와 구글의 엇갈린 실적 발표 이후, 아마존의 결과에 따라 빅테크 전반의 투자 심리가 한쪽으로 기울 가능성."
       },
       "report_at": "2026-10-29(목) 05:11 KST"
-    },
-    {
-      "id": "2026-10-29-03:27",
-      "timestamp_kst": "2026-10-29(목) 03:27 KST",
-      "key_event": {
-        "name": "FOMC 금리 동결 결정",
-        "name_en": "FOMC Holds Interest Rates Steady",
-        "time": "10월 28일(수) 14:00 ET 발표 완료",
-        "why": "통화정책 불확실성 해소, 시장 변동성 완화",
-        "why_en": "Monetary policy clarity, reduced market volatility"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "FOMC 금리 동결로 통화정책 불확실성 해소되며 긍정 우위 유지",
-      "summary_en": "FOMC's rate hold resolves policy uncertainty, maintaining positive sentiment",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "FOMC 금리 동결",
-          "name_en": "FOMC Holds Rates Steady",
-          "desc": "연방준비제도, 기준금리 3.75%로 동결 결정: 추가 긴축 우려 완화",
-          "desc_en": "Federal Reserve keeps benchmark rate at 3.75%: Easing concerns of further tightening",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "고유가 지속",
-          "name_en": "Persistent High Oil Prices",
-          "desc": "WTI 원유 103.08달러(+1.72%) 기록: 중동 지정학적 긴장 고조 우려",
-          "desc_en": "WTI crude at $103.08 (+1.72%): Concerns over escalating Middle East geopolitical tensions",
-          "category": "oil_energy"
-        },
-        {
-          "score": 20,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.04%(+0.86%) 기록: 높은 금리 수준 지속에 따른 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield at 5.04% (+0.86%): Sustained high rates pressure growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "PCE·GDP 지표 발표 대기",
-          "name_en": "Awaiting PCE and GDP Data",
-          "desc": "PCE 개인소비지출, GDP 속보치(10월 29일(목) 08:30 ET) 발표 대기: 경제 상황 판단 불확실성",
-          "desc_en": "PCE and Q3 GDP advance estimate (Oct 29, 08:30 ET) pending: Uncertainty on economic outlook",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 10월28일(수, 뉴욕) 미국 주식 시장은 FOMC의 금리 동결 결정으로 인한 통화정책 불확실성 해소에 힘입어 긍정 우위를 유지하는 흐름\n- 연방준비제도(Fed)가 기준금리를 3.75%로 동결하며 추가 긴축에 대한 시장의 우려를 완화, 이는 시장 변동성 축소에 기여\n- 다만, 고유가 지속과 미 국채금리 상승은 각각 인플레이션 압력과 성장주 할인율 상승으로 작용하며 시장에 부정적인 영향\n- PCE 개인소비지출 및 GDP 속보치 발표를 앞두고 경제 상황 판단에 대한 불확실성이 혼재된 상황",
-        "positive": "- FOMC 금리 동결: 연방준비제도(Fed)가 기준금리를 3.75%로 동결하며 추가적인 긴축 정책에 대한 시장의 우려를 완화, 이는 통화정책 불확실성 해소로 이어져 시장에 긍정적인 신호.\n- 시장 변동성 완화: 금리 동결 결정은 시장의 불확실성을 줄여 투자 심리 안정화에 기여, 특히 기술주 중심의 나스닥 시장에 긍정적인 영향.",
-        "negative": "- 고유가 지속: WTI 원유 가격이 103.08달러(+1.72%)를 기록하며 높은 수준을 유지, 이는 중동 지정학적 긴장 고조 우려와 맞물려 인플레이션 재점화 가능성을 높이는 요인.\n- 미 국채금리 상승: 미 10년 국채금리가 5.04%(+0.86%)를 기록하며 높은 금리 수준을 지속, 이는 성장주에 대한 할인율을 높여 기업 가치 평가에 부정적인 압박으로 작용.",
-        "mixed": "- PCE·GDP 지표 발표 대기: 10월 29일(목) 08:30 ET에 발표될 PCE 개인소비지출(9월분)과 GDP 속보치(3분기)는 향후 연방준비제도(Fed)의 통화정책 방향과 미국 경제의 건전성을 판단할 중요한 지표로, 발표 결과에 따라 시장의 방향성이 결정될 수 있는 불확실성 요인.",
-        "watch": "- MSFT 실적 발표: 마이크로소프트(MSFT) 실적 발표(10월 28일(수) 장 마감 후 ET, 약 2시간 뒤)를 통해 기술 섹터 전반의 투자 심리 변화 확인.\n- GOOGL 실적 발표: 구글(GOOGL) 실적 발표(10월 28일(수) 장 마감 후 ET, 약 2시간 뒤)를 통해 광고 시장 및 클라우드 사업의 성장세와 시장 반응 확인.\n- PCE 개인소비지출 및 GDP 속보치: 미국 경제의 인플레이션 압력과 성장 모멘텀을 가늠할 PCE 개인소비지출(9월분) 및 GDP 속보치(3분기) 발표(10월 29일(목) 08:30 ET, 약 18시간 뒤) 결과에 따른 시장 반응 확인."
-      },
-      "report_at": "2026-10-29(목) 03:27 KST"
     }
   ],
-  "updated_at": "2026-10-29T14:21:09Z",
+  "updated_at": "2026-10-29T15:56:07Z",
   "max_entries": 10
 }
