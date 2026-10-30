@@ -62,7 +62,7 @@
     "resistance": 1890000,
     "rsiStatus": "중립",
     "macdStatus": "중립",
-    "bbStatus": "중단",
+    "bbStatus": "하단접근",
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 5,
@@ -108,11 +108,13 @@
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
-      "adxLowRisk": true,
+      "adxLowRisk": false,
       "higherTimeframeAligned": false,
-      "oversoldExtremeOrigin": true,
-      "score": "2/5",
-      "verdict": "초기 단계: 확인 관문 남음"
-    }
+      "oversoldExtremeOrigin": false,
+      "score": "0/5",
+      "verdict": "위장 가능성: 신중 필요"
+    },
+    "levelsAdjusted": true,
+    "levelsAdjustedReason": "손익비 1.00 < 1.5"
   }
 }
