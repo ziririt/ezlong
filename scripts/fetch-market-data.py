@@ -469,6 +469,10 @@ def calc_sell_score(price, sma5, sma200, rsi, macd, high52, low52, vix=18,
 
 # ─── yfinance 데이터 수집 ───────────────────────────────────────────────────
 
+# 심볼별 마지막 유효 일봉 날짜(뉴욕)와, 야후가 마지막 줄을 NaN 으로 준 날짜.
+LAST_BAR = {}
+INCOMPLETE = {}
+
 def download_history(symbol, period='2y'):
     """종목 종가·거래량·고가·저가 리스트 반환 (날짜 오름차순)
     Close NaN 행 제거 후 나머지 컬럼도 동일 행만 유지 → 모두 동일 길이·동일 날짜.
@@ -480,7 +484,21 @@ def download_history(symbol, period='2y'):
     if hist.empty:
         raise ValueError("빈 응답")
     df = hist[['Close', 'Volume', 'High', 'Low']].copy()
+    # 2026-10-31 실사고: 토요일 새벽(UTC 00:01) 야후가 10월 30일(금) 봉을 Close NaN 으로
+    # 돌려줬다. 아래 dropna 가 그 줄을 지우자 마지막 봉이 10월 29일로 물러났고,
+    # 이미 맞게 저장돼 있던 10월 30일 값(QQQ $690.49, -3.47%)을 하루 전 값($715.34)이 덮었다.
+    # 그래서 마지막 유효 봉 날짜(LAST_BAR)와 'NaN 꼬리'(INCOMPLETE)를 기록해 저장 단계에서
+    # 이전 파일보다 오래된 봉으로 물러나는 것을 막는다(6.1절).
+    try:
+        if len(df) and df['Close'].iloc[-1] != df['Close'].iloc[-1]:   # NaN 은 자기 자신과 다르다
+            INCOMPLETE[symbol] = str(df.index[-1].date())
+    except Exception:
+        pass
     df = df.dropna(subset=['Close'])        # Close NaN 행 제거
+    try:
+        LAST_BAR[symbol] = str(df.index[-1].date())
+    except Exception:
+        pass
     df['Volume'] = df['Volume'].fillna(0)   # Volume NaN → 0 (날짜 유지)
     closes  = [float(v) for v in df['Close'].tolist()]
     volumes = [float(v) for v in df['Volume'].tolist()]
@@ -489,6 +507,19 @@ def download_history(symbol, period='2y'):
     if len(closes) < 2:
         raise ValueError(f"데이터 부족: {len(closes)}개")
     return closes, volumes, highs, lows
+
+def keep_newer_bars(processed, prev_syms, incomplete):
+    """새로 받은 심볼 값이 저장된 값보다 오래된 봉이면 저장된 값을 되살린다. 되살린 목록을 돌려준다."""
+    kept = []
+    for sym, new in list(processed.items()):
+        old = (prev_syms or {}).get(sym)
+        if sym == 'VIX' or not isinstance(old, dict) or not isinstance(new, dict):
+            continue
+        nb, ob = new.get('barDate'), old.get('barDate')
+        if (nb and ob and nb < ob) or (not ob and incomplete.get(sym)):
+            processed[sym] = old
+            kept.append(f"{sym}({nb or '?'} < {ob or str(incomplete.get(sym)) + ' NaN'})")
+    return kept
 
 def download_closes(symbol, period='2y'):
     """종목 종가 리스트만 반환 (VIX·매크로·지수 전용)"""
@@ -832,6 +863,8 @@ def main():
             highs   = highs[-504:]
             lows    = lows[-504:]
             processed[sym] = process_symbol(closes, volumes, highs, lows, sym, vix_price)
+            if LAST_BAR.get(sym):
+                processed[sym]['barDate'] = LAST_BAR[sym]
             d = processed[sym]
             rsi_str    = f"{d['rsi']:.1f}"    if d['rsi']    is not None else '-'
             sma200_str = f"{d['sma200']:.2f}" if d['sma200'] is not None else '-'
@@ -915,6 +948,18 @@ def main():
             print(f"\n  히스토리 스냅샷 저장: {len(previous_signals)}개 (최대 {HISTORY_MAX}개)")
         except Exception as e:
             print(f"  이전 데이터 읽기 실패: {e}")
+
+    # ── 6.1. 봉이 뒤로 물러나지 않게 (2026-10-31 실사고, download_history 주석 참고) ──
+    # 새로 받은 마지막 봉이 이미 저장된 봉보다 오래됐으면, 그 심볼은 이전 값을 그대로 둔다.
+    # 이전 파일에 barDate 가 없으면(이 장치 이전 파일) 야후가 마지막 줄을 NaN 으로 준
+    # 경우에만 이전 값을 지킨다 - 그때 새 값은 확실히 하루 이상 뒤처져 있다.
+    try:
+        _prev_syms = (existing or {}).get('symbols', {}) if 'existing' in locals() else {}
+    except Exception:
+        _prev_syms = {}
+    _kept = keep_newer_bars(processed, _prev_syms, INCOMPLETE)
+    if _kept:
+        print(f"::warning::[6.1] 마지막 봉이 뒤로 물러나 이전 값 유지: {', '.join(_kept)}")
 
     # ── 6.5. 스윙 연속성 서술 (실패해도 무시하고 계속) ──────────────────
     print("\n--- 스윙 연속성 서술 생성 (Gemini) ---")

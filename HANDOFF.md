@@ -298,6 +298,14 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - 제목 '미국 시장 반등·반락 판별'과 범위 설명 문단은 뺐다. 위 줄 '가격 흐름 · QQQ · VOO · SOXX' 가 주어를 밝힌다(53항: 위 BUY·SELL·HOLD 는 매매 점수).
 - 거리(%)는 중립색: 판 색(빨강)을 입히면 '+2.0%' 가 하락처럼 읽힌다. 시험 5부 추가(`node scripts/swing-reversal-selftest.js`, 253건).
 
+**시세 봉이 하루 뒤로 물러난 사고(10/31 토 09:01 KST)와 장치**
+- 증상: 스윙 시그널이 10월 30일(금, 뉴욕) 봉(QQQ $690.49, -3.47%)을 보이다가 09:01 부터 10월 29일 값($715.34)으로 되돌아갔다.
+  원인: 토요일 UTC 00:01 이후 야후가 10월 30일 줄을 Close NaN 으로 준다. `download_history` 의 `dropna` 가 그 줄을 지워 마지막 봉이 물러났다.
+- 장치(`scripts/fetch-market-data.py`): 심볼마다 `barDate`(마지막 유효 일봉) 기록, NaN 꼬리는 `INCOMPLETE`, 저장 전
+  `keep_newer_bars()` 가 새 봉이 저장된 봉보다 오래됐으면 저장된 값을 지킨다(로그 `::warning::[6.1]`).
+- 데이터 복구: `data/market-signals.json` 을 08:52 판(f3dbd3173)으로 되돌리고 `barDate: 2026-10-30` 을 붙였다. TradingView 종가와 대조 일치.
+- 같은 `dropna` 패턴이 `build-swing-ai.py` · `build-weekly-risk.py` · `fetch-brief-history-chart.py` · `fetch-model-portfolio.py` 에도 있다. 아직 손대지 않았다.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
