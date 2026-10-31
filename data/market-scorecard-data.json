@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-01-07:48",
+      "timestamp_kst": "2026-11-01(일) 07:48 KST",
+      "key_event": {
+        "name": "기술주 실적 부진 및 AI 우려 지속",
+        "name_en": "Tech Earnings Miss & AI Concerns Persist",
+        "time": "직전 거래일 마감 기준",
+        "why": "주요 기술 기업 실적 부진, AI 투자 심리 위축, 나스닥 하락",
+        "why_en": "Major tech earnings miss, AI investment sentiment weakened, Nasdaq declined"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "빅테크 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to big tech earnings misses and weakened AI investment mood",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "Fed 금리 동결 기조 유지",
+          "name_en": "Fed Maintains Rate Hold",
+          "desc": "연방준비제도, 금리 동결 결정: 추가 금리 인상에 대한 시장 우려 일부 완화",
+          "desc_en": "Federal Reserve decided to hold interest rates: Partially easing market concerns over further rate hikes",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "기술주 실적 부진 지속",
+          "name_en": "Continued Tech Earnings Underperformance",
+          "desc": "주요 기술 기업 실적 부진: QQQ -1.64%, AAPL -1.97%, MSFT -1.15% 하락",
+          "desc_en": "Major tech companies reported weak earnings: QQQ -1.64%, AAPL -1.97%, MSFT -1.15% decline",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 30,
+          "name": "AI 밸류에이션 우려 심화",
+          "name_en": "Deepening AI Valuation Concerns",
+          "desc": "AI 관련 투자 심리 위축 및 밸류에이션 부담: NVDA -2.33%, SOXX -3.26% 하락",
+          "desc_en": "Weakened AI investment sentiment and valuation pressure: NVDA -2.33%, SOXX -3.26% decline",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions in Middle East",
+          "desc": "미-이란 선박 공격 및 연료 가격 상승 우려: 유가 104.12 (+0.92%) 상승하며 인플레이션 압력 잔존",
+          "desc_en": "US-Iran ship attacks and rising fuel price concerns: WTI crude at 104.12 (+0.92%), maintaining inflationary pressure",
+          "category": "geopolitics",
+          "score": 15
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미국 고용시장 강세 지속 우려",
+          "name_en": "Concerns Over Persistent Strong US Job Market",
+          "desc": "미국 고용보고서(11월 6일(금) 08:30 ET) 발표 앞두고 Fed 추가 금리 인상 가능성 제기",
+          "desc_en": "Ahead of the US Jobs Report (November 6th, 08:30 ET), concerns about Fed's further rate hikes persist",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총점: 빅테크 실적 부진과 AI 투자 심리 위축으로 총점 긍정 15 대 부정 85를 기록하며 부정 우위 지속.\n- 주요 하락 요인: 주요 기술 기업들의 실적 부진과 AI 관련 밸류에이션 우려 심화가 나스닥 지수 하락을 주도.\n- 인플레이션 압력 잔존: 중동 지정학적 긴장으로 인한 유가 상승과 미국 고용 시장 강세 지속 우려가 인플레이션 압력을 가중하며 연준의 추가 금리 인상 가능성 제기.\n- 연준 금리 동결: 연방준비제도의 금리 동결 결정은 시장의 추가 금리 인상 우려를 일부 완화하며 유일한 긍정 요인으로 작용.",
+        "positive": "- Fed 금리 동결 기조 유지: 연방준비제도가 기준금리를 동결하며 추가 금리 인상에 대한 시장의 우려를 일부 완화. 이는 10년 기대인플레이션이 2.34%로 소폭 하락한 것과 함께 시장에 긍정적인 영향을 미침.",
+        "negative": "- 기술주 실적 부진 지속: 주요 기술 기업들의 실적 부진이 지속되며 시장 전반에 부정적인 영향을 미침. QQQ는 1.64%, AAPL은 1.97%, MSFT는 1.15% 하락하며 기술주 약세를 주도.\n- AI 밸류에이션 우려 심화: AI 관련 투자 심리가 위축되고 밸류에이션 부담이 심화. NVDA는 2.33%, SOXX는 3.26% 하락하며 AI 관련 주식의 약세를 나타냄. 이는 AI 노출에 대한 미국 경제의 성장 기대치 하향 조정과 맞물려 시장에 불안감을 조성.\n- 중동 지정학적 긴장 지속: 미-이란 선박 공격 소식과 함께 유가가 104.12달러로 0.92% 상승하며 인플레이션 압력이 잔존. 이는 연료 가격 상승 우려를 키우고 인플레이션 재점화 가능성을 높여 시장에 부정적인 영향을 미침.",
+        "mixed": "- 미국 고용시장 강세 지속 우려: 미국 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 고용 시장의 강세가 지속될 경우 연방준비제도의 추가 금리 인상 가능성이 제기. 이는 경제의 견조함을 나타내는 긍정적인 신호일 수 있으나, 동시에 인플레이션 압력을 높여 금리 인상으로 이어질 수 있다는 점에서 혼조세를 보임. 10월 실업률은 4.20%로 전기 대비 소폭 상승했으나 여전히 낮은 수준을 유지.",
+        "watch": "- AAPL 실적 발표: 애플(AAPL)의 실적 발표(11월 2일(월) 장 마감 후 ET)를 앞두고 기술주 전반의 투자 심리 변화 확인."
+      },
+      "report_at": "2026-11-01(일) 07:48 KST"
+    },
+    {
       "id": "2026-10-31-23:20",
       "timestamp_kst": "2026-10-31(토) 23:20 KST",
       "key_event": {
@@ -515,76 +583,8 @@
         "watch": "- 미 10년 국채금리 추이: 미 10년 국채금리의 추가 하락 여부가 성장주 투자 심리 개선에 중요한 지표.\n- 유가 변동성: 중동 지정학적 긴장 고조에 따른 유가(WTI)의 추가 상승 여부가 인플레이션 압력 및 증시 하방 압력에 영향."
       },
       "report_at": "2026-10-31(토) 03:09 KST"
-    },
-    {
-      "id": "2026-10-30-21:50",
-      "timestamp_kst": "2026-10-30(금) 21:50 KST",
-      "key_event": {
-        "name": "빅테크 실적 부진 및 AI 우려",
-        "name_en": "Big Tech Earnings Miss & AI Concerns",
-        "time": "2026-10-30 프리마켓",
-        "why": "주요 기술 기업 실적 실망, AI 투자 심리 위축",
-        "why_en": "Disappointing earnings from major tech firms, weakening AI investment sentiment"
-      },
-      "positive_total": 10,
-      "negative_total": 90,
-      "summary": "빅테크 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to big tech earnings misses and weakening AI investment confidence.",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "유럽 경제 에너지 충격 완화",
-          "name_en": "European Economy Resists Energy Shock",
-          "desc": "유럽 경제가 이란 전쟁 에너지 충격에도 3분기 완만한 성장세 시현",
-          "desc_en": "Europe's economy shows moderate growth in Q3 despite energy shock from Iran war",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 60,
-          "name": "아마존, 인텔 실적 부진",
-          "name_en": "Amazon, Intel Earnings Disappoint",
-          "desc": "아마존 7%, 인텔 25% 프리마켓 급락: AI 지출 우려 심화",
-          "desc_en": "Amazon down 7%, Intel plunges 25% in premarket: Deepens AI spending concerns",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 30,
-          "name": "중동 지정학적 긴장 고조",
-          "name_en": "Escalating Middle East Geopolitical Tensions",
-          "desc": "호르무즈 해협 유조선 공격: 중동 공급 우려 재점화, 유가 2% 이상 상승",
-          "desc_en": "Strait of Hormuz tanker attack renews Middle East supply fears, oil prices jump over 2%",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yields",
-          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 10월29일(목, 뉴욕) 미10년 4.93%(-1.28%) · 미30년 5.30%(-0.62%). 움직임이 작아 방향 판단은 유보",
-          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.93%(-1.28%) · 미30년 5.30%(-0.62%). Move too small to call: on hold",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 10월29일(목, 뉴욕) 미국 주식 시장은 빅테크 기업들의 실적 부진과 인공지능(AI) 관련 투자 심리 위축으로 인해 전반적으로 부정적인 흐름 지속\n- 아마존과 인텔의 실망스러운 실적 발표가 기술주 전반에 걸친 매도세를 심화시키며 시장에 큰 압력으로 작용\n- 중동 지역의 지정학적 긴장 고조로 인한 유가 상승은 인플레이션 우려를 재점화하며 시장의 하방 압력 가중\n- 유럽 경제의 완만한 성장세는 유일한 긍정적 요인으로 작용했으나, 전반적인 부정적 분위기를 상쇄하기에는 역부족",
-        "positive": "- 유럽 경제 에너지 충격 완화: 이란 전쟁으로 인한 에너지 충격에도 불구하고 유럽 경제가 3분기 완만한 성장세를 시현하며 글로벌 경기 침체 우려 일부 완화.",
-        "negative": "- 아마존, 인텔 실적 부진: 아마존 주가가 프리마켓에서 7% 급락하고 인텔 주가가 25% 폭락하는 등 주요 기술 기업들의 실적이 시장 기대치에 미치지 못하며 기술주 전반에 걸친 매도세 심화.\n- AI 지출 우려 심화: 아마존과 인텔의 실적 발표에서 드러난 AI 관련 지출 및 수익성에 대한 우려가 투자 심리를 위축시키며 AI 관련 기술주 하락세 주도.\n- 중동 지정학적 긴장 고조: 호르무즈 해협 유조선 공격 소식이 중동 지역의 원유 공급 차질 우려를 재점화하며 유가가 2% 이상 상승, 인플레이션 압력 가중.",
-        "mixed": "- 미 국채금리 수준: 10월 29일(목, 뉴욕) 기준 미국 10년물 국채금리가 4.93%(-1.28%)를 기록하고 30년물 국채금리가 5.30%(-0.62%)를 기록하는 등 소폭 하락했으나, 성장주 할인율에 미치는 영향에 대한 방향성 판단은 유보.",
-        "watch": "- 미국 10년물 국채금리 추이: 현재 4.93%(-1.28%) 수준에서 추가적인 하락 또는 상승 여부가 기술주 및 성장주 전반의 투자 심리에 미치는 영향 확인.\n- 국제 유가 변동성: 중동 지정학적 긴장 고조에 따른 유가 상승세가 지속될 경우 인플레이션 우려 및 연준의 금리 인상 기조에 미치는 영향 확인.\n- 나스닥 선물 지수: 아마존, 인텔 실적 발표 이후 기술주 전반의 하락세가 지속될지, 혹은 반등할지 여부를 나스닥 선물 지수 움직임을 통해 확인."
-      },
-      "report_at": "2026-10-30(금) 21:50 KST"
     }
   ],
-  "updated_at": "2026-10-31T14:21:16Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-01(일) 07:00 KST",
-    "at_utc": "2026-10-31T22:01:37Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-10-31T22:48:42Z",
+  "max_entries": 10
 }
