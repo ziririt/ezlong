@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-10-31-20:17",
+      "timestamp_kst": "2026-10-31(토) 20:17 KST",
+      "key_event": {
+        "name": "AI 밸류에이션 우려 지속",
+        "name_en": "Persistent AI Valuation Concerns",
+        "time": "직전 거래일 마감 기준",
+        "why": "주요 기술 기업 실적 부진, AI 투자 심리 위축",
+        "why_en": "Disappointing tech earnings, weakened AI investment sentiment"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "빅테크 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to big tech earnings and AI investment concerns.",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "일부 빅테크 종목 선방",
+          "name_en": "Select Big Tech Outperformance",
+          "desc": "GOOGL (+0.29%) 등 일부 종목은 시장 하락 속에서도 선방 마감",
+          "desc_en": "GOOGL (+0.29%) and other selected stocks held up well despite overall market decline.",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "AI 밸류에이션 우려 심화",
+          "name_en": "Deepening AI Valuation Concerns",
+          "desc": "주요 기술 기업 실적 부진 및 AI 투자 심리 위축 지속, SOXX (-3.26%) 하락",
+          "desc_en": "Continued weak earnings from major tech companies and dampened AI investment sentiment, SOXX down (-3.26%).",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Sustained High Treasury Yields",
+          "desc": "미10년 국채금리 4.93%(-1.20%), 미30년 국채금리 5.31%(-0.38%)로 높은 수준 유지: 성장주 할인율에 지속적인 부담",
+          "desc_en": "US 10-year Treasury yield at 4.93% and 30-year at 5.31% remain high, posing continuous pressure on growth stock valuations.",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Ongoing Middle East Geopolitical Tensions",
+          "desc": "호르무즈 해협 선박 공격 등 중동 긴장 지속: 유가 상승 압력과 안전자산 선호 심리 상존",
+          "desc_en": "Continued tensions in the Middle East, including attacks on ships in the Strait of Hormuz, maintain upward pressure on oil prices and safe-haven demand.",
+          "category": "geopolitics",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [],
+      "report": {
+        "overview": "- 시장 총평: 빅테크 실적 부진과 AI 투자 심리 위축이 지속되며 부정적 우위가 시장을 지배, 총점 긍정 15대 부정 85로 마감.\n- 주요 하락 요인: AI 밸류에이션에 대한 우려가 심화되고 주요 기술 기업들의 실적 부진이 이어지며 투자 심리 위축 가속화.\n- 추가 하방 압력: 높은 수준의 국채금리가 성장주 할인율에 지속적인 부담으로 작용하고, 중동 지정학적 긴장이 유가 상승 압력과 안전자산 선호 심리를 자극.\n- 일부 선방 종목: GOOGL (+0.29%) 등 일부 빅테크 종목은 전반적인 시장 하락세 속에서도 상대적으로 선방하며 긍정 요인으로 작용.",
+        "positive": "- 일부 빅테크 종목 선방: 시장 전반의 하락세에도 불구하고 GOOGL (+0.29%)과 같은 일부 대형 기술 기업들이 견조한 모습을 보이며 상대적인 강세로 시장의 추가 하락을 방어.",
+        "negative": "- AI 밸류에이션 우려 심화: 주요 기술 기업들의 실적 부진과 AI 관련 투자 심리 위축이 지속되며 반도체 섹터 ETF인 SOXX (-3.26%)가 크게 하락, AI 기술주 전반에 대한 밸류에이션 부담이 가중.\n- 높은 국채금리 수준 지속: 미10년 국채금리 4.93%(-1.20%)와 미30년 국채금리 5.31%(-0.38%)가 여전히 높은 수준을 유지, 이는 미래 성장을 기대하는 기술주와 성장주 전반의 할인율에 지속적인 부담으로 작용.\n- 중동 지정학적 긴장 지속: 호르무즈 해협에서의 선박 공격 등 중동 지역의 지정학적 긴장이 고조, 이는 국제 유가 상승 압력을 높이고 투자자들의 안전자산 선호 심리를 강화하여 증시 전반에 하방 압력으로 작용.",
+        "mixed": "",
+        "watch": "- 국채금리 추이: 미10년 및 미30년 국채금리의 추가적인 변동성 확인, 높은 금리 수준이 지속될 경우 성장주에 대한 압박 지속."
+      },
+      "report_at": "2026-10-31(토) 20:17 KST"
+    },
+    {
       "id": "2026-10-31-11:50",
       "timestamp_kst": "2026-10-31(토) 11:50 KST",
       "key_event": {
@@ -523,84 +583,8 @@
         "watch": "- 미 10년 국채금리 추이: 현재 4.99%(-1.11%) 수준의 미 10년 국채금리가 추가 하락할 경우 성장주에 대한 긍정적 영향이 확대될 가능성.\n- 기술 및 반도체 섹터 움직임: 알파벳, 아마존, 인텔 실적 발표 이후 기술 및 반도체 섹터의 추가 하락 여부 확인."
       },
       "report_at": "2026-10-30(금) 11:50 KST"
-    },
-    {
-      "id": "2026-10-30-07:01",
-      "timestamp_kst": "2026-10-30(금) 07:01 KST",
-      "key_event": {
-        "name": "빅테크 실적 부진 및 AI 우려",
-        "name_en": "Big Tech Earnings Miss & AI Concerns",
-        "time": "2026-10-29 포스트마켓",
-        "why": "주요 기술 기업 실적 실망, AI 투자 심리 위축",
-        "why_en": "Disappointing earnings from major tech firms, weakened AI investment sentiment"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "빅테크 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to big tech earnings misses and weak AI investment sentiment",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.99%(-1.11%) 하락, 성장주 할인율 부담 완화",
-          "desc_en": "US 10-year Treasury yield fell to 4.99% (-1.11%), easing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "알파벳 매출 예상치 하회",
-          "name_en": "Alphabet Revenue Misses Estimates",
-          "desc": "GOOGL -3.72% 하락: 광고 매출 부진으로 AI 투자 비용 우려 재점화",
-          "desc_en": "GOOGL fell -3.72% as disappointing ad revenue reignited concerns over AI investment costs",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 20,
-          "name": "PCE 물가 상승 압력 지속",
-          "name_en": "Persistent PCE Inflation Pressure",
-          "desc": "근원 PCE 물가 3.12%, PCE 물가 3.65% 상승: 인플레이션 우려 지속",
-          "desc_en": "Core PCE inflation rose to 3.12% and PCE inflation to 3.65%, sustaining inflation concerns",
-          "category": "macro_data"
-        },
-        {
-          "score": 20,
-          "name": "중동 지정학적 긴장 고조",
-          "name_en": "Escalating Middle East Geopolitical Tensions",
-          "desc": "WTI 원유 102.86(+1.42%) 상승: 중동 분쟁 확산 우려로 유가 상승, 인플레이션 압력 가중",
-          "desc_en": "WTI crude rose to 102.86 (+1.42%) due to fears of escalating Middle East conflict, increasing inflation pressure",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AAPL 실적 발표 대기",
-          "name_en": "Anticipation for AAPL Earnings",
-          "desc": "11월 2일(월) 장 마감 후 ET 발표 예정: 시장의 기대와 우려가 혼재",
-          "desc_en": "Scheduled for release after market close on November 2 (Mon) ET: Mixed market expectations and concerns",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 빅테크 실적 부진과 AI 투자 심리 위축으로 부정 우위가 지속되는 양상.\n- 주요 원인: 알파벳의 광고 매출 부진과 AI 투자 비용 우려 재점화가 시장 전반의 기술주 투자 심리 위축으로 이어짐.\n- 인플레이션 우려: PCE 물가 상승 압력 지속과 중동 지정학적 긴장 고조로 인한 유가 상승이 인플레이션 우려를 가중.\n- 국채금리 하락: 미 국채금리 하락은 성장주 할인율 부담을 일부 완화하며 시장의 급격한 하락을 방어.",
-        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.99%(-1.11%)로 1.11% 하락하며 성장주에 대한 할인율 부담이 완화되는 효과 발생. 이는 기술주 중심의 나스닥 지수 하락폭을 제한하는 요인으로 작용.",
-        "negative": "- 알파벳 매출 예상치 하회: 알파벳(GOOGL) 주가가 3.72% 하락하며 시장에 부정적인 영향을 미침. 이는 광고 매출 부진이 주요 원인으로, AI 투자 비용에 대한 시장의 우려를 재점화하는 계기.\n- PCE 물가 상승 압력 지속: 근원 PCE 물가가 3.12%, PCE 물가가 3.65% 상승하며 인플레이션 우려가 지속되는 상황. 이는 연방준비제도(Fed)의 추가적인 긴축 가능성을 높이는 요인으로 작용.\n- 중동 지정학적 긴장 고조: 서부 텍사스산 원유(WTI) 가격이 102.86달러로 1.42% 상승하며 중동 분쟁 확산 우려가 커짐. 이는 유가 상승을 통해 인플레이션 압력을 가중시키고 경제 불확실성을 높이는 요인.",
-        "mixed": "- AAPL 실적 발표 대기: 애플(AAPL)의 실적 발표가 11월 2일(월) 장 마감 후 ET로 예정되어 있어 시장의 기대와 우려가 혼재. 아이폰 판매량 및 서비스 부문 성장에 대한 기대감이 있는 반면, 글로벌 경기 둔화와 중국 시장에서의 경쟁 심화로 인한 실적 부진 우려도 상존.",
-        "watch": "- 미 10년 국채금리 추이: 현재 4.99%(-1.11%) 수준에서 추가적인 하락 또는 반등 여부가 성장주 할인율 부담 완화 및 시장 방향성에 중요한 지표로 작용.\n- 국제 유가(WTI) 변동성: 중동 지정학적 긴장 고조에 따른 WTI 유가(102.86달러)의 추가 상승 여부가 인플레이션 압력 및 증시 전반에 미치는 영향 확인."
-      },
-      "report_at": "2026-10-30(금) 07:01 KST"
     }
   ],
-  "updated_at": "2026-10-31T02:51:20Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-10-31(토) 18:20 KST",
-    "at_utc": "2026-10-31T09:21:13Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-10-31T11:18:29Z",
+  "max_entries": 10
 }
