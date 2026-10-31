@@ -14,7 +14,7 @@ const assert = require('node:assert/strict');
 const fs   = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
-const { evaluate, evaluateMarket, primitives, VERSION, STALE_HOURS, NOTICE_HOURS, AGREE, MARKET }
+const { evaluate, evaluateMarket, primitives, hero, VERSION, STALE_HOURS, NOTICE_HOURS, AGREE, MARKET }
   = require(path.join(ROOT, 'swing-reversal.js'));
 
 let pass = 0; const fails = [];
@@ -331,6 +331,68 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     const p = primitives(B);
     ok('primitives 가 네 묶음을 낸다', p.above === true && p.trendUp === true && p.up === true
        && p.volDir === 1);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   5부 — 화면 머리 압축 (2026-10-31 운영 피드백: "무슨 소린지 모르겠다")
+   머리는 사실 한 줄 + 뜻 한 줄 + 다음 신호. 판정은 evaluateMarket 이 이미 했다.
+══════════════════════════════════════════════════════════════════ */
+console.log('[5부] 화면 머리 압축');
+{
+  const now = Date.parse('2026-09-13T00:00:00Z');
+  const B = {price:110,sma20:105,sma50:100,sma200:90,high20dExcl:115,low20dExcl:95,
+             rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
+  const mk = (o = {}) => ({ generatedAt:new Date(now).toISOString(),
+    symbols:{ QQQ:{...B,...(o.QQQ||{})}, VOO:{...B,...(o.VOO||{})}, SOXX:{...B,...(o.SOXX||{})} } });
+  const all = x => ({QQQ:x, VOO:x, SOXX:x});
+  const weak = {rsi:40, rsi5dAgo:50, macd:{histogram:-2}, hist5dAgo:1};
+  const cases = [
+    ['하방 이탈 · 반락 경계',       mk(all({price:94})),                                   'down'],
+    ['상방 돌파 · 지지 확인 대기',   mk(all({price:120})),                                  'up'],
+    ['상방 돌파 · 근거 충돌',       mk(all({price:120, ...weak})),                          'mixed'],
+    ['하락 추세 속 반등 시도',       mk(all({sma200:130})),                                 'mixed'],
+    ['상승 추세 속 반락 경계',       mk(all({price:99, ...weak})),                          'mixed'],
+    ['회복 우세 · 추세 관찰',       mk(),                                                   'up'],
+    ['약세 지속 · 회복 미확인',     mk(all({price:99, sma200:130, ...weak})),               'down'],
+    ['방향 혼재 · 관찰',           mk({QQQ:{price:94}, VOO:{price:120}, SOXX:{price:102}}), 'mixed']
+  ];
+  for (const [want, snap, tone] of cases) {
+    const r = evaluateMarket(snap, now);
+    ok(`${want}: 판정이 그대로 나온다`, r.state === want, r.state);
+    const h = hero(r);
+    ok(`${want}: 머리가 만들어진다`, !!h && !!h.head && !!h.line && !!h.next && !!h.badge);
+    if (!h) continue;
+    ok(`${want}: 색 갈래 ${tone}`, h.tone === tone, h.tone);
+    ok(`${want}: 머리 문장에 존댓말 종결이 없다(34항)`, !/(습니다|입니다|하세요)/.test(h.head + h.line + h.next));
+    ok(`${want}: 긴 대시가 없다(80항)`, !/[–—]/.test(h.head + h.line + h.next + h.badge));
+    ok(`${want}: 지수 세 칸`, h.chips.length === 3);
+    ok(`${want}: 칸마다 기준 가격과 거리`, h.chips.every(c => c.levels.length >= 1
+       && c.levels.every(l => typeof l.value === 'number' && /^[+-]?\d+\.\d%$/.test(l.dist))));
+  }
+  /* 하방 이탈일 때 회복선은 지금 가격보다 위다 - 거리는 + 로 읽힌다 */
+  {
+    const h = hero(evaluateMarket(mk(all({price:94})), now));
+    ok('하방 이탈: 회복선은 직전 20일 저가', h.chips.every(c => c.levels[0].label === '회복선' && c.levels[0].value === 95));
+    ok('하방 이탈: 회복선까지 거리는 +', h.chips.every(c => c.levels[0].dist.startsWith('+')));
+    ok('세 곳 모두면 "세 지수 모두"', h.head.startsWith('세 지수 모두'));
+    const two = hero(evaluateMarket(mk({QQQ:{price:94}, VOO:{price:94}}), now));
+    ok('두 곳이면 이름을 적는다', two.head.startsWith('나스닥100·S&P500'), two.head);
+  }
+  ok('판정 보류면 머리를 만들지 않는다', hero(evaluateMarket(mk(), now + 200 * 3600000)) === null);
+  /* 오늘 실제 데이터 */
+  {
+    const snap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'market-signals.json'), 'utf8'));
+    const r = evaluateMarket(snap, Date.parse(snap.generatedAt) + 3600000);
+    const h = hero(r);
+    ok('실제 데이터로 머리가 만들어진다', !r.ready || !!h);
+    if (h) console.log(`   머리: [${h.badge}] ${h.head} / ${h.line} / 다음 신호: ${h.next}`);
+  }
+  /* 화면 구조: 머리 아래 근거는 접힘 안에 있다 */
+  {
+    const src = fs.readFileSync(path.join(ROOT, 'swing-reversal.js'), 'utf8');
+    ok('근거·기준은 접힘 안에 있다', /<details class="rv-more">[\s\S]*id="rv-plan"/.test(src));
+    ok('머리 제목은 상태 이름이 아니라 hero().head', /rv-headline">\$\{escape\(hv\.head\)\}/.test(src));
   }
 }
 

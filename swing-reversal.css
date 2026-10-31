@@ -3,7 +3,10 @@
    상자를 들어냈다. 이 패널은 읽는 곳이지 조작하는 곳이 아니다.
    .rv-old    스냅샷이 하루를 넘겼을 때 시각 표기
    글자 크기는 14항(14px 하한)을 지킨다. */
-#reversal-panel { margin:24px 0; padding:24px 0; border-top:1px solid var(--ez-border); border-bottom:1px solid var(--ez-border); color:var(--ez-text); font-size:16px; line-height:1.65; letter-spacing:0; }
+#reversal-panel { --rv-tone:var(--ez-text2); margin:24px 0; padding:22px 22px 6px; border:1px solid var(--ez-border); border-left:4px solid var(--rv-tone); border-radius:14px; background:var(--ez-card); color:var(--ez-text); font-size:16px; line-height:1.6; letter-spacing:0; }
+#reversal-panel.rv-tone-down  { --rv-tone:var(--ez-red); }
+#reversal-panel.rv-tone-up    { --rv-tone:var(--ez-green); }
+#reversal-panel.rv-tone-mixed { --rv-tone:#636366; }
 #reversal-panel * { box-sizing:border-box; letter-spacing:0; }
 #reversal-panel h2 { font-size:24px; margin:0; line-height:1.4; }
 #reversal-panel h3 { font-size:20px; margin:20px 0 8px; }
@@ -17,15 +20,28 @@
 #reversal-panel .rv-note,#rv-time { color:var(--ez-text2); font-size:14px; }
 #reversal-panel summary { min-height:44px; cursor:pointer; font-weight:600; }
 
-/* 세 지수 한 줄씩. 종목을 고르는 화면이 아니라 셋을 같이 보는 화면이다. */
-.rv-scope { color:var(--ez-text2); font-size:15px; margin:6px 0 0; max-width:62ch; }
-.rv-members { margin-top:20px; border-top:1px solid var(--ez-border); }
-.rv-member { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 16px; padding:14px 0; border-bottom:1px solid var(--ez-border); }
-.rv-m-name { font-weight:600; min-width:11em; }
+/* 2026-10-31 머리 압축: 사실 한 줄(headline) + 뜻 한 줄(line) + 지수 세 칸 + 다음 신호.
+   상태 배지는 solid 배경 + 흰 글자(5절). 색은 판의 왼쪽 띠와 배지 둘에만 쓴다. */
+.rv-scope { color:var(--ez-text2); font-size:14px; font-weight:600; margin:0 0 10px; }
+.rv-top { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
+.rv-badge { display:inline-block; padding:4px 10px; border-radius:999px; background:var(--rv-tone); color:#fff; font-size:14px; font-weight:700; line-height:1.4; white-space:nowrap; }
+#reversal-panel .rv-headline { font-size:clamp(22px,3.6vw,28px); font-weight:800; line-height:1.3; letter-spacing:-0.02em; margin:0; text-wrap:balance; }
+#reversal-panel .rv-line { font-size:17px; font-weight:600; color:var(--ez-text); margin:8px 0 16px; }
+
+/* 세 지수 세 칸. 종목을 고르는 화면이 아니라 셋을 같이 보는 화면이다. */
+.rv-members { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 14px; }
+.rv-member { display:flex; flex-direction:column; gap:2px; padding:12px 14px; border-radius:12px; background:var(--ez-surface); border:1px solid var(--ez-border); }
+.rv-m-name { font-weight:600; font-size:15px; }
 .rv-m-name b { font-weight:700; color:var(--ez-blue); }
-.rv-m-word { flex:1 1 12em; }
-.rv-m-num { color:var(--ez-text2); font-size:15px; }
-.rv-member-out .rv-m-word { color:var(--ez-text2); }
+.rv-m-price { font-size:20px; font-weight:700; }
+.rv-m-word { font-size:14px; color:var(--ez-text2); }
+.rv-m-level { font-size:15px; font-weight:600; margin-top:4px; }
+/* 거리(%)는 중립색. 이 사이트는 + 를 초록으로 쓰는데 판 색(빨강)을 입히면 '+2.0%' 가 하락처럼 읽힌다 */
+.rv-m-level em { font-style:normal; font-weight:600; color:var(--ez-text2); margin-left:2px; }
+#reversal-panel .rv-next { font-size:16px; margin:0 0 6px; }
+.rv-next b { font-weight:700; margin-right:6px; }
+.rv-more { margin-top:6px; border-top:1px solid var(--ez-border); }
+.rv-more[open] { padding-bottom:12px; }
 
 /* 반도체만 갈라졌을 때의 한 문단 */
 .rv-lead { margin:18px 0 0; padding:14px 16px; border-radius:10px; background:var(--ez-surface); border:1px solid var(--ez-border); font-size:15px; }
@@ -46,5 +62,9 @@
 .rv-cases { margin:16px 0; }
 .rv-cases b { font-weight:700; }
 
-@media(max-width:600px) { .rv-axes { grid-template-columns:1fr; } #reversal-panel h2 { font-size:22px; } .rv-head { align-items:flex-start; }
-  .rv-m-name,.rv-l-name { min-width:100%; } .rv-member,.rv-level { padding:12px 0; } }
+@media(max-width:600px) { .rv-axes { grid-template-columns:1fr; } #reversal-panel { padding:18px 16px 4px; }
+  .rv-members { grid-template-columns:1fr; gap:8px; }
+  .rv-member { display:grid; grid-template-columns:1fr auto; column-gap:12px; padding:10px 12px; }
+  .rv-m-price { font-size:18px; text-align:right; } .rv-m-level { grid-column:1 / -1; margin-top:2px; }
+  .rv-m-word { display:none; }  /* 폰에서는 머리 문장과 겹친다. 지수별 상태는 '근거와 기준' 안에 남는다 */
+  .rv-l-name { min-width:100%; } .rv-level { padding:12px 0; } }

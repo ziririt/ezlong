@@ -181,36 +181,123 @@
       reason:'확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 나스닥100·S&P500·반도체 중 둘 이상이 같은 방향일 때만 시장을 판정합니다. 돌파·이탈 실패의 확정 판정에는 시계열 검증이 추가로 필요합니다.' };
   }
 
-  if (typeof module !== 'undefined') module.exports = {evaluate, evaluateMarket, primitives, VERSION, STALE_HOURS, NOTICE_HOURS, AGREE, MARKET};
+  /* ── 화면 머리: 판정을 한 줄 사실 + 한 줄 의미 + 다음 신호로 압축한다 ──────────
+     2026-10-31 운영 피드백: "무슨 소린지, 어떻게 하라는 건지 모르겠다. 서두만 읽다가
+     도망갈 듯." 이전 머리는 '하방 이탈 · 반락 경계' 같은 상태 이름 뒤에 면책 문장,
+     지수 세 줄, 근거 네 칸, 가격표, 상황별 세 문단이 차례로 펼쳐졌다.
+     이제 머리에는 셋만 둔다.
+       head  지금 가격이 어디 있는지 - 상태 이름이 아니라 사실로 쓴다
+       line  그게 무슨 뜻인지 - 명사형 한 줄
+       next  무엇이 바뀌면 판정이 바뀌는지 - 지수별 기준 가격과 거리(%)
+     근거 네 축·상황별 문장·한계는 '근거와 기준' 접힘 안으로 내렸다. 지운 것은 없다.
+     판정(state)은 evaluateMarket 이 이미 정했다. 여기서는 말만 바꾼다(13절: 판정은 한 번). */
+  function hero(r) {
+    if (!r || !r.ready) return null;
+    const live = r.members.filter(m => m.ready);
+    const k = r.counts, A = k.agree;
+    const group = f => {
+      const hit = live.filter(m => f(m.p));
+      return live.length === 3 && hit.length === 3 ? '세 지수 모두' : hit.map(m => m.name).join('·');
+    };
+    const UP = { key:'resistance', label:'돌파선' }, DN = { key:'support', label:'이탈선' };
+    const S = {
+      '하방 이탈 · 반락 경계': { tone:'down', badge:'반락 경계',
+        head:`${group(p=>p.breakdown)} 20일 최저가 아래로`,
+        line:'하락 흐름 진행 중: 반등 확인 전 구간',
+        lvl:{ key:'support', label:'회복선' },
+        next:`${A}곳 이상이 회복선 위로 돌아오면 이탈 해제` },
+      '상방 돌파 · 지지 확인 대기': { tone:'up', badge:'돌파',
+        head:`${group(p=>p.breakout)} 20일 최고가 위로`,
+        line:'상승 흐름 확인: 돌파한 가격을 지키는지 확인 구간',
+        lvl:{ key:'resistance', label:'지지선' },
+        next:`${A}곳 이상이 지지선 아래로 밀리면 돌파 실패` },
+      '상방 돌파 · 근거 충돌': { tone:'mixed', badge:'돌파·근거 부족',
+        head:`${group(p=>p.breakout)} 20일 최고가 위로`,
+        line:'가격은 돌파, 모멘텀·200일선은 아직 미동반 구간',
+        lvl:{ key:'resistance', label:'지지선' },
+        next:`${A}곳 이상이 지지선 아래로 밀리면 돌파 실패` },
+      '하락 추세 속 반등 시도': { tone:'mixed', badge:'반등 시도',
+        head:'200일선 아래에서 반등 시도',
+        line:'단기 모멘텀 개선, 큰 추세는 아직 하락 구간',
+        lvl:UP, next:`${A}곳 이상이 돌파선을 넘으면 상승 전환 확인` },
+      '상승 추세 속 반락 경계': { tone:'mixed', badge:'눌림',
+        head:'200일선 위, 단기 평균 아래로 밀림',
+        line:'큰 추세는 상승, 단기 흐름은 약화 구간',
+        lvl:DN, next:`${A}곳 이상이 이탈선 아래로 마감하면 하방 이탈` },
+      '회복 우세 · 추세 관찰': { tone:'up', badge:'회복 우세',
+        head:'20일·50일 평균 위로 회복',
+        line:'단기 흐름 회복: 추세 지속 여부 관찰 구간',
+        lvl:UP, next:`${A}곳 이상이 돌파선을 넘으면 상승 확인` },
+      '약세 지속 · 회복 미확인': { tone:'down', badge:'약세',
+        head:'20일·50일 평균 아래 약세 지속',
+        line:'회복 신호 미확인 구간',
+        lvl:DN, next:`${A}곳 이상이 이탈선 아래로 마감하면 하방 이탈` },
+      '방향 혼재 · 관찰': { tone:'mixed', badge:'방향 혼재',
+        head:'세 지수 방향 엇갈림',
+        line:'한쪽으로 판정하지 않는 구간',
+        lvl:null, next:`${A}곳 이상이 같은 쪽 기준선을 넘을 때 판정` }
+    };
+    const h = S[r.state];
+    if (!h) return null;
+    const pct = (lv, px) => { const v = (lv / px - 1) * 100; return (v > 0 ? '+' : '') + v.toFixed(1) + '%'; };
+    const chips = live.map(m => {
+      const lv = h.lvl ? [{ label:h.lvl.label, value:m[h.lvl.key] }]
+                       : [{ label:'돌파선', value:m.resistance }, { label:'이탈선', value:m.support }];
+      return { name:m.name, etf:m.etf, price:m.price, word:m.word,
+               levels: lv.map(x => ({ ...x, dist: pct(x.value, m.price) })) };
+    });
+    return { tone:h.tone, badge:h.badge, head:h.head, line:h.line, next:h.next, chips };
+  }
+
+  if (typeof module !== 'undefined') module.exports = {evaluate, evaluateMarket, primitives, hero, VERSION, STALE_HOURS, NOTICE_HOURS, AGREE, MARKET};
   /* 여기서부터는 화면이다. 고르는 장치는 두지 않는다 - 이 패널은 읽는 곳이다. */
   if (!root.document) return;
   const host = document.getElementById('reversal-panel');
   if (!host) return;
   const escape = x => String(x).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let snapshot;
-  host.innerHTML = `<div class="rv-head"><div><h2>미국 시장 반등·반락 판별</h2><p class="rv-scope">나스닥100 QQQ · S&amp;P500 VOO · 반도체 SOXX 를 함께 봅니다. 개별 종목은 TOP9 집중분석에서 봅니다.</p></div></div><p id="rv-time">시세 스냅샷 확인 중…</p><div id="rv-result" aria-live="polite"></div><div id="rv-plan"></div><details><summary>판정 기준과 한계</summary><p>일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 VOO 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
-  const price = x => '$' + x.toLocaleString('en-US', {maximumFractionDigits:2});
+  /* 머리 위 작은 줄은 주어를 밝히는 자리다(53항). 바로 위 BUY·SELL·HOLD 는 매매 점수이고
+     이 판은 가격의 자리다. 둘이 다른 말을 하는 날에도 무엇을 재는지가 갈리면 읽힌다. */
+  host.innerHTML = `<p class="rv-scope">가격 흐름 · 나스닥100 QQQ · S&amp;P500 VOO · 반도체 SOXX</p><div id="rv-result" aria-live="polite"><p class="rv-line">시세 확인 중</p></div><p id="rv-time"></p><details class="rv-more"><summary>근거와 기준 보기</summary><div id="rv-plan"></div><p class="rv-note">일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 VOO 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
+  const price = x => '$' + x.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const WD = '일월화수목금토';
+  function stamp(t) {
+    /* 상대어(오늘·어제)를 쓰지 않는다(89항). 수집 시각을 KST 절대 시각으로 적는다. */
+    const k = new Date(t + 9 * 3600000);
+    const hh = String(k.getUTCHours()).padStart(2, '0'), mm = String(k.getUTCMinutes()).padStart(2, '0');
+    return `${k.getUTCMonth() + 1}월 ${k.getUTCDate()}일(${WD[k.getUTCDay()]}) ${hh}:${mm} KST`;
+  }
   function paint() {
     const r = evaluateMarket(snapshot);
     const timeEl = document.getElementById('rv-time');
-    if (r.ready) {
-      /* 생성 시각만 적으면 '지금'처럼 읽힌다. 몇 시간 전인지 숫자로 같이 말한다. */
-      const h = r.ageHours;
-      const ago = h < 1 ? '1시간 이내' : h < 48 ? `${Math.round(h)}시간 전` : `${Math.floor(h / 24)}일 전`;
-      timeEl.textContent = `스냅샷 생성: ${new Date(r.time).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} KST (${ago}) · 일봉 관찰`;
-      timeEl.classList.toggle('rv-old', h > NOTICE_HOURS);
-    } else {
-      timeEl.textContent = '최신 시세 확인 필요';
-      timeEl.classList.remove('rv-old');
-    }
     const result = document.getElementById('rv-result');
-    result.innerHTML = `<h3>${escape(r.state)}</h3><p>${escape(r.reason)}</p>`;
     const plan = document.getElementById('rv-plan');
-    if (!r.ready) {plan.replaceChildren();return;}
-    result.innerHTML += `<div class="rv-members">${r.members.map(m=>`<div class="rv-member${m.ready ? '' : ' rv-member-out'}"><span class="rv-m-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-m-word">${escape(m.word)}</span><span class="rv-m-num">${m.ready ? escape(price(m.price)) + ' · 200일선 ' + (m.trendUp ? '위' : '아래') : ''}</span></div>`).join('')}</div>`;
-    result.innerHTML += `<div class="rv-axes">${r.axes.map(a=>`<div><h4>${escape(a.name)} <span class="rv-dir">${a.direction>0?'상승 근거':a.direction<0?'하락 근거':'미확인·혼재'}</span></h4><p>${escape(a.text)}</p></div>`).join('')}</div>`;
-    if (r.lead) result.innerHTML += `<p class="rv-lead">${escape(r.lead)}</p>`;
-    plan.innerHTML = `<h3>다음에 확인할 조건</h3><div class="rv-levels">${r.members.filter(m=>m.ready).map(m=>`<div class="rv-level"><span class="rv-l-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-l-up">상방 ${escape(price(m.resistance))}</span><span class="rv-l-dn">하방 ${escape(price(m.support))}</span></div>`).join('')}</div><p>상방은 직전 20일 고가, 하방은 직전 20일 저가입니다. ${escape(String(r.counts.agree))}곳 이상이 같은 쪽을 넘어설 때 시장 판정이 바뀝니다. 이미 넘어선 곳은 되돌아오는지를 관찰합니다.</p><p class="rv-cases"><b>미보유라면</b> 돌파 전 선진입과 돌파 후 지지 확인은 다른 계획입니다. 회복 조건을 충족하지 못하면 진입을 보류하는 선택도 남겨둡니다.<br><b>보유 중이라면</b> 감당할 손실을 먼저 점검합니다. 지지를 잃고 회복하지 못할 때 축소 계획을 재검토합니다.<br><b>추가매수를 본다면</b> 평균단가가 내려가는 것보다 더 떨어졌을 때의 계좌 손실을 먼저 비교합니다.</p><p class="rv-note">두 가격은 관찰 기준이지 목표가·손절 권고가 아닙니다. 갭과 급변 시 원하는 가격에 거래하지 못할 수 있습니다.</p>`;
+    host.classList.remove('rv-tone-up','rv-tone-down','rv-tone-mixed');
+    const hv = hero(r);
+    if (!r.ready || !hv) {
+      result.innerHTML = `<h2 class="rv-headline">미국 시장 판정 보류</h2><p class="rv-line">${escape(r.reason)}</p>`;
+      timeEl.textContent = r.ready ? '' : '최신 시세 확인 필요';
+      timeEl.classList.remove('rv-old');
+      plan.replaceChildren();
+      return;
+    }
+    host.classList.add('rv-tone-' + hv.tone);
+    const h = r.ageHours;
+    const ago = h < 1 ? '1시간 이내' : h < 48 ? `${Math.round(h)}시간 전` : `${Math.floor(h / 24)}일 전`;
+    timeEl.textContent = `시세 ${stamp(r.time)} 수집 (${ago}) · 일봉 기준`;
+    timeEl.classList.toggle('rv-old', h > NOTICE_HOURS);
+    result.innerHTML =
+      `<div class="rv-top"><span class="rv-badge">${escape(hv.badge)}</span><h2 class="rv-headline">${escape(hv.head)}</h2></div>`
+      + `<p class="rv-line">${escape(hv.line)}</p>`
+      + `<div class="rv-members">${hv.chips.map(c => `<div class="rv-member"><span class="rv-m-name">${escape(c.name)} <b>${escape(c.etf)}</b></span><span class="rv-m-price">${escape(price(c.price))}</span><span class="rv-m-word">${escape(c.word)}</span>${c.levels.map(l => `<span class="rv-m-level">${escape(l.label)} ${escape(price(l.value))} <em>${escape(l.dist)}</em></span>`).join('')}</div>`).join('')}</div>`
+      + `<p class="rv-next"><b>다음 신호</b> ${escape(hv.next)}</p>`
+      + (r.lead ? `<p class="rv-lead">${escape(r.lead)}</p>` : '');
+    plan.innerHTML =
+      `<div class="rv-axes">${r.axes.map(a=>`<div><h4>${escape(a.name)} <span class="rv-dir">${a.direction>0?'상승 근거':a.direction<0?'하락 근거':'미확인·혼재'}</span></h4><p>${escape(a.text)}</p></div>`).join('')}</div>`
+      + `<h3>지수별 기준 가격</h3><div class="rv-levels">${r.members.filter(m=>m.ready).map(m=>`<div class="rv-level"><span class="rv-l-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-l-up">상방 ${escape(price(m.resistance))}</span><span class="rv-l-dn">하방 ${escape(price(m.support))}</span></div>`).join('')}</div>`
+      + `<p>상방은 직전 20일 고가, 하방은 직전 20일 저가입니다. ${escape(String(r.counts.agree))}곳 이상이 같은 쪽을 넘어설 때 시장 판정이 바뀝니다.</p>`
+      + `<p class="rv-cases"><b>미보유라면</b> 돌파 전 선진입과 돌파 후 지지 확인은 다른 계획입니다. 회복 조건을 충족하지 못하면 진입을 보류하는 선택도 남겨둡니다.<br><b>보유 중이라면</b> 감당할 손실을 먼저 점검합니다. 지지를 잃고 회복하지 못할 때 축소 계획을 재검토합니다.<br><b>추가매수를 본다면</b> 평균단가가 내려가는 것보다 더 떨어졌을 때의 계좌 손실을 먼저 비교합니다.</p>`
+      + `<p class="rv-note">기준 가격은 관찰선이지 목표가·손절 권고가 아닙니다. 갭과 급변 시 원하는 가격에 거래하지 못할 수 있습니다.</p>`;
   }
   async function load() {
     try {
