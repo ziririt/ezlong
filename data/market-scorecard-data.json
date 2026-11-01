@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-11-02-00:52",
+      "timestamp_kst": "2026-11-02(월) 00:52 KST",
+      "key_event": {
+        "name": "기술주 실적 부진 및 AI 우려 지속",
+        "name_en": "Continued Tech Earnings Weakness & AI Concerns",
+        "time": "직전 거래일 마감 기준",
+        "why": "주요 기술 기업 실적 부진, AI 투자 심리 위축, 나스닥 하락",
+        "why_en": "Major tech earnings miss, dampened AI investment sentiment, Nasdaq decline"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "기술주 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to tech earnings weakness and subdued AI investment.",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.93%(-1.20%) 하락: 성장주 투자 매력 소폭 개선",
+          "desc_en": "US 10-year Treasury yield at 4.93% (-1.20%) decline: Slightly improves growth stock appeal",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 60,
+          "name": "기술주 실적 부진 지속",
+          "name_en": "Continued Weakness in Tech Earnings",
+          "desc": "QQQ -1.64%, SPY -1.00% 등 주요 기술주 실적 부진 및 AI 투자 심리 위축",
+          "desc_en": "Major tech earnings weakness and dampened AI investment sentiment, QQQ -1.64%, SPY -1.00%",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 20,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions in Middle East",
+          "desc": "미-이란 긴장 지속: 유가 변동성 확대 및 위험 회피 심리 강화",
+          "desc_en": "Continued US-Iran tensions: Increased oil price volatility and heightened risk aversion",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AAPL 실적 발표 대기",
+          "name_en": "Anticipation for AAPL Earnings Release",
+          "desc": "11월 2일(월) 장 마감 후 ET 발표 예정: 시장의 주요 관심사로 관망세",
+          "desc_en": "Scheduled for release after market close on Nov 2 (Mon) ET: Awaiting key market event",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "고용보고서 발표 대기",
+          "name_en": "Anticipation for Jobs Report Release",
+          "desc": "11월 6일(금) 08:30 ET 발표 예정: Fed 통화정책 방향성 판단에 중요",
+          "desc_en": "Scheduled for release on Nov 6 (Fri) 08:30 ET: Crucial for Fed monetary policy direction",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 10월30일(금, 뉴욕) 시장 총평: 기술주 실적 부진과 AI 투자 심리 위축이 지속되며 부정적 우위 유지.\n- 주요 하락 원인: 주요 기술 기업들의 실적 부진과 AI 관련 투자 심리 위축으로 나스닥 지수 하락.\n- 시장 전반 분위기: 중동 지정학적 긴장 지속으로 유가 변동성 확대 및 위험 회피 심리 강화, 시장 전반의 관망세 심화.",
+        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.93%(-1.20%)로 1.20% 하락하며 성장주 투자 매력 소폭 개선.",
+        "negative": "- 기술주 실적 부진 지속: QQQ -1.64%, SPY -1.00% 등 주요 기술주 실적 부진과 AI 투자 심리 위축 지속으로 시장 전반의 하락 압력 가중.\n- 중동 지정학적 긴장 지속: 미국-이란 간 긴장 지속으로 유가 변동성 확대 및 위험 회피 심리 강화, 글로벌 경제 불확실성 증대.",
+        "mixed": "- AAPL 실적 발표 대기: 11월 2일(월) 장 마감 후 ET 예정된 애플 실적 발표를 앞두고 시장의 주요 관심사로 작용하며 관망세 형성.\n- 고용보고서 발표 대기: 11월 6일(금) 08:30 ET 예정된 고용보고서 발표를 앞두고 연방준비제도(Fed)의 통화정책 방향성 판단에 중요한 지표로 인식되며 시장의 불확실성 증대.",
+        "watch": "- AAPL 실적 발표: 11월 2일(월) 장 마감 후 ET 예정된 애플 실적 발표 결과에 따라 기술주 전반의 투자 심리 변화 확인.\n- 미 10년 국채금리 추이: 현재 4.93%(-1.20%) 수준의 미 10년 국채금리 변동성 지속 여부 확인.\n- 유가 변동성: 중동 지정학적 긴장과 관련하여 유가 변동성 확대 및 위험 회피 심리 강화 여부 확인."
+      },
+      "report_at": "2026-11-02(월) 00:52 KST"
+    },
+    {
       "id": "2026-11-01-23:20",
       "timestamp_kst": "2026-11-01(일) 23:20 KST",
       "key_event": {
@@ -537,68 +604,8 @@
         "watch": "- 미 10년물 국채금리 추이: 현재 4.93%(-1.20%) 수준에서 추가 하락 또는 반등 여부 확인. 금리 하락 지속 시 시장의 밸류에이션 부담 완화에 긍정적, 반등 시 기술주에 추가 압력 예상.\n- 유가 변동성: 중동 지정학적 긴장 완화 또는 심화에 따른 유가(WTI, 브렌트유) 변동성 확인. 유가 상승 시 인플레이션 우려 재점화 및 Fed의 매파적 스탠스 강화 가능성.\n- 주요 지수 선물 흐름: S&P 500, Nasdaq, Dow Jones 선물 지수의 장전 흐름 확인. AI 관련 매도세 지속 여부 및 기술주의 추가 하락 가능성 가늠."
       },
       "report_at": "2026-10-31(토) 11:50 KST"
-    },
-    {
-      "id": "2026-10-31-09:54",
-      "timestamp_kst": "2026-10-31(토) 09:54 KST",
-      "key_event": {
-        "name": "빅테크 실적 부진 및 AI 우려",
-        "name_en": "Big Tech Earnings Miss & AI Concerns",
-        "time": "직전 정규장 마감 기준",
-        "why": "주요 기술 기업 실적 실망, AI 투자 심리 위축 지속",
-        "why_en": "Disappointing big tech earnings, continued weak AI investment sentiment"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "빅테크 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to big tech earnings misses and weak AI investment mood.",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.93%(-1.20%) 하락: 성장주 투자 매력 소폭 개선",
-          "desc_en": "US 10-year Treasury yield fell to 4.93% (-1.20%), slightly improving growth stock appeal.",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 50,
-          "name": "빅테크 실적 부진 지속",
-          "name_en": "Continued Big Tech Earnings Weakness",
-          "desc": "주요 기술 기업 실적 실망감 지속: QQQ -1.64%, SPY -1.00% 하락",
-          "desc_en": "Ongoing disappointment from major tech company earnings: QQQ down 1.64%, SPY down 1.00%.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "Fed 매파적 발언",
-          "name_en": "Hawkish Fed Remarks",
-          "desc": "Fed 관계자들 추가 금리 인상 필요성 언급: 인플레이션 우려 지속",
-          "desc_en": "Fed officials signal need for more rate hikes: ongoing inflation concerns.",
-          "category": "fed_policy"
-        },
-        {
-          "name": "중동 지정학적 긴장",
-          "name_en": "Middle East Geopolitical Tensions",
-          "desc": "미국의 이란 군사 공격 재개 가능성 언급으로 유가 상승 압력: WTI 원유 102.95(-0.21%)로 소폭 하락했으나, 긴장 지속",
-          "desc_en": "Potential for renewed US military strikes against Iran creates upward pressure on oil prices: WTI crude at 102.95 (-0.21%) with slight decline, but tensions persist.",
-          "category": "geopolitics",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총평: 빅테크 실적 부진과 AI 투자 심리 위축이 지속되며 시장 전반에 부정적인 분위기 우세, 총점 긍정 15 대 부정 85로 부정 우위 지속.\n- 핵심 원인: 주요 기술 기업들의 실적 발표가 시장 기대치를 하회하며 투자 심리 악화, AI 관련 기업들의 높은 현금 소진 우려가 투자자들의 경계심을 높이는 상황.\n- 하방 압력: 연방준비제도(Fed) 관계자들의 추가 금리 인상 시사 발언과 중동 지역의 지정학적 긴장 고조가 인플레이션 우려를 증폭시키며 시장에 부담으로 작용.",
-        "positive": "- 미 국채금리 하락: 미국 10년물 국채금리가 4.93%(-1.20%)로 1.20% 하락하며 성장주 투자 매력이 소폭 개선, 이는 글로벌 채권 수익률의 전반적인 하락세와 맥락을 같이하는 현상.",
-        "negative": "- 빅테크 실적 부진 지속: 주요 기술 기업들의 실적 발표가 시장의 실망감을 안겨주며 QQQ -1.64%, SPY -1.00% 하락, 이는 AI 관련 기업들의 높은 현금 소진 우려와 맞물려 기술주 전반의 매도세를 심화시키는 요인.\n- Fed 매파적 발언: 연방준비제도(Fed) 관계자들이 인플레이션 우려를 지속적으로 언급하며 추가 금리 인상 필요성을 시사, 스톡홀름 연은 총재 무살렘은 인플레이션 억제를 위해 금리 인상이 곧 필요하다고 언급.\n- 중동 지정학적 긴장: 미국의 이란 군사 공격 재개 가능성 언급으로 유가 상승 압력이 지속, WTI 원유는 102.95달러로 소폭 하락했으나 중동 지역의 긴장감은 여전히 높은 수준으로 유지.",
-        "mixed": "",
-        "watch": "- 주요 지수 선물 추이: 뉴욕 증시 개장 전 S&P 500, 나스닥 선물 지수의 움직임이 시장의 단기적인 방향성을 가늠하는 중요한 지표.\n- 미 국채금리 및 유가 변동성: 미국 10년물 국채금리와 WTI 유가의 12시간 내 추가 변동 여부가 시장의 투자 심리에 미칠 영향 주시."
-      },
-      "report_at": "2026-10-31(토) 09:54 KST"
     }
   ],
-  "updated_at": "2026-11-01T14:21:15Z",
+  "updated_at": "2026-11-01T15:52:51Z",
   "max_entries": 10
 }
