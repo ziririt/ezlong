@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T22:31:14.216820+00:00",
-  "generatedAtKST": "2026-11-03 07:31 KST",
+  "generatedAt": "2026-11-02T23:17:44.044488+00:00",
+  "generatedAtKST": "2026-11-03 08:17 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -13,7 +13,7 @@
       "sma5": 706.756,
       "sma20": 724.432,
       "sma50": 724.0717,
-      "sma200": 678.6825,
+      "sma200": 678.6824,
       "rsi": 32.13,
       "macd": {
         "macd": -8.8988,
@@ -256,7 +256,7 @@
         "histogram": 1.0964
       },
       "high52": 304.2953,
-      "low52": 226.8057,
+      "low52": 226.8056,
       "dev200": 0.4917,
       "dev5": -0.5876,
       "dev20": 0.701,
@@ -702,7 +702,7 @@
     "prevClose": 26,
     "prev1Week": 30,
     "prev1Month": 38,
-    "timestamp": "2026-11-02T22:13:54+00:00"
+    "timestamp": "2026-11-02T22:59:10+00:00"
   },
   "macro": {
     "yield10y": {
@@ -722,31 +722,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 96.26,
-      "change": -7.86,
-      "changePct": -7.549,
+      "price": 96.5,
+      "change": -7.62,
+      "changePct": -7.3185,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 101.775,
-      "change": -0.105,
-      "changePct": -0.1031,
+      "price": 101.799,
+      "change": -0.081,
+      "changePct": -0.0795,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 3956.6001,
-      "change": 57.7002,
-      "changePct": 1.4799,
+      "price": 3955.5,
+      "change": 56.6001,
+      "changePct": 1.4517,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-11-02T22:31:14.216820+00:00",
+      "atKST": "2026-11-03 07:31 KST",
+      "qqq": {
+        "rsi": 32.13,
+        "macdHist": -4.3427,
+        "dev5": -3.6315,
+        "dev200": 0.3547,
+        "gear": 2,
+        "buyScore": 64,
+        "sellScore": 4,
+        "price": 681.09
+      },
+      "soxxMacdHist": -4.6714,
+      "fearAndGreed": 23,
+      "yield10y": 4.894
+    },
     {
       "at": "2026-11-02T22:03:51.484593+00:00",
       "atKST": "2026-11-03 07:03 KST",
@@ -3177,25 +3194,8 @@
       "soxxMacdHist": -1.0671,
       "fearAndGreed": 35,
       "yield10y": 4.989
-    },
-    {
-      "at": "2026-10-29T21:22:40.968418+00:00",
-      "atKST": "2026-10-30 06:22 KST",
-      "qqq": {
-        "rsi": 44.45,
-        "macdHist": -1.8046,
-        "dev5": -0.0587,
-        "dev200": 5.5058,
-        "gear": 3,
-        "buyScore": 73,
-        "sellScore": 22,
-        "price": 715.34
-      },
-      "soxxMacdHist": -1.0671,
-      "fearAndGreed": 35,
-      "yield10y": 4.989
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218\uc810\uc218\uac00 70~75\uad8c\uc5ed\uc5d0\uc11c 11\uc6d42\uc77c(\uc6d4, \ub274\uc695) 64\ub85c \ub2e4\uc18c \ud558\ub77d\ud558\uba70 \uc57d\uc138 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \uc774\ub294 10\uc6d4 30\uc77c(\uc6d4) 36.7, 10\uc6d4 31\uc77c(\ud654) 34.93, 11\uc6d4 2\uc77c(\uc218) 37.52 \ub300\ube44 RSI\uac00 32.13\uc73c\ub85c \ud558\ub77d\ud55c \uac83\uacfc \ub9e5\uc744 \uac19\uc774 \ud558\uba70, \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\uc640 SOXX\uac00 \uac01\uac01 -1.36%, -3.79%\ub85c \ud558\ub77d\uc138\ub97c \uc774\uc5b4\uac04 \ud750\ub984\uacfc\ub3c4 \uc77c\uce58\ud569\ub2c8\ub2e4.",
-  "swingContinuityEn": "QQQ's buy score has declined slightly to 64 today from the 70-75 range in recent days, showing a weak trend. This aligns with the RSI's drop to 32.13 compared to 36.7 on Oct 30 (Mon), 34.93 on Oct 31 (Tue), and 37.52 on Nov 2 (Wed). It also matches the recent 5-day trend where QQQ and SOXX continued their decline at -1.36% and -3.79% respectively."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
