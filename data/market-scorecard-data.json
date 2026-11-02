@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-11-03-01:25",
+      "timestamp_kst": "2026-11-03(화) 01:25 KST",
+      "key_event": {
+        "name": "유가 하락 및 인플레이션 완화 기대",
+        "name_en": "Oil Price Decline & Easing Inflation Concerns",
+        "time": "2026-11-02 정규장",
+        "why": "에너지 비용 감소, 인플레이션 압력 완화, 시장 심리 개선",
+        "why_en": "Reduced energy costs, easing inflationary pressures, improved market sentiment"
+      },
+      "positive_total": 65,
+      "negative_total": 35,
+      "summary": "유가 하락 및 인플레이션 완화 기대로 긍정 우위 전환",
+      "summary_en": "Positive shift driven by falling oil prices and easing inflation concerns",
+      "positive_factors": [
+        {
+          "score": 65,
+          "name": "WTI 유가 하락",
+          "name_en": "WTI Oil Price Decline",
+          "desc": "WTI 원유 97.14 USD (-3.61%) 기록: 에너지 비용 감소 및 인플레이션 압력 완화",
+          "desc_en": "WTI crude oil at $97.14 (-3.61%): reduced energy costs and easing inflation pressures",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "AI 관련 투자 심리 위축",
+          "name_en": "AI Investment Sentiment Weakness",
+          "desc": "일부 AI 관련주 하락 및 UBS의 AI 지출 심사 강화 언급: 기술주 전반에 대한 신중론 확산",
+          "desc_en": "Decline in some AI-related stocks and UBS's mention of increased scrutiny on AI spending: spreading caution across tech stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Elevated Treasury Yields Persist",
+          "desc": "미10년 국채금리 4.90% (-0.59%) 기록: 소폭 하락했으나 여전히 높은 금리 수준 유지, 성장주 할인율 압박과 인플레이션 완화 기대 혼재",
+          "desc_en": "US 10-year Treasury yield at 4.90% (-0.59%): slight decline but still high, mixing growth stock discount rate pressure with easing inflation expectations",
+          "category": "rates_treasury",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AAPL 실적 발표 대기",
+          "name_en": "Anticipation of AAPL Earnings",
+          "desc": "AAPL 주가 -1.25% 하락: 장 마감 후 실적 발표를 앞두고 불확실성 및 관망 심리 (11월 2일(월) 장 마감 후 ET)",
+          "desc_en": "AAPL stock down -1.25%: uncertainty and cautious sentiment ahead of post-market earnings release (Nov 2 (Mon) after the close ET)",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 시장 판세: 유가 하락 및 인플레이션 완화 기대에 힘입어 긍정 우위로 전환된 시장 심리.\n- 주요 원인: WTI 유가 하락이 에너지 비용 감소와 인플레이션 압력 완화 기대를 증폭시키며 시장에 긍정적인 영향을 미침.\n- 하방 압력: AI 관련 투자 심리 위축과 여전히 높은 수준의 국채금리가 기술주 및 성장주에 대한 신중론을 유지.",
+        "positive": "- WTI 유가 하락: WTI 원유 가격이 97.14 USD로 3.61% 하락하며 에너지 비용 감소 및 전반적인 인플레이션 압력 완화에 대한 기대감 증폭. 로이터 통신에 따르면 캐나다 선물 시장에서도 유가 하락이 인플레이션 우려를 완화하는 요인으로 작용.\n- 인플레이션 완화 기대: 유가 하락과 함께 10년 기대인플레이션이 2.34%로 소폭 하락(-0.01%p 전기대비)하며 장기적인 물가 안정에 대한 기대가 시장 심리 개선에 기여.",
+        "negative": "- AI 관련 투자 심리 위축: 일부 AI 관련주 하락과 UBS의 AI 지출 심사 강화 언급으로 기술주 전반에 대한 신중론 확산. 뉴욕타임즈는 기술주 매도세 이후 시장 변동성 확대에 대한 투자자들의 대비를 언급.\n- 높은 국채금리 수준 지속: 미 10년 국채금리가 4.90%(-0.59%)로 소폭 하락(-0.59%)했음에도 불구하고 여전히 높은 수준을 유지하며 성장주 할인율에 대한 압박 지속. 블룸버그 통신은 월스트리트가 수년간 가장 큰 규모의 국채 판매 개편에 대비하고 있다고 보도.",
+        "mixed": "- AAPL 실적 발표 대기: AAPL 주가가 1.25% 하락하며 장 마감 후 실적 발표(11월 2일(월) 장 마감 후 ET)를 앞두고 불확실성과 관망 심리가 혼재. 트레이딩뷰는 애플 및 팔란티어 실적 발표를 앞두고 다우존스, S&P 500, 나스닥 100 선물 상승을 언급하며 기대감과 우려가 교차.",
+        "watch": "- AAPL 실적 발표 결과: 11월 2일(월) 장 마감 후 ET 예정된 애플의 실적 발표 내용이 기술주 전반 및 시장 심리에 미칠 영향 확인.\n- 유가 및 국채금리 추이: WTI 유가와 미 10년 국채금리의 추가적인 변동성 확인을 통한 인플레이션 기대 및 시장 심리 변화 감지."
+      },
+      "report_at": "2026-11-03(화) 01:25 KST"
+    },
+    {
       "id": "2026-11-02-23:20",
       "timestamp_kst": "2026-11-02(월) 23:20 KST",
       "key_event": {
@@ -581,75 +641,8 @@
         "watch": "- AAPL 실적 발표: 11월 2일(월) 장 마감 후 ET 예정된 애플 실적 발표 결과에 따라 기술주 전반의 투자 심리 변화 확인.\n- 미 10년 국채금리 추이: 현재 4.93%(-1.20%) 수준의 미 10년 국채금리 변동성 지속 여부 확인.\n- 유가 변동성: 중동 지정학적 긴장과 관련하여 유가 변동성 확대 및 위험 회피 심리 강화 여부 확인."
       },
       "report_at": "2026-11-02(월) 00:52 KST"
-    },
-    {
-      "id": "2026-11-01-23:20",
-      "timestamp_kst": "2026-11-01(일) 23:20 KST",
-      "key_event": {
-        "name": "기술주 실적 부진 및 AI 우려 지속",
-        "name_en": "Continued Tech Earnings Misses & AI Concerns",
-        "time": "2026년 11월 1일(금) 직전 장 마감 기준",
-        "why": "주요 기술 기업 실적 부진, AI 투자 심리 위축, 나스닥 하락",
-        "why_en": "Major tech earnings misses, dampened AI investment sentiment, Nasdaq decline"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "기술주 실적 부진 및 AI 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to tech earnings misses and weak AI investment outlook",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "미국 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.93%(-1.20%) 하락: 성장주 할인율 부담 완화",
-          "desc_en": "US 10-year Treasury yield fell to 4.93% (-1.20%), easing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "주요 기술 기업 실적 부진",
-          "name_en": "Major Tech Companies' Earnings Misses",
-          "desc": "AAPL, NVDA, MSFT 등 주요 기술 기업 실적 부진: 투자 심리 위축",
-          "desc_en": "Earnings misses from major tech firms like AAPL, NVDA, MSFT, dampening investor sentiment",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 35,
-          "name": "지정학적 리스크 고조",
-          "name_en": "Escalating Geopolitical Risks",
-          "desc": "중동 긴장 지속 및 원유 시장 변동성 확대: 인플레이션 압력 및 투자 심리 위축",
-          "desc_en": "Ongoing Middle East tensions and increased oil market volatility, raising inflation pressure and dampening investor sentiment",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Fed 금리 동결 및 인플레이션 우려",
-          "name_en": "Fed Rate Freeze Amid Inflation Concerns",
-          "desc": "Fed 기준금리 동결에도 불구하고 PCE, CPI 물가 상승률 상승: 금리 인하 기대와 인플레이션 우려 혼재",
-          "desc_en": "Despite the Fed's rate freeze, PCE and CPI inflation rates rose, creating mixed signals between rate cut expectations and inflation concerns",
-          "category": "fed_policy"
-        },
-        {
-          "name": "고용보고서 및 AAPL 실적 발표 대기",
-          "name_en": "Anticipation for Jobs Report & AAPL Earnings",
-          "desc": "11월 6일(금) 고용보고서 및 11월 2일(월) AAPL 실적 발표 대기: 시장 방향성 탐색",
-          "desc_en": "Markets await the Jobs Report on November 6th (Fri) and AAPL earnings on November 2nd (Mon), seeking direction",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시장 상황: 기술주 실적 부진과 AI 투자 심리 위축으로 인해 부정적인 분위기가 지배적인 상황.\n- 주요 원인: 주요 기술 기업들의 예상치를 하회하는 실적 발표와 AI 관련 투자에 대한 우려가 시장 전반의 하락세를 주도.\n- 하방 지지 요인: 미국 국채금리 하락이 성장주에 대한 할인율 부담을 일부 완화하며 추가적인 급락을 제한하는 모습.",
-        "positive": "- 미국 국채금리 하락: 미10년 국채금리가 4.93%(-1.20%)로 1.20% 하락하며 성장주에 대한 할인율 부담을 완화, 채권 시장에서는 금리 인상 사이클 종료 우려으로 인해 채권 매수세가 유입되는 모습.",
-        "negative": "- 주요 기술 기업 실적 부진: AAPL, NVDA, MSFT 등 주요 기술 기업들이 예상치를 하회하는 실적을 발표하며 투자 심리를 위축, 특히 반도체 섹터는 AI 투자 우려로 인해 하락세를 보임.\n- 지정학적 리스크 고조: 중동 지역의 긴장 지속과 원유 시장의 변동성 확대가 인플레이션 압력을 높이고 투자 심리를 위축, 이란과 관련된 지정학적 리스크가 유가 상승 압력으로 작용하며 시장 불확실성 증대.",
-        "mixed": "- Fed 금리 동결 및 인플레이션 우려: Fed가 기준금리를 동결했음에도 불구하고 PCE 물가상승률(3.65%), 근원 PCE 물가상승률(3.12%), CPI 소비자물가 상승률(3.72%)이 모두 상승하며 인플레이션 우려가 지속, 금리 인하에 대한 기대와 인플레이션 압력 사이에서 시장의 혼조세 심화.\n- 고용보고서 및 AAPL 실적 발표 대기: 11월 6일(금) 08:30 ET에 발표될 고용보고서와 11월 2일(월) 장 마감 후 ET에 발표될 AAPL 실적 발표를 앞두고 시장이 방향성을 탐색 중, 고용 지표와 주요 기업 실적이 향후 시장 흐름에 중요한 변수로 작용할 전망.",
-        "watch": "- AAPL 실적 발표: 11월 2일(월) 장 마감 후 ET에 예정된 AAPL 실적 발표 결과에 따라 기술주 전반의 투자 심리 변화 확인.\n- 미국 국채금리 추이: 미10년 국채금리의 추가적인 하락 또는 반등 여부가 성장주 할인율 부담에 미치는 영향 확인.\n- 유가 변동성: 중동 지정학적 리스크에 따른 원유 가격의 급등락 여부가 인플레이션 우려 및 투자 심리에 미치는 영향 확인."
-      },
-      "report_at": "2026-11-01(일) 23:20 KST"
     }
   ],
-  "updated_at": "2026-11-02T14:21:23Z",
+  "updated_at": "2026-11-02T16:26:29Z",
   "max_entries": 10
 }
