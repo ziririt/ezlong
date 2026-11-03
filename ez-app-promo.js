@@ -28,6 +28,11 @@
   if (window.__ezAppPromoLoaded) return;
   window.__ezAppPromoLoaded = true;
 
+  /* [보류 2026-11-04: 앱 유도 배너] 운영 결정으로 헤더 아래 앱 홍보 띠를 내렸다.
+     코드는 그대로 둔다. 되살리려면 PROMO_ON 을 true 로, ez-nav.js 의 로더 쿼리(?v=)도 올린다. */
+  var PROMO_ON = false;
+  if (!PROMO_ON) return;
+
   var CLOSE_KEY = 'ezlong:promoClosed';
   var CLOSE_DAYS = 14;               // 닫으면 2주. 영구는 과하고, 매번 뜨면 성가시다
 

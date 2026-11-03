@@ -306,6 +306,12 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - 데이터 복구: `data/market-signals.json` 을 08:52 판(f3dbd3173)으로 되돌리고 `barDate: 2026-10-30` 을 붙였다. TradingView 종가와 대조 일치.
 - 같은 `dropna` 패턴이 `build-swing-ai.py` · `build-weekly-risk.py` · `fetch-brief-history-chart.py` · `fetch-model-portfolio.py` 에도 있다. 아직 손대지 않았다.
 
+**앱 유도 배너 내림(11/04, 오너 지시 "앱 유도 배너도 없애자")**
+- `ez-app-promo.js`(헤더 아래 '앱 소개' 띠): `PROMO_ON = false`. `ez-app-banner.js`: `APP_BANNER_ON = false` - 사파리 메타 주입과
+  안드로이드 배너만 멈추고 앱 웹뷰 판정(`window.ezInAppWebview`)은 살아 있다. 표시는 `[보류 2026-11-04: 앱 유도 배너]`.
+- 앱 소개 페이지(/longtime/ · /app/ · flip-clock-alarm 6개 언어)는 메타를 직접 적어 두어 사파리 공식 배너가 거기서는 뜬다.
+- 첫 화면 '직접 만든 앱' 카드와 푸터 앱 링크는 배너가 아니라서 그대로다.
+
 **체크포인트:** `cp-20260926-reads-split334` · `cp-20260926-rsi-baserate` · `cp-20260926-it-reworks-1` ·
 `cp-20261001-deploy-retry` · `stable-20261016-freshness`(10/16 갱신 주기 개정 직전) · `cp-20261016-freshness` ·
 `stable-20261016-bh-insightimes` · `cp-20261016-bh-insightimes`
