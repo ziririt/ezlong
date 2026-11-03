@@ -64,7 +64,7 @@ window.addEventListener('load', function(){
 <link rel="preload" as="image" href="hero-desktop.webp" media="(min-width: 768px)" fetchpriority="high">
 <title>EZLONG | 미국주식 장기투자 연구·도구</title>
 <meta name="author" content="김성동">
-<meta name="description" content="미국주식 책 3권을 쓴 개인투자자가 53종목 2년치 일봉을 직접 집계해 장기투자 원칙을 검증하고, 그 계산을 복리·적립식·절세·은퇴 도구로 공개합니다." />
+<meta name="description" content="기본은 장기투자, 매매는 제대로 보고. 적립식·복리·절세·은퇴 계산기로 장기 적립의 효과를 직접 확인하고, 단기 매매를 한다면 매일 갱신되는 미국 시장 판정을 함께 봅니다." />
 <meta name="keywords" content="복리계산기, 복리 계산, DCA 시뮬레이터, 미국주식, ETF 투자, 장기투자, 적립식 투자, 포트폴리오 계산기, 투자 성향 테스트, 투자자 유형, 투자 행동 편향, FOMO 투자, 패닉 셀링, 투자 심리 테스트, 절세 계좌 시뮬레이터" />
 <meta name="robots" content="index, follow" />
 <meta name="naver-site-verification" content="7019c11d8808b80c73afabd57bbc6c35fedf85f7" />
@@ -88,7 +88,7 @@ window.addEventListener('load', function(){
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ezlong.com/" />
 <meta property="og:title" content="EZLONG | 미국주식 장기투자 연구·도구" />
-<meta property="og:description" content="53종목 2년치 일봉으로 직접 검증한 미국주식 장기투자 원칙과 무료 계산 도구." />
+<meta property="og:description" content="기본은 장기투자, 매매는 제대로 보고. 적립식 계산기와 매일의 미국 시장 판정." />
 <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260911" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -98,7 +98,7 @@ window.addEventListener('load', function(){
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="EZLONG | 미국주식 장기투자 연구·도구" />
-<meta name="twitter:description" content="53종목 2년치 일봉으로 직접 검증한 미국주식 장기투자 원칙과 무료 계산 도구." />
+<meta name="twitter:description" content="기본은 장기투자, 매매는 제대로 보고. 적립식 계산기와 매일의 미국 시장 판정." />
 <meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260911" />
 
 <!-- JSON-LD 구조화 데이터 -->
@@ -1549,29 +1549,33 @@ a { text-decoration: none; color: inherit; }
 .hh-eyebrow { font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--bl); margin: 0 0 14px; }
 .hh-title { font-size: clamp(32px, 6.2vw, 60px); font-weight: 900; line-height: 1.12;
   letter-spacing: clamp(-0.035em, -0.05em + 0.4vw, -0.015em); color: var(--t1); margin: 0 0 18px; word-break: keep-all; text-wrap: balance; }
-.hh-sub { font-size: clamp(16px, 2.1vw, 19px); line-height: 1.65; color: var(--t2); max-width: 38em; margin: 0 0 12px; word-break: keep-all; }
-.hh-byline { font-size: 15px; color: var(--t2); margin: 0 0 clamp(24px, 3.5vw, 36px); word-break: keep-all; }
+.hh-sub { font-size: clamp(16px, 2.1vw, 19px); line-height: 1.65; color: var(--t2); max-width: 38em; margin: 0 0 clamp(20px, 3vw, 30px); word-break: keep-all; }
+.hh-byline { font-size: 15px; color: var(--t2); margin: 0; word-break: keep-all; }
 .hh-byline a { color: var(--bl); font-weight: 600; text-decoration: none; }
 .hh-byline a:hover { text-decoration: underline; }
-.hh-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.hh-fact { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border-radius: 16px;
-  background: var(--card); border: 1px solid var(--bd); text-decoration: none; transition: border-color .15s, transform .15s; }
-.hh-fact:hover { border-color: var(--bl-m); transform: translateY(-2px); }
-.hh-fact:focus-visible, .hh-byline a:focus-visible { outline: 2px solid var(--bl); outline-offset: 3px; }
-.hh-num { font-size: clamp(30px, 4.2vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--t1); }
-.hh-what { font-size: 15px; line-height: 1.55; color: var(--t2); word-break: keep-all; }
-.hh-src { font-size: 14px; font-weight: 600; color: var(--bl); margin-top: auto; }
-.hh-src::after { content: " \2192"; }
+.hh-doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0 0 18px; }
+.hh-door { display: flex; flex-direction: column; padding: 20px 22px 12px; border-radius: 18px; background: var(--card); border: 1px solid var(--bd); }
+.hh-door-tag { display: inline-block; align-self: flex-start; font-size: 14px; font-weight: 700; color: #fff; background: var(--bl); padding: 3px 10px; border-radius: 999px; margin: 0 0 10px; }
+.hh-door-trade .hh-door-tag { background: #636366; }
+.hh-door-title { font-size: clamp(22px, 2.6vw, 26px); font-weight: 800; letter-spacing: -0.02em; color: var(--t1); margin: 0 0 4px; }
+.hh-door-desc { font-size: 15px; color: var(--t2); margin: 0 0 10px; word-break: keep-all; }
+.hh-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 12px 0; border-top: 1px solid var(--bd); text-decoration: none; min-height: 44px; }
+.hh-link span { font-size: 17px; font-weight: 700; color: var(--t1); grid-column: 1; }
+.hh-link small { font-size: 14px; color: var(--t2); grid-column: 1; margin-top: 2px; word-break: keep-all; }
+.hh-link::after { content: "\2192"; grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--bl); font-weight: 700; font-size: 17px; }
+.hh-link:hover span { color: var(--bl); }
+.hh-link:focus-visible, .hh-byline a:focus-visible { outline: 2px solid var(--bl); outline-offset: 2px; border-radius: 6px; }
 .read-more { margin-top: 14px; }
 .read-more > summary { cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 600; color: var(--bl); }
 .read-more[open] > summary { margin-bottom: 14px; }
 @media (max-width: 720px) {
-  .hh-facts { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-  .hh-fact { display: grid; grid-template-columns: 104px minmax(0, 1fr); column-gap: 12px; align-items: baseline; padding: 14px 16px; }
-  .hh-num { font-size: 28px; grid-row: span 2; }
-  .hh-src { margin-top: 2px; }
+  .home-hero { padding: 28px 0 24px; }
+  .hh-doors { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .hh-door { padding: 16px 16px 6px; }
+  .hh-link { padding: 10px 0; }
 }
-@media (prefers-reduced-motion: reduce) { .hh-fact, .read-item { transition: none; } .hh-fact:hover, .read-item:hover { transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) { .read-item { transition: none; } .read-item:hover { transform: none; } }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
@@ -1605,30 +1609,32 @@ a { text-decoration: none; color: inherit; }
      첫 화면 글에 'AI' 가 13번, 사람 이름은 0번이었다. 사이트가 스스로를
      '사람 없이 자동으로 돌아가는 도구 모음'으로 소개하고 있었다.
      이제 첫 화면은 누가 무엇을 검증했는지를 말하고, 도구는 그 계산을 공개한 자리로 둔다.
-     숫자 세 칸은 아래 글 세 편의 실측값이다. 글의 숫자를 고치면 여기도 고친다. -->
+     문 두 개가 사이트의 태도다: 기본은 장기투자, 매매는 권하지 않지만 한다면 제대로 보고.
+     매일 오는 방문자는 오른쪽 문으로 바로 스윙 시그널에 간다. -->
 <section class="home-hero" aria-labelledby="home-hero-title">
   <div class="wrap">
-    <p class="hh-eyebrow">미국주식 장기투자 연구 노트</p>
-    <h1 class="hh-title" id="home-hero-title">감이 아니라,<br>세어 본 숫자로 투자합니다</h1>
-    <p class="hh-sub">미국주식 책 세 권을 쓴 개인투자자가 53종목 2년치 일봉을 직접 집계해 장기투자 원칙을 검증하고, 그 계산을 도구로 공개합니다.</p>
-    <p class="hh-byline">운영 유니아빠 · 《절대 실패하지 않는 미국 주식 ETF 투자》 외 2권 저자 · <a href="about.html">누가, 어떻게 만드나</a></p>
-    <div class="hh-facts">
-      <a class="hh-fact" href="rsi-30-base-rate.html">
-        <span class="hh-num">59.2%</span>
-        <span class="hh-what">아무 날에나 사도 20거래일 뒤 오른 비율. RSI 30 신호가 더한 몫은 8.5%p</span>
-        <span class="hh-src">RSI 30 기저율 글</span>
-      </a>
-      <a class="hh-fact" href="lump-sum-vs-dca.html">
-        <span class="hh-num">64.4%</span>
-        <span class="hh-what">목돈 일시불이 3개월 분할을 1년 뒤 앞선 비율. 53종목 1만3,250번 비교</span>
-        <span class="hh-src">일시불 vs 분할 글</span>
-      </a>
-      <a class="hh-fact" href="split-buy-334.html">
-        <span class="hh-num">88.24</span>
-        <span class="hh-what">1,000만원을 3-3-4로 나눠 샀을 때 평단가 예시. 한 번에 사면 100</span>
-        <span class="hh-src">3-3-4 분할 글</span>
-      </a>
+    <p class="hh-eyebrow">EZLONG · 미국주식 장기투자</p>
+    <h1 class="hh-title" id="home-hero-title">기본은 장기투자,<br>매매는 제대로 보고</h1>
+    <p class="hh-sub">장기 적립의 효과는 계산기로 직접 확인할 수 있게, 단기 매매를 한다면 매일 갱신되는 시장 판정과 함께.</p>
+    <div class="hh-doors">
+      <nav class="hh-door" aria-labelledby="hh-door-long">
+        <p class="hh-door-tag">기본</p>
+        <h2 class="hh-door-title" id="hh-door-long">장기투자</h2>
+        <p class="hh-door-desc">적립식의 효과를 내 숫자로 확인하는 곳</p>
+        <a class="hh-link" href="dca-simulator.html"><span>DCA 적립식 시뮬레이터</span><small>매달 넣으면 얼마가 되나</small></a>
+        <a class="hh-link" href="compound-calculator.html"><span>복리 계산기</span><small>매월 적립·3가지 비교</small></a>
+        <a class="hh-link" href="#reads"><span>계산으로 확인한 글</span><small>일시불 vs 분할, 3-3-4, RSI 30</small></a>
+      </nav>
+      <nav class="hh-door hh-door-trade" aria-labelledby="hh-door-trade">
+        <p class="hh-door-tag">권하지 않지만</p>
+        <h2 class="hh-door-title" id="hh-door-trade">매매를 한다면</h2>
+        <p class="hh-door-desc">사고팔기 전에 시장 상태부터 보는 곳</p>
+        <a class="hh-link" href="atmr-dashboard.html"><span>스윙 시그널</span><small>나스닥100·S&amp;P500·반도체 시장 판정</small></a>
+        <a class="hh-link" href="atmr-dashboard.html#top9"><span>TOP9 집중분석</span><small>빅테크 9종 종목별 판정</small></a>
+        <a class="hh-link" href="market-vs.html"><span>긍정 vs 부정 몇대몇</span><small>지금 시장을 움직이는 재료</small></a>
+      </nav>
     </div>
+    <p class="hh-byline"><a href="about.html">만든 사람과 데이터 출처 보기</a></p>
   </div>
 </section>
 
