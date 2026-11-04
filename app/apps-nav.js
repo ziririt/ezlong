@@ -1,8 +1,8 @@
 /**
  * apps-nav.js: EZLONG 앱 글로벌 헤더 (2026-11-04 신설)
  *
- * 앱 소개 페이지 맨 위에 얇은 띠를 하나 얹는다. 왼쪽은 앱 모음(/app/)으로 가는
- * 이름표, 오른쪽은 앱 아이콘 줄. 지금 보고 있는 앱은 칠해서 보여 준다.
+ * 앱 소개 페이지 맨 위에 얇은 띠를 하나 얹는다. 앱 아이콘과 이름이 한 줄로 늘어서고,
+ * 지금 보고 있는 앱은 칠해서 보여 준다. (2026-11-04 성동님: 왼쪽 "EZLONG 앱" 이름표는 뺀다.)
  *
  * 앱을 새로 더할 때는 아래 APPS 에 한 줄만 더한다. 이 파일을 부르는 모든 페이지
  * (앱 모음, 각 앱 소개 페이지)의 헤더가 함께 바뀐다. 앱 모음 페이지(/app/)의
@@ -33,6 +33,15 @@
     if (typeof window.ezInAppWebview === 'function' && window.ezInAppWebview()) return;
   } catch (e) {}
 
+  // 잠시 띄우지 않는 곳(2026-11-04 성동님: "인사이트타임스 헤더에서는 잠깐 노출 중지.
+  // 앱들이 모두 안드로이드에 등록된 이후에 노출"). 그 지면의 <script> 한 줄은 그대로 두고 여기서만 막는다.
+  // 다시 켤 때는 이 목록에서 지우기만 하면 된다(ezlong 푸시 → 10분 안에 반영).
+  var PAUSED = ['insightimes.com'];
+  for (var p0 = 0; p0 < PAUSED.length; p0++) {
+    var hn = location.hostname;
+    if (hn === PAUSED[p0] || hn.slice(-(PAUSED[p0].length + 1)) === '.' + PAUSED[p0]) return;
+  }
+
   // 이 파일이 놓인 곳을 기준으로 아이콘 주소를 만든다. 다른 도메인에서 불러도 깨지지 않는다.
   var BASE = 'https://ezlong.com';
   try { BASE = new URL(me.src, location.href).origin; } catch (e) {}
@@ -57,14 +66,13 @@
       icon: '/app/icons/icon-sd.svg', here: ['send.ezlong.com'] }
   ];
 
-  var HOME = { ko: 'EZLONG</b> 앱', en: 'EZLONG</b> Apps', ja: 'EZLONG</b> アプリ', zh: 'EZLONG</b> 应用' };
   var LABEL = { ko: 'EZLONG 앱', en: 'EZLONG Apps', ja: 'EZLONG アプリ', zh: 'EZLONG 应用' };
   function lang() {
     // 깃허브 소개 사이트는 lang 은 en 으로 두고 #ko 같은 해시로 언어를 고른다. 해시를 먼저 본다.
     var h = (location.hash || '').slice(1).toLowerCase();
-    if (HOME[h]) return h;
+    if (LABEL[h]) return h;
     var l = (document.documentElement.getAttribute('lang') || 'ko').slice(0, 2).toLowerCase();
-    return HOME[l] ? l : 'en';
+    return LABEL[l] ? l : 'en';
   }
   function nameOf(app, l) {
     return (l !== 'ko' && app.t && app.t[l]) || app.name;
@@ -117,10 +125,6 @@
     R + '.ezapps-sticky{position:sticky;top:0}',
     R + ' .ezapps-in{max-width:1200px;margin:0 auto;padding:0 12px 0 16px;display:flex;align-items:center;gap:6px;height:52px}',
     R + ' a{color:inherit;-webkit-tap-highlight-color:transparent;font-size:14px;font-weight:600;border-radius:999px;box-shadow:none}',
-    R + ' .ezapps-home{flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 10px 0 2px;' +
-      'color:var(--ea-ink);font-size:15px;font-weight:800;letter-spacing:-.01em;border-radius:10px;white-space:nowrap;background:none}',
-    R + ' .ezapps-home b{color:var(--ea-brand);font-size:15px;font-weight:800}',
-    R + ' .ezapps-sep{display:block;flex:none;width:1px;height:20px;background:var(--ea-line);margin:0 4px}',
     R + ' .ezapps-scroll{display:block;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;' +
       '-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);' +
       'mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}',
@@ -134,10 +138,10 @@
       'box-shadow:0 0 0 1px rgba(0,0,0,.06);opacity:1;visibility:visible}',
     R + ' a.ezapps-a span{display:inline;font-size:14px;font-weight:600;color:inherit}',
     '@media (hover:hover){' + R + ' a.ezapps-a:hover{color:var(--ea-ink);background:var(--ea-on)}}',
-    R + ' a.ezapps-a:active,' + R + ' a.ezapps-home:active{transform:scale(.97)}',
+    R + ' a.ezapps-a:active{transform:scale(.97)}',
     R + ' a.ezapps-a[aria-current]{color:var(--ea-on-ink);background:var(--ea-on)}',
     R + ' a:focus-visible{outline:2px solid var(--ea-brand);outline-offset:2px}',
-    '@media (prefers-reduced-motion:reduce){' + R + ' a.ezapps-a{transition:none}' + R + ' a.ezapps-a:active,' + R + ' a.ezapps-home:active{transform:none}}',
+    '@media (prefers-reduced-motion:reduce){' + R + ' a.ezapps-a{transition:none}' + R + ' a.ezapps-a:active{transform:none}}',
     '@media (prefers-reduced-transparency:reduce){' + R + '{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}',
     '@media (prefers-reduced-transparency:reduce) and (prefers-color-scheme:dark){' + R + '{background:#0e121a}}',
     '@media print{' + R + '{display:none}}'
@@ -156,18 +160,6 @@
 
   var inner = document.createElement('div');
   inner.className = 'ezapps-in';
-
-  var home = document.createElement('a');
-  home.className = 'ezapps-home';
-  home.href = sameSite ? '/app/' : BASE + '/app/';
-  home.innerHTML = '<b>' + HOME[L];
-  if (onHub) home.setAttribute('aria-current', 'page');
-  inner.appendChild(home);
-
-  var sep = document.createElement('span');
-  sep.className = 'ezapps-sep';
-  sep.setAttribute('aria-hidden', 'true');
-  inner.appendChild(sep);
 
   var scroll = document.createElement('div');
   scroll.className = 'ezapps-scroll';
@@ -229,7 +221,6 @@
       if (n === L) return;
       L = n;
       nav.setAttribute('aria-label', LABEL[L]);
-      home.innerHTML = '<b>' + HOME[L];
       for (var q = 0; q < spans.length; q++) spans[q][0].textContent = nameOf(spans[q][1], L);
   }
   window.addEventListener('hashchange', relabel);
