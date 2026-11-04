@@ -92,44 +92,50 @@
   /* ── 모양 ───────────────────────────────────────────────────────────────
      글자는 14px 아래로 내리지 않는다(CLAUDE.md 5절). 색은 소개 페이지마다 바탕이
      달라도 어울리게 무채색 반투명 + 흐림으로 깐다. */
+  // 남의 지면(깃허브 페이지, 웹진, 파일공유)에 얹히므로 그쪽 CSS 가 새어 들지 않게
+  // 모든 선택자를 nav.ezapps 로 묶고(구체성 0,2,1 이상) 글자·여백·배경을 하나하나 못박는다.
+  // 2026-11-04 사고: 파일공유의 a{font-size}, 포토 타임 사이트의 nav a{배경} 이 그대로 묻어났다.
+  var R = 'nav.ezapps';
   var css = [
-    '.ezapps{position:relative;z-index:60;',
-    '  --ea-ink:#1b222c;--ea-sub:#4a5563;--ea-line:rgba(15,23,42,.10);',
-    '  --ea-bg:rgba(255,255,255,.78);--ea-on:rgba(37,99,235,.11);--ea-on-ink:#1d4ed8;--ea-brand:#2563EB;',
-    '  background:var(--ea-bg);',
-    '  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);',
-    '  border-bottom:1px solid var(--ea-line);',
-    '  font:600 14px/1 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;',
-    '  letter-spacing:0;-webkit-font-smoothing:antialiased}',
-    '@media (prefers-color-scheme:dark){.ezapps{',
-    '  --ea-ink:#e9eef5;--ea-sub:#aab4c2;--ea-line:rgba(255,255,255,.09);',
-    '  --ea-bg:rgba(14,18,26,.80);--ea-on:rgba(79,195,247,.16);--ea-on-ink:#8fd8fb;--ea-brand:#3B82F6}}',
-    '.ezapps.ezapps-sticky{position:sticky;top:0}',
-    '.ezapps-in{max-width:1080px;margin:0 auto;padding:0 12px 0 16px;display:flex;align-items:center;gap:6px;height:52px}',
-    '.ezapps a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}',
-    '.ezapps-home{flex:none;display:flex;align-items:center;gap:7px;padding:8px 10px 8px 2px;',
-    '  color:var(--ea-ink);font-weight:800;letter-spacing:-.01em;border-radius:10px;white-space:nowrap}',
-    '.ezapps-home b{color:var(--ea-brand);font-weight:800}',
-    '.ezapps-home[aria-current]{color:var(--ea-ink)}',
-    '.ezapps-sep{flex:none;width:1px;height:20px;background:var(--ea-line);margin:0 4px}',
-    '.ezapps-scroll{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;',
-    '  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);',
-    '          mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}',
-    '.ezapps-scroll::-webkit-scrollbar{display:none}',
-    '.ezapps ul{list-style:none;margin:0;padding:0 24px 0 0;display:flex;gap:2px;width:max-content}',
-    '.ezapps li{margin:0;padding:0}',
-    '.ezapps-a{display:flex;align-items:center;gap:7px;height:36px;padding:0 11px 0 6px;border-radius:999px;',
-    '  color:var(--ea-sub);white-space:nowrap;transition:background-color .15s ease,color .15s ease,transform .1s ease}',
-    '.ezapps-a img{width:24px;height:24px;border-radius:6px;display:block;flex:none;',
-    '  box-shadow:0 0 0 1px rgba(0,0,0,.06)}',
-    '@media (hover:hover){.ezapps-a:hover{color:var(--ea-ink);background:var(--ea-on)}}',
-    '.ezapps-a:active,.ezapps-home:active{transform:scale(.97)}',
-    '.ezapps-a[aria-current]{color:var(--ea-on-ink);background:var(--ea-on)}',
-    '.ezapps a:focus-visible{outline:2px solid var(--ea-brand);outline-offset:2px}',
-    '@media (prefers-reduced-motion:reduce){.ezapps-a{transition:none}.ezapps-a:active,.ezapps-home:active{transform:none}}',
-    '@media (prefers-reduced-transparency:reduce){.ezapps{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}',
-    '@media (prefers-reduced-transparency:reduce) and (prefers-color-scheme:dark){.ezapps{background:#0e121a}}',
-    '@media print{.ezapps{display:none}}'
+    R + ',' + R + ' *{box-sizing:border-box;margin:0;padding:0;border:0;background:none;float:none;' +
+      'max-width:none;min-height:0;text-transform:none;text-decoration:none;text-shadow:none;' +
+      'font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;' +
+      'font-style:normal;line-height:1;letter-spacing:0;-webkit-font-smoothing:antialiased}',
+    R + '{display:block;position:relative;z-index:60;width:100%;' +
+      '--ea-ink:#1b222c;--ea-sub:#4a5563;--ea-line:rgba(15,23,42,.10);' +
+      '--ea-bg:rgba(255,255,255,.78);--ea-on:rgba(37,99,235,.11);--ea-on-ink:#1d4ed8;--ea-brand:#2563EB;' +
+      'background:var(--ea-bg);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);' +
+      'border-bottom:1px solid var(--ea-line);font-size:14px;font-weight:600;color:var(--ea-ink)}',
+    '@media (prefers-color-scheme:dark){' + R + '{' +
+      '--ea-ink:#e9eef5;--ea-sub:#aab4c2;--ea-line:rgba(255,255,255,.09);' +
+      '--ea-bg:rgba(14,18,26,.80);--ea-on:rgba(79,195,247,.16);--ea-on-ink:#8fd8fb;--ea-brand:#3B82F6}}',
+    R + '.ezapps-sticky{position:sticky;top:0}',
+    R + ' .ezapps-in{max-width:1080px;margin:0 auto;padding:0 12px 0 16px;display:flex;align-items:center;gap:6px;height:52px}',
+    R + ' a{color:inherit;-webkit-tap-highlight-color:transparent;font-size:14px;font-weight:600;border-radius:999px;box-shadow:none}',
+    R + ' .ezapps-home{flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 10px 0 2px;' +
+      'color:var(--ea-ink);font-size:15px;font-weight:800;letter-spacing:-.01em;border-radius:10px;white-space:nowrap;background:none}',
+    R + ' .ezapps-home b{color:var(--ea-brand);font-size:15px;font-weight:800}',
+    R + ' .ezapps-sep{display:block;flex:none;width:1px;height:20px;background:var(--ea-line);margin:0 4px}',
+    R + ' .ezapps-scroll{display:block;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;' +
+      '-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);' +
+      'mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}',
+    R + ' .ezapps-scroll::-webkit-scrollbar{display:none}',
+    R + ' ul{list-style:none;padding:0 24px 0 0;display:flex;gap:2px;width:max-content}',
+    R + ' li{display:block;list-style:none}',
+    R + ' li::before,' + R + ' li::marker{content:none;display:none}',
+    R + ' a.ezapps-a{display:flex;align-items:center;gap:7px;height:36px;padding:0 11px 0 6px;' +
+      'color:var(--ea-sub);background:none;white-space:nowrap;transition:background-color .15s ease,color .15s ease,transform .1s ease}',
+    R + ' a.ezapps-a img{display:block;flex:none;width:24px;height:24px;min-width:24px;max-width:24px;border-radius:6px;' +
+      'box-shadow:0 0 0 1px rgba(0,0,0,.06);opacity:1;visibility:visible}',
+    R + ' a.ezapps-a span{display:inline;font-size:14px;font-weight:600;color:inherit}',
+    '@media (hover:hover){' + R + ' a.ezapps-a:hover{color:var(--ea-ink);background:var(--ea-on)}}',
+    R + ' a.ezapps-a:active,' + R + ' a.ezapps-home:active{transform:scale(.97)}',
+    R + ' a.ezapps-a[aria-current]{color:var(--ea-on-ink);background:var(--ea-on)}',
+    R + ' a:focus-visible{outline:2px solid var(--ea-brand);outline-offset:2px}',
+    '@media (prefers-reduced-motion:reduce){' + R + ' a.ezapps-a{transition:none}' + R + ' a.ezapps-a:active,' + R + ' a.ezapps-home:active{transform:none}}',
+    '@media (prefers-reduced-transparency:reduce){' + R + '{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}',
+    '@media (prefers-reduced-transparency:reduce) and (prefers-color-scheme:dark){' + R + '{background:#0e121a}}',
+    '@media print{' + R + '{display:none}}'
   ].join('\n');
 
   var style = document.createElement('style');
@@ -190,7 +196,10 @@
   function center() {
     // 지금 앱이 줄 밖에 있으면 가운데로 당겨 둔다(움직임 없이).
     if (!activeEl) return;
-    var left = activeEl.offsetLeft - (scroll.clientWidth - activeEl.offsetWidth) / 2;
+    // 이미 다 보이면 그대로 둔다. 넓은 화면에서 줄이 괜히 밀려 첫 앱이 잘리지 않게.
+    var x = activeEl.getBoundingClientRect().left - scroll.getBoundingClientRect().left + scroll.scrollLeft;
+    if (x + activeEl.offsetWidth <= scroll.clientWidth - 28) return;
+    var left = x - (scroll.clientWidth - activeEl.offsetWidth) / 2;
     if (left > 0) scroll.scrollLeft = left;
   }
 
