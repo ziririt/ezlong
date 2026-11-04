@@ -50,6 +50,10 @@
      here: 이 앱의 페이지로 볼 주소 조각(호스트+경로 앞부분). 지금 칸을 칠할 때 쓴다. */
   // name: 한국어 이름. t: 다른 언어 이름(없으면 name). 앱 이름은 스토어 등록명을 따른다.
   var APPS = [
+    // ezlong.com 본체(투자 도구). 본체 페이지에는 이 헤더를 붙이지 않는다(본체 머리는 ez-nav.js) — 들어가는 길만 둔다.
+    // 아이콘은 롱타임 앱과 같은 나선이라 흰 바탕 파란 나선(브랜드 라이트판 #2563EB)으로 구별했다.
+    { id: 'ezlong', name: 'EZLONG 투자도구', t: { en: 'EZLONG Invest', ja: 'EZLONG 投資ツール', zh: 'EZLONG 投资工具' }, href: '/',
+      icon: '/app/icons/icon-ez.jpg', here: [] },
     { id: 'insightimes', name: 'Insight Times', href: 'https://insightimes.com/',
       icon: '/app/icons/icon-it.jpg', here: ['insightimes.com'] },
     { id: 'longtime', name: 'Long Time', href: '/longtime/',
