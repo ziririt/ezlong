@@ -110,7 +110,7 @@
       '--ea-ink:#e9eef5;--ea-sub:#aab4c2;--ea-line:rgba(255,255,255,.09);' +
       '--ea-bg:rgba(14,18,26,.80);--ea-on:rgba(79,195,247,.16);--ea-on-ink:#8fd8fb;--ea-brand:#3B82F6}}',
     R + '.ezapps-sticky{position:sticky;top:0}',
-    R + ' .ezapps-in{max-width:1080px;margin:0 auto;padding:0 12px 0 16px;display:flex;align-items:center;gap:6px;height:52px}',
+    R + ' .ezapps-in{max-width:1200px;margin:0 auto;padding:0 12px 0 16px;display:flex;align-items:center;gap:6px;height:52px}',
     R + ' a{color:inherit;-webkit-tap-highlight-color:transparent;font-size:14px;font-weight:600;border-radius:999px;box-shadow:none}',
     R + ' .ezapps-home{flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 10px 0 2px;' +
       'color:var(--ea-ink);font-size:15px;font-weight:800;letter-spacing:-.01em;border-radius:10px;white-space:nowrap;background:none}',
