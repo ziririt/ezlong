@@ -60,6 +60,9 @@
   var HOME = { ko: 'EZLONG</b> 앱', en: 'EZLONG</b> Apps', ja: 'EZLONG</b> アプリ', zh: 'EZLONG</b> 应用' };
   var LABEL = { ko: 'EZLONG 앱', en: 'EZLONG Apps', ja: 'EZLONG アプリ', zh: 'EZLONG 应用' };
   function lang() {
+    // 깃허브 소개 사이트는 lang 은 en 으로 두고 #ko 같은 해시로 언어를 고른다. 해시를 먼저 본다.
+    var h = (location.hash || '').slice(1).toLowerCase();
+    if (HOME[h]) return h;
     var l = (document.documentElement.getAttribute('lang') || 'ko').slice(0, 2).toLowerCase();
     return HOME[l] ? l : 'en';
   }
@@ -93,9 +96,11 @@
      글자는 14px 아래로 내리지 않는다(CLAUDE.md 5절). 색은 소개 페이지마다 바탕이
      달라도 어울리게 무채색 반투명 + 흐림으로 깐다. */
   // 남의 지면(깃허브 페이지, 웹진, 파일공유)에 얹히므로 그쪽 CSS 가 새어 들지 않게
-  // 모든 선택자를 nav.ezapps 로 묶고(구체성 0,2,1 이상) 글자·여백·배경을 하나하나 못박는다.
+  // 모든 선택자를 div.ezapps 로 묶고(구체성 0,2,1 이상) 글자·여백·배경을 하나하나 못박는다.
   // 2026-11-04 사고: 파일공유의 a{font-size}, 포토 타임 사이트의 nav a{배경} 이 그대로 묻어났다.
-  var R = 'nav.ezapps';
+  // 틀을 <nav> 가 아니라 <div role="navigation"> 으로 만드는 것도 같은 까닭이다 — 배터리 라이프
+  // 사이트의 언어 고르기가 document.querySelectorAll("nav a") 로 aria-current 를 지워 버렸다.
+  var R = 'div.ezapps';
   var css = [
     R + ',' + R + ' *{box-sizing:border-box;margin:0;padding:0;border:0;background:none;float:none;' +
       'max-width:none;min-height:0;text-transform:none;text-decoration:none;text-shadow:none;' +
@@ -143,9 +148,10 @@
   (document.head || document.documentElement).appendChild(style);
 
   /* ── 그리기 ─────────────────────────────────────────────────────────── */
-  var nav = document.createElement('nav');
+  var nav = document.createElement('div');
   nav.className = 'ezapps' + (me.getAttribute('data-sticky') === '1' ? ' ezapps-sticky' : '');
   var L = lang();
+  nav.setAttribute('role', 'navigation');
   nav.setAttribute('aria-label', LABEL[L]);
 
   var inner = document.createElement('div');
@@ -218,14 +224,17 @@
   }
 
   // 페이지가 나중에 언어를 바꾸면 이름도 바꾼다.
-  try {
-    new MutationObserver(function () {
+  function relabel() {
       var n = lang();
       if (n === L) return;
       L = n;
       nav.setAttribute('aria-label', LABEL[L]);
       home.innerHTML = '<b>' + HOME[L];
       for (var q = 0; q < spans.length; q++) spans[q][0].textContent = nameOf(spans[q][1], L);
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  }
+  window.addEventListener('hashchange', relabel);
+  try {
+    new MutationObserver(relabel)
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   } catch (e) {}
 })();
