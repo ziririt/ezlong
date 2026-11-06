@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-07-07:01",
+      "timestamp_kst": "2026-11-07(토) 07:01 KST",
+      "key_event": {
+        "name": "AI·반도체주 반등",
+        "name_en": "AI & Semiconductor Stocks Rebound",
+        "time": "2026-11-06 포스트마켓",
+        "why": "기술주 매수세 유입, 금리 인상 우려 상쇄",
+        "why_en": "Tech buying interest, offsetting rate hike concerns"
+      },
+      "positive_total": 65,
+      "negative_total": 35,
+      "summary": "AI·반도체주 반등세로 긍정 우위 전환, 고용보고서 강세 영향 상쇄",
+      "summary_en": "AI & semiconductor stocks rebound, shifting to positive dominance, offsetting strong jobs report impact",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "기술주 매수세 유입",
+          "name_en": "Tech Buying Interest",
+          "desc": "Dan Ives 등 전문가의 '골든 매수 기회' 발언, QQQ +1.82% 등 기술주 전반 반등",
+          "desc_en": "Experts like Dan Ives call it a 'golden buying opportunity,' leading to a broad tech rebound including QQQ +1.82%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "리스크 심리 완화",
+          "name_en": "Easing Risk Sentiment",
+          "desc": "VIX 공포지수 25.64(-8.92%) 하락, 시장 불확실성 감소 신호",
+          "desc_en": "VIX fear index drops to 25.64 (-8.92%), signaling reduced market uncertainty",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "고용보고서 강세 지속",
+          "name_en": "Sustained Strong Jobs Report",
+          "desc": "10월 고용보고서 165,000명 추가(예상 상회), 실업률 4.10%(-0.10%p) 하락, Fed 금리 인상 우려 지속",
+          "desc_en": "October jobs report adds 165,000 jobs (above expectations), unemployment rate falls to 4.10% (-0.10%p), fueling ongoing Fed rate hike concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 15,
+          "name": "장기 국채금리 상승",
+          "name_en": "Long-Term Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.86%(+0.45%), 미30년 국채금리 5.26%(+0.17%) 상승, 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rises to 4.86% (+0.45%), 30-year to 5.26% (+0.17%), pressuring growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 버블 논란 지속",
+          "name_en": "Ongoing AI Bubble Debate",
+          "desc": "AI 관련주 급등락 반복하며 버블 논란 지속, 투자 심리 혼조",
+          "desc_en": "Repeated sharp movements in AI stocks fuel ongoing bubble debate, leading to mixed investor sentiment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총점: AI 및 반도체주의 강한 반등세에 힘입어 시장 심리가 긍정 우위로 전환, 총점 긍정 65 대 부정 35 기록.\n- 긍정 전환 요인: 기술주 전반에 걸친 매수세 유입과 VIX 공포지수 하락으로 리스크 심리 완화.\n- 부정 압력 요인: 예상치를 상회하는 고용보고서 강세와 장기 국채금리 상승으로 인한 연방준비제도(Fed)의 금리 인상 우려 지속.",
+        "positive": "- 기술주 매수세 유입: 기술주 전반에 걸쳐 매수세가 유입되며 QQQ가 1.82% 상승하는 등 반등세 시현, 웨드부시 증권의 댄 아이브스(Dan Ives) 등 전문가들은 최근의 기술주 매도세를 '골든 매수 기회'로 평가하며 투자 심리 개선.\n- 리스크 심리 완화: VIX 공포지수가 8.92% 하락한 25.64를 기록하며 시장의 불확실성 감소 신호 발현, 이는 투자자들의 위험 회피 심리가 완화되고 있음을 시사.",
+        "negative": "- 고용보고서 강세 지속: 10월 고용보고서에서 165,000명의 비농업 일자리가 추가되어 시장 예상치를 상회하고, 실업률은 0.10%p 하락한 4.10%를 기록, 이는 Fed의 추가 금리 인상 가능성에 대한 우려를 지속시키는 요인.\n- 장기 국채금리 상승: 미국 10년물 국채금리가 4.86%(+0.45%) 상승한 4.86%, 30년물 국채금리가 5.26%(+0.17%) 상승한 5.26%를 기록, 이는 성장주에 대한 할인율을 높여 주가에 하방 압력으로 작용.",
+        "mixed": "",
+        "watch": ""
+      },
+      "report_at": "2026-11-07(토) 07:01 KST"
+    },
+    {
       "id": "2026-11-07-04:38",
       "timestamp_kst": "2026-11-07(토) 04:38 KST",
       "key_event": {
@@ -504,68 +572,8 @@
         "watch": "- 장 마감까지 반도체 낙폭 축소 여부: SOXX -8% 안팎 유지 시 주간 기준 큰 낙폭 위험.\n- 데이터센터 규제의 실제 입법 경로: 우려 단계인지 법안 단계인지 구분 필요.\n- 웨드부시 댄 아이브스는 반도체 추가 12% 하락 가능성 경고, 펀드스트랫 톰 리는 기술주 20% 반등 전망으로 시각 대립.\n- 11월 6일(금) 08:30 ET 10월 고용보고서, 11월 10일(화) 08:30 ET 10월 CPI."
       },
       "report_at": "2026-11-06(금) 01:29 KST"
-    },
-    {
-      "id": "2026-11-05-23:20",
-      "timestamp_kst": "2026-11-05(목) 23:20 KST",
-      "key_event": {
-        "name": "AI 관련주 약세 지속",
-        "name_en": "Continued Weakness in AI-Related Stocks",
-        "time": "2026-11-05 프리마켓",
-        "why": "기술주 전반 투자 심리 위축, 시장 변동성 확대",
-        "why_en": "Overall tech sentiment weakened, increased market volatility"
-      },
-      "positive_total": 50,
-      "negative_total": 50,
-      "summary": "팽팽한 균형 지속",
-      "summary_en": "Negative sentiment persists due to AI stock weakness and rising Treasury yields",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "일부 빅테크 매수세 유입",
-          "name_en": "Inflow of Buying into Select Big Tech",
-          "desc": "AAPL +0.65%, MSFT +0.18%, GOOGL +0.47% 상승: 민주당 중간선거 압승에 따른 불확실성 해소 및 정책 변화 기대",
-          "desc_en": "AAPL +0.65%, MSFT +0.18%, GOOGL +0.47% gains: Uncertainty resolved and policy changes expected after Democratic midterm victory",
-          "category": "company_specific"
-        },
-        {
-          "score": 20,
-          "name": "민주당 중간선거 압승 효과 지속",
-          "name_en": "Continued Impact of Democratic Midterm Victory",
-          "desc": "정치적 불확실성 해소 및 시장 심리 안정화 기대, 일부 ETF 매수세 유입",
-          "desc_en": "Political uncertainty resolved, market sentiment expected to stabilize, some ETF inflows",
-          "category": "other"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "Upward Pressure on US Treasury Yields",
-          "desc": "미10년 국채금리 4.90%(+0.20%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 4.90%(+0.20%): Increased discount rate burden on growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 15,
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 89.40(+3.16%) 상승: 인플레이션 압력 재점화 우려",
-          "desc_en": "WTI crude oil rises to 89.40(+3.16%): Concerns about re-ignited inflation pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 11월4일(수, 뉴욕)장 요약: 미국 증시는 AI 관련주 약세와 기술주 전반의 투자 심리 위축에도 불구하고, 일부 빅테크 기업의 매수세 유입과 민주당의 중간선거 압승 효과로 팽팽한 균형을 유지하며 마감.\n- 시장 변동성 확대: AI 관련주 약세가 지속되면서 기술주 전반에 대한 투자 심리가 위축되고 시장 변동성이 확대되는 모습.\n- 거시 경제 지표 압박: 미 국채금리 상승 압력과 WTI 원유 가격 상승이 인플레이션 재점화 우려를 키우며 성장주에 대한 할인율 부담을 가중.",
-        "positive": "- 일부 빅테크 매수세 유입: 애플(AAPL +0.65%), 마이크로소프트(MSFT +0.18%), 구글(GOOGL +0.47%) 등 주요 빅테크 기업에 매수세가 유입되며 시장 하방 압력을 일부 상쇄.\n- 민주당 중간선거 압승 효과 지속: 민주당의 중간선거 압승으로 정치적 불확실성이 해소되고 시장 심리가 안정화될 것이라는 기대감이 지속되며, 일부 ETF(SPDR S&P 500 ETF, Kla-Tencor)에 매수세가 유입.",
-        "negative": "- 미 국채금리 상승 압력: 미 10년 국채금리가 4.90%(+0.20%)로 상승하며 성장주에 대한 할인율 부담을 가중, 특히 AI 관련주와 같은 기술주에 부정적인 영향.\n- WTI 원유 가격 상승: WTI 원유 가격이 89.40(+3.16%)로 상승하며 인플레이션 압력 재점화 우려를 키우고, 이는 연준의 긴축 기조 장기화 가능성을 높여 시장에 부담.",
-        "mixed": "",
-        "watch": "- 고용보고서 발표: 11월 6일(금) 08:30 ET에 발표될 10월 고용보고서 결과에 따라 시장의 금리 인상 전망 및 경기 침체 우려가 변화할 가능성.\n- 미 국채금리 및 유가 추이: 미 10년 국채금리와 WTI 원유 가격의 추가적인 상승 여부가 인플레이션 압력 및 성장주 투자 심리에 지속적인 영향을 미칠 것으로 예상."
-      },
-      "report_at": "2026-11-05(목) 23:20 KST"
     }
   ],
-  "updated_at": "2026-11-06T19:39:36Z",
+  "updated_at": "2026-11-06T22:02:34Z",
   "max_entries": 10
 }
