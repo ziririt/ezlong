@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-06-18:20",
+      "timestamp_kst": "2026-11-06(금) 18:20 KST",
+      "key_event": {
+        "name": "고용보고서 발표 대기",
+        "name_en": "Anticipation for Jobs Report",
+        "time": "11월 6일(금) 08:30 ET (약 4시간 뒤)",
+        "why": "시장 변동성 확대, Fed 통화정책 방향성 영향 (11월 6일(금) 08:30 ET)",
+        "why_en": "Increased market volatility, impact on Fed monetary policy direction (Nov 6 (Fri) 08:30 ET)"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI·반도체 규제 우려 완화 및 기술주 반등으로 긍정 우위 전환",
+      "summary_en": "Positive sentiment shift due to easing AI/semiconductor regulation concerns and tech rebound",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI·반도체 규제 우려 완화",
+          "name_en": "Easing AI/Semiconductor Regulation Concerns",
+          "desc": "직전 거래일 급락 후 기술주 전반 반등, SOXX +3.09% 상승",
+          "desc_en": "Tech stocks rebound after previous day's sharp decline, SOXX up +3.09%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.84%(-1.16%) 하락: 성장주 투자 매력 증가",
+          "desc_en": "US 10-year Treasury yield at 4.84% (-1.16%) decline: increased attractiveness for growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "주요 기술주 혼조세",
+          "name_en": "Mixed Performance in Major Tech Stocks",
+          "desc": "AAPL -0.78%, MSFT -0.20% 하락: 일부 대형 기술주 약세 지속",
+          "desc_en": "AAPL down -0.78%, MSFT down -0.20%: weakness persists in some large-cap tech stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "달러 강세 지속",
+          "name_en": "Continued Dollar Strength",
+          "desc": "달러인덱스 DXY 101.97(+0.21%) 상승: 미국 수출 기업 실적 압박 우려",
+          "desc_en": "Dollar Index DXY at 101.97 (+0.21%) increase: concerns over pressure on US export company earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 89.80(-1.80%) 하락: 인플레이션 압력 완화 기대와 글로벌 수요 둔화 우려 혼재",
+          "desc_en": "WTI crude oil at 89.80 (-1.80%) decline: mixed expectations of easing inflation pressure and concerns over global demand slowdown",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 11월5일(목, 뉴욕) 판의 결론: AI 및 반도체 규제 우려 완화와 기술주 전반의 반등에 힘입어 긍정 우위로 전환된 시장 분위기.\n- 판의 원인: 직전 거래일 급락 이후 기술주 섹터가 강한 회복세를 보이며 시장 심리 개선, 특히 반도체 관련 ETF인 SOXX의 큰 폭 상승이 긍정적 영향.\n- 하단을 받치는 것: 미 국채금리 하락으로 성장주 투자 매력이 증가했으나, 주요 기술주 일부의 혼조세와 달러 강세 지속은 상승폭을 제한하는 요인으로 작용.",
+        "positive": "- AI·반도체 규제 우려 완화: 직전 거래일 급락 이후 기술주 전반의 반등이 나타나며 AI 및 반도체 관련 규제 우려가 완화되는 모습. 필라델피아 반도체 지수 추종 ETF인 SOXX가 3.09% 상승하며 기술 섹터의 회복을 견인.\n- 미 국채금리 하락: 미 10년물 국채금리가 4.84%(-1.16%)로 1.16% 하락하며 성장주에 대한 투자 매력이 증가. 이는 기술주 중심의 시장 반등에 긍정적인 영향을 미치는 요인.",
+        "negative": "- 주요 기술주 혼조세: 애플(AAPL)이 0.78% 하락하고 마이크로소프트(MSFT)가 0.20% 하락하는 등 일부 대형 기술주에서 약세가 지속되는 모습. 이는 전반적인 기술주 반등에도 불구하고 대형주 내 차별화가 나타남을 시사.\n- 달러 강세 지속: 달러인덱스(DXY)가 101.97로 0.21% 상승하며 달러 강세가 지속. 이는 미국 수출 기업들의 실적에 압박을 가할 수 있다는 우려를 낳으며 시장에 부정적 요인으로 작용.",
+        "mixed": "- WTI 원유 가격 하락: WTI 원유 가격이 89.80달러로 1.80% 하락. 이는 인플레이션 압력 완화에 대한 기대를 높이는 긍정적 측면과 동시에 글로벌 경기 둔화에 대한 우려를 반영하는 부정적 측면이 혼재.",
+        "watch": "- 고용보고서 발표(10월분): 11월 6일(금) 08:30 ET (약 4시간 뒤) 발표 예정. 이 지표는 연방준비제도(Fed)의 향후 통화정책 방향성에 중대한 영향을 미치며, 시장 변동성 확대의 주요 요인으로 작용할 전망.\n- 미 국채금리 추이: 고용보고서 발표 전후로 미 10년물 국채금리의 추가적인 변동성 확인. 금리 향방에 따라 성장주 및 기술주 전반의 투자 심리가 크게 좌우될 가능성.\n- 달러인덱스(DXY) 추이: 달러 강세가 지속될 경우 미국 수출 기업 실적에 대한 압박 우려가 심화될 수 있으므로, 고용보고서 발표 이후 달러인덱스의 움직임 확인."
+      },
+      "report_at": "2026-11-06(금) 18:20 KST"
+    },
+    {
       "id": "2026-11-06-11:50",
       "timestamp_kst": "2026-11-06(금) 11:50 KST",
       "key_event": {
@@ -534,75 +602,8 @@
         "watch": "- 고용보고서 발표: 11월 6일(금) 08:30 ET 예정된 10월 고용보고서 발표를 통해 고용 시장의 견고성 및 연준의 통화정책 방향에 대한 힌트 확인.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 지속적인 하락 여부 확인을 통해 성장주 할인율 부담 완화 가능성 모니터링.\n- 유가 변동성: WTI 원유 가격의 추가 하락 또는 반등 여부 확인을 통해 인플레이션 압력 변화 및 에너지 관련주 영향 분석."
       },
       "report_at": "2026-11-05(목) 08:20 KST"
-    },
-    {
-      "id": "2026-11-05-06:12",
-      "timestamp_kst": "2026-11-05(목) 06:12 KST",
-      "key_event": {
-        "name": "미 중간선거 민주당 압승",
-        "name_en": "Democrats Sweep Midterm Elections",
-        "time": "2026-11-04 ET",
-        "why": "정치적 불확실성 해소, 정책 변화 기대, 시장 심리 영향",
-        "why_en": "Resolving political uncertainty, anticipating policy changes, influencing market sentiment"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "민주당 중간선거 압승으로 불확실성 해소 및 기술주 매수세 유입 지속",
-      "summary_en": "Continued positive sentiment from Democratic midterm sweep, easing uncertainty and driving tech stock buying",
-      "positive_factors": [
-        {
-          "score": 85,
-          "name": "민주당 중간선거 압승",
-          "name_en": "Democratic Midterm Election Sweep",
-          "desc": "정치적 불확실성 해소 및 시장 심리 개선, Dow 지수 수십 년 만의 최고 성과 기록",
-          "desc_en": "Political uncertainty resolved, market sentiment improved, Dow records best post-election performance in decades",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "반도체 섹터 차익 실현",
-          "name_en": "Semiconductor Sector Profit-Taking",
-          "desc": "SOXX -3.83%, NVDA -3.53% 하락: 단기 과열 경계 및 차익 실현 매물 출회",
-          "desc_en": "SOXX down -3.83%, NVDA down -3.53%: Short-term overheating concerns and profit-taking",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "고용보고서 발표 대기",
-          "name_en": "Anticipation of Jobs Report",
-          "desc": "10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 시장 관망세",
-          "desc_en": "Market awaits October Jobs Report (Nov 6 (Fri) 08:30 ET), leading to a wait-and-see approach",
-          "category": "macro_data"
-        },
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yields",
-          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월4일(수, 뉴욕) 미10년 4.89%(-1.17%) · 미30년 5.28%(-0.79%). 움직임이 작아 방향 판단은 유보",
-          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.89%(-1.17%) · 미30년 5.28%(-0.79%). Move too small to call: on hold",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 민주당의 중간선거 압승으로 정치적 불확실성이 해소되며 시장 심리가 크게 개선, 총점 긍정 85 대 부정 15로 압도적인 긍정 우위.\n- 주요 상승 동력: 기술주를 중심으로 한 매수세 유입이 지속되며 다우지수는 수십 년 만의 최고 성과를 기록, 나스닥 또한 2% 급등하며 랠리 지속.\n- 하방 압력: 반도체 섹터에서 단기 과열 경계감과 차익 실현 매물 출회로 일부 하락세 관찰.\n- 향후 관망세: 10월 고용보고서 발표를 앞두고 시장 전반의 관망세가 형성되는 양상.",
-        "positive": "- 민주당 중간선거 압승: 정치적 불확실성 해소 및 시장 심리 개선으로 증시 전반에 긍정적인 영향. 다우지수는 수십 년 만의 최고 성과를 기록했으며, 나스닥은 2% 급등.\n- 기술주 매수세 유입: 민주당의 승리가 기술 기업들에게 긍정적인 정책 변화 기대를 불러일으키며 AI 및 기술 ETF로 자금 유입 지속. 아리스타 네트웍스의 실적 호조가 기술주 강세를 뒷받침.",
-        "negative": "- 반도체 섹터 차익 실현: 단기 과열 경계감과 차익 실현 매물 출회로 반도체 섹터가 하락. SOXX는 3.83%, 엔비디아는 3.53% 하락 마감.",
-        "mixed": "- 고용보고서 발표 대기: 10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 시장 전반의 관망세가 형성. 고용 지표 결과에 따라 시장 방향성이 결정될 수 있다는 기대와 우려가 혼재.\n- 미 국채금리 수준: 금리는 성장주 할인율을 좌우하는 핵심 변수. 11월 4일(수, 뉴욕) 기준 미 10년물 국채금리 4.89%(-1.17%), 미 30년물 국채금리 5.28%(-0.79%)로 소폭 하락했으나, 움직임이 작아 명확한 방향성 판단은 유보. 향후 금리 변동에 따라 시장의 성장주 선호도가 달라질 수 있는 양면성 존재.",
-        "watch": "- 고용보고서 발표: 10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 고용 시장의 강도에 대한 시장의 해석이 중요. 예상치를 상회하는 결과는 연준의 긴축 기조 유지 우려를 높일 수 있고, 예상치를 하회하는 결과는 금리 인상 사이클 종료 우려를 높일 수 있음.\n- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가적인 방향성 확인. 금리 하락은 성장주에 긍정적이나, 급격한 상승은 시장 전반에 부담으로 작용할 수 있음.\n- 기술주 매수세 지속 여부: 민주당 승리 이후 이어진 기술주 랠리가 지속될지 여부 확인. 특히 엔비디아 등 주요 반도체 기업들의 추가적인 차익 실현 압력 또는 매수세 유입 강도 관찰."
-      },
-      "report_at": "2026-11-05(목) 06:12 KST"
     }
   ],
-  "updated_at": "2026-11-06T02:51:19Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-06(금) 16:14 KST",
-    "at_utc": "2026-11-06T07:14:46Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-11-06T09:21:26Z",
+  "max_entries": 10
 }
