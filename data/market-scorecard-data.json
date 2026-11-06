@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-11-07-01:38",
+      "timestamp_kst": "2026-11-07(토) 01:38 KST",
+      "key_event": {
+        "name": "고용보고서 강세 영향 지속",
+        "name_en": "Strong Jobs Report Impact Persists",
+        "time": "2026년 11월 6일(금) 정규장",
+        "why": "금리 인상 우려 확대, 기술주 반등세와 상충",
+        "why_en": "Increased rate hike concerns, conflicting with tech rebound"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "고용보고서 강세에도 AI·반도체주 반등세로 부정 우위 전환",
+      "summary_en": "Despite strong jobs report, AI and semiconductor rebound leads to positive shift",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI·반도체주 매수세 유입",
+          "name_en": "AI and Semiconductor Stocks Attract Buying",
+          "desc": "Nvidia, AMD 등 주요 반도체 기업 주가 상승: AI 관련 수요 지속 및 긍정적 전망 반영",
+          "desc_en": "Key semiconductor stocks like Nvidia, AMD rise: Reflects sustained AI demand and positive outlook",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 55,
+          "name": "고용보고서 예상치 상회",
+          "name_en": "Jobs Report Exceeds Expectations",
+          "desc": "10월 고용보고서 예상치 상회: Fed의 금리 인상 지속 가능성 확대, 긴축 우려 지속",
+          "desc_en": "October jobs report beats estimates: Increases likelihood of sustained Fed rate hikes, persistent tightening concerns",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 버블 논란 지속",
+          "name_en": "Ongoing AI Bubble Debate",
+          "desc": "일부 전문가들의 AI 시장 과열 경고와 함께 기술주 매수 기회라는 상반된 시각 공존",
+          "desc_en": "Conflicting views on the AI market, with some experts warning of overheating while others see a buying opportunity in tech stocks",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총점: 고용보고서 강세에도 AI 및 반도체주의 반등세가 나타나며 부정 우위로 전환된 시장 분위기 지속.\n- 주요 원인: 예상치를 상회한 10월 고용보고서 발표로 인한 연방준비제도(Fed)의 금리 인상 지속 가능성 확대 우려.\n- 상충 요인: AI 관련 수요 지속 및 긍정적 전망이 반영된 엔비디아(Nvidia), AMD 등 주요 반도체 기업 주가 상승세.\n- 하단 지지: 기술주 매도세가 과도하다는 인식과 함께 저가 매수 기회라는 분석이 일부 전문가들 사이에서 제기되는 상황.",
+        "positive": "- AI·반도체주 매수세 유입: 엔비디아(Nvidia), AMD 등 주요 반도체 기업 주가가 상승하며 AI 관련 수요 지속 및 긍정적 전망이 시장에 반영되는 모습. 이는 최근 최악의 매도세 이후 반등을 주도하는 요인으로 작용.\n- 기술주 저가 매수 기회: 일부 분석가들은 최근 기술주 매도세를 '골든 매수 기회'로 평가하며, AI 시장의 장기적 수요에 대한 긍정적 시각을 제시. 이는 시장의 하방 경직성을 제공하는 요인.",
+        "negative": "- 고용보고서 예상치 상회: 10월 고용보고서가 예상치를 상회하며 실업률 4.10%를 기록, 연방준비제도(Fed)의 금리 인상 지속 가능성 확대 및 긴축 우려가 지속되는 상황. 이는 주식 시장에 하방 압력으로 작용.\n- 금리 인상 우려 확대: 고용보고서 강세로 인해 Fed 기준금리 3.88%에서 추가 인상 가능성이 제기되며, 이는 기업들의 자금 조달 비용 증가 및 경제 성장 둔화 우려를 야기.",
+        "mixed": "- AI 버블 논란 지속: 일부 전문가들은 AI 시장의 과열을 경고하며 '버블' 가능성을 제기하는 반면, 다른 전문가들은 기술주 매도세 이후 매수 기회로 판단하는 상반된 시각이 공존. 이는 시장의 방향성에 대한 불확실성을 높이는 요인.",
+        "watch": "- 10년물 국채금리 추이: 고용보고서 강세 이후 금리 인상 우려가 지속되는 가운데, 10년물 국채금리의 추가 상승 여부가 시장의 긴축 우려를 심화시킬지 주목.\n- 주요 기술주 흐름: 엔비디아(Nvidia), AMD 등 반도체 및 AI 관련 주요 기술주들의 반등세가 지속될지, 아니면 고용보고서발 긴축 우려에 다시 하락 전환할지 여부 확인."
+      },
+      "report_at": "2026-11-07(토) 01:38 KST"
+    },
+    {
       "id": "2026-11-06-23:20",
       "timestamp_kst": "2026-11-06(금) 23:20 KST",
       "key_event": {
@@ -520,74 +572,8 @@
         "watch": "- 고용보고서 발표: 미국 노동부의 10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 시장의 포지셔닝 변화 확인. 현재 실업률은 4.20%로 전기 대비 상승한 상황에서, 고용 지표가 시장의 금리 인하 기대감에 미칠 영향 주시.\n- 주요 지수 선물 추이: Nasdaq, S&P 500 등 주요 지수 선물의 실시간 추이를 통해 반도체 섹터의 추가 약세 여부 및 시장 전반의 방향성 확인.\n- 유가 변동성: WTI 원유 가격의 추가 상승 여부를 통해 중동 지정학적 긴장과 인플레이션 우려가 시장에 미치는 영향 지속적으로 모니터링."
       },
       "report_at": "2026-11-05(목) 21:50 KST"
-    },
-    {
-      "id": "2026-11-05-18:20",
-      "timestamp_kst": "2026-11-05(목) 18:20 KST",
-      "key_event": {
-        "name": "미 중간선거 민주당 압승",
-        "name_en": "Democrats' Midterm Election Victory",
-        "time": "2026-11-04 ET",
-        "why": "정치적 불확실성 해소, 정책 변화 기대, 시장 심리 영향",
-        "why_en": "Reduced political uncertainty, anticipated policy shifts, market sentiment impact"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "민주당 중간선거 압승으로 불확실성 해소 및 기술주 매수세 유입 지속",
-      "summary_en": "Democrats' midterm victory continues to ease uncertainty and drive tech stock buying",
-      "positive_factors": [
-        {
-          "score": 70,
-          "name": "중간선거 불확실성 해소",
-          "name_en": "Midterm Election Uncertainty Resolved",
-          "desc": "민주당 압승으로 정치적 불확실성 해소, 시장 심리 개선",
-          "desc_en": "Democrats' decisive victory resolves political uncertainty, improving market sentiment",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 88.15(+1.72%): 인플레이션 압력 재점화 우려",
-          "desc_en": "WTI crude oil at 88.15 (+1.72%): raising concerns about renewed inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "고용보고서 발표 대기",
-          "name_en": "Awaiting Jobs Report Release",
-          "desc": "10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 관망세: 시장 방향성 불확실성",
-          "desc_en": "Market awaits October Jobs Report (Nov 6 (Fri) 08:30 ET): uncertainty over market direction",
-          "category": "macro_data"
-        },
-        {
-          "name": "AI 관련 기업 실적 혼조",
-          "name_en": "Mixed AI Company Earnings",
-          "desc": "AMD, Apple 실적에 대한 투자자 의견 엇갈림: AI 섹터 전반의 방향성 모색",
-          "desc_en": "Investors divided on AMD, Apple results: seeking direction for the broader AI sector",
-          "category": "earnings_bellwether"
-        },
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yields",
-          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월4일(수, 뉴욕) 미10년 4.89%(-1.17%) · 미30년 5.28%(-0.79%). 움직임이 작아 방향 판단은 유보",
-          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.89%(-1.17%) · 미30년 5.28%(-0.79%). Move too small to call: on hold",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 민주당의 중간선거 압승으로 인한 불확실성 해소와 기술주 매수세 유입으로 긍정적 시장 분위기 형성, 총점 긍정 70 대 부정 30으로 마감.\n- 핵심 동인: 미 중간선거에서 민주당의 압승이 정치적 불확실성을 해소하고 시장 심리를 개선하는 주요 요인으로 작용, 기술주 중심의 상승세 견인.\n- 기술주 강세: Apple, Microsoft 등 주요 기술 기업들이 52주 신고가를 경신하며 시장 전반의 상승세를 주도, AI 관련 투자 심리도 긍정적 영향.\n- 하방 압력 잔존: WTI 원유 가격 상승과 인플레이션 압력 재점화 우려, 고용보고서 발표 대기 등 혼조 요인으로 인한 시장의 관망세 일부 잔존.",
-        "positive": "- 중간선거 불확실성 해소: 민주당의 중간선거 압승으로 정치적 불확실성이 해소되며 시장 심리가 개선, 기술주 중심의 매수세가 유입되어 증시 전반의 상승 동력 제공. NBC News는 'blue tsunami'로 정치적 불확실성이 해소되었다고 보도.\n- 기술주 매수세 유입: Reuters에 따르면 데이터 센터 관련 주식은 하락했으나 월스트리트는 민주당 승리 후 상승 마감.",
-        "negative": "- WTI 원유 가격 상승: WTI 원유 가격이 88.15달러로 1.72% 상승, 이는 인플레이션 압력 재점화에 대한 우려를 증폭시키며 시장에 부정적 영향. PCE 물가상승률(전년동월비)이 3.65%로 전기 대비 0.20%p 상승한 2026년 9월 데이터는 이러한 우려를 뒷받침.",
-        "mixed": "- 고용보고서 발표 대기: 10월 고용보고서(11월 6일(금) 08:30 ET) 발표를 앞두고 투자자들의 관망세가 형성, 시장 방향성에 대한 불확실성 증대. 실업률이 2026년 9월 4.20%로 전기 대비 0.10%p 상승한 점은 고용 시장의 변화 가능성을 시사.\n- AI 관련 기업 실적 혼조: AMD와 Apple의 실적 발표에 대한 투자자 의견이 엇갈리며 AI 섹터 전반의 방향성 모색. 'AI Roundup' 뉴스에 따르면 AMD와 Apple의 결과가 투자자들을 혼란스럽게 하는 상황. Qualcomm은 비핸드셋 매출이 칩 판매의 50%를 차지할 것이라고 발표하며 소매 투자 심리가 강세로 전환.\n- 미 국채금리 수준: 미 10년물 국채금리가 4.89%(-1.17%), 미 30년물 국채금리가 5.28%(-0.79%)로 소폭 하락했으나, 움직임이 작아 시장 방향성 판단은 유보. 금리는 성장주 할인율을 결정하는 핵심 변수로, 현재 수준은 시장에 혼조세로 작용.",
-        "watch": "- 10월 고용보고서 발표: 11월 6일(금) 08:30 ET에 발표될 10월 고용보고서 결과에 따라 시장의 방향성이 결정될 전망, 고용 시장의 견조함 또는 둔화 여부가 중요.\n- WTI 원유 가격 추이: WTI 원유 가격의 추가 상승 여부 확인, 인플레이션 압력 재점화 우려가 지속될 경우 시장에 부정적 영향 확대 가능성.\n- 미 국채금리 변동성: 미 10년물 및 30년물 국채금리의 유의미한 변동성 확인, 금리 움직임은 성장주를 포함한 전체 시장의 할인율에 직접적인 영향을 미치므로 중요."
-      },
-      "report_at": "2026-11-05(목) 18:20 KST"
     }
   ],
-  "updated_at": "2026-11-06T14:21:30Z",
+  "updated_at": "2026-11-06T16:39:15Z",
   "max_entries": 10
 }
