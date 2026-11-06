@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-06T21:31:17.355898+00:00",
-  "generatedAtKST": "2026-11-07 06:31 KST",
+  "generatedAt": "2026-11-06T21:37:38.895553+00:00",
+  "generatedAtKST": "2026-11-07 06:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -702,7 +702,7 @@
     "prevClose": 20,
     "prev1Week": 26,
     "prev1Month": 47,
-    "timestamp": "2026-11-06T21:11:53+00:00"
+    "timestamp": "2026-11-06T21:20:01+00:00"
   },
   "macro": {
     "yield10y": {
@@ -722,9 +722,9 @@
       "unit": "%"
     },
     "oil": {
-      "price": 90.43,
-      "change": -0.09,
-      "changePct": -0.0994,
+      "price": 90.5,
+      "change": -0.02,
+      "changePct": -0.0221,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
@@ -738,15 +738,32 @@
       "unit": ""
     },
     "gold": {
-      "price": 4074.8999,
-      "change": -38.6001,
-      "changePct": -0.9384,
+      "price": 4072.6001,
+      "change": -40.8999,
+      "changePct": -0.9943,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-11-06T21:31:17.355898+00:00",
+      "atKST": "2026-11-07 06:31 KST",
+      "qqq": {
+        "rsi": 31.4,
+        "macdHist": -6.6609,
+        "dev5": -2.4088,
+        "dev200": -3.4855,
+        "gear": 1,
+        "buyScore": 53,
+        "sellScore": 1,
+        "price": 656.1
+      },
+      "soxxMacdHist": -3.1918,
+      "fearAndGreed": 22,
+      "yield10y": 4.859
+    },
     {
       "at": "2026-11-06T21:22:38.580628+00:00",
       "atKST": "2026-11-07 06:22 KST",
@@ -3177,25 +3194,8 @@
       "soxxMacdHist": -5.4417,
       "fearAndGreed": 28,
       "yield10y": 4.894
-    },
-    {
-      "at": "2026-11-04T21:01:31.164311+00:00",
-      "atKST": "2026-11-05 06:01 KST",
-      "qqq": {
-        "rsi": 38.55,
-        "macdHist": -4.0033,
-        "dev5": -0.127,
-        "dev200": 1.8408,
-        "gear": 2,
-        "buyScore": 61,
-        "sellScore": 5,
-        "price": 691.95
-      },
-      "soxxMacdHist": -5.4009,
-      "fearAndGreed": 28,
-      "yield10y": 4.894
     }
   ],
-  "swingContinuity": "11\uc6d4 5\uc77c \ub9e4\uc218\uc810\uc218 57\uc5d0\uc11c 11\uc6d4 6\uc77c 49\ub85c \ud558\ub77d\ud588\uc73c\ub098, 11\uc6d46\uc77c(\uae08, \ub274\uc695) 53\uc73c\ub85c \uc18c\ud3ed \ubc18\ub4f1\ud558\uba70 \ub9e4\uc218 \uc6b0\uc704 \ud750\ub984\uc744 \uc720\uc9c0\ud588\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -1.36%\uc5d0\uc11c \uc2dc\uc791\ud574 \ud070 \ubcc0\ub3d9\uc131\uc744 \ubcf4\uc600\uc73c\ub098, 11\uc6d46\uc77c(\uae08, \ub274\uc695) +1.40%\ub85c \ub9c8\uac10\ud558\uba70 \ud558\ub77d\uc138\ub97c \uba48\ucd94\ub294 \ud750\ub984\uc785\ub2c8\ub2e4. VIX 25.64, Fear&Greed 22 \uc9c0\uc218\ub294 \uc5ec\uc804\ud788 \uacf5\ud3ec \uad6c\uac04\uc5d0 \uba38\ubb3c\ub7ec \uc788\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "The buy score decreased from 57 on Nov 5 to 49 on Nov 6, but rebounded slightly to 53 today, maintaining a buy-leaning trend. After starting at -1.36% and showing significant volatility over the past 5 trading days, QQQ closed at +1.40% today, halting its downward trend. The VIX at 25.64 and Fear&Greed index at 22 remain in the fear zone."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
