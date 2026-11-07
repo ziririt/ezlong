@@ -2319,8 +2319,119 @@ def summary_side_mismatch(entry):
     return []
 
 
+# --- 84항 (4) 우위 단어만 바꾸면 이유 구절이 반대편 말을 한다 (2026-11-08, 성동님 지적) ---
+# 지적 원문: "'AI·반도체주 반등세 지속으로 부정 우위'라는 말은 모순. 반등세가
+#            지속되는 게 왜 부정 우위냐?"
+# 경위(11-07 23:20 카드, 실행 로그로 확인): 모델은 'AI·반도체주 강한 반등'·'VIX 급락'을
+# 긍정에 실어 긍정 우위로 썼다. 방향집행이 둘을 결과 재료로 보고 강등 → 재정규화로
+# 30:70이 됐다. 그 뒤 아래 옛 fix_summary_side가 '긍정 우위' 네 글자만 '부정 우위'로
+# 바꿨다. 이유 구절('반등세 지속으로')은 옛 판정의 이유인데 그대로 남았다.
+# 영문 요약('maintains positive bias')과 핵심 이슈도 옛 판정 그대로였다.
+# 판정이 뒤집혔으면 머리(요약·핵심 이슈)는 옛 판정을 위해 쓴 글이다. 단어 교체로
+# 기워 맞출 수 없다: 이긴 쪽의 최고 재료로 다시 쓴다.
+# 판정 대상은 '단어'가 아니라 '주장'이다(85·90항). '금리 상승으로 부정 우위',
+# '달러 약세로 긍정 우위', '고용 호조로 부정 우위'는 참말이다 - 주어가 주식이 아니다.
+# 그래서 주식·지수·섹터가 주어이고 그 등락을 말할 때만 방향을 읽는다.
+# '반등 실패' '상승 제한'처럼 방향을 뒤집는 말이 붙으면 판단하지 않는다.
+_HEAD_EQ   = (r'(?:주가|증시|지수|나스닥|S&P\s*500|S&P|다우|기술주|성장주|반도체|빅테크|'
+              r'대형주|매그니피센트|[가-힣A-Za-z]+주(?![가-힣]))')
+_HEAD_UP   = r'반등|상승|강세|급등|랠리|회복|매수세'
+_HEAD_DOWN = r'하락|약세|급락|폭락|부진|매도세|조정'
+_HEAD_FLIP = r'제한|둔화|실패|무산|한계|약화|멈춤|주춤|되돌림|반납|상쇄'
+
+
+def _lean(text):
+    """주식이 주어인 등락을 말하는가 - 'up' / 'down' / None(둘 다·없음·뒤집는 말)."""
+    t = text or ''
+    if re.search(_HEAD_FLIP, t):
+        return None
+    up = bool(re.search(_HEAD_EQ + r'[^,]{0,8}?(?:' + _HEAD_UP + ')', t))
+    down = bool(re.search(_HEAD_EQ + r'[^,]{0,8}?(?:' + _HEAD_DOWN + ')', t))
+    if up == down:
+        return None
+    return 'up' if up else 'down'
+
+
+def summary_reason_contradicts(entry):
+    """요약의 '…(으)로 X 우위'에서 이유 구절이 반대 방향을 말하는가 — 체크 21b."""
+    m = re.search(r'^(.*?)(?:으로|로)\s*(긍정|부정)\s*우위', entry.get('summary') or '')
+    if not m:
+        return False
+    lean = _lean(m.group(1))
+    return (m.group(2) == '부정' and lean == 'up') or (m.group(2) == '긍정' and lean == 'down')
+
+
+def _top_of(entry, key):
+    best = None
+    for f in (entry.get(key) or []):
+        sc = int(f.get('score', 0) or 0)
+        if sc > 0 and (best is None or sc > int(best.get('score', 0) or 0)):
+            best = f
+    return best
+
+
+def rebuild_card_head(entry):
+    """요약·영문 요약을 점수와 재료에서 다시 쓴다.
+    점수는 건드리지 않는다. 재료가 비어 있으면 아무것도 하지 않는다."""
+    pos = int(entry.get('positive_total', 0) or 0)
+    neg = int(entry.get('negative_total', 0) or 0)
+    tp, tn = _top_of(entry, 'positive_factors'), _top_of(entry, 'negative_factors')
+    if pos == neg:
+        if not (tp and tn):
+            return False
+        entry['summary'] = f"{tp['name']} 대 {tn['name']}: 팽팽한 균형"
+        entry['summary_en'] = (f"Balanced: {tp.get('name_en') or tp['name']} "
+                               f"vs {tn.get('name_en') or tn['name']}")
+        return True
+    win_pos = pos > neg
+    w, l = (tp, tn) if win_pos else (tn, tp)
+    if not w:
+        return False
+    wn = (w.get('name') or '').strip()
+    s = f"{wn}{_josa_ro(wn)} {'긍정' if win_pos else '부정'} 우위"
+    if l:
+        s += f", {(l.get('name') or '').strip()} 일부 상쇄"
+    entry['summary'] = s
+    en = f"{'Positive' if win_pos else 'Negative'} bias on {w.get('name_en') or wn}"
+    if l and l.get('name_en'):
+        en += f", partly offset by {l['name_en']}"
+    entry['summary_en'] = en
+    return True
+
+
+def align_key_event(entry):
+    """핵심 이슈가 진 쪽의 주가 등락을 내걸면 이긴 쪽 최고 재료로 바꾼다(86항과 한 벌).
+    실사고: 부정 70 카드의 머리가 'AI·반도체주 반등세 지속'이었다."""
+    pos = int(entry.get('positive_total', 0) or 0)
+    neg = int(entry.get('negative_total', 0) or 0)
+    if pos == neg:
+        return False
+    win_pos = pos > neg
+    ke = entry.get('key_event') or {}
+    if (_lean(ke.get('name')) or _lean(ke.get('why'))) != ('down' if win_pos else 'up'):
+        return False
+    w = _top_of(entry, 'positive_factors' if win_pos else 'negative_factors')
+    if not w:
+        return False
+    ke['name'] = (w.get('name') or '').strip() or ke.get('name', '')
+    ke['why'] = w.get('desc') or ke.get('why', '')
+    if w.get('name_en'):
+        ke['name_en'] = w['name_en']
+    if w.get('desc_en'):
+        ke['why_en'] = w['desc_en']
+    entry['key_event'] = ke
+    return True
+
+
 def fix_summary_side(entry):
-    """집행 — 요약의 우위 표현을 실제 점수에 맞춘다. 점수는 건드리지 않는다."""
+    """집행 — 요약을 실제 점수에 맞춘다. 점수는 건드리지 않는다.
+    우위가 어긋나거나 이유 구절이 반대편을 말하면 머리를 다시 쓴다(84항 (4)).
+    재료가 비어 다시 쓸 수 없을 때만 옛 방식(우위 단어 교체)으로 물러선다."""
+    ke_fixed = align_key_event(entry)
+    if not (summary_side_mismatch(entry) or summary_reason_contradicts(entry)):
+        return entry, ke_fixed
+    if rebuild_card_head(entry):
+        return entry, True
     if not summary_side_mismatch(entry):
         return entry, False
     pos = int(entry.get('positive_total', 0) or 0)
