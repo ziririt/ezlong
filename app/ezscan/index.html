@@ -31,6 +31,9 @@ section{display:none}section.def{display:block}
 .tile p{margin:6px 0 0;font-size:15px;opacity:.92;line-height:1.5}
 .t-scan{grid-column:1/-1;min-height:170px;background:linear-gradient(135deg,#5b8ef4,#2f58e0)}
 .t-scan .ico{top:auto;bottom:auto;position:static;margin-bottom:12px}
+.t-scan .book{position:absolute;right:22px;top:50%;transform:translateY(-50%) rotate(-4deg);width:min(42%,300px);height:auto;filter:drop-shadow(0 10px 18px rgba(10,30,90,.35))}
+.t-scan h3,.t-scan p,.t-scan .ico{max-width:56%}
+@media (max-width:560px){.t-scan{padding-bottom:150px}.t-scan .book{top:auto;bottom:14px;right:50%;transform:translateX(50%) rotate(-3deg);width:72%}.t-scan h3,.t-scan p,.t-scan .ico{max-width:none}}
 .t-photo{background:linear-gradient(160deg,#e47a63,#d74f62)}
 .t-text{background:linear-gradient(160deg,#9b7cf0,#6a45dc)}
 .t-trans{grid-column:1/-1;min-height:200px;background:linear-gradient(120deg,#6db795,#4f86d6)}
@@ -67,6 +70,22 @@ footer{margin-top:44px;color:var(--mut);font-size:14px;display:flex;flex-wrap:wr
   </div>
   <div class="grid">
     <div class="tile t-scan">
+      <svg class="book" viewBox="0 0 260 170" aria-hidden="true">
+        <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf1ee"/><stop offset="1" stop-color="#ead9d4"/></linearGradient>
+        <linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient></defs>
+        <path d="M18 150 Q70 134 128 150 L128 160 Q70 144 18 160Z" fill="#d9a9a0"/>
+        <path d="M242 150 Q190 134 132 150 L132 160 Q190 144 242 160Z" fill="#d9a9a0"/>
+        <path d="M20 40 Q70 18 128 34 L128 150 Q70 134 20 152 Z" fill="url(#pg)"/>
+        <path d="M240 40 Q190 18 132 34 L132 150 Q190 134 240 152 Z" fill="url(#pg)"/>
+        <path d="M104 36 Q118 36 128 34 L128 150 Q118 146 104 146Z" fill="url(#sh)"/>
+        <g stroke="#b9a3a0" stroke-width="2.4" stroke-linecap="round" fill="none">
+          <path d="M36 58 Q74 46 112 54"/><path d="M36 70 Q74 58 112 66"/><path d="M36 82 Q74 70 112 78"/><path d="M36 94 Q74 82 112 90"/><path d="M36 106 Q74 94 112 102"/><path d="M36 118 Q66 108 96 114"/>
+          <path d="M148 54 Q186 46 224 58"/><path d="M148 66 Q186 58 224 70"/><path d="M148 78 Q186 70 224 82"/><path d="M148 90 Q186 82 224 94"/><path d="M148 102 Q186 94 224 106"/><path d="M148 114 Q178 108 208 118"/>
+        </g>
+        <g stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".95">
+          <path d="M8 26 V10 H24"/><path d="M236 10 H252 V26"/><path d="M8 144 V160 H24"/><path d="M252 144 V160 H236"/>
+        </g>
+      </svg>
       <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l-1.5 2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4H9zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
       <h3>스캔</h3><p>카메라로 비추고 한 번 누르면, 쪽을 찾아 펴서 저장합니다. 모서리를 손으로 맞출 필요가 없습니다.</p>
     </div>
@@ -115,6 +134,22 @@ footer{margin-top:44px;color:var(--mut);font-size:14px;display:flex;flex-wrap:wr
   </div>
   <div class="grid">
     <div class="tile t-scan">
+      <svg class="book" viewBox="0 0 260 170" aria-hidden="true">
+        <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf1ee"/><stop offset="1" stop-color="#ead9d4"/></linearGradient>
+        <linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient></defs>
+        <path d="M18 150 Q70 134 128 150 L128 160 Q70 144 18 160Z" fill="#d9a9a0"/>
+        <path d="M242 150 Q190 134 132 150 L132 160 Q190 144 242 160Z" fill="#d9a9a0"/>
+        <path d="M20 40 Q70 18 128 34 L128 150 Q70 134 20 152 Z" fill="url(#pg)"/>
+        <path d="M240 40 Q190 18 132 34 L132 150 Q190 134 240 152 Z" fill="url(#pg)"/>
+        <path d="M104 36 Q118 36 128 34 L128 150 Q118 146 104 146Z" fill="url(#sh)"/>
+        <g stroke="#b9a3a0" stroke-width="2.4" stroke-linecap="round" fill="none">
+          <path d="M36 58 Q74 46 112 54"/><path d="M36 70 Q74 58 112 66"/><path d="M36 82 Q74 70 112 78"/><path d="M36 94 Q74 82 112 90"/><path d="M36 106 Q74 94 112 102"/><path d="M36 118 Q66 108 96 114"/>
+          <path d="M148 54 Q186 46 224 58"/><path d="M148 66 Q186 58 224 70"/><path d="M148 78 Q186 70 224 82"/><path d="M148 90 Q186 82 224 94"/><path d="M148 102 Q186 94 224 106"/><path d="M148 114 Q178 108 208 118"/>
+        </g>
+        <g stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".95">
+          <path d="M8 26 V10 H24"/><path d="M236 10 H252 V26"/><path d="M8 144 V160 H24"/><path d="M252 144 V160 H236"/>
+        </g>
+      </svg>
       <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l-1.5 2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4H9zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
       <h3>Scan</h3><p>Point the camera and tap once. ezScan finds the page, flattens it and saves it. No corner dragging.</p>
     </div>
