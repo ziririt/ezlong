@@ -66,6 +66,14 @@
       icon: '/app/icons/icon-pt.jpg', here: ['ziririt.github.io/phototime-site'] },
     { id: 'longlong', name: 'LongLong', href: '/app/#longlong',
       icon: '/app/icons/icon-ll.jpg', here: [] },
+    { id: 'anytopdf', name: 'Any to PDF', href: 'https://ziririt.github.io/anytopdf-site/',
+      icon: '/app/icons/icon-ap.jpg', here: ['ziririt.github.io/anytopdf-site', 'pdf.ezlong.com'] },
+    { id: 'ezconverter', name: 'Ez Converter', href: 'https://convert.ezlong.com/',
+      icon: '/app/icons/icon-ec.jpg', here: ['convert.ezlong.com'] },
+    { id: 'ezscan', name: 'ezScan', href: '/app/ezscan/',
+      icon: '/app/icons/icon-es.jpg', here: ['/app/ezscan'] },
+    { id: 'readtrans', name: 'ReadTrans', href: '/app/#readtrans',
+      icon: '/app/icons/icon-rt.jpg', here: [] },
     { id: 'send', name: '초간단 파일공유', t: { en: 'Quick File Share', ja: 'かんたんファイル共有', zh: '极简文件分享' }, href: 'https://send.ezlong.com/',
       icon: '/app/icons/icon-sd.svg', here: ['send.ezlong.com'] }
   ];
@@ -89,7 +97,7 @@
   // 지금 어느 앱 페이지인가. 앱 모음(/app/)이면 이름표를 칠한다.
   var spot = location.host + location.pathname;
   var onHub = /(^|\.)ezlong\.com$|web\.app$|^localhost|^127\./.test(location.hostname) &&
-              /^\/app(\/|$)/.test(location.pathname);
+              /^\/app\/?(index\.html)?$/.test(location.pathname);
   var current = '';
   if (!onHub) {
     for (var i = 0; i < APPS.length && !current; i++) {
