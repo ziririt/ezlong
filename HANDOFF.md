@@ -8,6 +8,17 @@
 이 문서 하나만 읽고 바로 이어서 개발할 수 있게 쓴다.
 더 깊은 규칙은 `CLAUDE.md`가 본체다. 이 문서와 충돌하면 `CLAUDE.md`가 이긴다.
 
+## [최신 2026-11-10] 앱 모음 · 앱 글로벌 헤더 · 롱타임 옛 아이폰 앱 안내 설정
+
+> 1번 주자 세션이 계정 전환 전에 보탰다. 아래 절들은 앞 날짜 그대로다.
+
+- **앱 글로벌 헤더(2026-11-04):** 원본은 `app/apps-nav.js` 한 곳. 앱 소개 지면들(`/app/`, `/longtime/`, `/skybluenote/`, send.ezlong.com, 배터리 라이프·포토 타임 소개 사이트, 인사이트타임스 지면)이 `<body>` 다음 한 줄로 부른다. **그 한 줄은 어느 세션도 지우지 않는다.** 인사이트타임스 지면에서는 `PAUSED` 로 잠시 끄고 있다(오너: 앱들이 안드로이드에 모두 등록된 뒤 다시 켠다).
+- **앱 모음 `/app/`:** 카드 7개(Insight Times, Long Time, Skyblue Note, 배터리 라이프, 포토 타임, LongLong, 초간단 파일공유)와 "다음 앱 자리". 사이트맵에는 넣지 않는다(`check-sitemap.py` OFF_TOPIC).
+- **새 앱 넷 올리기:** `docs/앱-소개-추가-가이드.md`(2026-11-09, 2판). Ez Converter·Any to PDF·ezScan·ReadTrans 의 실측 상태와 할 일이 13절, 시작 전 오너 질문 8개가 14절(답 대기 — `docs/PENDING.md` P-013).
+- **롱타임 옛 아이폰 앱 안내 설정:** `time/app-config.json` 의 `legacyIos`(지금 `phase: off`). 아이폰판이 "Long Time, Easy Life Pro" 로 다시 나오면 그날 켠다. 동작과 순서는 원본 저장소(flipzen-weather-app) `HANDOFF.md` 맨 위 절에 있다. 웹 판 ver.1.9.112·1.9.113.
+
+---
+
 > ## 먼저 읽을 것 - 주자가 셋이다 (97항)
 >
 > 한도 때문에 AI 셋이 이어 달린다:
