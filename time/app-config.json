@@ -8,7 +8,90 @@
     "endAt": "2026-01-01T00:00:00+09:00"
   },
   "update": {
-    "ios": { "minBuild": 9, "forceUpdate": false, "message": "새 버전이 있습니다." },
-    "android": { "minVersionCode": 3, "forceUpdate": false, "message": "새 버전이 있습니다." }
+    "ios": {
+      "minBuild": 9,
+      "forceUpdate": false,
+      "message": "새 버전이 있습니다."
+    },
+    "android": {
+      "minVersionCode": 3,
+      "forceUpdate": false,
+      "message": "새 버전이 있습니다."
+    }
+  },
+  "legacyIos": {
+    "_note": "옛 아이폰 앱(도난 계정, 6793780938) 안내. phase: off | notice | block. 새 Pro 앱은 URL 에 app=pro 를 붙여 이 안내를 받지 않는다. newAppUrl 은 Pro 앱 출시 뒤 채운다.",
+    "phase": "notice",
+    "id": "legacy-ios-2026-11",
+    "mail": "easy.invest.good@gmail.com",
+    "newAppUrl": "",
+    "text": {
+      "ko": {
+        "title": "이 아이폰 앱은 더 이상 지원하지 않습니다",
+        "body": [
+          "개발자 사정으로 이 앱은 앞으로 업데이트와 지원을 하지 않습니다. 같은 앱을 새 이름 「Long Time, Easy Life Pro」로 앱스토어에 다시 내놓습니다(곧 출시).",
+          "이 앱에서 구독이나 평생 이용권을 구매하셨다면 구매 영수증(애플이 보낸 영수증 메일, 또는 앱스토어 구독 화면 캡처)을 아래 주소로 보내 주세요. 새 앱에서 쓸 수 있는 무료 이용 코드를 보내 드립니다."
+        ],
+        "mailButton": "영수증 보내기",
+        "mailSubject": "Long Time 구매 영수증 (아이폰)",
+        "newAppButton": "새 앱 받기",
+        "close": "닫기"
+      },
+      "en": {
+        "title": "This iPhone app is no longer supported",
+        "body": [
+          "For reasons on the developer's side, this app will no longer receive updates or support. We are releasing the same app again on the App Store under a new name, “Long Time, Easy Life Pro” (coming soon).",
+          "If you bought a subscription or the lifetime purchase in this app, please email your purchase receipt (Apple's receipt email or a screenshot of your App Store subscription) to the address below. We will send you a free code for the new app."
+        ],
+        "mailButton": "Send receipt",
+        "mailSubject": "Long Time purchase receipt (iPhone)",
+        "newAppButton": "Get the new app",
+        "close": "Close"
+      },
+      "ja": {
+        "title": "このiPhoneアプリはサポートを終了しました",
+        "body": [
+          "開発者側の事情により、このアプリは今後アップデートとサポートを行いません。同じアプリを新しい名前「Long Time, Easy Life Pro」でApp Storeに改めて公開します（近日公開）。",
+          "このアプリでサブスクリプションまたは買い切りを購入された方は、購入のレシート（Appleからのレシートメール、またはApp Storeのサブスクリプション画面のスクリーンショット）を下のアドレスへお送りください。新しいアプリで使える無料コードをお送りします。"
+        ],
+        "mailButton": "レシートを送る",
+        "mailSubject": "Long Time 購入レシート (iPhone)",
+        "newAppButton": "新しいアプリを入手",
+        "close": "閉じる"
+      },
+      "zh": {
+        "title": "此 iPhone 应用已停止支持",
+        "body": [
+          "由于开发者方面的原因，此应用今后将不再更新和提供支持。我们将以新名称“Long Time, Easy Life Pro”在 App Store 重新上架同一款应用（即将推出）。",
+          "如果您在此应用中购买了订阅或永久版，请将购买收据（Apple 发送的收据邮件，或 App Store 订阅页面截图）发送到下方地址。我们会发给您可在新应用中使用的免费兑换码。"
+        ],
+        "mailButton": "发送收据",
+        "mailSubject": "Long Time 购买收据 (iPhone)",
+        "newAppButton": "获取新应用",
+        "close": "关闭"
+      },
+      "es": {
+        "title": "Esta app de iPhone ya no tiene soporte",
+        "body": [
+          "Por motivos del desarrollador, esta app ya no recibirá actualizaciones ni soporte. Volvemos a publicar la misma app en la App Store con un nombre nuevo, «Long Time, Easy Life Pro» (próximamente).",
+          "Si compraste una suscripción o la compra vitalicia en esta app, envía tu recibo de compra (el correo de recibo de Apple o una captura de tu suscripción en la App Store) a la dirección de abajo. Te enviaremos un código gratuito para la nueva app."
+        ],
+        "mailButton": "Enviar recibo",
+        "mailSubject": "Recibo de compra de Long Time (iPhone)",
+        "newAppButton": "Obtener la nueva app",
+        "close": "Cerrar"
+      },
+      "pt": {
+        "title": "Este app de iPhone não tem mais suporte",
+        "body": [
+          "Por motivos do desenvolvedor, este app não receberá mais atualizações nem suporte. Estamos publicando o mesmo app novamente na App Store com um novo nome, “Long Time, Easy Life Pro” (em breve).",
+          "Se você comprou uma assinatura ou a compra vitalícia neste app, envie o recibo da compra (o e-mail de recibo da Apple ou uma captura da sua assinatura na App Store) para o endereço abaixo. Enviaremos um código gratuito para o novo app."
+        ],
+        "mailButton": "Enviar recibo",
+        "mailSubject": "Recibo de compra do Long Time (iPhone)",
+        "newAppButton": "Baixar o novo app",
+        "close": "Fechar"
+      }
+    }
   }
 }

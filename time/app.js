@@ -7782,6 +7782,7 @@ function renderMusicToggle() {
 // 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
 // 위치에서 재시도하도록 바꾼다.
 async function playMusic(token) {
+  if (legacyBlockActive) return; // 옛 아이폰 앱 사용 중지 단계.
   // 유저의 실제 탭(toggleMusic 클릭)으로만 호출되는 지점이라, iOS가 요구하는
   // "사용자 제스처 안에서" AudioContext를 만들고 깨우는 조건을 만족한다.
   ensureAudioGraph();
@@ -8104,11 +8105,115 @@ function checkAppConfig() {
       if (!config) return;
       maybeShowPopupBanner(config.popup);
       checkForceUpdate(config.update);
+      maybeShowLegacyNotice(config.legacyIos);
     })
     .catch(() => {
       // 원격 설정 파일이 아직 없거나(최초 배포 전) 네트워크 실패한 경우 —
       // 앱은 평소대로 계속 동작해야 하므로 조용히 무시.
     });
+}
+
+// 2026-11-09 신설 — 옛 아이폰 앱 안내(오너 결정 2026-11-09).
+// 옛 앱스토어 앱(아이디 6793780938)을 올리던 애플 개발자 계정을 2026-09 에 잃었다.
+// 같은 앱을 새 계정에서 "Long Time, Easy Life Pro" 로 다시 낸다. 옛 앱은 고칠 수 없지만
+// 이 웹을 그대로 띄우므로, 안내와 (나중에) 사용 중지를 여기서 한다.
+// · 옛 아이폰 앱은 ?native=ios 만 붙여 연다. 새 Pro 앱은 반드시 &app=pro 를 붙인다
+//   (ContentView.swift 의 queryItems — Pro 앱을 만들 때 넣는다. 빼면 Pro 앱도 막힌다).
+// · 안드로이드(native=android)와 웹(native 없음)은 해당 없음 — 구글 플레이 계정은 무사하다.
+// · 동작은 app-config.json 의 legacyIos.phase 하나로 바꾼다(코드 배포 없이):
+//     "off"    — 아무것도 안 함
+//     "notice" — 켤 때마다 안내 카드, 닫을 수 있음
+//     "block"  — 닫을 수 없는 안내 + 음악 멈춤·재생 막기
+// · 글은 legacyIos.text 에서 언어별로 받는다(ko·en·ja·zh·es·pt). 화면 문구를 코드에 두지 않는다.
+const IS_LEGACY_IOS_APP =
+  nativePlatformKey === "ios" && !new URLSearchParams(window.location.search).get("app");
+let legacyBlockActive = false;
+
+function legacyNoticeText(cfg) {
+  const all = (cfg && cfg.text) || {};
+  let loc = "ko";
+  try {
+    loc = (window.FlipZenI18n && window.FlipZenI18n.getLocale && window.FlipZenI18n.getLocale()) || "ko";
+  } catch (e) { /* 기본 한국어 */ }
+  return all[loc] || all.en || all.ko || null;
+}
+
+function maybeShowLegacyNotice(cfg) {
+  try {
+    if (!IS_LEGACY_IOS_APP || !cfg) return;
+    const phase = cfg.phase;
+    if (phase !== "notice" && phase !== "block") return;
+    const txt = legacyNoticeText(cfg);
+    if (!txt || !txt.title) return;
+    if (phase === "block") {
+      legacyBlockActive = true;
+      try { if (musicPlaying) { musicPlaying = false; musicActionToken += 1; pauseMusic(); renderMusicToggle(); } } catch (e) { /* 무시 */ }
+    }
+    renderLegacyNotice(cfg, txt, phase === "block");
+  } catch (e) {
+    // 안내가 실패해도 앱은 평소대로 돈다.
+  }
+}
+
+function renderLegacyNotice(cfg, txt, blocking) {
+  if (document.getElementById("legacyNoticeOverlay")) return;
+  const overlay = document.createElement("div");
+  overlay.id = "legacyNoticeOverlay";
+  overlay.setAttribute(
+    "style",
+    "position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,0.72);" +
+      "display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;"
+  );
+  const card = document.createElement("div");
+  card.setAttribute(
+    "style",
+    "max-width:400px;width:100%;background:#161616;color:#f2f2f2;border-radius:20px;" +
+      "padding:22px 20px 18px;box-shadow:0 20px 60px rgba(0,0,0,0.5);" +
+      "font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;"
+  );
+  const h = document.createElement("h2");
+  h.textContent = txt.title;
+  h.setAttribute("style", "margin:0 0 12px;font-size:19px;line-height:1.35;font-weight:700;");
+  card.appendChild(h);
+  (Array.isArray(txt.body) ? txt.body : [txt.body]).forEach(function (para) {
+    if (!para) return;
+    const p = document.createElement("p");
+    p.textContent = para;
+    p.setAttribute("style", "margin:0 0 10px;font-size:15px;line-height:1.6;color:#d6d6d6;");
+    card.appendChild(p);
+  });
+  const btnStyle =
+    "display:block;width:100%;margin-top:10px;padding:13px 14px;border-radius:12px;border:none;" +
+    "font-size:16px;font-weight:600;cursor:pointer;";
+  if (cfg.newAppUrl && txt.newAppButton) {
+    const go = document.createElement("button");
+    go.textContent = txt.newAppButton;
+    go.setAttribute("style", btnStyle + "background:#4f8cff;color:#fff;");
+    go.addEventListener("click", function () { openPopupLink(cfg.newAppUrl); });
+    card.appendChild(go);
+  }
+  if (cfg.mail && txt.mailButton) {
+    const mail = document.createElement("button");
+    mail.textContent = txt.mailButton;
+    mail.setAttribute("style", btnStyle + "background:#2a2a2a;color:#fff;");
+    mail.addEventListener("click", function () {
+      openPopupLink("mailto:" + cfg.mail + (txt.mailSubject ? "?subject=" + encodeURIComponent(txt.mailSubject) : ""));
+    });
+    card.appendChild(mail);
+    const addr = document.createElement("p");
+    addr.textContent = cfg.mail;
+    addr.setAttribute("style", "margin:8px 0 0;font-size:14px;color:#9a9a9a;text-align:center;user-select:text;-webkit-user-select:text;");
+    card.appendChild(addr);
+  }
+  if (!blocking && txt.close) {
+    const close = document.createElement("button");
+    close.textContent = txt.close;
+    close.setAttribute("style", btnStyle + "background:transparent;color:#8ab4ff;");
+    close.addEventListener("click", function () { overlay.remove(); });
+    card.appendChild(close);
+  }
+  overlay.appendChild(card);
+  document.body.appendChild(overlay); // body 직속(iOS 스크롤 규칙 1).
 }
 
 function popupDismissKey(id) {
@@ -8406,6 +8511,7 @@ window.__flipzenNativeCommand = function (command) {
 };
 
 function toggleMusic() {
+  if (legacyBlockActive) return; // 옛 아이폰 앱 사용 중지 단계(legacyIos.phase = "block").
   postToNativeHaptic("light");
   musicPlaying = !musicPlaying;
   musicActionToken += 1; // 이 클릭이 "가장 최신 의도"임을 표시 — 이전 재생 시도는 이 값으로 자기 차례가 지났음을 안다.
