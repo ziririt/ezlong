@@ -1,22 +1,159 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ezScan — one-shot document scanner</title>
-<style>:root{--bg:#0e1117;--fg:#eef1f6;--mut:#9aa3b2;--acc:#6ea8ff;--card:rgba(255,255,255,.05)}
-@media (prefers-color-scheme: light){:root{--bg:#f7f8fa;--fg:#1b1d22;--mut:#5d636e;--acc:#2f6fd6;--card:#fff}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
-main{max-width:760px;margin:0 auto;padding:32px 16px 64px}nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}nav a{color:var(--mut);text-decoration:none;font-size:14px;padding:4px 10px;border-radius:99px;background:var(--card)}nav a[aria-current]{color:var(--bg);background:var(--acc)}
-h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin:28px 0 8px}.upd{color:var(--mut);font-size:14px;margin:0 0 20px}section{display:none}section.def{display:block}ul{padding-left:20px}a{color:var(--acc)}footer{margin-top:40px;color:var(--mut);font-size:13px}dt{font-weight:600;margin-top:16px}dd{margin:4px 0 0}.links a{display:inline-block;margin:8px 12px 0 0}</style>
+<title>ezScan — One-shot document scanner for books and receipts</title>
+<meta name="description" content="ezScan: point, shoot, done. Finds the page, removes the background, flattens curled book pages and bent receipts, and translates photos in place. Everything stays on your device. 책·영수증을 한 번에 반듯하게 펴는 원샷 문서 스캐너.">
+<meta property="og:title" content="ezScan — 책·영수증을 한 번에 반듯하게">
+<meta property="og:description" content="대고 찍으면 끝. 말린 책과 구부러진 영수증을 펴고, 사진 속 글을 원래 모양 그대로 번역합니다. 모든 처리는 기기 안에서.">
+<meta property="og:image" content="https://ezlong.com/app/ezscan/icon.jpg">
+<link rel="icon" href="icon.jpg">
+<style>
+:root{--bg:#f2f2f7;--fg:#111318;--mut:#636a76;--card:#ffffff;--line:rgba(0,0,0,.07);--acc:#3b6ff0}
+@media (prefers-color-scheme: dark){:root{--bg:#0d0f14;--fg:#eef1f6;--mut:#9aa3b2;--card:#171a21;--line:rgba(255,255,255,.08);--acc:#6ea8ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:880px;margin:0 auto;padding:20px 18px 64px}
+a{color:var(--acc);text-decoration:none}
+.lang{display:flex;justify-content:flex-end;gap:6px;margin:4px 0 8px}
+.lang a{color:var(--mut);font-size:14px;padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+.lang a[aria-current]{color:#fff;background:var(--acc);border-color:transparent}
+section{display:none}section.def{display:block}
+.hero{display:flex;align-items:center;gap:20px;margin:18px 0 26px}
+.hero img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(40,70,160,.25);flex:none}
+.hero h1{margin:0;font-size:clamp(38px,8vw,56px);line-height:1.02;letter-spacing:-.03em;font-weight:800}
+.hero p{margin:6px 0 0;color:var(--mut);font-size:clamp(17px,3.6vw,21px)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;border-radius:14px;font-weight:700;font-size:15px;background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.btn small{font-weight:500;color:var(--mut);font-size:14px}
+.btn.wait{opacity:.7;cursor:default}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tile{border-radius:28px;padding:26px 24px;color:#fff;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.tile .ico{position:absolute;top:22px;left:24px;width:46px;height:46px}
+.tile h3{margin:0;font-size:clamp(24px,4.6vw,32px);letter-spacing:-.02em;font-weight:800}
+.tile p{margin:6px 0 0;font-size:15px;opacity:.92;line-height:1.5}
+.t-scan{grid-column:1/-1;min-height:170px;background:linear-gradient(135deg,#5b8ef4,#2f58e0)}
+.t-scan .ico{top:auto;bottom:auto;position:static;margin-bottom:12px}
+.t-photo{background:linear-gradient(160deg,#e47a63,#d74f62)}
+.t-text{background:linear-gradient(160deg,#9b7cf0,#6a45dc)}
+.t-trans{grid-column:1/-1;min-height:200px;background:linear-gradient(120deg,#6db795,#4f86d6)}
+.t-trans .new{display:inline-block;margin-left:10px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.28);vertical-align:middle}
+.t-trans .ico{position:static;margin-bottom:12px}
+h2{font-size:clamp(24px,4.6vw,30px);letter-spacing:-.02em;margin:46px 0 14px;font-weight:800}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+.feat b{display:block;font-size:17px;margin-bottom:4px}
+.feat span{color:var(--mut);font-size:15px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px}
+.plan.pro{border:2px solid var(--acc)}
+.plan h3{margin:0 0 6px;font-size:20px}
+.plan ul{margin:8px 0 0;padding-left:18px;color:var(--mut)}
+.plan li{margin:4px 0}
+.priv{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;gap:16px;align-items:flex-start}
+.priv svg{flex:none;width:40px;height:40px}
+.priv p{margin:0;color:var(--mut)}
+.priv b{color:var(--fg)}
+footer{margin-top:44px;color:var(--mut);font-size:14px;display:flex;flex-wrap:wrap;gap:16px}
+@media (max-width:560px){.grid,.plans{grid-template-columns:1fr}.tile{min-height:150px}.hero img{width:76px;height:76px;border-radius:18px}}
+</style>
 </head><body>
 <script src="/app/apps-nav.js"></script><!-- 앱 글로벌 헤더 -->
 <main>
-<nav><a href="#en" data-l="en">English</a><a href="#ko" data-l="ko">한국어</a></nav>
-<section id="en" lang="en" class=def><h1>ezScan</h1><p class="upd">One-shot document scanner for iPhone and Android</p>
-<p>Point, shoot, done. ezScan finds the page, removes the background, flattens curled book pages and bent receipts, and cleans up the image so it looks like it came from a flatbed scanner. No manual corner dragging.</p>
-<ul><li>Books: two-page spreads are split into separate pages and the curve near the spine is flattened.</li><li>Receipts and documents: bent paper is straightened and the background is removed.</li><li>Color, grayscale and black-and-white cleanup.</li><li>Save to Photos or share as PDF.</li><li>Everything is processed on your device. Nothing is uploaded.</li></ul>
-<p class="links"><a href="privacy.html">Privacy Policy</a><a href="support.html">Support</a></p>
+<nav class="lang"><a href="#en" data-l="en">English</a><a href="#ko" data-l="ko">한국어</a></nav>
+
+<section id="ko" lang="ko">
+  <div class="hero"><img src="icon.jpg" alt="ezScan 아이콘"><div><h1>ezScan</h1><p>책·영수증을 한 번에 반듯하게</p></div></div>
+  <div class="cta">
+    <span class="btn wait">App Store <small>준비 중</small></span>
+    <span class="btn wait">Google Play <small>준비 중</small></span>
+  </div>
+  <div class="grid">
+    <div class="tile t-scan">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l-1.5 2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4H9zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
+      <h3>스캔</h3><p>카메라로 비추고 한 번 누르면, 쪽을 찾아 펴서 저장합니다. 모서리를 손으로 맞출 필요가 없습니다.</p>
+    </div>
+    <div class="tile t-photo">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M4 5h13a2 2 0 0 1 2 2v1H6a2 2 0 0 0-2 2v8a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm4 5h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zm2.5 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM8 19h12l-4-5-3 3.5-1.5-1.5L8 19z"/></svg>
+      <h3>사진에서</h3><p>찍어 둔 사진도 펴고 깨끗하게</p>
+    </div>
+    <div class="tile t-text">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M7 3h10a1 1 0 0 1 1 1v17l-6-4.5L6 21V4a1 1 0 0 1 1-1z"/></svg>
+      <h3>수집 텍스트</h3><p>책에서 마음에 든 문장을 모아 둡니다</p>
+    </div>
+    <div class="tile t-trans">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm4.2 3.5v1.6h2.3c-.3 1.9-1.3 3.2-3.1 4l.7 1.3c1.3-.6 2.3-1.4 3-2.5V14h1.6V7.5H8.2zm7.3 0v6.9h1.6V10.8h1.4V9.2h-1.4V7.5h-1.6z"/></svg>
+      <h3>사진 번역 <span class="new">새 기능</span></h3><p>원래 모양 그대로 번역합니다. 표·차트·그림 속 설명까지 그 자리에서만 바뀝니다. 기기 번역은 무료, 내 AI 키로 더 자연스럽게.</p>
+    </div>
+  </div>
+
+  <h2>찍으면 끝나는 이유</h2>
+  <div class="feats">
+    <div class="feat"><b>책은 한 쪽씩, 반듯하게</b><span>펼친 두 쪽을 한 쪽씩 나누고 책등 근처의 휨을 폅니다.</span></div>
+    <div class="feat"><b>구부러진 영수증도 평평하게</b><span>접히고 말린 종이를 펴고 배경을 지웁니다.</span></div>
+    <div class="feat"><b>보기 좋은 세 가지 보정</b><span>컬러, 회색, 흑백 중에서 고릅니다. 평판 스캐너로 스캔한 것처럼.</span></div>
+    <div class="feat"><b>저장과 공유는 바로</b><span>사진 앱에 저장하거나 여러 쪽을 PDF 하나로 공유합니다.</span></div>
+  </div>
+
+  <h2>무료로 충분하고, Pro는 더 편하게</h2>
+  <div class="plans">
+    <div class="plan"><h3>무료</h3><ul><li>스캔 기능 전부</li><li>사진에서 펴기, 수집 텍스트</li><li>기기 번역으로 사진 번역</li></ul></div>
+    <div class="plan pro"><h3>Pro</h3><ul><li>광고 없음</li><li>내 AI 키(ChatGPT·Claude·Gemini 등)로 더 자연스러운 번역</li><li>무료 체험 후 구독</li></ul></div>
+  </div>
+
+  <h2>내 문서는 내 휴대폰에</h2>
+  <div class="priv">
+    <svg viewBox="0 0 24 24" fill="var(--acc)"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1 13.6l6-6-1.4-1.4L11 12.8 8.4 10.2 7 11.6l4 4z"/></svg>
+    <p><b>모든 처리는 기기 안에서 합니다.</b> 찍은 문서를 서버에 올리지 않습니다. 내 AI 키로 번역할 때만 번역할 텍스트가 고르신 AI 회사로 갑니다.</p>
+  </div>
+
+  <footer><a href="privacy.html#ko">개인정보처리방침</a><a href="support.html#ko">지원</a><a href="/app/">EZLONG 앱 모음</a></footer>
 </section>
-<section id="ko" lang="ko"><h1>ezScan</h1><p class="upd">아이폰·안드로이드용 원샷 문서 스캐너</p>
-<p>대고 찍으면 끝. ezScan이 쪽을 찾고, 배경을 지우고, 말린 책 안쪽과 구부러진 영수증을 펴고, 평판 스캐너로 스캔한 것처럼 깨끗하게 정리합니다. 모서리를 손으로 딸 필요가 없습니다.</p>
-<ul><li>책: 펼친 두 쪽을 한 쪽씩 나누고 책등 근처의 휨을 폅니다.</li><li>영수증·문서: 구부러진 종이를 펴고 배경을 지웁니다.</li><li>컬러, 회색, 흑백 보정.</li><li>사진 앱에 저장하거나 PDF로 공유.</li><li>모든 처리는 기기 안에서. 아무것도 업로드하지 않습니다.</li></ul>
-<p class="links"><a href="privacy.html#ko">개인정보처리방침</a><a href="support.html#ko">지원</a></p>
+
+<section id="en" lang="en" class="def">
+  <div class="hero"><img src="icon.jpg" alt="ezScan icon"><div><h1>ezScan</h1><p>Books and receipts, flat in one shot</p></div></div>
+  <div class="cta">
+    <span class="btn wait">App Store <small>Coming soon</small></span>
+    <span class="btn wait">Google Play <small>Coming soon</small></span>
+  </div>
+  <div class="grid">
+    <div class="tile t-scan">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l-1.5 2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4H9zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
+      <h3>Scan</h3><p>Point the camera and tap once. ezScan finds the page, flattens it and saves it. No corner dragging.</p>
+    </div>
+    <div class="tile t-photo">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M4 5h13a2 2 0 0 1 2 2v1H6a2 2 0 0 0-2 2v8a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm4 5h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zm2.5 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM8 19h12l-4-5-3 3.5-1.5-1.5L8 19z"/></svg>
+      <h3>From Photos</h3><p>Flatten and clean photos you already took</p>
+    </div>
+    <div class="tile t-text">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M7 3h10a1 1 0 0 1 1 1v17l-6-4.5L6 21V4a1 1 0 0 1 1-1z"/></svg>
+      <h3>Saved Quotes</h3><p>Keep the sentences you love from books</p>
+    </div>
+    <div class="tile t-trans">
+      <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm4.2 3.5v1.6h2.3c-.3 1.9-1.3 3.2-3.1 4l.7 1.3c1.3-.6 2.3-1.4 3-2.5V14h1.6V7.5H8.2zm7.3 0v6.9h1.6V10.8h1.4V9.2h-1.4V7.5h-1.6z"/></svg>
+      <h3>Photo Translate <span class="new">New</span></h3><p>Translates in place, keeping the original layout — even labels in tables, charts and pictures. On-device translation is free; use your own AI key for more natural results.</p>
+    </div>
+  </div>
+
+  <h2>Why it just works</h2>
+  <div class="feats">
+    <div class="feat"><b>Books, page by page</b><span>Two-page spreads are split into separate pages and the curve near the spine is flattened.</span></div>
+    <div class="feat"><b>Bent receipts, made flat</b><span>Curled and folded paper is straightened and the background removed.</span></div>
+    <div class="feat"><b>Three clean looks</b><span>Color, grayscale or black and white — like a flatbed scanner.</span></div>
+    <div class="feat"><b>Save and share instantly</b><span>Save to Photos or share many pages as one PDF.</span></div>
+  </div>
+
+  <h2>Free is plenty. Pro is easier.</h2>
+  <div class="plans">
+    <div class="plan"><h3>Free</h3><ul><li>Every scanning feature</li><li>From Photos and Saved Quotes</li><li>Photo translate with on-device translation</li></ul></div>
+    <div class="plan pro"><h3>Pro</h3><ul><li>No ads</li><li>More natural translation with your own AI key (ChatGPT, Claude, Gemini and more)</li><li>Free trial, then subscription</li></ul></div>
+  </div>
+
+  <h2>Your documents stay on your phone</h2>
+  <div class="priv">
+    <svg viewBox="0 0 24 24" fill="var(--acc)"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1 13.6l6-6-1.4-1.4L11 12.8 8.4 10.2 7 11.6l4 4z"/></svg>
+    <p><b>Everything is processed on your device.</b> Nothing you scan is uploaded. Only when you translate with your own AI key is the text to translate sent to the AI company you chose.</p>
+  </div>
+
+  <footer><a href="privacy.html">Privacy Policy</a><a href="support.html">Support</a><a href="/app/">EZLONG apps</a></footer>
 </section>
-<footer>ezScan · ezlong</footer></main><script>(function(){var L=["en","ko"];function pick(){var h=location.hash.slice(1);if(L.indexOf(h)<0){h=(navigator.language||"en").toLowerCase().slice(0,2);if(L.indexOf(h)<0)h="en"}document.querySelectorAll("section").forEach(function(s){s.style.display=s.id===h?"block":"none"});document.querySelectorAll("nav a").forEach(function(a){if(a.dataset.l===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}window.addEventListener("hashchange",pick);pick()})();</script></body></html>
+</main>
+<script>(function(){var L=["en","ko"];function pick(){var h=location.hash.slice(1);if(L.indexOf(h)<0){h=(navigator.language||"en").toLowerCase().slice(0,2);if(L.indexOf(h)<0)h="en"}document.querySelectorAll("main>section").forEach(function(s){s.style.display=s.id===h?"block":"none"});document.querySelectorAll(".lang a").forEach(function(a){if(a.dataset.l===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});document.documentElement.lang=h}window.addEventListener("hashchange",pick);pick();window.scrollTo(0,0)})();</script>
+</body></html>
