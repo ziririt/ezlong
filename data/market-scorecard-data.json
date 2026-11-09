@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-11-09-18:20",
+      "timestamp_kst": "2026-11-09(월) 18:20 KST",
+      "key_event": {
+        "name": "엔비디아 CEO 조사 소식",
+        "name_en": "Nvidia CEO Probe News",
+        "time": "프리마켓 진행 중",
+        "why": "AI 관련주 투자 심리 위축, 시장 전반 영향",
+        "why_en": "Weaken AI stock sentiment, broader market impact"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "엔비디아 CEO 조사 소식으로 부정 우위, CPI 발표 대기하며 혼조세",
+      "summary_en": "Negative bias due to Nvidia CEO probe, mixed sentiment awaiting CPI data",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakens",
+          "desc": "달러인덱스 DXY 101.88 (-0.24%) 하락: 수출 기업 실적 개선 기대",
+          "desc_en": "Dollar Index DXY at 101.88 (-0.24%) decline: expectation of improved export company earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "엔비디아 CEO 조사 소식",
+          "name_en": "Nvidia CEO Probe News",
+          "desc": "엔비디아 (-6.26%) 주가 급락: CEO 젠슨 황 조사 소식으로 AI 및 반도체 섹터 전반에 부정적 영향",
+          "desc_en": "Nvidia stock (-6.26%) plunges: news of CEO Jensen Huang probe negatively impacts AI and semiconductor sectors",
+          "category": "company_specific"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.86% (+0.45%), 미30년 국채금리 5.26% (+0.17%) 상승: 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield at 4.86% (+0.45%), 30-year yield at 5.26% (+0.17%) rise: increasing discount rate burden on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "CPI 소비자물가 발표 대기",
+          "name_en": "Awaiting CPI Consumer Price Data",
+          "desc": "11월 10일(화) 08:30 ET 발표 예정인 10월 CPI 데이터 대기: 인플레이션 둔화 기대와 추가 금리 인상 우려 상존",
+          "desc_en": "Awaiting October CPI data, scheduled for release on November 10 (Tue) 08:30 ET: expectations of inflation easing versus concerns of further rate hikes persist",
+          "category": "macro_data"
+        },
+        {
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 89.76 USD (-1.70%) 하락: 인플레이션 완화에 긍정적이나, 경기 둔화 우려와 지정학적 리스크 완화 해석 엇갈림",
+          "desc_en": "WTI crude oil at 89.76 USD (-1.70%) decline: positive for inflation easing, but mixed interpretations regarding economic slowdown concerns and geopolitical risk reduction",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 11월6일(금, 뉴욕) 미국 증시는 엔비디아 CEO 조사 소식으로 인한 AI 관련주 투자 심리 위축과 CPI 발표 대기 심리가 혼재하며 부정적 우위 마감.\n- 엔비디아 CEO 젠슨 황에 대한 조사 소식이 전해지며 AI 및 반도체 섹터 전반에 걸쳐 주가 하락 압력 발생.\n- 미 국채금리 상승 압력과 CPI 발표 대기 심리가 시장 전반의 불확실성을 가중시키는 요인으로 작용.\n- 달러 약세 전환은 수출 기업 실적 개선 기대를 높이며 일부 긍정적 영향.",
+        "positive": "- 달러 약세 전환: 달러인덱스 DXY가 101.88로 0.24% 하락하며 수출 기업들의 실적 개선에 대한 기대감 상승.",
+        "negative": "- 엔비디아 CEO 조사 소식: 엔비디아 주가가 6.26% 급락했으며, CEO 젠슨 황에 대한 조사 소식이 AI 및 반도체 섹터 전반의 투자 심리를 위축시키는 요인으로 작용. 블룸버그 등 외신에서 엔비디아 조사 소식이 아시아 시장에도 압력을 가할 위험이 있다고 보도.\n- 미 국채금리 상승 압력: 미 10년 국채금리가 4.86%(+0.45%)로 0.45% 상승하고, 미 30년 국채금리가 5.26%(+0.17%)로 0.17% 상승하며 성장주에 대한 할인율 부담 가중.",
+        "mixed": "- CPI 소비자물가 발표 대기: 11월 10일(화) 08:30 ET 발표 예정인 10월 CPI 데이터 발표를 앞두고 시장은 인플레이션 둔화에 대한 기대와 추가 금리 인상에 대한 우려가 혼재된 상황. 트레이딩키 등 외신에서 CPI 발표가 미국 증시, 달러, 금에 미칠 영향에 대한 전망을 제시.\n- WTI 원유 가격 하락: WTI 원유 가격이 89.76 USD로 1.70% 하락하며 인플레이션 완화에는 긍정적인 영향을 미치나, 동시에 경기 둔화 우려와 지정학적 리스크 완화에 대한 해석이 엇갈리는 상황.",
+        "watch": "- CPI 소비자물가 발표: 11월 10일(화) 08:30 ET에 발표될 10월 CPI 데이터가 인플레이션 추세와 연준의 향후 통화정책 방향에 대한 중요한 단서를 제공할 예정.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 지속적인 상승 또는 하락 추이가 성장주를 포함한 시장 전반의 투자 심리에 영향을 미칠 것으로 예상.\n- 달러인덱스 DXY 변동: 달러인덱스 DXY의 추가적인 약세 또는 강세 전환이 수출 기업 실적 기대와 글로벌 자금 흐름에 미치는 영향을 주시."
+      },
+      "report_at": "2026-11-09(월) 18:20 KST"
+    },
+    {
       "id": "2026-11-09-11:50",
       "timestamp_kst": "2026-11-09(월) 11:50 KST",
       "key_event": {
@@ -581,76 +648,8 @@
         "watch": "- 달러인덱스(DXY) 변동: 달러 강세가 지속될 경우 미국 수출 기업 실적 및 글로벌 자금 흐름에 미치는 영향이 커지므로, 달러인덱스의 추가 상승 또는 하락 추이 확인."
       },
       "report_at": "2026-11-08(일) 18:20 KST"
-    },
-    {
-      "id": "2026-11-08-11:50",
-      "timestamp_kst": "2026-11-08(일) 11:50 KST",
-      "key_event": {
-        "name": "강력한 고용보고서 발표",
-        "name_en": "Strong Jobs Report Release",
-        "time": "직전 거래일(금요일) 마감 기준",
-        "why": "연준 금리 인상 우려 재부각, 시장 변동성 확대",
-        "why_en": "Fed rate hike concerns resurface, market volatility increases"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "강력한 고용보고서로 부정 우위 지속, AI 관련주 매수세 일부 상쇄",
-      "summary_en": "Negative sentiment persists due to strong jobs report, partially offset by AI stock buying",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 섹터 투자 지속",
-          "name_en": "Continued AI Sector Investment",
-          "desc": "Alphabet의 말레이시아 데이터 센터 150억 달러 투자 발표: AI 인프라 투자 지속 확인",
-          "desc_en": "Alphabet's $15 billion investment in Malaysia data centers: confirms continued AI infrastructure investment",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "강력한 고용보고서",
-          "name_en": "Strong Jobs Report",
-          "desc": "10월 실업률 4.10%(-0.10%p)로 하락, 고용시장 강세 지속: 연준 추가 금리 인상 우려 증대",
-          "desc_en": "October unemployment rate fell to 4.10%(-0.10%p), strong job market persists: increases Fed rate hike concerns",
-          "category": "macro_data"
-        },
-        {
-          "score": 15,
-          "name": "인플레이션 우려 지속",
-          "name_en": "Persistent Inflation Concerns",
-          "desc": "PCE 물가상승률 3.65%(+0.20%p), CPI 물가상승률 3.72%(+0.36%p) 등 물가 지표 상승: 연준 긴축 기조 유지 가능성",
-          "desc_en": "Inflation indicators rising: PCE 3.65%(+0.20%p), CPI 3.72%(+0.36%p): potential for continued Fed hawkish stance",
-          "category": "macro_data"
-        },
-        {
-          "score": 15,
-          "name": "국채금리 상승 압력",
-          "name_en": "Upward Pressure on Treasury Yields",
-          "desc": "미10년 국채금리 4.86%(+0.45%), 미30년 국채금리 5.26%(+0.17%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield 4.86%(+0.45%), 30-year Treasury yield 5.26%(+0.17%) rise: increased discount rate burden for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 11월6일(금, 뉴욕) 시장 총평: 강력한 고용보고서로 인한 연준의 추가 금리 인상 우려가 시장 전반에 부정적인 영향을 미치며, 부정 우위 지속.\n- 주요 하락 원인: 10월 실업률 하락과 PCE, CPI 물가 상승 등 전반적인 경제 지표 강세로 연준의 긴축 기조 유지 가능성 증대.\n- 하락세 일부 상쇄 요인: AI 섹터에 대한 지속적인 투자 심리가 일부 매수세를 유입하며 하락폭 제한.\n- 시장 변동성 확대: 미 국채금리 상승 압력으로 성장주 할인율 부담 가중되며 투자 심리 위축.",
-        "positive": "- AI 섹터 투자 지속: Alphabet의 말레이시아 데이터 센터에 150억 달러 투자 발표는 AI 인프라 투자 지속 의지를 확인, AI 관련주에 대한 긍정적 투자 심리 유지.",
-        "negative": "- 강력한 고용보고서: 10월 실업률이 4.10%로 전월 대비 0.10%p 하락하며 고용시장의 강세가 지속, 이는 연방준비제도(Fed)의 추가 금리 인상 우려를 증대시키는 요인.\n- 인플레이션 우려 지속: 9월 PCE 물가상승률이 3.65%(전월 대비 0.20%p 상승)를 기록하고 CPI 물가상승률도 3.72%(전월 대비 0.36%p 상승)를 기록하는 등 주요 물가 지표 상승, 연준의 긴축 기조 유지 가능성 시사.\n- 국채금리 상승 압력: 미 10년 국채금리가 4.86%(전월 대비 0.45%p 상승)로, 미 30년 국채금리가 5.26%(전월 대비 0.17%p 상승)로 상승, 이는 성장주에 대한 할인율 부담을 가중시키며 투자 심리 위축.",
-        "mixed": "",
-        "watch": "- 미 10년 국채금리 추이: 현재 4.86%(+0.45%) 수준의 미 10년 국채금리가 추가 상승할 경우 성장주에 대한 압박 지속, 하락 시 시장 부담 완화.\n- S&P 500 선물 지수: 현재 하락세를 보이는 S&P 500 선물 지수의 반등 여부 확인, 시장 전반의 투자 심리 변화 가늠."
-      },
-      "report_at": "2026-11-08(일) 11:50 KST"
     }
   ],
-  "updated_at": "2026-11-09T02:51:17Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-09(월) 16:03 KST",
-    "at_utc": "2026-11-09T07:04:13Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-11-09T09:21:19Z",
+  "max_entries": 10
 }
