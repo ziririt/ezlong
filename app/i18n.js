@@ -602,8 +602,9 @@
 
   function build() {
     var css = document.createElement('style');
-    css.textContent = '.ez-lang{display:flex;justify-content:flex-end;margin:4px 0 8px}' +
-      '.ez-lang select{font:inherit;font-size:14px;line-height:1.2;padding:6px 28px 6px 12px;border-radius:99px;' +
+    css.textContent = '.ez-lang{display:flex;justify-content:flex-end;margin:4px 0 8px}.ez-lang .ez-lw{position:relative;display:inline-flex;align-items:center}' +
+      '.ez-lang .ez-gl{position:absolute;left:11px;width:16px;height:16px;pointer-events:none;color:var(--sub,var(--mut,#555))}' +
+      '.ez-lang select{font:inherit;font-size:14px;line-height:1.2;padding:6px 28px 6px 33px;border-radius:99px;' +
       'border:1px solid var(--line,#d9d9d9);background-color:var(--panel,var(--card,#fff));color:var(--sub,var(--mut,#555));' +
       'cursor:pointer;max-width:100%}' +
       '.ez-lang select:focus-visible{outline:2px solid var(--accent,var(--acc,#2b6cb0));outline-offset:2px}';
@@ -618,7 +619,10 @@
       sel.appendChild(o);
     }
     sel.addEventListener('change', function () { choose(sel.value); });
-    box.appendChild(sel);
+    var lw = document.createElement('span'); lw.className = 'ez-lw';
+    lw.innerHTML = '<svg class="ez-gl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>';
+    lw.appendChild(sel);
+    box.appendChild(lw);
     var slot = document.getElementById('ez-lang-slot');
     if (slot) slot.appendChild(box);
     else {
