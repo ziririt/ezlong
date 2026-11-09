@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-11-10-01:44",
+      "timestamp_kst": "2026-11-10(화) 01:44 KST",
+      "key_event": {
+        "name": "CPI 발표 대기 및 AI주 혼조",
+        "name_en": "Anticipation of CPI Release and Mixed AI Stocks",
+        "time": "11월 10일(화) 08:30 ET (약 21시간 뒤)",
+        "why": "주요 인플레이션 지표 발표 대기, AI 섹터 투자심리 혼조 (11월 10일(화) 08:30 ET)",
+        "why_en": "Anticipation of key inflation data release, mixed investor sentiment in AI sector (Nov 10 (Tue) 08:30 ET)"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "긍정 우위, CPI 발표 대기하며 혼조세",
+      "summary_en": "Positive bias due to major index gains and oil price decline, mixed sentiment awaiting CPI release",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "글로벌 시장 회복세",
+          "name_en": "Global Market Recovery",
+          "desc": "ETF 및 주식 선물 상승, S&P 500 시장 가치 1조 달러 증가: 위험 선호 심리 회복",
+          "desc_en": "ETFs and equity futures higher, S&P 500 market value up $1 trillion: Risk-on sentiment returning",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 25,
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 4.16% 하락: 인플레이션 우려 완화 및 에너지 비용 감소 기대",
+          "desc_en": "WTI crude oil down 4.16%: Easing inflation concerns and expectation of lower energy costs",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "엔비디아 CEO 조사 소식",
+          "name_en": "Nvidia CEO Investigation News",
+          "desc": "엔비디아(NVDA) 6.61% 하락: AI 관련주 투자 심리 위축 및 시장 전반 영향",
+          "desc_en": "Nvidia (NVDA) down 6.61%: Weakening investor sentiment for AI-related stocks and broader market impact",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 섹터 밸류에이션 논란",
+          "name_en": "AI Sector Valuation Debate",
+          "desc": "AI 관련주 밸류에이션에 대한 지속적인 논란: 일부 종목 강세에도 전반적인 투자 심리 혼조",
+          "desc_en": "Ongoing debate over AI-related stock valuations: Mixed investor sentiment despite strength in some names",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월9일(월, 뉴욕) 미10년 4.87%(+0.31%) · 미30년 5.27%(+0.13%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.87%(+0.31%) · 미30년 5.27%(+0.13%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 11월9일(월, 뉴욕) 장 마감: CPI 발표 대기 속 혼조세 마감, 긍정 우위로 총점 긍정 60 대 부정 40 기록.\n- 주요 원인: 글로벌 시장 회복세와 유가 하락이 긍정적 영향을 미쳤으나, 엔비디아 CEO 관련 소식으로 AI 섹터 투자심리 위축.\n- 시장 전반: S&P 500 시장 가치 1조 달러 증가 및 ETF, 주식 선물 상승으로 위험 선호 심리 회복세 관측.\n- 핵심 대기: 11월10일(화, 뉴욕) 발표될 CPI 지표가 향후 시장 방향성을 결정할 주요 변수로 작용할 전망.",
+        "positive": "- 글로벌 시장 회복세: ETF 및 주식 선물 상승세, S&P 500 시장 가치 1조 달러 증가하며 위험 선호 심리 회복. BlackRock의 주간 시장 논평 및 NDTV Profit의 보도에서 미국 증시 랠리 언급.\n- WTI 원유 가격 하락: WTI 원유 4.16% 하락하며 인플레이션 우려 완화 및 에너지 비용 감소 기대감 확산.",
+        "negative": "- 엔비디아 CEO 조사 소식: 엔비디아(NVDA) 주가 6.61% 하락. CEO의 사생활 관련 이사회 조사 소식이 AI 관련주 전반의 투자 심리를 위축시키고 시장에 부정적 영향 미침. Investing.com 등 여러 매체에서 AI 관련주 약세 보도.",
+        "mixed": "- AI 섹터 밸류에이션 논란: AI 관련주 밸류에이션에 대한 지속적인 논란으로 투자 심리 혼조. 일부 AI 관련 종목은 강세를 보였으나, 전반적인 섹터는 불확실성에 직면. Invesco QQQ(QQQ)와 SPDR S&P 500 ETF(SPY)가 11월 5일 엔비디아와 애플 주식을 매도한 것으로 확인.\n- 미 국채금리 수준: 미국 10년물 국채금리 4.87%(+0.31%), 30년물 국채금리 5.27%(+0.13%) 기록. 금리 움직임이 작아 방향성 판단 유보. 금리는 성장주 할인율에 핵심 변수로 작용.",
+        "watch": "- CPI 소비자물가(10월분) 발표: 11월 10일(화) 08:30 ET 예정. 인플레이션 압력 완화 여부가 시장 방향성을 결정할 핵심 지표로 작용.\n- 미 국채금리 추이: 10년물 및 30년물 국채금리의 지속적인 움직임이 성장주 밸류에이션에 미치는 영향 확인.\n- WTI 원유 가격 변동: 유가 하락세 지속 여부가 인플레이션 기대 및 에너지 비용에 미치는 영향 주시."
+      },
+      "report_at": "2026-11-10(화) 01:44 KST"
+    },
+    {
       "id": "2026-11-09-23:20",
       "timestamp_kst": "2026-11-09(월) 23:20 KST",
       "key_event": {
@@ -569,76 +636,8 @@
         "watch": "- CPI 소비자물가 발표: 11월 10일(화) 08:30 ET (약 43시간 뒤) 예정된 10월분 CPI 소비자물가 지표 발표 결과에 따라 인플레이션 경로 및 연준의 통화정책 기대 변화 확인.\n- 국채금리 추이: 미국 10년물 국채금리의 추가 상승 여부 및 그에 따른 성장주 밸류에이션 압박 변화 확인.\n- 기술주 매수세 지속 여부: AI 및 반도체 관련 기술주에 대한 매수세가 밸류에이션 우려를 상쇄하며 지속될지 여부 확인."
       },
       "report_at": "2026-11-09(월) 03:02 KST"
-    },
-    {
-      "id": "2026-11-09-00:50",
-      "timestamp_kst": "2026-11-09(월) 00:50 KST",
-      "key_event": {
-        "name": "AI·반도체주 강세 지속",
-        "name_en": "Continued Strength in AI/Semiconductor Stocks",
-        "time": "직전 거래일 마감 기준",
-        "why": "기술주 매수세 유입, 밸류에이션 우려 일부 상쇄",
-        "why_en": "Inflow of tech buying, partially offsetting valuation concerns"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI·긍정 우위, CPI 발표 대기하며 관망세",
-      "summary_en": "Positive bias due to AI/semiconductor strength, market awaits CPI data",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "AI 수요 지속 및 투자 확대",
-          "name_en": "Sustained AI Demand and Investment Expansion",
-          "desc": "Arm Holdings 매출 27% 증가, AI 인프라 투자 지속 확인: SOXX 4.91% 상승",
-          "desc_en": "Arm Holdings sales up 27%, confirming continued AI infrastructure investment: SOXX up 4.91%",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "Fed 추가 금리 인상 우려 지속",
-          "name_en": "Persistent Fed Rate Hike Concerns",
-          "desc": "Fed 기준금리 3.88%로 상승, 10년 기대인플레이션 2.23% 유지: 추가 긴축 가능성 경계",
-          "desc_en": "Fed benchmark rate rose to 3.88%, 10-year inflation expectations remain at 2.23%: Caution over further tightening",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "높은 국채금리 수준 유지",
-          "name_en": "High Treasury Yields Persist",
-          "desc": "미10년 국채금리 4.86%(+0.45%)로 상승, 성장주 밸류에이션 압박 지속",
-          "desc_en": "US 10-year Treasury yield rose to 4.86%, continued pressure on growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "AI 밸류에이션 과열 경고",
-          "name_en": "Warnings on AI Valuation Overheating",
-          "desc": "Yardeni Research, AI 기업 수익 기대치 지속 불가능 수준 경고",
-          "desc_en": "Yardeni Research warns AI earnings expectations reaching unsustainable levels",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 발표 대기",
-          "name_en": "Awaiting CPI Release",
-          "desc": "11월 10일(화) 08:30 ET 10월분 CPI 발표 예정: 인플레이션 경로 불확실성 증대",
-          "desc_en": "October CPI data due 08:30 ET on Tuesday, Nov 10: Increased uncertainty regarding inflation trajectory",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 11월6일(금, 뉴욕) 미국 증시는 AI 및 반도체주의 지속적인 강세에 힘입어 긍정적인 흐름을 유지하는 가운데, 다가오는 CPI 발표를 앞두고 전반적인 관망세가 짙어지는 양상\n- AI 관련 기술주에 대한 강력한 매수세가 시장을 지지하며 높은 밸류에이션 우려를 일부 상쇄하는 모습\n- 하지만 연방준비제도(Fed)의 추가 금리 인상 가능성, 높은 국채금리 수준, 그리고 AI 밸류에이션 과열 경고 등 여러 악재 요인들이 상존하며 상승폭을 제한",
-        "positive": "- AI 수요 지속 및 투자 확대: Arm Holdings의 매출이 27% 증가하며 AI 인프라 투자가 지속되고 있음을 확인, 이는 반도체 섹터 전반에 긍정적인 영향을 미쳐 SOXX가 4.91% 상승하는 결과를 초래.\n- AI·반도체주 강세 지속: AI 기술에 대한 강력한 수요와 투자가 이어지면서 기술주 전반에 매수세가 유입, 이는 높은 밸류에이션에 대한 우려를 부분적으로 완화하는 요인으로 작용.",
-        "negative": "- Fed 추가 금리 인상 우려 지속: Fed 기준금리가 3.88%로 상승하고 10년 기대인플레이션이 2.23%를 유지하면서, Fed의 추가 긴축 가능성에 대한 시장의 경계심이 여전히 높은 상황.\n- 높은 국채금리 수준 유지: 미 10년 국채금리가 4.86%(+0.45%)로 상승하며 높은 수준을 유지, 이는 성장주들의 밸류에이션에 지속적인 압박으로 작용하여 투자 심리를 위축.\n- AI 밸류에이션 과열 경고: Yardeni Research는 AI 기업들의 수익 기대치가 지속 불가능한 수준에 도달했다고 경고하며, AI 관련주들의 과도한 밸류에이션에 대한 우려를 제기.",
-        "mixed": "- CPI 발표 대기: 11월 10일(화) 08:30 ET에 발표될 10월분 CPI(소비자물가지수)를 앞두고 시장은 관망세를 보이며 인플레이션 경로에 대한 불확실성이 증대, 이는 시장의 방향성을 결정할 중요한 변수로 작용할 전망.",
-        "watch": "- CPI 소비자물가(10월분) 발표: 11월 10일(화) 08:30 ET에 예정된 CPI 발표 결과에 따라 Fed의 향후 통화정책 방향에 대한 시장의 기대가 크게 변화할 수 있으며, 이는 증시 전반의 변동성을 확대시킬 가능성.\n- 미 10년 국채금리 추이: 현재 4.86%(+0.45%) 수준의 높은 국채금리가 CPI 발표 이후에도 상승세를 유지할 경우 성장주 밸류에이션에 대한 압박이 심화될 수 있으며, 하락 전환 시 시장에 긍정적인 영향을 미칠 수 있음.\n- 주요 기술주 및 반도체 섹터 흐름: AI 관련주들의 지속적인 강세 여부가 중요하며, SOXX 등 반도체 ETF의 추가 상승 또는 하락 여부가 시장의 전반적인 투자 심리에 영향을 미칠 것으로 예상."
-      },
-      "report_at": "2026-11-09(월) 00:50 KST"
     }
   ],
-  "updated_at": "2026-11-09T14:21:28Z",
+  "updated_at": "2026-11-09T16:45:03Z",
   "max_entries": 10
 }
