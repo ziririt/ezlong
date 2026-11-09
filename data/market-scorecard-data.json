@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-10-08:20",
+      "timestamp_kst": "2026-11-10(화) 08:20 KST",
+      "key_event": {
+        "name": "CPI 발표 대기 및 유가 하락",
+        "name_en": "Anticipation of CPI Release & Oil Price Drop",
+        "time": "11월 10일(화) 08:30 ET",
+        "why": "주요 인플레이션 지표 발표 대기, 유가 급락으로 인플레이션 우려 완화 (11월 10일(화) 08:30 ET)",
+        "why_en": "Anticipation of key inflation data, sharp oil price drop eases inflation concerns (Nov 10 (Tue) 08:30 ET)"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "긍정 우위, CPI 발표 대기하며 관망세",
+      "summary_en": "Positive bias due to sharp oil price drop and major index gains, with anticipation for CPI release",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "WTI 원유 가격 급락",
+          "name_en": "Sharp Drop in WTI Crude Oil Price",
+          "desc": "WTI 원유 86.24달러(-5.55%) 하락: 에너지 비용 감소, 인플레이션 우려 완화",
+          "desc_en": "WTI crude oil fell to $86.24 (-5.55%): reduced energy costs, easing inflation concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 15,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakens",
+          "desc": "달러인덱스 DXY 101.68(-0.44%) 하락: 미국 수출 기업 실적 개선 기대",
+          "desc_en": "DXY fell to 101.68 (-0.44%): expectation of improved earnings for US export companies",
+          "category": "dollar_fx"
+        },
+        {
+          "score": 15,
+          "name": "AI 인프라 투자 지속",
+          "name_en": "Continued AI Infrastructure Investment",
+          "desc": "AI 인프라 지출 가속화 뉴스: 반도체 섹터 SOXX (+7.88%) 강세",
+          "desc_en": "News of accelerating AI infrastructure spending: strong SOXX (+7.88%) performance",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "미 국채금리 높은 수준 유지",
+          "name_en": "US Treasury Yields Remain High",
+          "desc": "미10년 국채금리 4.86%(+0.10%) 상승: 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rose to 4.86% (+0.10%): continued discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "엔비디아 CEO 조사 소식",
+          "name_en": "Nvidia CEO Investigation News",
+          "desc": "엔비디아 CEO 젠슨 황 조사 소식: NVDA (-4.70%) 하락, AI 섹터 투자심리 위축",
+          "desc_en": "News of Nvidia CEO Jensen Huang's investigation: NVDA (-4.70%) decline, dampening AI sector sentiment",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [],
+      "report": {
+        "overview": "- 시장 총점: 긍정 70 대 부정 30으로 긍정 우위의 관망세 지속.\n- 주요 원인: CPI 발표를 앞두고 유가 급락이 인플레이션 우려를 완화하며 시장에 긍정적인 영향을 미침.\n- 핵심 이슈: WTI 원유 가격 급락, 달러 약세 전환, AI 인프라 투자 지속이 긍정 재료로 작용.\n- 하방 압력: 미 국채금리 높은 수준 유지와 엔비디아 CEO 관련 소식이 부정 재료로 작용하며 상승폭 제한.",
+        "positive": "- WTI 원유 가격 급락: WTI 원유가 86.24달러로 5.55% 하락하며 에너지 비용 감소 및 인플레이션 우려 완화에 기여. 로이터 통신에 따르면 유가 하락이 인플레이션 압력을 낮추며 월스트리트 증시 상승을 견인.\n- 달러 약세 전환: 달러인덱스 DXY가 101.68로 0.44% 하락하며 미국 수출 기업의 실적 개선 기대감을 높임. 이는 미국 기업들의 해외 매출 환산 시 이익 증가로 이어질 수 있는 요인.\n- AI 인프라 투자 지속: AI 인프라 지출 가속화 소식이 반도체 섹터에 긍정적으로 작용. SOXX 반도체 지수가 7.88% 강세를 보였으며, AMD가 새로운 AI 보안 시스템에 EPYC 프로세서를 공급하는 등 AI 관련 투자가 지속되는 모습.",
+        "negative": "- 미 국채금리 높은 수준 유지: 미 10년 국채금리가 4.86%(+0.10%)로 0.10% 상승하며 높은 수준을 유지. 이는 성장주에 대한 할인율 부담으로 작용하여 투자 심리에 부정적인 영향을 미침.\n- 엔비디아 CEO 조사 소식: 엔비디아 CEO 젠슨 황에 대한 조사 소식이 NVDA 주가를 4.70% 하락시키며 AI 섹터 전반의 투자심리를 위축. 시에라 공동 창립자 클레이 바버는 젠슨 황 스캔들이 중앙 집중식 리더십의 이면이라고 언급하며 불확실성을 가중.",
+        "mixed": "",
+        "watch": "- CPI 소비자물가 발표: 11월 10일(화) 08:30 ET에 발표될 10월분 CPI 소비자물가 상승률이 시장의 인플레이션 우려를 확정하거나 완화하는 중요한 지표로 작용할 예정. 현재 시장은 유가 하락으로 인한 인플레이션 완화 기대를 반영 중.\n- 미 10년 국채금리 추이: 현재 높은 수준을 유지하고 있는 미 10년 국채금리의 추가 상승 여부가 성장주 투자심리에 지속적인 영향을 미칠 것으로 예상. CPI 발표 결과에 따라 금리 변동성이 확대될 가능성.\n- 달러인덱스 DXY 추이: 달러 약세 전환이 미국 수출 기업에 긍정적인 영향을 미치고 있으므로, 달러인덱스 DXY의 추가적인 하락 또는 반등 여부가 시장 전반의 방향성을 결정하는 요인으로 작용할 전망."
+      },
+      "report_at": "2026-11-10(화) 08:20 KST"
+    },
+    {
       "id": "2026-11-10-07:01",
       "timestamp_kst": "2026-11-10(화) 07:01 KST",
       "key_event": {
@@ -549,74 +617,8 @@
         "watch": "- CPI 소비자물가 지표 발표: 11월 10일(화) 08:30 ET에 발표될 10월분 CPI 소비자물가 지표 결과에 따라 시장의 금리 인상 전망과 전반적인 투자심리 변화 확인.\n- 10년물 국채금리 추이: 현재 4.86%(+0.45%) 수준의 10년물 국채금리가 CPI 발표 전후로 어떻게 변동하는지 확인. 높은 금리 수준 유지 시 시장의 부담 가중 가능성."
       },
       "report_at": "2026-11-09(월) 08:20 KST"
-    },
-    {
-      "id": "2026-11-09-07:00",
-      "timestamp_kst": "2026-11-09(월) 07:00 KST",
-      "key_event": {
-        "name": "AI·반도체주 강세 지속",
-        "name_en": "Continued Strength in AI/Semiconductor Stocks",
-        "time": "직전 거래일 마감 기준",
-        "why": "기술주 매수세 유입, 밸류에이션 우려 일부 상쇄",
-        "why_en": "Tech buying interest, partially offsetting valuation concerns"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "AI·반도체주 강세 지속으로 긍정 우위, CPI 발표 대기하며 관망세",
-      "summary_en": "Positive bias due to sustained strength in AI/semiconductor stocks, with a cautious stance ahead of CPI release",
-      "positive_factors": [
-        {
-          "score": 80,
-          "name": "AI 기술주 매수세 유입",
-          "name_en": "Inflow of Buying into AI Tech Stocks",
-          "desc": "직전 거래일 QQQ (+1.92%), NVDA (+4.46%), GOOGL (+2.25%) 등 AI 관련 기술주 전반에 매수세 유입 지속",
-          "desc_en": "Continued buying interest in AI-related tech stocks, including QQQ (+1.92%), NVDA (+4.46%), and GOOGL (+2.25%) on the last trading day",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "Upward Pressure on US Treasury Yields",
-          "desc": "미10년 국채금리 4.86%(+0.45%), 미30년 국채금리 5.26%(+0.17%) 상승, 성장주 밸류에이션에 부담",
-          "desc_en": "US 10-year Treasury yield rose to 4.86% (+0.45%) and 30-year yield to 5.26% (+0.17%), posing a burden on growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 소비자물가 발표 대기",
-          "name_en": "Awaiting CPI Consumer Price Release",
-          "desc": "11월 10일(화) 08:30 ET 예정된 10월분 CPI 발표를 앞두고 관망세, 인플레이션 방향성에 대한 불확실성 증대",
-          "desc_en": "Cautious stance ahead of the October CPI release scheduled for November 10 (Tue) 08:30 ET, increasing uncertainty about inflation trajectory",
-          "category": "macro_data"
-        },
-        {
-          "name": "AI 투자 붐 지속 가능성 논란",
-          "name_en": "Debate on Sustainability of AI Investment Boom",
-          "desc": "AI 투자 붐 지속 가능성에 대한 논란과 밸류에이션 우려가 상존 (How sustainable is the AI investment boom after Thursday’s selloff?, 5.2시간 전)",
-          "desc_en": "Ongoing debate and valuation concerns regarding the sustainability of the AI investment boom (How sustainable is the AI investment boom after Thursday’s selloff?, 5.2 hours ago)",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "월스트리트 시장 경고 신호",
-          "name_en": "Wall Street Market Warning Signals",
-          "desc": "과거 5번만 나타났던 시장 경고 신호 발생, 일부 전문가 비관론 제기 (Wall Street Just Set a Record That Could Signal Trouble for the Stock Market, 5.2시간 전)",
-          "desc_en": "Market warning signal, seen only 5 times in history, emerged, leading to pessimism from some experts (Wall Street Just Set a Record That Could Signal Trouble for the Stock Market, 5.2 hours ago)",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: AI 및 반도체주의 지속적인 강세에 힘입어 긍정 80 대 부정 20으로 시장 전반의 긍정적 분위기 우위.\n- 핵심 동력: AI 관련 기술주 전반에 걸친 강력한 매수세 유입이 시장을 견인하며, 기술주 밸류에이션에 대한 일부 우려를 상쇄하는 모습.\n- 주요 대기: 미 국채금리 상승 압력과 AI 투자 붐 지속 가능성 논란 등 부정적 요인 상존 속, 다가오는 CPI 소비자물가 발표를 앞두고 관망세 짙어지는 상황.",
-        "positive": "- AI 기술주 매수세 유입: 직전 거래일 QQQ (+1.92%), NVDA (+4.46%), GOOGL (+2.25%) 등 AI 관련 기술주 전반에 걸쳐 강력한 매수세가 지속적으로 유입되며 시장 전반의 상승세를 견인.",
-        "negative": "- 미 국채금리 상승 압력: 미 10년 국채금리 4.86%(+0.45%), 미 30년 국채금리 5.26%(+0.17%) 상승으로 성장주 전반의 밸류에이션에 부담 가중.",
-        "mixed": "- CPI 소비자물가 발표 대기: 11월 10일(화) 08:30 ET 예정된 10월분 CPI 발표를 앞두고 시장 참여자들의 관망세가 짙어지며, 인플레이션 방향성에 대한 불확실성 증대.\n- AI 투자 붐 지속 가능성 논란: AI 투자 붐의 지속 가능성에 대한 논란과 고평가 우려가 시장에 상존하며, 일부 전문가들은 과거 2000년 닷컴 버블 당시 시스코 사례를 언급하며 주의를 당부.\n- 월스트리트 시장 경고 신호: 과거 5번만 나타났던 특정 시장 경고 신호가 발생하며 일부 전문가들 사이에서 비관론이 제기되는 상황.",
-        "watch": "- CPI 소비자물가 발표 결과: 11월 10일(화) 08:30 ET 예정된 10월분 CPI 발표에서 인플레이션 둔화 신호가 확인될 경우 시장의 긍정적 분위기 강화.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리가 추가 상승 없이 안정되거나 하락 반전할 경우 성장주 밸류에이션 부담 완화 및 기술주 매수세 지속 가능성 확대.\n- AI 관련 기술주 흐름: NVDA, GOOGL 등 주요 AI 기술주들이 현재의 강세 흐름을 유지하며 추가 상승할 경우 시장 전반의 긍정적 모멘텀 지속 여부 확인."
-      },
-      "report_at": "2026-11-09(월) 07:00 KST"
     }
   ],
-  "updated_at": "2026-11-09T22:02:04Z",
+  "updated_at": "2026-11-09T23:21:14Z",
   "max_entries": 10
 }
