@@ -66,7 +66,7 @@
       icon: '/app/icons/icon-pt.jpg', here: ['ziririt.github.io/phototime-site'] },
     { id: 'longlong', name: 'LongLong', href: '/app/#longlong',
       icon: '/app/icons/icon-ll.jpg', here: [] },
-    { id: 'anytopdf', name: 'Any to PDF', href: 'https://ziririt.github.io/anytopdf-site/',
+    { id: 'anytopdf', name: 'Any to PDF', href: 'https://pdf.ezlong.com/',
       icon: '/app/icons/icon-ap.jpg', here: ['ziririt.github.io/anytopdf-site', 'pdf.ezlong.com'] },
     { id: 'ezconverter', name: 'Ez Converter', href: 'https://convert.ezlong.com/',
       icon: '/app/icons/icon-ec.jpg', here: ['convert.ezlong.com'] },
