@@ -10,11 +10,11 @@
 
 ## 열린 항목
 
-### P-013. 앱 모음에 새 앱 넷(Ez Converter · Any to PDF · ezScan · ReadTrans) 올리기 — 오너 답 받음 (2026-11-11 00:3x), 배포 확인 대기
+### P-013. 앱 모음에 새 앱 넷(Ez Converter · Any to PDF · ezScan · ReadTrans) 올리기 — 오너 답 받음 (2026-11-11 00:3x), 01:02 배포 승인·라이브 확인
 
 - 실측(11-11): 네 앱 카드·헤더는 11-09 커밋 a7beadf 로 이미 올라가 있었다(이 항목이 그 뒤 갱신되지 않았다).
 - 오너 답: 1 넷 다 지금 / 2 pdf·convert 에 헤더 붙이고 두 칸 단추도 둔다 / 3 ReadTrans 소개를 /app/readtrans/ 에 지금 / 4 Any to PDF 지금 아이콘 / 5 ezScan 한국어 화면 새로 / 6 "무료 · 구독 있음" / 7 Ez Converter → Any to PDF → ezScan → ReadTrans / 8 JSON-LD 순서 바로잡기(a7beadf 에서 이미 됨).
-- 한 일(로컬 커밋, push 전): 4c8933f(이미지), 3ca680f(순서·App Store 링크·ReadTrans 소개 페이지). Any to PDF 저장소 d03ff9c(헤더 한 줄·CSP). 원복 태그 before-appmo-20261111.
+- 한 일(01:03 push, Firebase 배포 성공, 라이브 확인, 태그 cp-20261111-app-order-readtrans): 4c8933f(이미지), 3ca680f(순서·App Store 링크·ReadTrans 소개 페이지). Any to PDF 저장소 d03ff9c(헤더 한 줄·CSP). 원복 태그 before-appmo-20261111.
 - 남은 일: ezScan 한국어 화면 3장 더(ezScan 저장소 docs/개발요청-스크린샷-20261109.md 회신을 받으면 카드 교체), Ez Converter 웹 헤더(그 저장소를 다른 세션이 잠가 둠 — 풀린 뒤).
 
 - 작업 지시는 `docs/앱-소개-추가-가이드.md`. 시작 전에 14절 질문 8개의 답이 필요하다: 넷 다 지금/두 앱 먼저, 웹 두 곳(pdf·convert)에 헤더를 붙일지와 두 칸 전환 단추, ReadTrans 소개 사이트 공개 위치·시점, Any to PDF 임시 아이콘, ezScan 영어 스크린샷, 구독 앱 가격 표기, 순서, 검색엔진용 정보의 2·3번 순서 바로잡기.
