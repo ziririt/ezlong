@@ -3,8 +3,8 @@
   "name": "메타",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-11-10T08:18:53.597Z",
-  "analysisAt": "2026-11-10T08:18:53.597Z",
+  "updatedAt": "2026-11-10T11:18:53.959Z",
+  "analysisAt": "2026-11-10T11:18:53.959Z",
   "analysisPreserved": false,
   "price": {
     "current": 641.37,
@@ -13,7 +13,7 @@
     "high52": 779.82,
     "low52": 520.26,
     "pos52": 46.7,
-    "marketState": "CLOSED",
+    "marketState": "PRE",
     "quoteTime": 1794258001,
     "extPrice": null,
     "extChange": null,
@@ -72,12 +72,12 @@
     "rsiTrajectoryEn": "31.7 → 46.5 (exiting oversold)",
     "macdTrajectory": "히스토 -12.6930 → -2.6539 (개선)",
     "macdTrajectoryEn": "histogram -12.6930 → -2.6539 (improving)",
-    "pricePattern": "Higher Low 회복 신호",
-    "pricePatternEn": "Higher Low recovery signal",
+    "pricePattern": "Higher Low 확인, 회복 신호",
+    "pricePatternEn": "Higher Low confirmed, signaling recovery",
     "volComment": "거래량비 0.87 (정상)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 과매도 구간(31.7)을 벗어나 46.5까지 회복했다. MACD 히스토그램 역시 -12.6930에서 -2.6539로 개선되며 바닥 다지기 신호가 나타났다. 5일 연속 거래량비 0.87로 거래량은 정상 수준이다.",
-    "reasonEn": "RSI recovered from oversold (31.7) to 46.5. MACD histogram also improved from -12.6930 to -2.6539, signaling a bottoming process. Volume ratio at 0.87 over the last 5 days indicates normal trading activity.",
+    "reason": "RSI 31.7→46.5 과매도 구간 탈출 확인. MACD 히스토그램 -12.6930→-2.6539 개선 지속. 5일 저가($583.80) 대비 현재가($641.37) 상승하며 Higher Low 패턴 형성. 20일 저가($583.80) 대비 5일 저가($647.25) 상승. SMA100($633.86) 상회. 52주 위치 46.7%로 중립 구간.",
+    "reasonEn": "RSI 31.7→46.5 confirmed exiting oversold. MACD histogram -12.6930→-2.6539 continues to improve. Higher Low pattern forming with price ($641.37) rising above 5-day low ($583.80). 5-day low ($647.25) higher than 20-day low ($583.80). Above SMA100 ($633.86). 52-week position at 46.7% indicates neutral territory.",
     "entry": 641.37,
     "stop": 559.69,
     "target": 804.73,
@@ -87,34 +87,34 @@
     "profitTarget1": 804.73,
     "profitTarget2": 927.25,
     "stopLoss": 559.69,
-    "narrative": "[추세 위치]\n· 현재가($641.37) vs SMA5($621.53)/SMA20($657.59)/SMA50($676.05): 단기 하회, 중기 상회\n· SMA100($633.86)/SMA200($631.07) 대비 위치: 중장기 추세 상회, 강세 유지\n· 52주 위치(46.7%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (31.7→46.5): 과매도 탈출, 상승 모멘텀 확인\n· MACD 히스토그램 궤적 (-12.6930→-2.6539): 개선 중, 약세 약화 신호\n· 볼린저밴드 현재가 위치 (중단 $657.59): 중단 근처, 횡보 구간 진입 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($638.61): 이동평균선(SMA100, SMA200) 기반 지지 확인\n· 스윙 저항선 ($643.00): 단기 저항 구간 진입\n· 5일/20일 고가·저가 패턴 (Higher Low): 회복 신호 확인\n[거래량·결론]\n· 거래량 비율 (0.87배): 정상 수준, 움직임 신뢰도 보통\n· 현 구간 진단 (축적구간): 매수 진입 조건 충족, 단기 저항 돌파 확인 필요",
-    "narrativeEn": "[Trend Position]\n· Current Price($641.37) vs SMA5($621.53)/SMA20($657.59)/SMA50($676.05): Below short-term, above mid-term\n· Position vs SMA100($633.86)/SMA200($631.07): Above long-term, maintaining strength\n· 52-week Position (46.7%) + Current price level historically mid-range\n[Momentum Indicators]\n· RSI Trajectory (31.7→46.5): Exiting oversold, confirming upward momentum\n· MACD Histogram Trajectory (-12.6930→-2.6539): Improving, signaling weakening bearishness\n· Bollinger Band Current Price Position (Middle Band $657.59): Near mid-band, potential for consolidation\n[Support & Resistance Structure]\n· Swing Support ($638.61): Support confirmed based on moving averages (SMA100, SMA200)\n· Swing Resistance ($643.00): Entering short-term resistance zone\n· 5-day/20-day High/Low Pattern (Higher Low): Recovery signal confirmed\n[Volume & Conclusion]\n· Volume Ratio (0.87x): Normal level, moderate confidence in price movement\n· Current Stage Diagnosis (Accumulation Phase): Buy entry conditions met, requires confirmation of short-term resistance breakout",
-    "patternNote": "5일 저가 대비 20일 저가가 높아진 Higher Low 패턴으로 회복 신호 확인",
-    "patternNoteEn": "Higher Low pattern confirmed, with the 5-day low higher than the 20-day low, indicating a recovery signal.",
+    "narrative": "[추세 위치]\n· 현재가($641.37) vs SMA5($621.53)/SMA20($657.59)/SMA50($676.05): 단기 약세, 중기 약세 진단, 하회 중\n· SMA100($633.86)/SMA200($631.07) 대비 위치: 중장기 강세 진단, 상회 중\n· 52주 위치(46.7%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (31.7→46.5) + 과매도탈출 진단 + 상승 방향성\n· MACD 히스토그램 궤적 (-12.6930→-2.6539) + 개선 진단 + 추세 전환 신호 가능성\n· 볼린저밴드 현재가 위치 (중단 $657.59) + 밴드폭 정상 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($638.61) + 근거 (이동평균 기반)\n· 스윙 저항선 ($643.00) + 돌파 시 상승 탄력 기대\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.87배) + 움직임의 정상 신뢰도\n· 현 구간 진단 (축적구간) + 진입 조건 충족",
+    "narrativeEn": "[Trend Position]\n· Current price ($641.37) vs SMA5 ($621.53)/SMA20 ($657.59)/SMA50 ($676.05): diagnosing short-term weakness, mid-term weakness, currently below\n· Position relative to SMA100 ($633.86)/SMA200 ($631.07): diagnosing long-term strength, currently above\n· 52-week position (46.7%) + current price level is historically mid-range\n[Momentum Indicators]\n· RSI trajectory (31.7→46.5) + diagnosing exit from oversold + upward momentum\n· MACD histogram trajectory (-12.6930→-2.6539) + diagnosing improvement + potential trend reversal signal\n· Bollinger Band current price position (mid-band $657.59) + interpreting normal band width level\n[Support & Resistance Structure]\n· Swing support ($638.61) + basis (moving average based)\n· Swing resistance ($643.00) + expectation of upward momentum upon breakout\n· 5-day/20-day high/low pattern (Higher Low) + interpreting recovery trend\n[Volume & Conclusion]\n· Volume ratio (0.87x) + interpreting normal reliability of movement\n· Current phase diagnosis (Accumulation phase) + entry conditions met",
+    "patternNote": "Higher Low 패턴 형성, 회복 국면 진입 신호.",
+    "patternNoteEn": "Higher Low pattern formation, signaling entry into recovery phase.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 MACD 개선으로 매수 진입 신호 확인",
-      "현재가 $641.37, 스윙 저항선 $643.00 근접, 돌파 시 추가 상승 기대",
-      "ATR(14) $25.08 대비 손절폭 $25.00 (1.0배), 손익비 1.0 이상 확보"
+      "RSI 31.7→46.5 과매도 탈출 확인",
+      "MACD 히스토그램 개선 지속, 바닥 다지기 신호",
+      "Higher Low 패턴 형성, 회복 추세 시작 가능성"
     ],
     "keyPointsEn": [
-      "Buy entry signal confirmed with RSI exiting oversold and MACD improving.",
-      "Current price $641.37 approaching swing resistance at $643.00; further upside expected on breakout.",
-      "Stop loss of $25.00 (1.0x ATR) provides a risk-reward ratio of at least 1.0."
+      "RSI 31.7→46.5 confirmed exit from oversold",
+      "MACD histogram improvement continues, signaling bottoming process",
+      "Higher Low pattern formation, potential start of recovery trend"
     ],
-    "riskNote": "현재가 $641.37이 스윙 저항선 $643.00에 근접하여 단기 차익 실현 매물 출회 가능성",
-    "riskNoteEn": "Current price of $641.37 is near the swing resistance level of $643.00, posing a risk of short-term profit-taking.",
-    "continuity": "직전 2026-11-09 08:51 '매수(매수점수 6)' 판정 이후 1거래일 연속 '매수' 판독 지속. RSI 46.5 → 46.5 유지, MACD 히스토그램 -2.6539 → -2.6539 유지. 금일 RSI 46.5로 중립 구간 유지, MACD 히스토그램 개선 지속으로 매수 우위 유지.",
-    "continuityEn": "The 'Buy' action has been maintained for 1 consecutive session since the previous read on 2026-11-09 08:51. RSI remained at 46.5 and MACD histogram at -2.6539. Today's RSI at 46.5 stays in neutral territory, while the MACD histogram continues to improve, supporting a buy bias.",
+    "riskNote": "SMA20($657.59) 및 스윙 저항선($643.00) 돌파 여부가 단기 방향성 결정의 핵심.",
+    "riskNoteEn": "Breaking above SMA20 ($657.59) and swing resistance ($643.00) is key for short-term direction.",
+    "continuity": "직전 2거래일 연속 관망 판독 유지. 금일 RSI 과매도 탈출 및 MACD 개선으로 매수 전환.",
+    "continuityEn": "The wait-and-see read was maintained for the previous 2 trading sessions. Today's read shifts to buy based on RSI exiting oversold and MACD improvement.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
-      "higherTimeframeAligned": true,
+      "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
-      "score": "3/5",
+      "score": "2/5",
       "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 1.00배 < 1"
+    "levelsAdjustedReason": "손절폭 ATR 0.60배 < 1"
   }
 }
