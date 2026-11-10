@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-10-11:37",
+      "timestamp_kst": "2026-11-10(화) 11:37 KST",
+      "key_event": {
+        "name": "CPI 발표 대기 및 유가 하락",
+        "name_en": "Anticipation of CPI Release & Oil Price Drop",
+        "time": "11월 10일(화) 08:30 ET",
+        "why": "주요 인플레이션 지표 발표 대기, 유가 급락으로 인플레이션 우려 완화 (11월 10일(화) 08:30 ET)",
+        "why_en": "Awaiting key inflation data, falling oil prices ease inflation concerns (Nov 10 (Tue) 08:30 ET)"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "C긍정 우위",
+      "summary_en": "Positive bias with falling oil prices and strong major indices ahead of CPI release",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "WTI 유가 급락",
+          "name_en": "WTI Oil Price Plunge",
+          "desc": "WTI 원유 86.06달러로 5.75% 급락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil plunged 5.75% to $86.06: easing inflation pressure expectations",
+          "category": "oil_energy"
+        },
+        {
+          "score": 25,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakening",
+          "desc": "달러인덱스 DXY 101.70으로 0.42% 하락: 수출 기업 실적 개선 기대",
+          "desc_en": "DXY fell 0.42% to 101.70: expectation of improved export company earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "엔비디아 CEO 조사 소식",
+          "name_en": "Nvidia CEO Investigation News",
+          "desc": "엔비디아 CEO 조사 소식으로 NVDA 4.03% 하락: AI 섹터 투자심리 위축",
+          "desc_en": "NVDA fell 4.03% due to news of Nvidia CEO investigation: dampening AI sector investor sentiment",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "미10년 국채금리 상승",
+          "name_en": "US 10-Year Treasury Yield Rise",
+          "desc": "미10년 국채금리 4.86%(+0.10%)로 0.10% 상승: 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rose 0.10% to 4.86%: sustained pressure on growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "CPI 소비자물가 발표 대기",
+          "name_en": "Awaiting CPI Release",
+          "desc": "11월 10일(화) 08:30 ET 발표를 앞두고 관망세: 시장 방향성 결정 요인",
+          "desc_en": "Market in wait-and-see mode ahead of 08:30 ET (Nov 10, Tue) release: key determinant for market direction",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 11월9일(월, 뉴욕) 미국 증시는 CPI 발표를 앞두고 관망세가 짙은 가운데, 유가 급락과 달러 약세가 인플레이션 우려를 완화하며 긍정적 흐름을 주도\n- 총점 긍정 70 대 부정 30으로, 전반적으로 C긍정 우위의 시장 분위기 형성\n- 핵심 이슈는 CPI 발표 대기 및 유가 하락으로, 주요 인플레이션 지표 발표를 앞두고 유가 급락이 인플레이션 완화 기대를 높이는 상황\n- 엔비디아 CEO 조사 소식과 미10년 국채금리 상승은 AI 섹터 투자심리 위축 및 성장주 할인율 부담을 지속하며 부정적 요인으로 작용",
+        "positive": "- WTI 유가 급락: WTI 원유 가격이 86.06달러로 5.75% 급락하며 인플레이션 압력 완화 기대감 증폭. 로이터 통신은 유가 하락이 인플레이션 우려를 식히며 월스트리트 증시 상승을 이끌었다고 보도.\n- 달러 약세 전환: 달러인덱스 DXY가 101.70으로 0.42% 하락하며 수출 기업 실적 개선 기대감 형성. 달러 약세는 미국 기업의 해외 매출을 증가시키는 효과를 가져와 증시에 긍정적 영향.",
+        "negative": "- 엔비디아 CEO 조사 소식: 엔비디아 CEO 조사 소식으로 NVDA 주가가 4.03% 하락하며 AI 섹터 전반의 투자심리 위축. '월스트리트가 AI에 등을 돌리고 있는가?'라는 의문이 제기되는 가운데, 엔비디아의 리더십 공백 가능성은 AI 관련 포트폴리오에 혼란을 야기할 수 있다는 분석 제기.\n- 미10년 국채금리 상승: 미10년 국채금리가 4.86%(+0.10%)로 0.10% 상승하며 성장주 할인율 부담 지속. 국채금리 상승은 미래 현금흐름의 가치를 하락시켜 기술주 등 성장주에 부정적인 영향을 미치는 요인.",
+        "mixed": "- CPI 소비자물가 발표 대기: 11월 10일(화) 08:30 ET 발표를 앞두고 시장 전반에 관망세 형성. 인베스토피아는 화요일 발표될 인플레이션 보고서에 대한 시장의 높은 기대를 언급하며, 이 지표가 향후 시장 방향성을 결정할 주요 요인이 될 것으로 전망.",
+        "watch": "- CPI 소비자물가(10월분) 발표: 11월 10일(화) 08:30 ET. 발표되는 소비자물가 지표가 시장의 인플레이션 우려를 확정하거나 완화하며 증시의 방향성을 결정할 주요 변수.\n- WTI 유가 추이: 유가 하락세 지속 여부 확인. 유가가 추가 하락할 경우 인플레이션 완화 기대감이 더욱 커지며 증시에 긍정적으로 작용할 가능성.\n- 미10년 국채금리 추이: 국채금리의 추가 상승 여부 확인. 금리가 안정되거나 하락할 경우 성장주에 대한 투자심리가 개선될 수 있음."
+      },
+      "report_at": "2026-11-10(화) 11:37 KST"
+    },
+    {
       "id": "2026-11-10-08:20",
       "timestamp_kst": "2026-11-10(화) 08:20 KST",
       "key_event": {
@@ -565,60 +633,8 @@
         "watch": "- CPI 소비자물가(10월분) 발표: 11월 10일(화) 08:30 ET에 발표될 10월 CPI 데이터는 향후 연방준비제도(Fed)의 통화정책 방향을 가늠할 핵심 지표로, 시장의 방향성을 결정하는 중요한 변수가 될 것으로 예상.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 지속적인 상승 또는 하락 여부는 성장주를 포함한 전반적인 시장 밸류에이션에 직접적인 영향을 미치므로, 그 변동 추이를 면밀히 주시.\n- 주요 기술주 흐름: 엔비디아(NVDA)와 구글(GOOGL) 등 AI 관련 기술주들의 주가 흐름은 시장의 전반적인 투자 심리와 기술 섹터의 강세 지속 여부를 판단하는 중요한 지표."
       },
       "report_at": "2026-11-09(월) 11:50 KST"
-    },
-    {
-      "id": "2026-11-09-08:20",
-      "timestamp_kst": "2026-11-09(월) 08:20 KST",
-      "key_event": {
-        "name": "AI·반도체주 강세 지속",
-        "name_en": "Continued Strength in AI/Semiconductor Stocks",
-        "time": "직전 거래일 마감 기준",
-        "why": "기술주 매수세 유입, 밸류에이션 우려 일부 상쇄",
-        "why_en": "Inflow of tech buying, partially offsetting valuation concerns"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI·반도체주 강세 지속으로 긍정 우위, CPI 발표 대기하며 관망세",
-      "summary_en": "Positive bias due to sustained strength in AI/semiconductor stocks, with caution ahead of CPI release",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "AI 인프라 투자 지속 확인",
-          "name_en": "Confirmed Sustained AI Infrastructure Investment",
-          "desc": "SpaceX의 450억 달러 AI 계약 체결 및 Microsoft의 Azure 성장 가속화 소식으로 AI 인프라 투자 지속 확인",
-          "desc_en": "SpaceX's $45 billion AI deal and Microsoft's accelerating Azure growth confirm continued AI infrastructure investment",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "Fed 기준금리 인상 우려 지속",
-          "name_en": "Continued Fed Rate Hike Concerns",
-          "desc": "Fed 기준금리 3.88%로 상승, 10년물 국채금리 4.86%(+0.45%) 상승하며 높은 금리 수준 유지",
-          "desc_en": "Fed benchmark rate rose to 3.88%, and 10-year Treasury yield rose to 4.86% (+0.45%), maintaining high interest rate levels",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 소비자물가 발표 대기",
-          "name_en": "Awaiting CPI Consumer Price Release",
-          "desc": "11월 10일(화) 08:30 ET 발표될 10월분 CPI 소비자물가 지표를 앞두고 관망세 형성",
-          "desc_en": "Market awaits the October CPI consumer price index, to be released on Nov 10 (Tue) 08:30 ET, leading to a wait-and-see approach",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: AI 및 반도체 섹터의 지속적인 강세에 힘입어 긍정적인 시장 분위기 우위.\n- 시장 관망세: 다가오는 CPI 소비자물가 지표 발표를 앞두고 투자자들의 신중한 태도 형성.\n- 핵심 동력: AI 인프라 투자 확대와 기술주 매수세 유입이 시장의 긍정적 흐름을 주도.\n- 주요 우려: 연방준비제도(Fed)의 기준금리 인상 가능성 및 높은 국채금리 수준 유지.",
-        "positive": "- AI 인프라 투자 지속 확인: SpaceX가 450억 달러 규모의 AI 계약을 체결하고, Microsoft Azure의 성장 가속화 소식이 전해지며 AI 관련 인프라 투자가 활발하게 이어지고 있음. 이는 AI 기술의 장기적인 성장 잠재력에 대한 시장의 기대를 높이는 요인으로 작용.\n- 기술주 매수세 유입: AI 및 반도체 관련 기술주에 대한 투자심리가 강화되며 매수세가 지속적으로 유입. 이는 높은 밸류에이션에 대한 일부 우려를 상쇄하며 시장 전반의 긍정적인 분위기를 유지하는 데 기여.",
-        "negative": "- Fed 기준금리 인상 우려 지속: Fed 기준금리가 3.88%로 상승하고, 10년물 국채금리가 4.86%(+0.45%)를 기록하며 높은 금리 수준을 유지. 이는 연방준비제도(Fed)의 추가적인 기준금리 인상 가능성에 대한 시장의 우려를 지속시키며 증시 상승을 제한하는 요인으로 작용.",
-        "mixed": "- CPI 소비자물가 발표 대기: 11월 10일(화) 08:30 ET에 발표될 10월분 CPI 소비자물가 지표를 앞두고 시장에 관망세가 형성. 이 지표는 연방준비제도(Fed)의 향후 통화정책 방향에 중요한 영향을 미 미칠 것으로 예상되어, 결과에 따라 시장의 변동성이 확대될 수 있다는 양면적인 기대와 우려가 공존.",
-        "watch": "- CPI 소비자물가 지표 발표: 11월 10일(화) 08:30 ET에 발표될 10월분 CPI 소비자물가 지표 결과에 따라 시장의 금리 인상 전망과 전반적인 투자심리 변화 확인.\n- 10년물 국채금리 추이: 현재 4.86%(+0.45%) 수준의 10년물 국채금리가 CPI 발표 전후로 어떻게 변동하는지 확인. 높은 금리 수준 유지 시 시장의 부담 가중 가능성."
-      },
-      "report_at": "2026-11-09(월) 08:20 KST"
     }
   ],
-  "updated_at": "2026-11-09T23:21:14Z",
+  "updated_at": "2026-11-10T02:38:16Z",
   "max_entries": 10
 }
