@@ -72,8 +72,8 @@
       icon: '/app/icons/icon-ap.jpg', here: ['ziririt.github.io/anytopdf-site', 'pdf.ezlong.com'] },
     { id: 'ezscan', name: 'ezScan', href: '/app/ezscan/',
       icon: '/app/icons/icon-es.jpg', here: ['/app/ezscan'] },
-    { id: 'readtrans', name: 'ReadTrans', href: '/app/readtrans/',
-      icon: '/app/icons/icon-rt.jpg', here: ['/app/readtrans'] },
+    { id: 'readtrans', name: 'ReadTrans', href: 'https://readtrans.ezlong.com/',
+      icon: '/app/icons/icon-rt.jpg', here: ['readtrans.ezlong.com', '/app/readtrans'] },
     { id: 'send', name: '초간단 파일공유', t: { en: 'Quick File Share', ja: 'かんたんファイル共有', zh: '极简文件分享' }, href: 'https://send.ezlong.com/',
       icon: '/app/icons/icon-sd.svg', here: ['send.ezlong.com'] }
   ];

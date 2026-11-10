@@ -131,6 +131,8 @@
       "data/.cache/**"
     ],
     "redirects": [
+      { "source": "/app/readtrans", "destination": "https://readtrans.ezlong.com/", "type": 301 },
+      { "source": "/app/readtrans/:rest*", "destination": "https://readtrans.ezlong.com/:rest", "type": 301 },
       {
         "source": "/stocks.html",
         "destination": "/chart-analysis.html",
