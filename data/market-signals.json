@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-11T01:09:46.500218+00:00",
-  "generatedAtKST": "2026-11-11 10:09 KST",
+  "generatedAt": "2026-11-11T01:10:45.241584+00:00",
+  "generatedAtKST": "2026-11-11 10:10 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -730,23 +730,40 @@
       "unit": "USD"
     },
     "dxy": {
-      "price": 102.239,
-      "change": 0.589,
-      "changePct": 0.5794,
+      "price": 102.241,
+      "change": 0.591,
+      "changePct": 0.5814,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4041.1001,
-      "change": -73.3999,
-      "changePct": -1.7839,
+      "price": 4043.5,
+      "change": -71.0,
+      "changePct": -1.7256,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-11-11T01:09:46.500218+00:00",
+      "atKST": "2026-11-11 10:09 KST",
+      "qqq": {
+        "rsi": 40.14,
+        "macdHist": -3.8906,
+        "dev5": 0.7342,
+        "dev200": -0.8209,
+        "gear": 2,
+        "buyScore": 60,
+        "sellScore": 17,
+        "price": 674.76
+      },
+      "soxxMacdHist": -1.8035,
+      "fearAndGreed": 33,
+      "yield10y": 4.983
+    },
     {
       "at": "2026-11-11T00:54:57.896940+00:00",
       "atKST": "2026-11-11 09:54 KST",
@@ -3177,25 +3194,8 @@
       "soxxMacdHist": -3.1918,
       "fearAndGreed": 22,
       "yield10y": 4.859
-    },
-    {
-      "at": "2026-11-06T23:55:03.414915+00:00",
-      "atKST": "2026-11-07 08:55 KST",
-      "qqq": {
-        "rsi": 31.4,
-        "macdHist": -6.6609,
-        "dev5": -2.4088,
-        "dev200": -3.4855,
-        "gear": 1,
-        "buyScore": 53,
-        "sellScore": 1,
-        "price": 656.1
-      },
-      "soxxMacdHist": -3.1918,
-      "fearAndGreed": 22,
-      "yield10y": 4.859
     }
   ],
-  "swingContinuity": "11\uc6d4 10\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 61\uc5d0\uc11c 11\uc6d410\uc77c(\ud654, \ub274\uc695) 60\uc73c\ub85c \uc18c\ud3ed \ud558\ub77d\ud588\uc73c\ub098, \ub9e4\ub3c4\uc810\uc218 8\uc5d0\uc11c 17\ub85c \uc0c1\uc2b9\ud558\uba70 Gear 2\ub97c \uc720\uc9c0\ud588\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 +0.97% \u2192 -6.49% \u2192 +1.40% \u2192 +3.54% \u2192 -0.68% \ud750\ub984\uc744 \ubcf4\uc600\uc73c\uba70, \ud2b9\ud788 \ubc18\ub3c4\uccb4 \uad00\ub828 SOXX\uc640 NVDA\ub294 \ucd5c\uadfc \ud070 \ud3ed\uc758 \ud558\ub77d\uc138\ub97c \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "On November 10th (NY), the buy score slightly decreased to 60 from 61 today, but the sell score rose from 8 to 17, maintaining Gear 2. QQQ's recent 5-day trend was +0.97% \u2192 -6.49% \u2192 +1.40% \u2192 +3.54% \u2192 -0.68%, with semiconductor-related SOXX and NVDA showing significant declines recently."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
