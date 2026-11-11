@@ -3,8 +3,8 @@
   "name": "테슬라",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-11-10T23:30:39.973Z",
-  "analysisAt": "2026-11-10T23:30:39.973Z",
+  "updatedAt": "2026-11-11T08:17:48.699Z",
+  "analysisAt": "2026-11-11T08:17:48.699Z",
   "analysisPreserved": false,
   "price": {
     "current": 379.78,
@@ -13,7 +13,7 @@
     "high52": 498.83,
     "low52": 297.38,
     "pos52": 40.9,
-    "marketState": "POST",
+    "marketState": "CLOSED",
     "quoteTime": 1794344401,
     "extPrice": null,
     "extChange": null,
@@ -42,7 +42,7 @@
       "adx": 16.11,
       "status": "무추세(충격 가능)"
     },
-    "atr": 16.6797
+    "atr": 16.6818
   },
   "levels": {
     "swingResistance": 384.04,
@@ -67,17 +67,17 @@
     "action": "관망",
     "buyScore": 5,
     "scoreReason": "RSI 중립 구간 횡보, MACD 악화 지속",
-    "scoreReasonEn": "RSI neutral range, MACD worsening",
-    "rsiTrajectory": "59.0 → 50.5 (과매도탈출)",
-    "rsiTrajectoryEn": "59.0 → 50.5 (exiting oversold)",
+    "scoreReasonEn": "RSI neutral range consolidation, MACD worsening",
+    "rsiTrajectory": "59.0 → 50.5 (중립지속 중)",
+    "rsiTrajectoryEn": "59.0 → 50.5 (staying neutral)",
     "macdTrajectory": "히스토 2.1552 → -2.9338 (악화)",
     "macdTrajectoryEn": "hist 2.1552 → -2.9338 (worsening)",
-    "pricePattern": "횡보",
-    "pricePatternEn": "sideways",
-    "volComment": "거래량비 0.52 (위축)",
-    "bbPosition": "중단",
-    "reason": "직전 3거래일 연속 관망 유지. RSI는 과매도 구간 탈출했으나 중립 구간에서 횡보 중. MACD 히스토그램은 개선 없이 악화 지속. 5일 평균 대비 거래량 비율 0.52로 위축된 움직임. 52주 위치 40.9%로 중립 구간. 변동성 ATR 4.39%로 높은 편이나 추세 형성 미약.",
-    "reasonEn": "Maintained wait-and-see for 3 consecutive sessions. RSI exited oversold but is sideways in neutral. MACD histogram continues to worsen without improvement. Volume ratio at 0.52, indicating sluggish movement. 52-week position at 40.9% in neutral territory. ATR at 4.39% is high, but trend formation is weak.",
+    "pricePattern": "Higher Low 또는 Lower High 또는 횡보: 5일 고가/저가 패턴 미확인",
+    "pricePatternEn": "Higher Low or Lower High or sideways: 5-day high/low pattern unconfirmed",
+    "volComment": "거래량비 0.53 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "RSI 50.5로 중립 구간 횡보 지속, MACD 히스토그램은 -2.9338로 악화 추세. 5일 연속 관망 판독 유지. 5일 평균 대비 거래량 비율 0.53으로 위축된 거래량은 방향성 부재 시사.",
+    "reasonEn": "RSI remains in neutral territory at 50.5, with MACD histogram worsening to -2.9338. The 5-day average volume ratio of 0.53 indicates subdued trading activity, suggesting a lack of directional conviction.",
     "entry": 379.78,
     "stop": 340.54,
     "target": 458.26,
@@ -87,32 +87,32 @@
     "profitTarget1": 458.26,
     "profitTarget2": 517.12,
     "stopLoss": 340.54,
-    "narrative": "[추세 위치]\n· 현재가($379.78) vs SMA5($368.99)/SMA20($380.65)/SMA50($372.96): 단기 약세, 중기 약세, 단기 강세 위치 진단, SMA20 하회\n· SMA100($366.39)/SMA200($383.23) 대비 위치: 중장기 강세, 중장기 약세 위치\n· 52주 위치(40.9%) + 현 가격대 역사적 중립 구간\n[모멘텀 지표]\n· RSI 궤적 (59.0→50.5) + 과매도탈출, 중립 구간 횡보 중\n· MACD 히스토그램 궤적 (2.1552→-2.9338) + 악화 지속, 추세 전환 신호 미약\n· 볼린저밴드 현재가 위치 (중단 $380.65) + 밴드폭 19.03% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($373.04) + 피벗 기반\n· 스윙 저항선 ($384.04) + 돌파 시 단기 강세 전환 가능성\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 방향성 부재\n[거래량·결론]\n· 거래량 비율 (0.52배) + 움직임의 신뢰도 위축\n· 현 구간 진단 (축적구간) + 관망 조건 충족",
-    "narrativeEn": "[Trend Position]\n· Current price($379.78) vs SMA5($368.99)/SMA20($380.65)/SMA50($372.96): Diagnosed as short-term weak, mid-term weak, short-term strong; below SMA20.\n· Position vs SMA100($366.39)/SMA200($383.23): Mid-to-long-term strong, mid-to-long-term weak.\n· 52-week position (40.9%) + Current price range is historically neutral.\n[Momentum Indicators]\n· RSI trajectory (59.0→50.5) + Exited oversold, currently sideways in neutral zone.\n· MACD histogram trajectory (2.1552→-2.9338) + Worsening continues, weak trend reversal signal.\n· Bollinger Band current price position (Middle band $380.65) + Bandwidth at 19.03% level.\n[Support & Resistance Structure]\n· Swing support ($373.04) + Pivot-based.\n· Swing resistance ($384.04) + Potential for short-term bullish turn on breakout.\n· 5-day/20-day high/low pattern (sideways) + Lack of trend direction.\n[Volume & Conclusion]\n· Volume ratio (0.52x) + Reduced confidence in movement.\n· Current phase diagnosis (Accumulation phase) + Wait-and-see conditions met.",
-    "patternNote": "5일 평균 대비 거래량 비율 0.52로 위축된 움직임 속에서 RSI는 과매도 탈출 후 중립 구간 횡보, MACD는 악화 지속으로 방향성 부재 구간 진입.",
-    "patternNoteEn": "With volume ratio at 0.52, indicating sluggish movement, RSI has exited oversold and is sideways in the neutral zone, while MACD continues to worsen, signaling a lack of directional momentum.",
+    "narrative": "[추세 위치]\n· 현재가($379.78) vs SMA5($368.99)/SMA20($380.65)/SMA50($372.96): 단기 약세, 중기 약세, 단기 강세 위치 진단 및 하회/상회 여부\n· SMA100($366.39)/SMA200($383.23) 대비 위치: 중장기 강세, 중장기 약세 강도 판단\n· 52주 위치(40.9%) + 현 가격대 역사적 의미\n[모멘텀 지표]\n· RSI 궤적 (59.0→50.5) + 중립 판단 + 중립 지속 해석\n· MACD 히스토그램 궤적 (2.1552→-2.9338) + 악화 진단 + 추세 전환 신호 미확인\n· 볼린저밴드 현재가 위치 (중단 $380.65) + 밴드폭 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($373.04) + 근거 (이동평균 기반)\n· 스윙 저항선 ($384.04) + 돌파 시 의미\n· 5일/20일 고가·저가 패턴 (Higher Low / Lower High / 횡보): 5일 고가/저가 패턴 미확인\n[거래량·결론]\n· 거래량 비율 (0.53배) + 움직임의 신뢰도 하락 판단\n· 현 구간 진단 (축적구간) + 진입·관망 조건 명시",
+    "narrativeEn": "[Trend Position]\n· Current price ($379.78) vs SMA5 ($368.99)/SMA20 ($380.65)/SMA50 ($372.96): short-term bearish, mid-term bearish, short-term bullish position diagnosis & below/above status\n· SMA100 ($366.39)/SMA200 ($383.23) relative position: mid-to-long term bullish, mid-to-long term bearish strength assessment\n· 52-week position (40.9%) + historical significance of current price range\n[Momentum Indicators]\n· RSI trajectory (59.0→50.5) + neutral status + neutral continuation interpretation\n· MACD histogram trajectory (2.1552→-2.9338) + worsening diagnosis + trend reversal signal unconfirmed\n· Bollinger Band current price position (middle band $380.65) + band width level interpretation\n[Support & Resistance Structure]\n· Swing support ($373.04) + basis (moving average based)\n· Swing resistance ($384.04) + significance upon breakout\n· 5-day/20-day high/low pattern (Higher Low / Lower High / sideways): 5-day high/low pattern unconfirmed\n[Volume & Conclusion]\n· Volume ratio (0.53x) + decreased confidence in movement\n· Current phase diagnosis (Accumulation) + entry/wait-and-see conditions specified",
+    "patternNote": "5일 고가/저가 패턴 미확인 구간.",
+    "patternNoteEn": "5-day high/low pattern unconfirmed range.",
     "keyPoints": [
-      "RSI 59.0→50.5 과매도 구간 탈출 후 중립 구간 횡보, 매수세 약화.",
-      "MACD 히스토그램 2.1552→-2.9338 악화 지속, 매도 압력 우위.",
-      "5일 평균 대비 거래량 비율 0.52로 위축, 추세 형성 동력 부족."
+      "RSI 50.5로 중립 구간 횡보 지속, 매수/매도 우위 미확인.",
+      "MACD 히스토그램 -2.9338로 악화 추세, 데드크로스 임박 가능성.",
+      "거래량비 0.53으로 위축, 방향성 부재 시사."
     ],
     "keyPointsEn": [
-      "RSI exited oversold (59.0→50.5) but is sideways in neutral, indicating weakening buying pressure.",
-      "MACD histogram continues to worsen (2.1552→-2.9338), suggesting prevailing selling pressure.",
-      "Volume ratio at 0.52 of 5-day average, lacking momentum for trend formation."
+      "RSI continues to consolidate in the neutral zone at 50.5, indicating no clear buy/sell bias.",
+      "MACD histogram is worsening towards -2.9338, hinting at a potential upcoming dead cross.",
+      "Volume ratio at 0.53 suggests subdued activity and a lack of directional momentum."
     ],
     "riskNote": "ADX 16.1로 추세 미형성 구간, 충격성 변동 가능성 상존.",
     "riskNoteEn": "ADX at 16.1 indicates a non-trending phase, with potential for shock-like volatility.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 궤적은 과매도 탈출했으나 중립 구간 횡보, MACD 히스토그램은 악화 지속으로 판단 전환 근거 미흡.",
-    "continuityEn": "The wait-and-see stance has been maintained for the past 3 consecutive trading days. Today's RSI trajectory exited oversold but is sideways in the neutral zone, and the MACD histogram continues to worsen, providing insufficient grounds for a change in judgment.",
+    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 지표 변화 없어 동일 판독 지속.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 3 consecutive trading sessions. No significant indicator changes today warranting a shift in this assessment.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
       "higherTimeframeAligned": false,
-      "oversoldExtremeOrigin": true,
-      "score": "2/5",
-      "verdict": "초기 단계: 확인 관문 남음"
+      "oversoldExtremeOrigin": false,
+      "score": "1/5",
+      "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
     "levelsAdjustedReason": "손절폭 ATR 0.26배 < 1"
