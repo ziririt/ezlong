@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-11-12-04:49",
+      "timestamp_kst": "2026-11-12(목) 04:49 KST",
+      "key_event": {
+        "name": "AI 반도체 섹터 강세 지속",
+        "name_en": "AI Semiconductor Sector Continues Strong Performance",
+        "time": "2026-11-11 정규장",
+        "why": "AI 기업 실적 호조, 기술주 반등, 시장 심리 개선",
+        "why_en": "Strong AI company earnings, tech stock rebound, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 관련 기업 실적 호조 및 기술주 반등으로 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues due to strong AI-related company earnings and tech stock rebound",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "AI 관련 기업 실적 호조",
+          "name_en": "Strong AI-Related Company Earnings",
+          "desc": "CoreWeave 실적 호조로 AI 지출 우려 완화, 반도체 섹터 전반 긍정적 영향",
+          "desc_en": "CoreWeave's strong earnings ease AI spending concerns, positively impacting the semiconductor sector",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "연준 금리 인상 우려 지속",
+          "name_en": "Continued Fed Rate Hike Concerns",
+          "desc": "FRED Fed 기준금리 3.88% 기록, 인플레이션 확산으로 추가 인상 압력 상존",
+          "desc_en": "FRED Fed benchmark rate at 3.88%, persistent inflation spread suggests ongoing pressure for further hikes",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "NVDA 실적 발표 대기",
+          "name_en": "Anticipation of NVDA Earnings",
+          "desc": "11월 17일(화) 장 마감 후 ET 예정, AI 섹터 전반에 영향 예상",
+          "desc_en": "Scheduled for November 17th (Tuesday) after market close ET, expected to impact the broader AI sector",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 판 결론: AI 관련 기업 실적 호조 및 기술주 반등에 힘입어 긍정 우위 지속.\n- 주요 원인: CoreWeave의 실적 호조가 AI 지출 우려를 완화하며 반도체 섹터 전반에 긍정적 영향을 미침.\n- 시장 심리 개선: S&P 500 및 Nasdaq 지수 상승, 투자자들의 자신감 회복 분위기 형성.",
+        "positive": "- AI 관련 기업 실적 호조: CoreWeave의 실적 호조가 AI 지출에 대한 시장의 우려를 완화하며, AI 반도체 섹터 전반에 긍정적인 영향을 미침. Reuters 보도에 따르면 CoreWeave 실적은 AI 지출 불안감을 진정시키며 S&P 500 및 Nasdaq 지수 상승을 견인.\n- 기술주 반등: CoreWeave 실적 발표 이후 AI 관련 기술주 전반에 대한 투자 심리가 개선되며 기술주 반등세가 나타남.",
+        "negative": "- 연준 금리 인상 우려 지속: FRED Fed 기준금리가 3.88%를 기록하며 전기 대비 0.13%p 상승. 근원 PCE 물가상승률 3.12%, PCE 물가상승률 3.65%로 인플레이션 확산 압력이 상존하며 연준의 추가 금리 인상 가능성에 대한 우려가 지속.",
+        "mixed": "- NVDA 실적 발표 대기: 11월 17일(화) 장 마감 후 ET로 예정된 Nvidia 실적 발표를 앞두고 시장의 기대와 우려가 교차. Nvidia 주가는 CEO 젠슨 황 관련 논란으로 인해 주요 리스크를 가격에 반영하는 모습도 보임. Anthropic의 새로운 Claude 도구 출시 등 AI 섹터 전반의 경쟁 구도 변화도 Nvidia 실적에 대한 다양한 해석을 낳을 수 있어 혼조세 유발.",
+        "watch": "- PPI 생산자물가(10월분) 발표: 11월 13일(금) 08:30 ET에 발표될 예정인 생산자물가지수(PPI)가 인플레이션 압력에 대한 추가 단서를 제공할지 여부 확인 필요. 예상치를 상회할 경우 금리 인상 우려가 재점화될 가능성."
+      },
+      "report_at": "2026-11-12(목) 04:49 KST"
+    },
+    {
       "id": "2026-11-12-01:57",
       "timestamp_kst": "2026-11-12(목) 01:57 KST",
       "key_event": {
@@ -553,76 +605,8 @@
         "watch": ""
       },
       "report_at": "2026-11-11(수) 01:51 KST"
-    },
-    {
-      "id": "2026-11-11-00:07",
-      "timestamp_kst": "2026-11-11(수) 00:07 KST",
-      "key_event": {
-        "name": "CPI 예상치 상회",
-        "name_en": "CPI Exceeds Expectations",
-        "time": "11월 10일(화) 08:30 ET 발표 완료",
-        "why": "연준 금리 인상 압력, 시장 불확실성 증대",
-        "why_en": "Fed rate hike pressure, increased market uncertainty"
-      },
-      "positive_total": 25,
-      "negative_total": 75,
-      "summary": "CPI 예상치 상회로 금리 인상 우려 확대, 부정 우위 지속",
-      "summary_en": "CPI higher than expected, increasing rate hike concerns, negative sentiment persists",
-      "positive_factors": [
-        {
-          "score": 25,
-          "name": "AI 데이터센터 투자 지속",
-          "name_en": "Continued AI Data Center Investment",
-          "desc": "마이크로소프트, 아마존, 메타 등 데이터센터 투자 확대 전망, AI 칩 수요 견인",
-          "desc_en": "Microsoft, Amazon, Meta expected to expand data center investments, driving AI chip demand",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "CPI 예상치 상회",
-          "name_en": "CPI Exceeds Expectations",
-          "desc": "10월 CPI 발표, 인플레이션 압력 지속 확인, 연준 금리 인상 우려 증폭",
-          "desc_en": "October CPI release confirms persistent inflation pressure, heightening Fed rate hike concerns",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.99%(+2.63%), 미30년 국채금리 5.35%(+1.79%) 상승, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield at 4.99%(+2.63%) and 30-year at 5.35%(+1.79%) rise, pressuring growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "달러인덱스 강세",
-          "name_en": "Dollar Index Strengthens",
-          "desc": "달러인덱스 DXY 102.08(+0.43%) 상승, 미국 수출 기업 실적 및 신흥국 자금 유출 우려",
-          "desc_en": "Dollar Index DXY at 102.08(+0.43%) rises, raising concerns for US export company earnings and emerging market capital outflow",
-          "category": "dollar_fx"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 칩 수출 규제 논의",
-          "name_en": "AI Chip Export Regulation Discussions",
-          "desc": "중국향 AI 칩 수출 규제 및 관련 법안 의회 논의, 반도체 기업 불확실성 증대",
-          "desc_en": "Discussions in Congress regarding AI chip export regulations to China, increasing uncertainty for semiconductor companies",
-          "category": "supply_chain"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: CPI 예상치 상회로 인한 금리 인상 우려가 시장 전반에 부정적인 영향을 미치며, 부정 우위 지속.\n- 주요 원인: 10월 CPI가 예상치를 상회하며 인플레이션 압력 지속을 확인, 연준의 추가 금리 인상 가능성에 대한 시장 불확실성 증대.\n- 하방 압력: 미 국채금리 상승과 달러인덱스 강세가 성장주 할인율 압박 및 미국 수출 기업 실적에 대한 우려를 가중.",
-        "positive": "- AI 데이터센터 투자 지속: 마이크로소프트, 아마존, 메타 등 주요 기술 기업들의 데이터센터 투자 확대 전망이 AI 칩 수요를 견인하며 긍정적인 시장 심리 형성. Dan Ives는 마이크로소프트, 아마존, 메타가 데이터센터 시장에서 큰 이점을 얻을 것이라고 분석.",
-        "negative": "- CPI 예상치 상회: 10월 소비자물가지수(CPI)가 예상치를 웃돌며 인플레이션 압력이 지속되고 있음을 확인, 연준의 추가 금리 인상 우려가 증폭. S&P 500 선물은 10월 인플레이션 데이터 발표 후 급락.\n- 미 국채금리 상승: 미 10년 국채금리가 4.99%(+2.63%), 미 30년 국채금리가 5.35%(+1.79%)로 상승하며 성장주 가치 평가에 사용되는 할인율에 압박을 가함. 이는 2026년 10월 Fed 기준금리 3.88% (+0.13%p)와 함께 시장의 금리 인상 우려를 반영.\n- 달러인덱스 강세: 달러인덱스 DXY가 102.08(+0.43%)로 상승, 미국 수출 기업의 실적에 부정적인 영향을 미칠 수 있으며 신흥국으로부터의 자금 유출 우려를 증대.",
-        "mixed": "- AI 칩 수출 규제 논의: 중국향 AI 칩 수출 규제 및 관련 법안이 의회에서 논의되며 반도체 기업들의 불확실성을 증대. AI 칩 수출 규제 법안이 의회에서 추진력을 얻고 있다는 소식이 전해짐. 이는 반도체 기업들의 매출에 부정적인 영향을 미칠 수 있으나, 동시에 미국 내 기술 보호 및 경쟁력 강화 측면에서는 긍정적인 해석도 가능.",
-        "watch": "- 미 국채금리 및 달러인덱스 추이: 현재 상승세를 보이는 미 국채금리와 달러인덱스의 추가적인 움직임이 시장의 주요 변수로 작용할 전망. 이들 지표가 안정되거나 하락 반전할 경우 시장의 금리 인상 우려가 다소 완화될 수 있으나, 상승세가 지속될 경우 성장주를 중심으로 한 투자 심리 위축이 심화될 것으로 예상."
-      },
-      "report_at": "2026-11-11(수) 00:07 KST"
     }
   ],
-  "updated_at": "2026-11-11T16:57:46Z",
+  "updated_at": "2026-11-11T19:49:31Z",
   "max_entries": 10
 }
