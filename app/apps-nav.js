@@ -51,9 +51,10 @@
   // name: 한국어 이름. t: 다른 언어 이름(없으면 name). 앱 이름은 스토어 등록명을 따른다.
   var APPS = [
     // ezlong.com 본체(투자 도구). 본체 페이지에는 이 헤더를 붙이지 않는다(본체 머리는 ez-nav.js) — 들어가는 길만 둔다.
+    // 줄에는 아이콘만 보인다(오너 2026-11-11: 'EZLONG 투자도구' 글자를 뺀다). 이름은 화면 읽기 프로그램과 길게 누를 때 뜨는 풍선으로만 남는다.
     // 아이콘은 롱타임 앱과 같은 나선이라 흰 바탕 파란 나선(브랜드 라이트판 #2563EB)으로 구별했다.
     { id: 'ezlong', name: 'EZLONG 투자도구', t: { en: 'EZLONG Invest', ja: 'EZLONG 投資ツール', zh: 'EZLONG 投资工具' }, href: '/',
-      icon: '/app/icons/icon-ez.jpg', here: [] },
+      icon: '/app/icons/icon-ez.jpg', here: [], iconOnly: true },
     { id: 'insightimes', name: 'Insight Times', href: 'https://insightimes.com/',
       icon: '/app/icons/icon-it.jpg', here: ['insightimes.com'] },
     { id: 'longtime', name: 'Long Time', href: '/longtime/',
@@ -148,6 +149,7 @@
       'color:var(--ea-sub);background:none;white-space:nowrap;transition:background-color .15s ease,color .15s ease,transform .1s ease}',
     R + ' a.ezapps-a img{display:block;flex:none;width:24px;height:24px;min-width:24px;max-width:24px;border-radius:6px;' +
       'box-shadow:0 0 0 1px rgba(0,0,0,.06);opacity:1;visibility:visible}',
+    R + ' a.ezapps-a.ezapps-ico{padding:0 6px}',
     R + ' a.ezapps-a span{display:inline;font-size:14px;font-weight:600;color:inherit}',
     '@media (hover:hover){' + R + ' a.ezapps-a:hover{color:var(--ea-ink);background:var(--ea-on)}}',
     R + ' a.ezapps-a:active{transform:scale(.97)}',
@@ -190,11 +192,18 @@
     img.alt = '';
     img.width = 24; img.height = 24;
     img.decoding = 'async';
-    var span = document.createElement('span');
-    span.textContent = nameOf(app, L);
-    spans.push([span, app]);
     a.appendChild(img);
-    a.appendChild(span);
+    if (app.iconOnly) {
+      a.className += ' ezapps-ico';
+      a.setAttribute('aria-label', nameOf(app, L));
+      a.title = nameOf(app, L);
+      spans.push([a, app]);
+    } else {
+      var span = document.createElement('span');
+      span.textContent = nameOf(app, L);
+      spans.push([span, app]);
+      a.appendChild(span);
+    }
     if (app.id === current) { a.setAttribute('aria-current', 'page'); activeEl = a; }
     li.appendChild(a);
     ul.appendChild(li);
@@ -233,7 +242,11 @@
       if (n === L) return;
       L = n;
       nav.setAttribute('aria-label', LABEL[L]);
-      for (var q = 0; q < spans.length; q++) spans[q][0].textContent = nameOf(spans[q][1], L);
+      for (var q = 0; q < spans.length; q++) {
+        var el = spans[q][0], nm = nameOf(spans[q][1], L);
+        if (spans[q][1].iconOnly) { el.setAttribute('aria-label', nm); el.title = nm; }
+        else el.textContent = nm;
+      }
   }
   window.addEventListener('hashchange', relabel);
   try {
