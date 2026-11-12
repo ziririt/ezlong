@@ -283,6 +283,25 @@ const MONITORS = [
     }
   },
   {
+    // 2026-11-13 추가: 소사(brief-history) 본문 자체의 신선도.
+    // 위 naver-sync 감시는 naver-content.json 의 updatedAt 을 보는데, 이 값은
+    // 새 글이 없어도 실행할 때마다 바뀐다. 그래서 수집은 돌았지만 이슈 목록이
+    // 더는 늘지 않는 고장(인사이트 타임스 글 목록 실패, merge 단계 실패 등은
+    // continue-on-error 라 워크플로가 초록불로 끝난다)을 그 감시는 못 잡는다.
+    // 여기서는 시각이 아니라 '마지막 장 날짜'를 잰다: 있어야 할 거래일 카드가
+    // 2일 이상 비면 밀린 것이다. 1일은 봐준다(미국 휴장일 몫).
+    id:             'brief-history',
+    name:           '소사(그날 무슨 일이 있었나) 최신 장',
+    workflow:       'naver-sync.yml',
+    checkFile:      'brief-history.json',
+    check:          (content, now) => briefHistoryLag(content, now, 2),
+    // 아침 본실행(09:05 KST)이 끝났을 시간부터 잰다: KST 12:00~18:00 = UTC 03:00~09:00.
+    isActive: (now) => {
+      const h = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return h >= 3.0 && h <= 9.0;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',
@@ -297,6 +316,36 @@ const MONITORS = [
     }
   }
 ];
+
+// ─── 소사 마지막 장 날짜 판정 ────────────────────────────────────────────
+// 미국 장 D 의 카드는 한국 시각 D+1 오전 실행에서 붙는다. 넉넉히 UTC D+1 03:00
+// (KST 정오)까지 기다린 뒤에도 없으면 '빠진 거래일'로 센다. 주말은 세지 않는다.
+function ymd(d) { return d.toISOString().slice(0, 10); }
+function briefHistoryLag(list, now, maxMissing) {
+  const dates = (Array.isArray(list) ? list : []).map(e => e && e.date).filter(Boolean).sort();
+  if (!dates.length) return { stale: true, reason: '이슈 0건' };
+  const last = dates[dates.length - 1];
+  // 지금 있어야 할 가장 최근 거래일
+  const cutoff = new Date(now.getTime() - 27 * 3600000);  // D+1 03:00 UTC 를 지났는가
+  const e = new Date(Date.UTC(cutoff.getUTCFullYear(), cutoff.getUTCMonth(), cutoff.getUTCDate()));
+  while (e.getUTCDay() === 0 || e.getUTCDay() === 6) e.setUTCDate(e.getUTCDate() - 1);
+  // last 다음날부터 e 까지 평일 수 = 빠진 거래일
+  let missing = 0;
+  const c = new Date(last + 'T00:00:00Z');
+  c.setUTCDate(c.getUTCDate() + 1);
+  while (c <= e) {
+    if (c.getUTCDay() !== 0 && c.getUTCDay() !== 6) missing++;
+    c.setUTCDate(c.getUTCDate() + 1);
+  }
+  const lastDue = new Date(last + 'T03:00:00Z');
+  lastDue.setUTCDate(lastDue.getUTCDate() + 1);
+  return {
+    stale: missing >= maxMissing,
+    lastUpdate: last,
+    ageHours: Math.round((now - lastDue) / 360000) / 10,
+    reason: `마지막 장 ${last}, 기대 ${ymd(e)}, 빠진 거래일 ${missing}일 (허용 ${maxMissing - 1}일)`,
+  };
+}
 
 // ─── GitHub API 헬퍼 ──────────────────────────────────────────────────────
 function githubFetch(apiPath, method = 'GET', body = null) {
@@ -451,6 +500,41 @@ async function main() {
 
       // ③ 타임스탬프 읽기
       const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // ③-b 시각 필드 대신 내용으로 판정하는 감시(check 함수가 있는 경우)
+      if (typeof monitor.check === 'function') {
+        const r = monitor.check(content, now);
+        result.lastUpdate = r.lastUpdate;
+        result.ageHours   = r.ageHours;
+        result.reason     = r.reason;
+        if (!r.stale) {
+          result.status = 'OK';
+          results.push(result);
+          console.log(`  → OK (${r.reason})\n`);
+          continue;
+        }
+        console.log(`  → STALE: ${r.reason}`);
+        result.status = 'STALE';
+        if (triggeredWorkflows.has(monitor.workflow)) {
+          result.status = 'DEDUP_SKIP';
+          results.push(result);
+          continue;
+        }
+        if (await isWorkflowInProgress(monitor.workflow)) {
+          result.status = 'ALREADY_RUNNING';
+          results.push(result);
+          continue;
+        }
+        await triggerWorkflow(monitor.workflow);
+        triggeredWorkflows.add(monitor.workflow);
+        result.status = 'TRIGGERED';
+        result.reason = r.reason + ' → 자동 트리거';
+        results.push(result);
+        console.log(`  → TRIGGERED!\n`);
+        await new Promise(r2 => setTimeout(r2, 3000));
+        continue;
+      }
+
       const tsRaw   = content[monitor.timestampField];
 
       if (!tsRaw) {
