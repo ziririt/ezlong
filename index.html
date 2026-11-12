@@ -389,11 +389,11 @@ window.addEventListener('load', function(){
   --yl-s:     rgba(255,159,10,0.12);
   --pu:       #BF5AF2;
   --pu-s:     rgba(191,90,242,0.10);
-  --r:        20px;
-  --r-sm:     14px;
+  --r:        16px;   /* 언슬롭 2차: 카드 16 · 작은 카드 12 (98항) */
+  --r-sm:     12px;
   --font:     -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', Roboto, sans-serif;
-  --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
-  --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow:   0 1px 2px rgba(0,0,0,0.05);   /* 언슬롭 2차: 라이트 그림자는 작고 중성으로 */
+  --shadow-lg:0 8px 24px rgba(0,0,0,0.06);
   --nav-h:    60px;
   --ic:       #6E6E73;   /* 아이콘·보조 이름표: 본문보다 한 단 낮은 회색 */
   --chip:     rgba(0,0,0,0.04);
@@ -413,8 +413,8 @@ window.addEventListener('load', function(){
     --gr-s:   rgba(52,199,89,0.15);
     --yl-s:   rgba(255,159,10,0.15);
     --pu-s:   rgba(191,90,242,0.15);
-    --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
-    --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+    --shadow: none;      /* 언슬롭 2차: 다크는 그림자 대신 표면 단계와 헤어라인(--bd) */
+    --shadow-lg: none;
     --ic:     #98989D;
     --chip:   rgba(255,255,255,0.06);
   }
@@ -1514,9 +1514,9 @@ a { text-decoration: none; color: inherit; }
 .read-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .read-item {
   display: block;
-  padding: 18px 20px;
+  padding: 16px 20px;
   border: 1px solid var(--bd);
-  border-radius: 14px;
+  border-radius: var(--r-sm);
   text-decoration: none;
   background: var(--card);
   transition: border-color .15s;
