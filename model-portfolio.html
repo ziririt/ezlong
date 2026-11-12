@@ -373,6 +373,15 @@
   @media (max-width:640px) { .tblhint { display:block; font-size:14px; color:var(--ez-text3); margin:0 0 10px; } }
 
   .note { font-size:15px; color:var(--ez-text2); margin-top:14px; line-height:1.7; }
+  /* 2026-11-13: 판단 영역 기준일·재검토 표시. 시세는 매주 바뀌는데 권고문은 월 1회라,
+     기준일 없이 두면 독자가 몇 달 묵은 판단을 오늘 판단으로 읽는다. */
+  .review { border:1px solid var(--ez-amber); border-radius:var(--ez-r); padding:16px 18px;
+    margin:0 0 14px; font-size:15px; line-height:1.7; color:var(--ez-text); }
+  .review .lab { display:block; font-size:13px; font-weight:800; color:var(--ez-amber);
+    letter-spacing:.02em; margin-bottom:6px; }
+  details.old { margin-top:4px; }
+  details.old > summary { cursor:pointer; font-size:14px; color:var(--ez-text2); padding:10px 0; }
+  details.old .rb { opacity:.62; }
   .note b { color:var(--ez-text); }
   .risk { margin-top:44px; padding:20px; background:var(--ez-card2);
     border-radius:var(--ez-r); color:var(--ez-text3); font-size:14px; line-height:1.75; }
@@ -669,7 +678,22 @@
       '<div id="posmap"></div></div></section>';
 
     /* 비중 조정 권고 */
-    out += '<section><h2>비중 조정 권고 · 2026년 8월</h2><div>' +
+    /* 판단 재검토 상태. {band:TICKER} 자리는 이번 주 시세로 채운다: 문장을 손으로
+       고치지 않아도 숫자가 주간 갱신을 따라간다. */
+    var J = D.judgment || null, REV = !!(J && J.status === 'review');
+    function fillBand(txt) {
+      return String(txt || '').replace(/\{band:([A-Z0-9.]+)\}/g, function (m, tk) {
+        var h = D.holdings.filter(function (x) { return x.tk === tk; })[0];
+        return h ? band(h).toFixed(0) + '%' : m;
+      });
+    }
+    var revBox = REV ? '<div class="review"><span class="lab">재검토 중 · ' +
+      esc(J.reviewNoticeKST) + ' 공지 · 다음 판단: ' + esc(J.nextReview) + '</span>' +
+      fillBand(J.note) + '</div>' : '';
+    var jLabel = (J && J.asOf) ? J.asOf.replace(/^(\d{4})-(\d{2})$/, function (m, y, mo) {
+      return y + '년 ' + parseInt(mo, 10) + '월'; }) : '2026년 8월';
+    out += '<section><h2>비중 조정 권고 · ' + jLabel + ' 판단' + (REV ? ' (재검토 중)' : '') + '</h2>' +
+      revBox + (REV ? '<details class="old"><summary>' + jLabel + ' 원문 보기 (실행 보류)</summary>' : '') + '<div>' +
       D.rebalance.map(function (r) {
         var up = r.to > r.from, d = r.to - r.from;
         var col = up ? 'var(--sig-ob)' : 'var(--sig-s)';
@@ -689,12 +713,13 @@
           '<div class="det">실행 : ' + esc(r.det) + '</div>' +
           (r.trig ? '<div class="det" style="color:var(--ez-amber)">' + esc(r.trig) + '</div>' : '') +
           '<div class="cnt">' + r.cnt + '</div></div>';
-      }).join('') + '</div>' +
-      '<p class="note">권고 반영 후 합계는 그대로 100%다. 조정은 한 번에 하지 않고 <b>3회 분할</b>로 집행한다.</p></section>';
+      }).join('') + '</div>' + (REV ? '</details>' : '<p class="note">권고 반영 후 합계는 그대로 100%다. 조정은 한 번에 하지 않고 <b>3회 분할</b>로 집행한다.</p>') + '</section>';
 
     /* 검토 필요 */
     out += '<section><h2>검토 필요 : 새로 담을 종목 · 덜어낼 종목</h2>' +
-      '<p class="h2sub">비중 조정과 별개로 검토가 필요한 종목. 아직 실행 전이다.</p><div class="updn">' +
+      (REV ? '<p class="h2sub">' + jLabel + ' 판단이다. 편입·편출 근거였던 밴드 위치가 크게 바뀌어 위 권고와 함께 <b>재검토 중</b>이다.</p>'
+           + '<details class="old"><summary>' + jLabel + ' 원문 보기 (실행 보류)</summary>'
+           : '<p class="h2sub">비중 조정과 별개로 검토가 필요한 종목. 아직 실행 전이다.</p>') + '<div class="updn">' +
       D.add.map(function (a) {
         return '<div class="rb"><div class="top"><span class="tag" style="background:var(--ez-blue)">새로 담기</span>' +
           '<h3>' + esc(a.nm) + '</h3><span class="arrow">' + esc(a.tk) + ' · ' + esc(a.px) + '</span>' +
@@ -718,7 +743,7 @@
       '이미 5% 비중으로 갖고 있기 때문이다. 아래는 SOXX 밖에 있는 종목만 검토한 결과다.</div>' +
       D.watchNew.map(function (w) {
         return '<div class="why"><b>' + esc(w.nm) + ' (' + esc(w.tk) + ')</b>: ' + esc(w.why) + '</div>';
-      }).join('') + '</div></div></section>';
+      }).join('') + '</div></div>' + (REV ? '</details>' : '') + '</section>';
 
     /* 일정 */
     /* 지난 일정은 화면이 거른다. 갱신이 하루 이틀 밀려도 지나간 날짜가 맨 위에
