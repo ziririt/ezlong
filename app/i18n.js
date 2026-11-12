@@ -610,7 +610,13 @@
     var css = document.createElement('style');
     css.textContent = '.ez-lang{display:flex;justify-content:flex-end;margin:4px 0 8px}.ez-lang .ez-lw{position:relative;display:inline-flex;align-items:center}' +
       '.ez-lang .ez-gl{position:absolute;left:11px;width:16px;height:16px;pointer-events:none;color:var(--sub,var(--mut,#555))}' +
-      '.ez-lang select{font:inherit;font-size:14px;line-height:1.2;padding:6px 28px 6px 33px;border-radius:99px;' +
+      /* 2026-11-13: 사파리는 기본 모양(appearance:auto)의 select 에서 왼쪽 padding 을 무시한다.
+         그래서 지구본이 '한국어'의 '한' 자를 덮었다(크롬은 padding 을 지켜서 개발 화면에서는 멀쩡했다).
+         기본 모양을 끄고 오른쪽 화살표를 배경 그림으로 직접 그린다. */
+      '.ez-lang select{-webkit-appearance:none;-moz-appearance:none;appearance:none;' +
+      'background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%238A8A8E%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M8 10l4-4 4 4M8 14l4 4 4-4%27/%3E%3C/svg%3E");' +
+      'background-repeat:no-repeat;background-position:right 10px center;background-size:14px 14px;' +
+      'font:inherit;font-size:14px;line-height:1.2;padding:6px 30px 6px 34px;border-radius:99px;' +
       'border:1px solid var(--line,#d9d9d9);background-color:var(--panel,var(--card,#fff));color:var(--sub,var(--mut,#555));' +
       'cursor:pointer;max-width:100%}' +
       '.ez-lang select:focus-visible{outline:2px solid var(--accent,var(--acc,#2b6cb0));outline-offset:2px}';
