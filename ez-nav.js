@@ -112,13 +112,13 @@
      대시보드가 그 해시를 스윙 시그널 탭으로 받는다. */
   var linksKR = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
-    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span class="ez-new">신규</span>'],
+    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇: AI 시황 분석'],
-    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span class="ez-new">신규</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span class="ez-new">신규</span>'],
+    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈'],
     /* [보류 2026-10-19: 심플 주가] 복구 절차: docs/RESTORE-stocks.md
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'], */
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/model-portfolio.html',       'AI포트폴리오 점검<span class="ez-new">신규</span>', 'AI포트폴리오 점검: 공격형 AI 시대 26종목 <span class="ez-new">신규</span>'],
+    ['/model-portfolio.html',       'AI포트폴리오 점검', 'AI포트폴리오 점검: 공격형 AI 시대 26종목'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
@@ -190,11 +190,9 @@
       '</a>';
 
     /* 모바일 타일 메뉴는 짧은 이름 사용 (2026-08-04, 운영 지침: 긴 설명형
-       메뉴명 폐지, 2열 타일로 스크롤 없이 한 화면). NEW 딱지는 TOP9에만 별도 부착. */
-    var mobLbl = shortLbl +
-      (href.indexOf('#top9') >= 0
-        ? '<span class="ez-new">신규</span>'
-        : '');
+       메뉴명 폐지, 2열 타일로 스크롤 없이 한 화면). NEW 딱지는 2026-11-13 부로 헤더에서 뺐다. */
+    /* 2026-11-13 운영 지침: 글로벌 헤더에는 NEW 딱지를 달지 않는다. */
+    var mobLbl = shortLbl;
     mobileItemsHTML +=
       '<a href="' + href + '" class="ez-mob-item' + (active ? ' active' : '') + '">' +
         mobLbl +

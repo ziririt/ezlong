@@ -11,13 +11,13 @@
         '<!-- 서비스 메뉴 그리드 (푸터 최상단) -->' +
         '<nav class="ez-footer-nav-grid" aria-label="서비스 메뉴">' +
           '<a href="/atmr-dashboard.html" class="ez-footer-nav-item">스윙 시그널 대시보드</a>' +
-          '<a href="/atmr-dashboard.html#top9" class="ez-footer-nav-item">TOP9 집중분석<span class="ez-new">신규</span></a>' +
+          '<a href="/atmr-dashboard.html#top9" class="ez-footer-nav-item">TOP9 집중분석<span class="ez-new">NEW</span></a>' +
           '<a href="/market-vs.html" class="ez-footer-nav-item">긍정 vs 부정 몇대몇</a>' +
-          '<a href="/brief-history.html" class="ez-footer-nav-item">차트: 그날 무슨 일이 있었나<span class="ez-new">신규</span></a>' +
+          '<a href="/brief-history.html" class="ez-footer-nav-item">차트: 그날 무슨 일이 있었나<span class="ez-new">NEW</span></a>' +
           /* [보류 2026-10-19: 심플 주가] 복구 절차: docs/RESTORE-stocks.md
           '<a href="/stocks.html" class="ez-footer-nav-item">심플 주가 정보</a>' + */
           '<a href="/chart-analysis.html" class="ez-footer-nav-item">AI 차트분석</a>' +
-          '<a href="/model-portfolio.html" class="ez-footer-nav-item">AI포트폴리오 점검<span class="ez-new">신규</span></a>' +
+          '<a href="/model-portfolio.html" class="ez-footer-nav-item">AI포트폴리오 점검<span class="ez-new">NEW</span></a>' +
           '<a href="/market-cycle.html" class="ez-footer-nav-item">Market Cycle Monitor</a>' +
           '<a href="/dca-simulator.html" class="ez-footer-nav-item">DCA 복리 시뮬레이터</a>' +
           '<a href="/portfolio-manager.html" class="ez-footer-nav-item">포트폴리오 복리 시뮬레이터</a>' +
