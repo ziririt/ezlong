@@ -1541,6 +1541,104 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 720px) {
   .read-list { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ── 세 지수 띠 · 도구 두 묶음 (2026-11-12 언슬롭 2차, CLAUDE.md 98항) ── */
+.idx-strip-wrap { position: relative; z-index: 3; margin-top: -32px; }
+/* 띠가 사진 아랫단 32px 를 덮으므로 그만큼 제목 아래 여백을 더 준다 */
+.hero-content { padding-bottom: 64px; }
+@media (min-width: 768px) { .hero-content { padding-bottom: 72px; } }
+#tools { padding-top: 32px; }
+.idx-strip {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
+  padding: 16px 20px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--bd); box-shadow: var(--shadow);
+  text-decoration: none; color: var(--t1);
+  transition: border-color .15s cubic-bezier(.22,1,.36,1);
+}
+.idx-strip[hidden] { display: none; }
+@media (hover: hover) { .idx-strip:hover { border-color: var(--bl-m); } }
+.idx-strip-head { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.idx-strip-title { font-size: 16px; font-weight: 600; }
+.idx-strip-asof { font-size: 14px; color: var(--ic); }
+.idx-cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+.idx-cell { display: flex; flex-direction: column; gap: 2px; padding: 0 16px; border-left: 1px solid var(--bd); }
+.idx-name { font-size: 14px; color: var(--ic); white-space: nowrap; }
+.idx-name b { font-weight: 600; color: var(--t1); }
+.idx-price { font-size: 20px; font-weight: 600; line-height: 1.2; }
+.idx-chg { font-size: 14px; font-weight: 500; }
+.idx-up   { color: var(--ez-green, #1A7F37); }
+.idx-down { color: var(--ez-red, #D92A2A); }
+.idx-flat { color: var(--ic); }
+.idx-strip-go {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 14px; font-weight: 600; color: var(--bl); white-space: nowrap;
+}
+.idx-strip-go svg { width: 14px; height: 14px; }
+@media (max-width: 899px) {
+  .idx-strip { grid-template-columns: 1fr auto; gap: 12px 16px; padding: 16px; }
+  .idx-cells { grid-column: 1 / -1; grid-row: 2; }
+  .idx-cell:first-child { border-left: 0; padding-left: 0; }
+  .idx-strip-go { grid-column: 2; grid-row: 1; align-self: start; }
+}
+@media (max-width: 400px) {
+  .idx-strip-wrap { margin-top: -24px; }
+  .idx-cell { padding: 0 8px; }
+  .idx-name-long { display: none; }
+  .idx-price { font-size: 17px; }
+}
+
+.tools-group-title {
+  font-size: 17px; font-weight: 600; color: var(--t1);
+  margin: 0 0 12px;
+}
+.tools-group-title + .tools-grid, .tools-group-title + .tools-list { margin-top: 0; }
+.tools-grid + .tools-group-title { margin-top: 40px; }
+
+/* :has 를 붙인 것은 위쪽 3열 규칙(:has(.tool-card:nth-child(5)), 특이도 0,3,0)을 이기기 위해서다.
+   시장 묶음: 넓은 화면 4열, 스윙 시그널이 두 칸을 차지해 2줄로 딱 떨어진다(1+1+1+1+3 = 8칸). */
+.tools-grid--read .tool-card:first-child { grid-column: span 2; }
+@media (min-width: 1000px) {
+  .tools-grid.tools-grid--read:has(.tool-card) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 700px) and (max-width: 999px) {
+  .tools-grid.tools-grid--read:has(.tool-card) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .tools-grid--read .tool-card { padding: 20px; }
+}
+
+/* 계산 묶음: 카드가 아니라 목록. 아이콘 | 이름 / 한 줄 설명. 바로가기 글자는 줄 전체가 링크라 숨긴다. */
+.tools-list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px;
+  border-top: 1px solid var(--bd);
+}
+@media (max-width: 699px) { .tools-list { grid-template-columns: minmax(0, 1fr); } }
+.tools-list .tool-card {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr) 16px; column-gap: 12px; row-gap: 2px;
+  align-items: center;
+  padding: 12px 0; gap: 2px 12px;
+  background: none; border: 0; border-bottom: 1px solid var(--bd); border-radius: 0; box-shadow: none;
+  transition: opacity .15s;
+}
+.tools-list .tool-card-header { display: contents; }
+.tools-list .tool-card .tool-card-icon { grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 8px; }
+.tools-list .tool-card-icon svg { width: 18px; height: 18px; }
+.tools-list .tool-card-title { grid-column: 2; font-size: 16px; }
+.tools-list .tool-card-desc {
+  grid-column: 2; font-size: 14px; line-height: 1.5; color: var(--ic);
+  display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  -webkit-line-clamp: unset;
+}
+.tools-list .tool-card-link { display: none; }
+.tools-list .tool-card::after {
+  content: ''; grid-column: 3; grid-row: 1 / span 2; width: 8px; height: 8px;
+  border-top: 1.5px solid var(--ic); border-right: 1.5px solid var(--ic); transform: rotate(45deg);
+}
+@media (hover: hover) { .tools-list .tool-card:hover { border-color: var(--bd); opacity: .7; } }
+@media (max-width: 699px) {
+  .tools-list .tool-card { padding: 12px 0; }
+  .tools-list .tool-card-header { flex-direction: row; }
+}
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
@@ -1575,18 +1673,37 @@ a { text-decoration: none; color: inherit; }
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="hero-title-hero">
-      미국주식 매매 타이밍부터<br>
-      은퇴 설계까지,<br>
-      <em>AI 데이터</em>로 확인하세요
+      미국주식, 오늘 살 때인지<br>
+      언제 일을 놓아도 되는지<br>
+      숫자로 봅니다
     </h1>
   </div>
 </section>
+
+<!-- ── 세 지수 띠 (2026-11-12 언슬롭 2차, 98항) ─────────────
+     히어로 사진은 이 사이트가 약속하는 삶이고, 이 띠는 그 약속을 무엇으로 지키는지다.
+     숫자는 스윙 시그널 대시보드가 읽는 market-signals.json 과 같은 파일에서 온다
+     (13절: 화면이 말하는 숫자는 하나). 판정은 여기서 하지 않는다: 값과 기준 시각만
+     보이고, 판정은 대시보드에 둔다. 파일을 못 읽으면 띠를 통째로 숨긴다. -->
+<div class="idx-strip-wrap wrap">
+  <a href="atmr-dashboard.html" class="idx-strip" id="idx-strip" hidden>
+    <span class="idx-strip-head">
+      <span class="idx-strip-title">스윙 시그널이 보는 세 지수</span>
+      <span class="idx-strip-asof" id="idx-strip-asof"></span>
+    </span>
+    <span class="idx-cells" id="idx-cells"></span>
+    <span class="idx-strip-go">판정 보기
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </span>
+  </a>
+</div>
 
 
 <!-- ── 유틸리티 도구 ──────────────────────────────── -->
 <section class="section" id="tools">
   <div class="wrap">
-    <div class="tools-grid">
+    <h2 class="tools-group-title">시장을 읽는 도구</h2>
+    <div class="tools-grid tools-grid--read">
 
       <!-- 스윙 시그널: 1번째 (최우선 노출) -->
       <a href="atmr-dashboard.html" class="tool-card" style="text-decoration:none;">
@@ -1742,6 +1859,15 @@ a { text-decoration: none; color: inherit; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
       </a>
+
+    </div>
+
+    <!-- 2026-11-12 언슬롭 2차(98항): 크기가 같은 카드 열일곱 장이 줄지어 있었다.
+         매일 바뀌는 시장 도구와, 내 숫자를 넣어 보는 계산 도구는 쓰임이 다르다.
+         뒤쪽 열 개는 목록으로 바꿔 종류가 다른 물건으로 읽히게 한다.
+         마크업은 카드 그대로 두고 CSS(.tools-list)만 모양을 바꾼다. -->
+    <h2 class="tools-group-title">계산하고 진단하는 도구</h2>
+    <div class="tools-list">
 
       <!-- DCA 복리 시뮬레이터 -->
       <a href="dca-simulator.html" class="tool-card" style="text-decoration:none;">
@@ -2451,6 +2577,32 @@ loadExternalList('insightimes-list', EXT_LISTS.insightimes, { date: true, style:
 <!-- 앱 웹뷰 외부 링크 처리는 ez-nav.js 로 옮겼다 (2026-08-08).
      메인에만 있으면 모델 포트폴리오 같은 새 코너에서 같은 먹통이 재발한다.
      ez-nav.js 는 전 페이지가 로드하므로 거기 한 벌만 두면 전부 적용된다. -->
+
+<script>
+/* 세 지수 띠: 스윙 시그널 대시보드와 같은 파일(GITHUB_JSON_URL)을 읽는다. 98항. */
+(function () {
+  var box = document.getElementById('idx-strip');
+  if (!box || !window.fetch) return;
+  var URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/market-signals.json?t=' + Math.floor(Date.now() / 300000);
+  var ROWS = [['QQQ', '나스닥100'], ['VOO', 'S&P500'], ['SOXX', '반도체']];
+  function fmt(n) { return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  fetch(URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    if (!d || !d.symbols || !d.generatedAtKST) return;
+    var html = '';
+    for (var i = 0; i < ROWS.length; i++) {
+      var s = d.symbols[ROWS[i][0]];
+      if (!s || typeof s.price !== 'number' || typeof s.changePct !== 'number') return;
+      var c = s.changePct, cls = c > 0 ? 'idx-up' : c < 0 ? 'idx-down' : 'idx-flat';
+      html += '<span class="idx-cell"><span class="idx-name"><span class="idx-name-long">' + ROWS[i][1] + ' </span><b>' + ROWS[i][0] + '</b></span>' +
+              '<span class="idx-price">' + fmt(s.price) + '</span>' +
+              '<span class="idx-chg ' + cls + '">' + (c > 0 ? '+' : '') + c.toFixed(2) + '%</span></span>';
+    }
+    document.getElementById('idx-cells').innerHTML = html;
+    document.getElementById('idx-strip-asof').textContent = d.generatedAtKST + ' 기준';
+    box.hidden = false;
+  }).catch(function () {});
+})();
+</script>
 
 <script>
 // 스윙 시그널 카드: 날짜 동적 반영
