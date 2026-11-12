@@ -338,6 +338,21 @@ def main():
         return 0
     with open(EVENTS, 'w', encoding='utf-8') as f:
         json.dump(merged, f, ensure_ascii=False, indent=1)
+
+    # 2026-11-13: 여기서 만든 기록은 전부 등급 1이다. 등급 판정을 워크플로의 다음
+    # 단계에만 맡겼더니, 푸시 충돌 때 도는 naver-sync-rebase.sh 가 merge 만 다시
+    # 돌리고 등급 단계는 건너뛰어 하룻밤 사이에 핵심·주요가 다시 전부 회색이 됐다.
+    # 등급 1을 만드는 곳이 곧바로 등급을 매긴다: 어느 경로로 merge 가 돌든 같다.
+    # 등급 판정이 깨져도 merge 결과는 이미 써졌으니 그대로 둔다(경고만).
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            'level_brief_history', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'level-brief-history.py'))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.main()
+    except Exception as err:  # noqa: BLE001
+        print(f'::warning::[등급] merge 직후 등급 판정 실패: {err}')
     return 0
 
 

@@ -13,6 +13,8 @@
 #   그 위에서 다시 굽는다. 생성기는 전부 멱등하고 캐시가 있으므로 재실행이
 #   싸다 — 사람 손으로 쓴 것만 살리면 나머지는 저절로 복원된다.
 #     · merge-naver-archive.py  — own_archive 만 새로 만든다(손으로 쓴 것 보존)
+#       끝에서 level-brief-history.py 로 핵심·주요 등급까지 매긴다(2026-11-13, 99항).
+#       예전엔 등급이 워크플로 단계에만 있어서 이 경로로 오면 전부 회색이 됐다.
 #     · brief-history-briefings.mjs — 글 URL 기준 캐시라 재호출이 거의 없다
 #     · extract-judgment-timeline.py / translate / build-i18n — 전부 재생성 가능
 #
