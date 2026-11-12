@@ -40,7 +40,18 @@ const MONITORS = [
     workflow:       'fetch-us-chart-analysis.yml',
     checkFile:      'analysis-TSLA.json',   // 대표 파일 (가장 중요)
     timestampField: 'updatedAt',
-    maxAgeHours:    2.5,
+    // 2026-11-13: 정규장(ET 09:30~16:05)에는 0.9h, 그 밖에는 2.5h.
+    // 실측: GitHub 예약 실행이 11시간가량 늦게 도착해(11/11 14:35 UTC 크론이
+    // 11/12 01:37 UTC 도착) 워크플로의 ET 시간 검사에 걸려 20초 만에 건너뛴다.
+    // 11/11부터 장중 갱신은 이 감시견 하나뿐이었고, 2.5h 기준이라 3시간마다만
+    // 갱신됐다. 감시견은 cron-job.org가 30분마다 정시에 깨우므로 장중 기준을
+    // 0.9h로 낮추면 약 1시간마다 갱신된다(설계 의도: 장중 매시).
+    maxAgeHours: (now) => {
+      const et  = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+      const day = et.getDay();
+      const hm  = et.getHours() * 100 + et.getMinutes();
+      return (day >= 1 && day <= 5 && hm >= 930 && hm < 1605) ? 0.9 : 2.5;
+    },
     // 미국 프리마켓~포스트마켓: KST 17:00~익일 07:00 = UTC 08:00~22:00, 평일
     isActive: (now) => {
       const day = now.getUTCDay();          // 0=일, 6=토
@@ -588,10 +599,13 @@ async function main() {
       const ageHours   = (now - lastUpdate) / 3_600_000;
       result.lastUpdate    = tsRaw;
       result.ageHours      = Math.round(ageHours * 10) / 10;
-      result.maxAgeHours   = monitor.maxAgeHours;
+      // maxAgeHours 는 숫자 또는 (now) => 숫자. 시간대별 기준이 필요한 감시 대상용.
+      const maxAge = typeof monitor.maxAgeHours === 'function'
+        ? monitor.maxAgeHours(now) : monitor.maxAgeHours;
+      result.maxAgeHours   = maxAge;
 
       // ④ 신선도 판단
-      if (ageHours <= monitor.maxAgeHours) {
+      if (ageHours <= maxAge) {
         result.status = 'OK';
         result.reason = `최신 (${result.ageHours}h 전 업데이트)`;
         results.push(result);
@@ -600,7 +614,7 @@ async function main() {
       }
 
       // ⑤ 오래된 데이터 감지
-      console.log(`  → STALE: ${result.ageHours}h 경과 (허용: ${monitor.maxAgeHours}h)`);
+      console.log(`  → STALE: ${result.ageHours}h 경과 (허용: ${maxAge}h)`);
       result.status = 'STALE';
 
       // ⑥ 동일 워크플로 이미 트리거했으면 스킵
