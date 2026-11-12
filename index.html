@@ -761,6 +761,30 @@ a { text-decoration: none; color: inherit; }
   padding: 3px 9px;
 }
 
+/* ─── 그 밖의 앱 9개 (2026-11-13, 푸터 위) ─────────
+   위 #apps 카드가 핵심 둘을 크게 말하니, 여기는 목록이다. 아이콘 44px · 이름 · 종류 · 한 문장.
+   카드 전체가 링크라 "소개 보기" 글자는 뺐다: 9번 반복되면 소음이다. */
+.ez-more-apps { margin-bottom: 28px; }
+.ez-more-apps-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ez-more-apps-title { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
+.ez-more-apps-all { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
+.ez-more-apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+@media (max-width: 999px) { .ez-more-apps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 599px) { .ez-more-apps-grid { grid-template-columns: 1fr; gap: 6px; } }
+.ez-more-app {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px;
+  border-radius: 12px; border: 1px solid var(--ez-border); background: var(--ez-card);
+  text-decoration: none; color: var(--ez-text2);
+  transition: border-color .12s ease;
+}
+@media (hover: hover) { .ez-more-app:hover { border-color: var(--ez-blue); } }
+.ez-more-app img { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; display: block; box-shadow: 0 1px 4px rgba(0,0,0,.14); }
+.ez-more-app-body { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
+.ez-more-app b { display: inline; font-size: 16px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
+.ez-more-app small { display: inline; margin-left: 6px; font-size: 13px; color: var(--ez-text3); }
+.ez-more-app em { display: block; margin-top: 3px; font-style: normal; font-size: 14px; line-height: 1.5; color: var(--ez-text2); }
+@media (prefers-reduced-motion: reduce) { .ez-more-app { transition: none; } }
+
 @media (prefers-color-scheme: dark) {
   .badge-soon { background: #2C2C2E; }
 }
@@ -2451,32 +2475,86 @@ a { text-decoration: none; color: inherit; }
         </div>
       </div>
     </div>
-    <!-- 직접 만든 앱 (82항 · 92-2항) — 메인은 자체 푸터를 쓰므로 공용 푸터와
-         같은 마크업을 여기에도 둔다. 스타일은 ez-design.css 의 .ez-footer-apps
-         한 벌을 공유한다: 두 벌로 두면 한쪽이 반드시 뒤처진다(8항). -->
-    <section class="ez-footer-apps" aria-labelledby="main-footer-apps-h">
-      <div class="ez-footer-apps-head">
-        <h2 class="ez-footer-apps-title" id="main-footer-apps-h">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg> 직접 만든 앱</h2>
-        <p class="ez-footer-apps-sub">설치 없이 웹에서 바로 열어 볼 수 있습니다.</p>
+    <!-- 그 밖의 앱 9개 (2026-11-13 오너: "앱 소개가 같은 게 두 번 나온다. 핵심 두 개는 위에,
+         나머지 9개는 하단에. 총 11개."). 핵심 둘(Long Time·Skyblue Note)은 본문 #apps 카드가 맡고,
+         여기는 나머지를 촘촘한 목록으로 둔다. 공용 푸터(ez-footer.js)는 다른 지면용이라 그대로 둔다:
+         메인만 본문에 핵심 둘이 이미 있어서 겹쳤던 것이다. 앱 원본 목록은 app/apps-nav.js. -->
+    <section class="ez-more-apps" aria-labelledby="main-more-apps-h">
+      <div class="ez-more-apps-head">
+        <h2 class="ez-more-apps-title" id="main-more-apps-h">그 밖에 만든 앱 9개</h2>
+        <a class="ez-more-apps-all" href="/app/">앱 모음 전체 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
-      <div class="ez-footer-apps-grid">
-        <a href="/longtime/" class="ez-footer-app">
-          <img src="/time/icons/pwa-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">
-          <span class="ez-footer-app-body">
-            <b>Long Time, Easy Life</b>
-            <small>시계 · 스탠바이 · 기상 알람</small>
-            <em>충전기에 꽂아 세워두면 큼직한 플립시계. 계절과 날씨에 맞춰 배경이 바뀌고 음악이 깨워 줍니다.</em>
-            <span class="ez-footer-app-go">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      <div class="ez-more-apps-grid">
+        <a href="https://insightimes.com/" class="ez-more-app">
+          <img src="/app/icons/icon-it.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>Insight Times</b>
+            <small>웹진 · 미국 주식</small>
+            <em>반도체와 빅테크, 금리와 유가가 기업 손익에 닿는 길을 풀어 씁니다. 평일 아침엔 미국장 마감 시황.</em>
           </span>
         </a>
-        <a href="/skybluenote/" class="ez-footer-app">
-          <img src="/skybluenote/web/icons/Icon-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">
-          <span class="ez-footer-app-body">
-            <b>Skyblue Note</b>
-            <small>노트 · AI 답변 정리</small>
-            <em>AI가 준 답을 붙여넣고 한 번 누르면 별표와 우물 정이 걷히고 깨진 표가 다시 섭니다.</em>
-            <span class="ez-footer-app-go">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">
+          <img src="/app/icons/icon-bl.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>배터리 라이프</b>
+            <small>충전 · 시계</small>
+            <em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>
+          </span>
+        </a>
+        <a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">
+          <img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>포토 타임</b>
+            <small>사진 · 액자</small>
+            <em>사진첩을 음악과 함께 인화 사진 슬라이드쇼로. 서랍 속 옛 아이패드가 액자로 살아납니다.</em>
+          </span>
+        </a>
+        <a href="/app/#longlong" class="ez-more-app">
+          <img src="/app/icons/icon-ll.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>LongLong</b>
+            <small>사진 · 편집</small>
+            <em>스크린샷 여러 장의 겹친 곳과 상단바를 걸러 내고 긴 한 장으로 이어 붙입니다.</em>
+          </span>
+        </a>
+        <a href="https://convert.ezlong.com/" class="ez-more-app">
+          <img src="/app/icons/icon-ec.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>Ez Converter</b>
+            <small>파일 · 변환</small>
+            <em>HEIC를 JPG로, MOV를 MP4로, CSV를 엑셀로. 서버에 올리지 않고 기기 안에서 바꿉니다.</em>
+          </span>
+        </a>
+        <a href="https://pdf.ezlong.com/?lang=ko" class="ez-more-app">
+          <img src="/app/icons/icon-ap.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>Any to PDF</b>
+            <small>문서 · PDF</small>
+            <em>사진, 글, 문서를 PDF 한 개로 묶습니다. 보던 웹 페이지도 A4나 긴 한 장으로 저장됩니다.</em>
+          </span>
+        </a>
+        <a href="/app/ezscan/" class="ez-more-app">
+          <img src="/app/icons/icon-es.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>ezScan</b>
+            <small>문서 · 스캔</small>
+            <em>대고 찍으면 배경을 지우고, 말린 책 안쪽과 구부러진 영수증을 펴 줍니다.</em>
+          </span>
+        </a>
+        <a href="https://readtrans.ezlong.com/" class="ez-more-app">
+          <img src="/app/icons/icon-rt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>ReadTrans</b>
+            <small>전자책 · 번역</small>
+            <em>보던 전자책 뷰어는 그대로 두고, 지금 보는 쪽을 옆 창에 번역해 보여 주는 컴퓨터 앱.</em>
+          </span>
+        </a>
+        <a href="https://send.ezlong.com/" class="ez-more-app">
+          <img src="/app/icons/icon-sd.svg" alt="" width="96" height="96" loading="lazy" decoding="async">
+          <span class="ez-more-app-body">
+            <b>초간단 파일공유</b>
+            <small>웹 · 파일 전송</small>
+            <em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>
           </span>
         </a>
       </div>
