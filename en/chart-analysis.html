@@ -276,6 +276,7 @@ body:has(.ca-fullscreen) { overflow-x: visible; }
     .ca-ticker-chg   { font-size: 16px; }
     .ca-ticker-chg.up   { color: var(--ez-green); }
     .ca-ticker-chg.down { color: var(--ez-red); }
+    .ca-ticker-chg.prev { opacity: .6; }
 
     .ca-main {
       flex: 1;
@@ -964,6 +965,20 @@ function renderSidebar(group) {
   });
 }
 
+/* 2026-11-13: 미국 종목이 프리마켓·장마감 상태이고 시간외 가격이 없으면 화면의 가격·등락률은
+   "전 거래일 종가"다. 그대로 "+2.87% 프리마켓"으로 찍으면 어제 등락이 오늘 것처럼 보인다
+   (NVDA 11/11 종가 +2.87%가 11/12 프리마켓에 그대로 노출된 사고. 한국 쪽 "장중 -8.93%" 사고와 같은 꼴).
+   시세 자체의 시각(quoteTime)에서 뉴욕 날짜를 뽑아 종가 날짜를 밝힌다. */
+function usPrevCloseInfo(analysis) {
+  const p = analysis && analysis.price;
+  if (!p || analysis.assetType === 'crypto' || analysis.market !== 'us') return null;
+  if (!['PRE', 'CLOSED'].includes(p.marketState) || p.extPrice != null || !p.quoteTime) return null;
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'numeric', day: 'numeric' })
+    .formatToParts(new Date(p.quoteTime * 1000));
+  const m = parts.find(x => x.type === 'month').value, d = parts.find(x => x.type === 'day').value;
+  return { label: 'Close ' + m + '/' + d };
+}
+
 function updateSidebarTicker(safe, data) {
   const priceEl = document.getElementById(`price-${safe}`);
   const chgEl   = document.getElementById(`chg-${safe}`);
@@ -977,8 +992,10 @@ function updateSidebarTicker(safe, data) {
 
   if (cur != null) {
     priceEl.textContent = fmtPrice(cur, curr);
-    chgEl.textContent   = pct != null ? (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
-    chgEl.className     = 'ca-ticker-chg ' + (pct >= 0 ? 'up' : 'down');
+    const prev = usPrevCloseInfo(data);
+    chgEl.textContent   = pct != null ? (prev ? 'Prev ' : '') + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
+    chgEl.className     = 'ca-ticker-chg ' + (pct >= 0 ? 'up' : 'down') + (prev ? ' prev' : '');
+    chgEl.title         = prev ? prev.label : '';
   }
   // Color the dot from buyScore(1–10): same scale as the detail panel's
   // buy-attractiveness bar (strength alone would color a bearish move green).
@@ -1129,6 +1146,8 @@ function renderPriceHeader(analysis, currency) {
   } else {
     const s = p.marketState ?? 'CLOSED';
     stateLabel = { REGULAR:'Regular Hours', PRE:'Pre-Market', POST:'After Hours', CLOSED:'Closed' }[s] || s;
+    const prevInfo = usPrevCloseInfo(analysis);
+    if (prevInfo) stateLabel = prevInfo.label;
   }
 
   // ── Korean stocks: overlay live price from kr-prices.json ──
