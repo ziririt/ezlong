@@ -395,6 +395,8 @@ window.addEventListener('load', function(){
   --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
   --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
   --nav-h:    60px;
+  --ic:       #6E6E73;   /* 아이콘·보조 이름표: 본문보다 한 단 낮은 회색 */
+  --chip:     rgba(0,0,0,0.04);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -413,6 +415,8 @@ window.addEventListener('load', function(){
     --pu-s:   rgba(191,90,242,0.15);
     --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
     --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+    --ic:     #98989D;
+    --chip:   rgba(255,255,255,0.06);
   }
 }
 
@@ -445,23 +449,20 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 400px) { .wrap { padding: 0 12px; } }
 
 .section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  /* 2026-11-12 언슬롭(98항): 파란 알약 + 대문자 자간 벌림 + 12px 아이콘 → 조용한 글자.
+     섹션 이름표는 길잡이지 버튼이 아니다. 강조색은 누를 수 있는 곳에만 남긴다. */
+  display: block;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--bl);
-  background: var(--bl-s);
-  padding: 5px 12px;
-  border-radius: 999px;
-  margin-bottom: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ic);
+  margin-bottom: 8px;
 }
+.section-label svg { display: none; }
 
 .section-title {
   font-size: clamp(26px, 5vw, 38px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.02em;
   line-height: 1.15;
   color: var(--t1);
@@ -569,16 +570,15 @@ a { text-decoration: none; color: inherit; }
 
 .hero-eyebrow {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--bl);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ic);
   margin-bottom: 20px;
 }
 
 .hero-title {
   font-size: clamp(36px, 8vw, 64px);
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: -.04em;
   line-height: 1.05;
   color: var(--t1);
@@ -604,12 +604,12 @@ a { text-decoration: none; color: inherit; }
   background: var(--bl);
   color: white;
   font-size: 15px;
-  font-weight: 700;
-  padding: 14px 28px;
-  border-radius: 999px;
-  transition: opacity .2s, transform .3s;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px;
+  transition: opacity .15s;
 }
-.hero-cta:hover { opacity: .85; transform: translateY(-1px); }
+.hero-cta:hover { opacity: .85; }
 
 .hero-cta svg { width: 16px; height: 16px; flex-shrink: 0; }
 
@@ -644,28 +644,33 @@ a { text-decoration: none; color: inherit; }
   background: var(--card);
   border-radius: var(--r);
   border: 1px solid var(--bd);
-  padding: 28px 24px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-shadow: var(--shadow);
-  transition: transform .3s, box-shadow .2s;
+  transition: border-color .15s cubic-bezier(.22,1,.36,1), background-color .15s cubic-bezier(.22,1,.36,1);
   position: relative;
   overflow: hidden;
 }
 
-.tool-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+/* 2026-11-12 언슬롭(98항): 카드가 떠오르던 hover(위로 3px + 큰 그림자)를 걷었다.
+   열일곱 장이 마우스를 따라 들썩이면 화면이 산만하다. 테두리만 한 단 짙어진다. */
+@media (hover: hover) {
+  .tool-card:hover { border-color: var(--bl-m); }
 }
 
 .tool-card-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.tool-card-icon {
+/* 2026-11-12 언슬롭(98항): 아이콘 타일이 노랑·보라·초록·파랑·빨강 다섯 빛깔이었다.
+   색이 카드마다 다르면 색이 아무것도 뜻하지 않는다. 한 가지 중성 칩 + 회색 선
+   아이콘으로 통일한다. .bg-*-s / .color-* 유틸은 다른 곳에서도 쓰므로 지우지 않고
+   여기서만 특이도로 덮는다. */
+.tool-card .tool-card-icon {
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -673,13 +678,15 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: var(--chip);
+  border: 1px solid var(--bd);
 }
 
-.tool-card-icon svg { width: 20px; height: 20px; }
+.tool-card-icon svg { width: 20px; height: 20px; color: var(--ic); stroke-width: 1.75; }
 
 .tool-card-title {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
   color: var(--t1);
   line-height: 1.3;
@@ -697,11 +704,9 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 5px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--bl);
-  transition: gap .15s;
 }
-.tool-card-link:hover { gap: 8px; }
 .tool-card-link svg { width: 14px; height: 14px; }
 
 /* ── 모바일 카드 타이포그래피: 반드시 .tool-card* 기본 선언 "뒤에" 둔다 ──
@@ -747,13 +752,12 @@ a { text-decoration: none; color: inherit; }
   top: 18px;
   right: 18px;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0;
   color: var(--t3);
   background: var(--bg);
   border: 1px solid var(--bd);
-  border-radius: 999px;
+  border-radius: 6px;
   padding: 3px 9px;
 }
 
@@ -775,10 +779,9 @@ a { text-decoration: none; color: inherit; }
   background: var(--card); border: 1px solid var(--bd);
   border-radius: var(--r); padding: 20px;
   text-decoration: none; color: inherit;
-  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  transition: border-color .15s cubic-bezier(.22,1,.36,1);
 }
-.app-card:hover { border-color: var(--bl-m); box-shadow: var(--shadow); transform: translateY(-2px); }
-.app-card:active { transform: translateY(0); }
+.app-card:hover { border-color: var(--bl-m); }
 
 /* 곡률 22.5%: iOS 홈 화면에서 보는 그 모양과 같게 맞춘다. */
 .app-card-icon {
@@ -790,25 +793,24 @@ a { text-decoration: none; color: inherit; }
 
 .app-card-body { min-width: 0; display: flex; flex-direction: column; }
 .app-card-kind {
-  font-size: 14px; font-weight: 700; color: var(--bl);
-  letter-spacing: .02em; margin-bottom: 3px;
+  font-size: 14px; font-weight: 500; color: var(--ic);
+  letter-spacing: 0; margin-bottom: 4px;
 }
 .app-card-title {
-  font-size: 19px; font-weight: 800; color: var(--t1);
-  letter-spacing: -.01em; line-height: 1.25; margin-bottom: 7px;
+  font-size: 19px; font-weight: 600; color: var(--t1);
+  letter-spacing: -.01em; line-height: 1.25; margin-bottom: 8px;
 }
 .app-card-desc { font-size: 15px; color: var(--t2); line-height: 1.6; }
 .app-card-link {
   display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
   margin-top: auto; padding-top: 12px;   /* auto: 설명 길이가 달라도 두 카드가 같은 줄에서 끝난다 */
-  font-size: 15px; font-weight: 700; color: var(--bl);
+  font-size: 15px; font-weight: 600; color: var(--bl);
 }
 .app-card-link svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform .15s ease; }
 .app-card:hover .app-card-link svg { transform: translateX(2px); }
 
 @media (prefers-reduced-motion: reduce) {
   .app-card, .app-card-link svg { transition: none; }
-  .app-card:hover { transform: none; }
   .app-card:hover .app-card-link svg { transform: none; }
 }
 
@@ -891,16 +893,15 @@ a { text-decoration: none; color: inherit; }
 
 .book-badge {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: var(--bl);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ic);
 }
 
 .book-title {
   font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -.02em;
+  font-weight: 600;
+  letter-spacing: -.01em;
   line-height: 1.3;
   color: var(--t1);
 }
@@ -921,12 +922,12 @@ a { text-decoration: none; color: inherit; }
 .book-link-btn {
   font-size: 14px;
   font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 999px;
+  padding: 6px 12px;
+  border-radius: 8px;
   border: 1px solid var(--bd);
   color: var(--t1);
   background: var(--bg);
-  transition: all .15s;
+  transition: background-color .15s, color .15s, border-color .15s;
   cursor: pointer;
 }
 .book-link-btn:hover {
@@ -943,10 +944,9 @@ a { text-decoration: none; color: inherit; }
 .book-link-group-label {
   width: 100%;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--t1);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ic);
   margin-top: 8px;
 }
 
@@ -965,11 +965,11 @@ a { text-decoration: none; color: inherit; }
   border: 1px solid var(--bd);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: transform .3s, box-shadow .2s;
+  transition: border-color .15s;
   text-decoration: none;
   display: block;
 }
-.course-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.course-card:hover { border-color: var(--bl-m); }
 
 .course-thumb {
   width: 100%;
@@ -1004,9 +1004,9 @@ a { text-decoration: none; color: inherit; }
   background: rgba(0,0,0,0.65);
   color: white;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .05em;
-  padding: 3px 8px;
+  font-weight: 500;
+  letter-spacing: 0;
+  padding: 4px 8px;
   border-radius: 6px;
 }
 
@@ -1016,7 +1016,7 @@ a { text-decoration: none; color: inherit; }
 
 .course-title {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--t1);
   line-height: 1.4;
   margin-bottom: 4px;
@@ -1053,12 +1053,12 @@ a { text-decoration: none; color: inherit; }
   border: 1px solid var(--bd);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: transform .3s, box-shadow .2s;
+  transition: border-color .15s;
   display: block;
   text-decoration: none;
 }
 
-.yt-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.yt-card:hover { border-color: var(--bl-m); }
 
 .yt-thumb {
   width: 100%;
@@ -1072,9 +1072,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .3s;
 }
-.yt-card:hover .yt-thumb img { transform: scale(1.04); }
 
 .yt-thumb-placeholder {
   width: 100%;
@@ -1108,7 +1106,7 @@ a { text-decoration: none; color: inherit; }
 
 .yt-title {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--t1);
   line-height: 1.5;
   display: -webkit-box;
@@ -1152,7 +1150,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 8px;
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0;
   color: var(--t1);
 }
@@ -1162,9 +1160,8 @@ a { text-decoration: none; color: inherit; }
 .footer-link-col { display: flex; flex-direction: column; gap: 10px; }
 .footer-link-col-title {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .10em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--t1);
 }
 .footer-link-col a {
@@ -1200,7 +1197,7 @@ a { text-decoration: none; color: inherit; }
    이름을 바꾸면 전 벌을 같이 고쳐야 해서 이름은 두고 주석으로 밝힌다. */
 .naver-channel-title {
   font-size: clamp(18px, 3vw, 24px);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.3;
   margin-bottom: 20px;
 }
@@ -1215,7 +1212,7 @@ a { text-decoration: none; color: inherit; }
 }
 .naver-channel-name {
   color: var(--t1);
-  font-weight: 800;
+  font-weight: 600;
 }
 .naver-articles { display: flex; flex-direction: column; }
 .naver-article-item {
@@ -1231,9 +1228,9 @@ a { text-decoration: none; color: inherit; }
 .naver-article-item:hover { opacity: .6; }
 .naver-article-num {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--bl);
-  min-width: 22px;
+  font-weight: 500;
+  color: var(--ic);
+  min-width: 24px;
   flex-shrink: 0;
 }
 .naver-article-title {
@@ -1347,16 +1344,17 @@ a { text-decoration: none; color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 24px;
-  border-radius: 999px;
-  background: var(--bl-s);
-  color: var(--bl);
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  color: var(--t1);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
-  transition: background .15s;
+  transition: background-color .15s, border-color .15s;
 }
-.naver-more-btn:hover { background: var(--bl-m); }
+.naver-more-btn:hover { border-color: var(--bl-m); }
 .naver-loading, .naver-empty {
   padding: 24px 0;
   font-size: 15px;
@@ -1427,9 +1425,8 @@ a { text-decoration: none; color: inherit; }
 
 .hero-eyebrow-hero {
   font-size: clamp(14px, 2vw, 15px);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0;
   color: rgba(255,255,255,0.75);
   margin-bottom: 18px;
 }
@@ -1441,7 +1438,9 @@ a { text-decoration: none; color: inherit; }
      3행 구조(<br> 2개)를 그대로 유지한다. 큰 화면은 기존 64px 상한 그대로. */
   font-size: clamp(23px, 7vw, 64px);
   word-break: keep-all;
-  font-weight: 900;
+  /* 2026-11-12 언슬롭(98항): 900 → 600. 크기가 이미 위계를 만든다. 굵기까지
+     최대로 올리면 소리를 지르는 제목이 된다. */
+  font-weight: 600;
   /* 트래킹도 크기를 따라간다: 커질수록 글자가 성겨 보이므로 더 좁히고,
      작을 때는 덜 좁힌다. 고정값 하나를 전 구간에 쓰면 한쪽이 반드시 틀린다
      (apple-design 타이포그래피 원칙). 320px에서 -0.012em, 1200px 이상 -0.03em. */
@@ -1453,8 +1452,10 @@ a { text-decoration: none; color: inherit; }
 }
 
 .hero-title-hero em {
+  /* 2026-11-12 언슬롭(98항): 노란 강조어를 걷었다. 사진 위 흰 제목 한 덩어리가
+     한 문장으로 읽힌다. 색 칠한 낱말은 AI 생성 히어로의 전형적 표지다. */
   font-style: normal;
-  color: #FFD60A;
+  color: inherit;
 }
 
 .hero-sub-hero {
@@ -1518,19 +1519,19 @@ a { text-decoration: none; color: inherit; }
   border-radius: 14px;
   text-decoration: none;
   background: var(--card);
-  transition: border-color .15s, transform .15s;
+  transition: border-color .15s;
 }
-.read-item:hover { border-color: var(--bl-m); transform: translateY(-2px); }
+.read-item:hover { border-color: var(--bl-m); }
 .read-kicker {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .04em;
-  color: var(--bl);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ic);
   margin: 0 0 8px;
 }
 .read-title {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.45;
   color: var(--t1);
   margin: 0 0 8px;
@@ -1600,7 +1601,7 @@ a { text-decoration: none; color: inherit; }
             </svg>
           </div>
           <div class="tool-card-title">
-            <span id="alpha-signal-date" style="display:block;font-size:14px;font-weight:400;letter-spacing:.08em;color:var(--t2);font-family:'SF Pro Text','Helvetica Neue',sans-serif;margin-bottom:3px;"></span>
+            <span id="alpha-signal-date" style="display:block;font-size:14px;font-weight:400;letter-spacing:0;color:var(--ic);margin-bottom:4px;"></span>
             <span id="alpha-signal-card-title" style="font-size:inherit;font-weight:inherit;">스윙 시그널</span>
           </div>
         </div>
@@ -1619,7 +1620,7 @@ a { text-decoration: none; color: inherit; }
               <path d="M12 2l3 6 6 1-4.5 4.4 1 6.6-5.5-3-5.5 3 1-6.6L3 9l6-1z"/>
             </svg>
           </div>
-          <div class="tool-card-title">TOP9 집중분석 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:1px 7px;margin-left:4px;vertical-align:middle;">NEW</span></div>
+          <div class="tool-card-title">TOP9 집중분석<span class="ez-new">신규</span></div>
         </div>
         <p class="tool-card-desc">테슬라·엔비디아·애플 등 빅테크 9종을 종목별 11년 백테스트 문법으로 집중 분석. AI 트레이딩 플랜과 맞춤 행동 진단까지.</p>
         <span class="tool-card-link">
@@ -1658,7 +1659,7 @@ a { text-decoration: none; color: inherit; }
               <line x1="3" y1="20" x2="21" y2="20"/>
             </svg>
           </div>
-          <div class="tool-card-title">차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:middle;">NEW</span></div>
+          <div class="tool-card-title">차트: 그날 무슨 일이 있었나<span class="ez-new">신규</span></div>
         </div>
         <p class="tool-card-desc">QQQ·SPY·SOXX 차트 위에 날짜별 이슈를 겹쳐 본다. 크게 흔들린 날을 누르면 그날 무슨 일이 있었는지 지수 등락과 함께 나온다.</p>
         <span class="tool-card-link">
@@ -1708,12 +1709,12 @@ a { text-decoration: none; color: inherit; }
       <a href="model-portfolio.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-gr-s">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#30D158;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2a10 10 0 1 0 10 10h-10z"/>
               <path d="M14 2.5a10 10 0 0 1 7.5 7.5H14z"/>
             </svg>
           </div>
-          <div class="tool-card-title">AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:middle;">NEW</span></div>
+          <div class="tool-card-title">AI포트폴리오 점검<span class="ez-new">신규</span></div>
         </div>
         <p class="tool-card-desc">AI 가치사슬 일곱 개 테마에 나눠 담은 공격형 26종목. 테마별 비중, 종목별 주간 기술적 판정, 비중 조정 권고와 편입·편출 검토까지. 매주 일요일 갱신.</p>
         <span class="tool-card-link">
@@ -1725,8 +1726,8 @@ a { text-decoration: none; color: inherit; }
       <!-- Market Cycle Monitor: 4번째 -->
       <a href="market-cycle.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
-          <div class="tool-card-icon" style="background:rgba(255,159,10,0.10);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FF9F0A;">
+          <div class="tool-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 20h20"/>
               <path d="M6 16 L9 10 L13 14 L16 7 L19 11"/>
               <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/>
@@ -1899,8 +1900,8 @@ a { text-decoration: none; color: inherit; }
 
       <a href="stock-personality-quiz.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
-          <div class="tool-card-icon" style="background:rgba(175,82,222,0.12);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#AF52DE; width:20px; height:20px;">
+          <div class="tool-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="7" r="4"/>
               <path d="M5.5 21.5a7 7 0 0 1 13 0"/>
               <path d="M17 11l1.5 1.5L21 10"/>
@@ -1918,8 +1919,8 @@ a { text-decoration: none; color: inherit; }
       <!-- 밸런스게임: 마이 라이프 -->
       <a href="life-balance-game.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
-          <div class="tool-card-icon" style="background:rgba(255,55,95,0.12);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FF375F;">
+          <div class="tool-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 21s-6.5-4.35-9-8.5C1 8.5 3 5 6.5 5c2 0 3.5 1.3 4.5 3 1-1.7 2.5-3 4.5-3C19 5 21 8.5 21 12.5c-2.5 4.15-9 8.5-9 8.5z"/>
             </svg>
           </div>

@@ -112,13 +112,13 @@
      대시보드가 그 해시를 스윙 시그널 탭으로 받는다. */
   var linksKR = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
-    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span class="ez-new">신규</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇: AI 시황 분석'],
-    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span class="ez-new">신규</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span class="ez-new">신규</span>'],
     /* [보류 2026-10-19: 심플 주가] 복구 절차: docs/RESTORE-stocks.md
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'], */
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/model-portfolio.html',       'AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', 'AI포트폴리오 점검: 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/model-portfolio.html',       'AI포트폴리오 점검<span class="ez-new">신규</span>', 'AI포트폴리오 점검: 공격형 AI 시대 26종목 <span class="ez-new">신규</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
@@ -182,7 +182,7 @@
 
     /* 모바일 메뉴 버튼 라벨에는 칩에 붙인 NEW 배지를 빼고 글자만 쓴다 -
        버튼이 좁아 배지까지 들어가면 종목명이 잘린다. */
-    if (active) activeShort = shortLbl.replace(/<span[^>]*>NEW<\/span>/, '');
+    if (active) activeShort = shortLbl.replace(/<span class="ez-new">[^<]*<\/span>/, '');
 
     desktopLinksHTML +=
       '<a href="' + href + '" class="ez-nav-svc-link' + (active ? ' active' : '') + '">' +
@@ -193,7 +193,7 @@
        메뉴명 폐지, 2열 타일로 스크롤 없이 한 화면). NEW 딱지는 TOP9에만 별도 부착. */
     var mobLbl = shortLbl +
       (href.indexOf('#top9') >= 0
-        ? ' <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:2px;vertical-align:middle;">NEW</span>'
+        ? '<span class="ez-new">신규</span>'
         : '');
     mobileItemsHTML +=
       '<a href="' + href + '" class="ez-mob-item' + (active ? ' active' : '') + '">' +
