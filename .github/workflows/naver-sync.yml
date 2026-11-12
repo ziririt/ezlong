@@ -66,6 +66,13 @@ jobs:
         continue-on-error: true
         run: python3 scripts/merge-naver-archive.py
 
+      # 2026-11-13: 자동 기록에 핵심·주요·기록 등급을 매긴다. merge 가 매번 등급 1로
+      # 새로 만들기 때문에 반드시 그 바로 뒤에 돈다. 이 단계가 없던 8~11월에는
+      # 손 큐레이션이 멈추자 달력 전체가 회색(기록)이 됐다. 기준은 스크립트 머리말.
+      - name: 이슈 등급 매기기
+        continue-on-error: true
+        run: python3 scripts/level-brief-history.py
+
       # 상승·하락 상위 20일 순위 배지. 차트와 이슈가 모두 최신이 된 뒤에 계산한다
       # (새 폭락일이 들어오면 순위가 밀린다). 책 인용용 동결본은 한 번 만든 뒤
       # 스크립트가 스스로 건너뛰므로 매일 돌아도 덮어쓰지 않는다.

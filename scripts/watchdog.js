@@ -302,6 +302,20 @@ const MONITORS = [
     }
   },
   {
+    // 2026-11-13 추가: 소사 등급. 등급 단계(level-brief-history.py)가 조용히 실패하면
+    // 큰 날도 회색 '기록'으로 남는다. 8~11월에 실제로 석 달 넘게 그랬고 아무도 몰랐다.
+    // 최근 20거래일 중 QQQ 2%·SOXX 5% 이상 움직인 날이 '기록'이면 재실행한다.
+    id:             'brief-history-levels',
+    name:           '소사 핵심·주요 등급',
+    workflow:       'naver-sync.yml',
+    checkFile:      'brief-history.json',
+    check:          (content, now) => briefHistoryLevels(content),
+    isActive: (now) => {
+      const h = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return h >= 3.0 && h <= 9.0;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',
@@ -344,6 +358,31 @@ function briefHistoryLag(list, now, maxMissing) {
     lastUpdate: last,
     ageHours: Math.round((now - lastDue) / 360000) / 10,
     reason: `마지막 장 ${last}, 기대 ${ymd(e)}, 빠진 거래일 ${missing}일 (허용 ${maxMissing - 1}일)`,
+  };
+}
+
+// ─── 소사 등급 판정 ──────────────────────────────────────────────────────
+// 기준은 scripts/level-brief-history.py 의 '핵심' 문턱과 같다.
+function briefHistoryLevels(list) {
+  let chart;
+  try { chart = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'brief-history-chart.json'), 'utf8')); }
+  catch (e) { return { stale: false, reason: '차트 파일 없음: 판정 보류' }; }
+  const lv = {};
+  (Array.isArray(list) ? list : []).forEach(e => { if (e && e.date) lv[e.date] = Math.max(lv[e.date] || 0, e.importance || 1); });
+  const ds = chart.dates || [];
+  const miss = [];
+  for (let i = Math.max(1, ds.length - 20); i < ds.length; i++) {
+    const big = ['QQQ', 'SOXX'].some((sym, k) => {
+      const a = chart[sym] || [];
+      if (a[i] == null || !a[i - 1]) return false;
+      return Math.abs((a[i] / a[i - 1] - 1) * 100) >= (k === 0 ? 2.0 : 5.0);
+    });
+    if (big && lv[ds[i]] === 1) miss.push(ds[i]);
+  }
+  return {
+    stale: miss.length > 0,
+    lastUpdate: ds[ds.length - 1],
+    reason: miss.length ? `큰 날인데 '기록' 등급: ${miss.join(', ')}` : '최근 20거래일 큰 날 등급 정상',
   };
 }
 
