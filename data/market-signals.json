@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-13T21:31:09.445476+00:00",
-  "generatedAtKST": "2026-11-14 06:31 KST",
+  "generatedAt": "2026-11-13T21:37:42.296297+00:00",
+  "generatedAtKST": "2026-11-14 06:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -209,7 +209,7 @@
         "histogram": 0.1591
       },
       "high52": 540.9948,
-      "low52": 448.0916,
+      "low52": 448.0915,
       "dev200": 3.5849,
       "dev5": 0.0241,
       "dev20": 0.1997,
@@ -270,7 +270,7 @@
       "low20dExcl": 270.98,
       "volRatio": 0.71,
       "upDays5": 2,
-      "adx": 18.6484,
+      "adx": 18.6476,
       "adxStatus": "\ubb34\ucd94\uc138(\ucda9\uaca9 \uac00\ub2a5)",
       "buyScore": 52,
       "sellScore": 0,
@@ -702,7 +702,7 @@
     "prevClose": 40,
     "prev1Week": 24,
     "prev1Month": 46,
-    "timestamp": "2026-11-13T21:17:03+00:00"
+    "timestamp": "2026-11-13T21:21:53+00:00"
   },
   "macro": {
     "yield10y": {
@@ -722,31 +722,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 88.89,
-      "change": 0.15,
-      "changePct": 0.169,
+      "price": 89.08,
+      "change": 0.34,
+      "changePct": 0.3831,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 103.384,
-      "change": 0.214,
-      "changePct": 0.2074,
+      "price": 103.401,
+      "change": 0.231,
+      "changePct": 0.2239,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 3879.8,
-      "change": -5.5,
-      "changePct": -0.1416,
+      "price": 3880.8999,
+      "change": -4.4001,
+      "changePct": -0.1133,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-11-13T21:31:09.445476+00:00",
+      "atKST": "2026-11-14 06:31 KST",
+      "qqq": {
+        "rsi": 42.82,
+        "macdHist": -0.1002,
+        "dev5": -0.3839,
+        "dev200": -0.1924,
+        "gear": 2,
+        "buyScore": 59,
+        "sellScore": 12,
+        "price": 679.89
+      },
+      "soxxMacdHist": 0.3134,
+      "fearAndGreed": 39,
+      "yield10y": 5.154
+    },
     {
       "at": "2026-11-13T21:22:44.879769+00:00",
       "atKST": "2026-11-14 06:22 KST",
@@ -3177,25 +3194,8 @@
       "soxxMacdHist": -0.6025,
       "fearAndGreed": 37,
       "yield10y": 4.998
-    },
-    {
-      "at": "2026-11-11T19:31:17.742316+00:00",
-      "atKST": "2026-11-12 04:31 KST",
-      "qqq": {
-        "rsi": 46.83,
-        "macdHist": -1.7403,
-        "dev5": 3.3786,
-        "dev200": 1.7551,
-        "gear": 2,
-        "buyScore": 54,
-        "sellScore": 31,
-        "price": 692.61
-      },
-      "soxxMacdHist": -0.5901,
-      "fearAndGreed": 37,
-      "yield10y": 4.998
     }
   ],
-  "swingContinuity": "11\uc6d4 12\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 60, \ub9e4\ub3c4\uc810\uc218 18\uc5d0\uc11c 11\uc6d4 13\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 64, \ub9e4\ub3c4\uc810\uc218 18\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc73c\ub098, 11\uc6d413\uc77c(\uae08, \ub274\uc695)(\ub274\uc695) \ub9e4\uc218\uc810\uc218 59, \ub9e4\ub3c4\uc810\uc218 12\ub85c \ub2e4\uc2dc \ud558\ub77d\ud558\uba70 \ub9e4\uc218\uc138 \uc57d\ud654 \ud750\ub984\uc744 \ubcf4\uc600\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 +3.54%\uc5d0\uc11c -1.20%\ub85c, SOXX\ub294 +7.49%\uc5d0\uc11c -3.67%\ub85c \ud558\ub77d \uc804\ud658\ud558\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \uc57d\uc138\uac00 \ub450\ub4dc\ub7ec\uc84c\ub2e4.",
-  "swingContinuityEn": "From a buy score of 60 and sell score of 18 on Nov 12 (NY), it slightly improved to a buy score of 64 and sell score of 18 on Nov 13 (NY), but today (NY) saw a weakening buying trend with the buy score dropping to 59 and sell score to 12. Over the last 5 trading days, QQQ reversed from +3.54% to -1.20%, and SOXX from +7.49% to -3.67%, with a notable weakness in the semiconductor sector."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
