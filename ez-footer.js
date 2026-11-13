@@ -49,28 +49,12 @@
             '<em>반도체와 빅테크, 금리와 유가가 기업 손익에 닿는 길을 풀어 씁니다. 평일 아침엔 미국장 마감 시황.</em>' +
             '</span>' +
             '</a>' +
-            '<a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<a href="https://readtrans.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-rt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
             '<span class="ez-more-app-body">' +
-            '<b>포토 타임</b>' +
-            '<small>사진 · 액자</small>' +
-            '<em>사진첩을 음악과 함께 인화 사진 슬라이드쇼로. 서랍 속 옛 아이패드가 액자로 살아납니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="/app/#longlong" class="ez-more-app">' +
-            '<img src="/app/icons/icon-ll.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>LongLong</b>' +
-            '<small>사진 · 편집</small>' +
-            '<em>스크린샷 여러 장의 겹친 곳과 상단바를 걸러 내고 긴 한 장으로 이어 붙입니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://convert.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-ec.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>Ez Converter</b>' +
-            '<small>파일 · 변환</small>' +
-            '<em>HEIC를 JPG로, MOV를 MP4로, CSV를 엑셀로. 서버에 올리지 않고 기기 안에서 바꿉니다.</em>' +
+            '<b>ReadTrans</b>' +
+            '<small>전자책 · 번역</small>' +
+            '<em>보던 전자책 뷰어는 그대로 두고, 지금 보는 쪽을 옆 창에 번역해 보여 주는 컴퓨터 앱.</em>' +
             '</span>' +
             '</a>' +
             '<a href="https://pdf.ezlong.com/?lang=ko" class="ez-more-app">' +
@@ -89,20 +73,28 @@
             '<em>대고 찍으면 배경을 지우고, 말린 책 안쪽과 구부러진 영수증을 펴 줍니다.</em>' +
             '</span>' +
             '</a>' +
-            '<a href="https://readtrans.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-rt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<a href="https://convert.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-ec.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
             '<span class="ez-more-app-body">' +
-            '<b>ReadTrans</b>' +
-            '<small>전자책 · 번역</small>' +
-            '<em>보던 전자책 뷰어는 그대로 두고, 지금 보는 쪽을 옆 창에 번역해 보여 주는 컴퓨터 앱.</em>' +
+            '<b>Ez Converter</b>' +
+            '<small>파일 · 변환</small>' +
+            '<em>HEIC를 JPG로, MOV를 MP4로, CSV를 엑셀로. 서버에 올리지 않고 기기 안에서 바꿉니다.</em>' +
             '</span>' +
             '</a>' +
-            '<a href="https://send.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-sd.svg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
             '<span class="ez-more-app-body">' +
-            '<b>초간단 파일공유</b>' +
-            '<small>웹 · 파일 전송</small>' +
-            '<em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>' +
+            '<b>포토 타임</b>' +
+            '<small>사진 · 액자</small>' +
+            '<em>사진첩을 음악과 함께 인화 사진 슬라이드쇼로. 서랍 속 옛 아이패드가 액자로 살아납니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="/app/#longlong" class="ez-more-app">' +
+            '<img src="/app/icons/icon-ll.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>LongLong</b>' +
+            '<small>사진 · 편집</small>' +
+            '<em>스크린샷 여러 장의 겹친 곳과 상단바를 걸러 내고 긴 한 장으로 이어 붙입니다.</em>' +
             '</span>' +
             '</a>' +
             '<a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">' +
@@ -111,6 +103,14 @@
             '<b>배터리 라이프</b>' +
             '<small>충전 · 시계</small>' +
             '<em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://send.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-sd.svg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>초간단 파일공유</b>' +
+            '<small>웹 · 파일 전송</small>' +
+            '<em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>' +
             '</span>' +
             '</a>' +
           '</div>' +

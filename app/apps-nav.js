@@ -63,23 +63,22 @@
       icon: '/app/icons/icon-lt.jpg', here: ['/longtime'] },
     { id: 'skybluenote', name: 'Skyblue Note', href: '/skybluenote/',
       icon: '/app/icons/icon-sn.jpg', here: ['/skybluenote'] },
-    { id: 'phototime', name: '포토 타임', t: { en: 'Photo Time', ja: 'Photo Time', zh: 'Photo Time' }, href: 'https://ziririt.github.io/phototime-site/',
-      icon: '/app/icons/icon-pt.jpg', here: ['ziririt.github.io/phototime-site'] },
-    { id: 'longlong', name: 'LongLong', href: '/app/#longlong',
-      icon: '/app/icons/icon-ll.jpg', here: [] },
-    { id: 'ezconverter', name: 'Ez Converter', href: 'https://convert.ezlong.com/',
-      icon: '/app/icons/icon-ec.jpg', here: ['convert.ezlong.com'] },
+    { id: 'readtrans', name: 'ReadTrans', href: 'https://readtrans.ezlong.com/',
+      icon: '/app/icons/icon-rt.jpg', here: ['readtrans.ezlong.com', '/app/readtrans'] },
     { id: 'anytopdf', name: 'Any to PDF', href: 'https://pdf.ezlong.com/',
       icon: '/app/icons/icon-ap.jpg', here: ['ziririt.github.io/anytopdf-site', 'pdf.ezlong.com'] },
     { id: 'ezscan', name: 'ezScan', href: '/app/ezscan/',
       icon: '/app/icons/icon-es.jpg', here: ['/app/ezscan'] },
-    { id: 'readtrans', name: 'ReadTrans', href: 'https://readtrans.ezlong.com/',
-      icon: '/app/icons/icon-rt.jpg', here: ['readtrans.ezlong.com', '/app/readtrans'] },
-    { id: 'send', name: '초간단 파일공유', t: { en: 'Quick File Share', ja: 'かんたんファイル共有', zh: '极简文件分享' }, href: 'https://send.ezlong.com/',
-      icon: '/app/icons/icon-sd.svg', here: ['send.ezlong.com'] },
-    // 배터리 라이프는 투자 도구 결과 거리가 멀어 맨 끝에 둔다(2026-11-14).
+    { id: 'ezconverter', name: 'Ez Converter', href: 'https://convert.ezlong.com/',
+      icon: '/app/icons/icon-ec.jpg', here: ['convert.ezlong.com'] },
+    { id: 'phototime', name: '포토 타임', t: { en: 'Photo Time', ja: 'Photo Time', zh: 'Photo Time' }, href: 'https://ziririt.github.io/phototime-site/',
+      icon: '/app/icons/icon-pt.jpg', here: ['ziririt.github.io/phototime-site'] },
+    { id: 'longlong', name: 'LongLong', href: '/app/#longlong',
+      icon: '/app/icons/icon-ll.jpg', here: [] },
     { id: 'batterylife', name: '배터리 라이프', t: { en: 'Battery Life', ja: 'Battery Life', zh: 'Battery Life' }, href: 'https://ziririt.github.io/batterylife-site/',
-      icon: '/app/icons/icon-bl.jpg', here: ['ziririt.github.io/batterylife-site'] }
+      icon: '/app/icons/icon-bl.jpg', here: ['ziririt.github.io/batterylife-site'] },
+    { id: 'send', name: '초간단 파일공유', t: { en: 'Quick File Share', ja: 'かんたんファイル共有', zh: '极简文件分享' }, href: 'https://send.ezlong.com/',
+      icon: '/app/icons/icon-sd.svg', here: ['send.ezlong.com'] }
   ];
 
   var LABEL = { ko: 'EZLONG 앱', en: 'EZLONG Apps', ja: 'EZLONG アプリ', zh: 'EZLONG 应用' };
