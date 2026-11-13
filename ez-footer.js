@@ -31,6 +31,92 @@
           '<a href="/life-balance-game.html" class="ez-footer-nav-item">밸런스게임: 마이 라이프</a>' +
         '</nav>' +
 
+        /* ezlong이 만든 앱 9개 (2026-11-14 운영 지시: 메인 푸터와 같은 모양으로, 모든 지면에).
+           큰 카드 둘(Long Time·Skyblue Note)은 상단 배너(ez-app-promo.js)와 메인 본문이 맡는다.
+           원본 목록은 app/apps-nav.js, 메인(index.html) 푸터에도 같은 9개: 앱이 바뀌면 세 곳을 같이 고친다. */
+        '<section class="ez-more-apps" aria-labelledby="ez-footer-apps-h">' +
+          '<div class="ez-more-apps-head">' +
+            '<h2 class="ez-more-apps-title" id="ez-footer-apps-h">ezlong이 만든 앱</h2>' +
+            '<a class="ez-more-apps-all" href="/app/">앱 모음 전체 보기' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>' +
+          '</div>' +
+          '<div class="ez-more-apps-grid">' +
+            '<a href="https://insightimes.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-it.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>Insight Times</b>' +
+            '<small>웹진 · 미국 주식</small>' +
+            '<em>반도체와 빅테크, 금리와 유가가 기업 손익에 닿는 길을 풀어 씁니다. 평일 아침엔 미국장 마감 시황.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-bl.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>배터리 라이프</b>' +
+            '<small>충전 · 시계</small>' +
+            '<em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>포토 타임</b>' +
+            '<small>사진 · 액자</small>' +
+            '<em>사진첩을 음악과 함께 인화 사진 슬라이드쇼로. 서랍 속 옛 아이패드가 액자로 살아납니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="/app/#longlong" class="ez-more-app">' +
+            '<img src="/app/icons/icon-ll.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>LongLong</b>' +
+            '<small>사진 · 편집</small>' +
+            '<em>스크린샷 여러 장의 겹친 곳과 상단바를 걸러 내고 긴 한 장으로 이어 붙입니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://convert.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-ec.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>Ez Converter</b>' +
+            '<small>파일 · 변환</small>' +
+            '<em>HEIC를 JPG로, MOV를 MP4로, CSV를 엑셀로. 서버에 올리지 않고 기기 안에서 바꿉니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://pdf.ezlong.com/?lang=ko" class="ez-more-app">' +
+            '<img src="/app/icons/icon-ap.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>Any to PDF</b>' +
+            '<small>문서 · PDF</small>' +
+            '<em>사진, 글, 문서를 PDF 한 개로 묶습니다. 보던 웹 페이지도 A4나 긴 한 장으로 저장됩니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="/app/ezscan/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-es.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>ezScan</b>' +
+            '<small>문서 · 스캔</small>' +
+            '<em>대고 찍으면 배경을 지우고, 말린 책 안쪽과 구부러진 영수증을 펴 줍니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://readtrans.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-rt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>ReadTrans</b>' +
+            '<small>전자책 · 번역</small>' +
+            '<em>보던 전자책 뷰어는 그대로 두고, 지금 보는 쪽을 옆 창에 번역해 보여 주는 컴퓨터 앱.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://send.ezlong.com/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-sd.svg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>초간단 파일공유</b>' +
+            '<small>웹 · 파일 전송</small>' +
+            '<em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>' +
+            '</span>' +
+            '</a>' +
+          '</div>' +
+        '</section>' +
+
+        /* 브랜드·책 묶음은 앱 목록 아래(2026-11-14 운영 지시: 서비스 메뉴 → 만든 앱 → 브랜드·책 → 법적 고지). */
         '<div class="ez-footer-top">' +
           '<div class="ez-footer-brand">' +
             '<picture>' +
@@ -120,91 +206,6 @@
             '</div>' +
           '</div>' +
         '</div>' +
-
-        /* ezlong이 만든 앱 9개 (2026-11-14 운영 지시: 메인 푸터와 같은 모양으로, 모든 지면에).
-           큰 카드 둘(Long Time·Skyblue Note)은 상단 배너(ez-app-promo.js)와 메인 본문이 맡는다.
-           원본 목록은 app/apps-nav.js, 메인(index.html) 푸터에도 같은 9개: 앱이 바뀌면 세 곳을 같이 고친다. */
-        '<section class="ez-more-apps" aria-labelledby="ez-footer-apps-h">' +
-          '<div class="ez-more-apps-head">' +
-            '<h2 class="ez-more-apps-title" id="ez-footer-apps-h">ezlong이 만든 앱</h2>' +
-            '<a class="ez-more-apps-all" href="/app/">앱 모음 전체 보기' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>' +
-          '</div>' +
-          '<div class="ez-more-apps-grid">' +
-            '<a href="https://insightimes.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-it.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>Insight Times</b>' +
-            '<small>웹진 · 미국 주식</small>' +
-            '<em>반도체와 빅테크, 금리와 유가가 기업 손익에 닿는 길을 풀어 씁니다. 평일 아침엔 미국장 마감 시황.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-bl.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>배터리 라이프</b>' +
-            '<small>충전 · 시계</small>' +
-            '<em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>포토 타임</b>' +
-            '<small>사진 · 액자</small>' +
-            '<em>사진첩을 음악과 함께 인화 사진 슬라이드쇼로. 서랍 속 옛 아이패드가 액자로 살아납니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="/app/#longlong" class="ez-more-app">' +
-            '<img src="/app/icons/icon-ll.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>LongLong</b>' +
-            '<small>사진 · 편집</small>' +
-            '<em>스크린샷 여러 장의 겹친 곳과 상단바를 걸러 내고 긴 한 장으로 이어 붙입니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://convert.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-ec.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>Ez Converter</b>' +
-            '<small>파일 · 변환</small>' +
-            '<em>HEIC를 JPG로, MOV를 MP4로, CSV를 엑셀로. 서버에 올리지 않고 기기 안에서 바꿉니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://pdf.ezlong.com/?lang=ko" class="ez-more-app">' +
-            '<img src="/app/icons/icon-ap.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>Any to PDF</b>' +
-            '<small>문서 · PDF</small>' +
-            '<em>사진, 글, 문서를 PDF 한 개로 묶습니다. 보던 웹 페이지도 A4나 긴 한 장으로 저장됩니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="/app/ezscan/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-es.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>ezScan</b>' +
-            '<small>문서 · 스캔</small>' +
-            '<em>대고 찍으면 배경을 지우고, 말린 책 안쪽과 구부러진 영수증을 펴 줍니다.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://readtrans.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-rt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>ReadTrans</b>' +
-            '<small>전자책 · 번역</small>' +
-            '<em>보던 전자책 뷰어는 그대로 두고, 지금 보는 쪽을 옆 창에 번역해 보여 주는 컴퓨터 앱.</em>' +
-            '</span>' +
-            '</a>' +
-            '<a href="https://send.ezlong.com/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-sd.svg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>초간단 파일공유</b>' +
-            '<small>웹 · 파일 전송</small>' +
-            '<em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>' +
-            '</span>' +
-            '</a>' +
-          '</div>' +
-        '</section>' +
 
         '<div class="ez-footer-bottom">' +
           /* 73항(2026-08-26): 소개·방침·약관·유의사항·문의는 사이트의 신뢰 근거다.
