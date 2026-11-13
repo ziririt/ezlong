@@ -53,8 +53,10 @@
     // ezlong.com 본체(투자 도구). 본체 페이지에는 이 헤더를 붙이지 않는다(본체 머리는 ez-nav.js) — 들어가는 길만 둔다.
     // 줄에는 아이콘만 보인다(오너 2026-11-11: 'EZLONG 투자도구' 글자를 뺀다). 이름은 화면 읽기 프로그램과 길게 누를 때 뜨는 풍선으로만 남는다.
     // 아이콘은 롱타임 앱과 같은 나선이라 흰 바탕 파란 나선(브랜드 라이트판 #2563EB)으로 구별했다.
-    { id: 'ezlong', name: 'EZLONG 투자도구', t: { en: 'EZLONG Invest', ja: 'EZLONG 投資ツール', zh: 'EZLONG 投资工具' }, href: '/',
-      icon: '/app/icons/icon-ez.jpg', here: [], iconOnly: true },
+    // 2026-11-14: 맨 왼쪽 아이콘은 앱 모음(/app/)으로 간다. 이 줄이 앱들의 머리라서, 집은 투자 도구 첫 화면이 아니라 앱 모음이다.
+    { id: 'ezlong', name: 'EZLONG 앱 모음', t: { en: 'EZLONG Apps', ja: 'EZLONG アプリ一覧', zh: 'EZLONG 应用合集' }, href: '/app/',
+      // 아이콘도 앱 모음을 뜻하는 네 칸 격자로 바꿨다(2026-11-14). EZLONG 나선은 Long Time 나선과 겹쳐 헷갈렸다.
+      icon: '/app/icons/icon-apps.svg', here: [], iconOnly: true },
     { id: 'insightimes', name: 'Insight Times', href: 'https://insightimes.com/',
       icon: '/app/icons/icon-it.jpg', here: ['insightimes.com'] },
     { id: 'longtime', name: 'Long Time', href: '/longtime/',
