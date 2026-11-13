@@ -253,6 +253,11 @@
   main{ padding:38px 0 10px; }
   /* 앱마다 붙는 화면 줄. 옆으로 밀어 본다: 세로로 쌓으면 카드가 길어져
      아래 앱이 화면 밖으로 밀린다(2026-08-20). */
+  /* 넓은 화면 한 장(초간단 파일공유, 2026-11-14) */
+  .shot-wide{ margin:16px 0 2px; }
+  .shot-wide img{ display:block; width:100%; max-width:720px; height:auto; border-radius:14px;
+                  border:1px solid var(--line, rgba(255,255,255,.12)); }
+  .shot-wide a.plain:hover img{ border-color:var(--accent); }
   .shots{ display:flex; gap:14px; margin:16px 0 2px; overflow-x:auto;
           padding-bottom:8px; scroll-snap-type:x proximity; }
   .shots::-webkit-scrollbar{ height:6px }
@@ -818,14 +823,14 @@
          코드로 잠근 뒤 올리고, 보낸 뒤 1분이 지나면 완전히 지워집니다. 회사 컴퓨터에서 내 휴대폰으로,
          옆자리 사람에게 문서 한 장 건네듯 가볍게 씁니다. 한국어, 영어, 일본어,
          중국어로 쓸 수 있습니다.</a></p>
-      <div class="shots">
-        <figure>
-          <a class="plain" href="https://send.ezlong.com/" tabindex="-1">
-          <img src="shots/sd-1.jpg" alt="초간단 파일공유 보내기 화면" loading="lazy">
-          <figcaption>보내기</figcaption>
-          </a>
-        </figure>
-      </div>
+      <!-- 넓은 화면 한 장, 보고 있는 언어로 (2026-11-14). 폰 화면 한 장이 왼쪽에 치우쳐 보여서
+           데스크톱 화면을 크게 한 장 둔다. 앱이 한국어·영어·일본어·중국어 넷이라 그 넷만 찍었고,
+           나머지 언어는 영어 화면, 简体·繁體 는 중국어 화면을 쓴다. 바꾸는 손은 아래 스크립트. -->
+      <figure class="shot-wide">
+        <a class="plain" href="https://send.ezlong.com/" tabindex="-1">
+        <img id="sd-wide" src="shots/sd-wide-ko.jpg" width="1200" alt="초간단 파일공유 보내기 화면" loading="lazy" decoding="async">
+        </a>
+      </figure>
       <div class="links">
         <a class="chip go" href="https://send.ezlong.com/">열기 <small>설치 없이</small></a>
         <span class="badge">회원가입 없음 · 1분 뒤 삭제</span>
@@ -868,5 +873,15 @@
   }
 })();
 </script>
-<script src="/app/i18n.js"></script></body>
+<script src="/app/i18n.js"></script><script>
+/* 초간단 파일공유 넓은 화면: 보고 있는 언어의 사진으로 바꾼다. */
+(function () {
+  var img = document.getElementById('sd-wide'); if (!img) return;
+  var map = { ko: 'ko', en: 'en', ja: 'ja', 'zh-CN': 'zh', 'zh-TW': 'zh' };
+  function set(lang) { var k = map[lang] || 'en'; var src = 'shots/sd-wide-' + k + '.jpg'; if (img.getAttribute('src') !== src) img.setAttribute('src', src); }
+  document.addEventListener('ezlangchange', function (e) { set(e.detail); });
+  set(document.documentElement.getAttribute('lang') || 'ko');
+})();
+</script>
+</body>
 </html>
