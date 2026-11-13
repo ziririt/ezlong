@@ -49,14 +49,6 @@
             '<em>반도체와 빅테크, 금리와 유가가 기업 손익에 닿는 길을 풀어 씁니다. 평일 아침엔 미국장 마감 시황.</em>' +
             '</span>' +
             '</a>' +
-            '<a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">' +
-            '<img src="/app/icons/icon-bl.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
-            '<span class="ez-more-app-body">' +
-            '<b>배터리 라이프</b>' +
-            '<small>충전 · 시계</small>' +
-            '<em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>' +
-            '</span>' +
-            '</a>' +
             '<a href="https://ziririt.github.io/phototime-site/" class="ez-more-app">' +
             '<img src="/app/icons/icon-pt.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
             '<span class="ez-more-app-body">' +
@@ -111,6 +103,14 @@
             '<b>초간단 파일공유</b>' +
             '<small>웹 · 파일 전송</small>' +
             '<em>가입 없이 여섯 자리 코드로 주고받고, 보낸 뒤 1분이 지나면 지워집니다.</em>' +
+            '</span>' +
+            '</a>' +
+            '<a href="https://ziririt.github.io/batterylife-site/" class="ez-more-app">' +
+            '<img src="/app/icons/icon-bl.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">' +
+            '<span class="ez-more-app-body">' +
+            '<b>배터리 라이프</b>' +
+            '<small>충전 · 시계</small>' +
+            '<em>들어오는 충전 속도를 와트로 크게, 완충까지 남은 시간은 80% 이후 느려지는 구간까지 셈합니다.</em>' +
             '</span>' +
             '</a>' +
           '</div>' +
