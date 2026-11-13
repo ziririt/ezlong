@@ -308,7 +308,7 @@ a { color: inherit; }
   border: 1px solid var(--ez-border); background: var(--ez-card);
   margin-bottom: 28px;
 }
-.ez-footer-apps-head { margin-bottom: 14px; }
+.ez-footer-apps-head { margin-bottom: 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .ez-footer-apps-title {
   display: flex; align-items: center; gap: 6px; margin: 0 0 3px;
   font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text);
@@ -615,3 +615,31 @@ summary:focus-visible, [tabindex]:focus-visible {
   font-size: 14px; font-weight: 600; line-height: 1.5; letter-spacing: 0;
   color: #fff; background: #D92A2A; border-radius: 6px;
 }
+
+/* ─── ezlong이 만든 앱: 9개 목록 (2026-11-13 메인, 2026-11-14 공용 푸터로 확장) ───
+   소제목 작은 글자 13px은 14px 하한(5절) 위반이라 14px로 올렸다.
+   위 #apps 카드가 핵심 둘을 크게 말하니, 여기는 목록이다. 아이콘 44px · 이름 · 종류 · 한 문장.
+   카드 전체가 링크라 "소개 보기" 글자는 뺐다: 9번 반복되면 소음이다. */
+.ez-more-apps { margin-bottom: 28px; }
+.ez-more-apps-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ez-more-apps-title { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
+.ez-more-apps-all { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
+.ez-more-apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+@media (max-width: 999px) { .ez-more-apps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 599px) { .ez-more-apps-grid { grid-template-columns: 1fr; gap: 6px; } }
+.ez-more-app {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px;
+  border-radius: 12px; border: 1px solid var(--ez-border); background: var(--ez-card);
+  text-decoration: none; color: var(--ez-text2);
+  transition: border-color .12s ease;
+}
+@media (hover: hover) { .ez-more-app:hover { border-color: var(--ez-blue); } }
+.ez-more-app img { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; display: block; box-shadow: 0 1px 4px rgba(0,0,0,.14); }
+.ez-more-app-body { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
+.ez-more-app b { display: inline; font-size: 16px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
+.ez-more-app small { display: inline; margin-left: 6px; font-size: 14px; color: var(--ez-text3); }
+.ez-more-app em { display: block; margin-top: 3px; font-style: normal; font-size: 14px; line-height: 1.5; color: var(--ez-text2); }
+@media (prefers-reduced-motion: reduce) { .ez-more-app { transition: none; } }
+/* 공용 푸터 안: 바깥 카드(--ez-card) 위라 한 단계 내린 바탕을 쓴다 */
+.ez-footer-apps .ez-more-app { background: var(--ez-bg); }
+.ez-footer-more { margin-top: 12px; }

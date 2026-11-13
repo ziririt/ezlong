@@ -761,30 +761,6 @@ a { text-decoration: none; color: inherit; }
   padding: 3px 9px;
 }
 
-/* ─── 그 밖의 앱 9개 (2026-11-13, 푸터 위) ─────────
-   위 #apps 카드가 핵심 둘을 크게 말하니, 여기는 목록이다. 아이콘 44px · 이름 · 종류 · 한 문장.
-   카드 전체가 링크라 "소개 보기" 글자는 뺐다: 9번 반복되면 소음이다. */
-.ez-more-apps { margin-bottom: 28px; }
-.ez-more-apps-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.ez-more-apps-title { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
-.ez-more-apps-all { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
-.ez-more-apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-@media (max-width: 999px) { .ez-more-apps-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 599px) { .ez-more-apps-grid { grid-template-columns: 1fr; gap: 6px; } }
-.ez-more-app {
-  display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px;
-  border-radius: 12px; border: 1px solid var(--ez-border); background: var(--ez-card);
-  text-decoration: none; color: var(--ez-text2);
-  transition: border-color .12s ease;
-}
-@media (hover: hover) { .ez-more-app:hover { border-color: var(--ez-blue); } }
-.ez-more-app img { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; display: block; box-shadow: 0 1px 4px rgba(0,0,0,.14); }
-.ez-more-app-body { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
-.ez-more-app b { display: inline; font-size: 16px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text); }
-.ez-more-app small { display: inline; margin-left: 6px; font-size: 13px; color: var(--ez-text3); }
-.ez-more-app em { display: block; margin-top: 3px; font-style: normal; font-size: 14px; line-height: 1.5; color: var(--ez-text2); }
-@media (prefers-reduced-motion: reduce) { .ez-more-app { transition: none; } }
-
 /* 더보기 띠 (2026-11-14) */
 .apps-more {
   display: flex; align-items: center; gap: 6px; margin-top: 14px;
@@ -2515,7 +2491,7 @@ a { text-decoration: none; color: inherit; }
          메인만 본문에 핵심 둘이 이미 있어서 겹쳤던 것이다. 앱 원본 목록은 app/apps-nav.js. -->
     <section class="ez-more-apps" aria-labelledby="main-more-apps-h">
       <div class="ez-more-apps-head">
-        <h2 class="ez-more-apps-title" id="main-more-apps-h">그 밖에 만든 앱 9개</h2>
+        <h2 class="ez-more-apps-title" id="main-more-apps-h">ezlong이 만든 앱</h2>
         <a class="ez-more-apps-all" href="/app/">앱 모음 전체 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
       <div class="ez-more-apps-grid">
