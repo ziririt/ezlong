@@ -6,7 +6,13 @@
 #reversal-panel { --rv-tone:var(--ez-text2); margin:24px 0; padding:22px 22px 6px; border:1px solid var(--ez-border); border-left:4px solid var(--rv-tone); border-radius:14px; background:var(--ez-card); color:var(--ez-text); font-size:16px; line-height:1.6; letter-spacing:0; }
 #reversal-panel.rv-tone-down  { --rv-tone:var(--ez-red); }
 #reversal-panel.rv-tone-up    { --rv-tone:var(--ez-green); }
-#reversal-panel.rv-tone-mixed { --rv-tone:#636366; }
+/* 혼재(mixed)는 회색이면 '꺼진 판'처럼 읽혀서(2026-11-14 지적) 초록과 빨강 사이의 앰버로 바꿨다.
+   흰 글자 배지 대비: 라이트 #B25E00 은 흰 글자 4.6:1, 다크 #FF9F0A 는 흰 글자가 약해 배지 글자만 검정. */
+#reversal-panel.rv-tone-mixed { --rv-tone:#B25E00; }
+@media (prefers-color-scheme: dark) {
+  #reversal-panel.rv-tone-mixed { --rv-tone:#FF9F0A; }
+  #reversal-panel.rv-tone-mixed .rv-badge { color:#1C1C1E; }
+}
 #reversal-panel * { box-sizing:border-box; letter-spacing:0; }
 #reversal-panel h2 { font-size:24px; margin:0; line-height:1.4; }
 #reversal-panel h3 { font-size:20px; margin:20px 0 8px; }
