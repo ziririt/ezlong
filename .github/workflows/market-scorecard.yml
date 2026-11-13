@@ -113,7 +113,7 @@ jobs:
           echo "=== Firebase CLI 버전 ==="
           firebase --version
           echo "=== 배포 시작 ==="
-          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+          python3 scripts/check-privacy.py && firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
           echo "=== 배포 스텝 완료 ==="
 
       # ── 7. 실패 시 알림 ───────────────────────────────────────────────

@@ -158,4 +158,4 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
           npm install -g firebase-tools@15 --quiet
-          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+          python3 scripts/check-privacy.py && firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true

@@ -103,7 +103,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
           npm install -g firebase-tools --quiet
-          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+          python3 scripts/check-privacy.py && firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
 
       # ── 7. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
