@@ -308,7 +308,7 @@ a { color: inherit; }
   border: 1px solid var(--ez-border); background: var(--ez-card);
   margin-bottom: 28px;
 }
-.ez-footer-apps-head { margin-bottom: 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ez-footer-apps-head { margin-bottom: 14px; }
 .ez-footer-apps-title {
   display: flex; align-items: center; gap: 6px; margin: 0 0 3px;
   font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ez-text);
@@ -640,6 +640,3 @@ summary:focus-visible, [tabindex]:focus-visible {
 .ez-more-app small { display: inline; margin-left: 6px; font-size: 14px; color: var(--ez-text3); }
 .ez-more-app em { display: block; margin-top: 3px; font-style: normal; font-size: 14px; line-height: 1.5; color: var(--ez-text2); }
 @media (prefers-reduced-motion: reduce) { .ez-more-app { transition: none; } }
-/* 공용 푸터 안: 바깥 카드(--ez-card) 위라 한 단계 내린 바탕을 쓴다 */
-.ez-footer-apps .ez-more-app { background: var(--ez-bg); }
-.ez-footer-more { margin-top: 12px; }
