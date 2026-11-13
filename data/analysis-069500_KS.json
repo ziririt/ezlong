@@ -3,8 +3,8 @@
   "name": "KODEX 200",
   "assetType": "etf",
   "market": "kr",
-  "updatedAt": "2026-11-13T10:43:38.421Z",
-  "analysisAt": "2026-11-13T10:43:38.421Z",
+  "updatedAt": "2026-11-13T13:00:29.421Z",
+  "analysisAt": "2026-11-13T13:00:29.421Z",
   "analysisPreserved": false,
   "price": {
     "current": 83115,
@@ -22,13 +22,13 @@
   "indicators": {
     "sma20": 87139.984,
     "sma50": 98538.7164,
-    "sma100": 106000.4932,
-    "sma200": 101409.1694,
+    "sma100": 106000.4921,
+    "sma200": 101409.1693,
     "rsi": 39.28,
     "macd": {
-      "macd": -4473.712634,
-      "signal": -4553.469907,
-      "histogram": 79.757273
+      "macd": -4473.712628,
+      "signal": -4553.469898,
+      "histogram": 79.75727
     },
     "bb": {
       "upper": 96148.0403,
@@ -56,8 +56,8 @@
     }
   },
   "analysis": {
-    "trend": "약세",
-    "strength": 2,
+    "trend": "횡보",
+    "strength": 3,
     "support": 83045,
     "resistance": 89580,
     "rsiStatus": "과매도",
@@ -72,51 +72,49 @@
     "rsiTrajectoryEn": "31.1 → 39.3 (exiting oversold)",
     "macdTrajectory": "히스토 -335.1573 → 79.7573 (개선)",
     "macdTrajectoryEn": "histogram -335.1573 → 79.7573 (improving)",
-    "pricePattern": "Higher Low 패턴 형성 중",
-    "pricePatternEn": "Forming Higher Low pattern",
-    "volComment": "거래량비 0.78 (위축)",
+    "pricePattern": "Higher Low 패턴 형성 중, 5일 저가 78,000원 > 20일 저가 76,460원",
+    "pricePatternEn": "Higher Low pattern forming, 5-day low $78,000 > 20-day low $76,460",
+    "volComment": "거래량비 0.80 (위축)",
     "bbPosition": "하단근처",
-    "reason": "3거래일 연속 관망 유지. RSI는 과매도 구간 진입했으나 MACD 히스토그램 개선은 미흡한 상태. 5일 저가 78,000원 대비 현재가 83,115원 상승하며 Higher Low 패턴 초입 진입 가능성. 거래량은 5일 평균 대비 0.78배로 위축되어 방향성 확인 필요.",
-    "reasonEn": "Maintaining a wait-and-see approach for 3 consecutive trading days. RSI has entered oversold territory, but MACD histogram improvement remains insufficient. The current price of 83,115 KRW is rising from the 5-day low of 78,000 KRW, indicating a potential start of a Higher Low pattern. Trading volume is subdued at 0.78x the 5-day average, requiring confirmation of direction.",
+    "reason": "RSI가 과매도 구간(39.3)에서 벗어나며 회복세를 보이고, 5일 저가가 20일 저가보다 높아지며 Higher Low 패턴의 초입을 형성 중이다. 그러나 MACD 히스토그램 개선이 미흡하고 거래량이 위축되어 추세 전환을 확신하기 어렵다. 따라서 관망하며 추가 지표 확인이 필요하다.",
+    "reasonEn": "RSI is recovering from oversold territory (39.3), and the 5-day low is higher than the 20-day low, forming the beginning of a Higher Low pattern. However, MACD histogram improvement is insufficient and trading volume is subdued, making it difficult to confirm a trend reversal. Therefore, a wait-and-see approach is warranted pending further indicator confirmation.",
     "entry": 83115,
     "stop": 73866.67,
     "target": 101611.66,
     "invalidation": 73866.67,
-    "weeklyConflict": "충돌 없음",
-    "weeklyConflictEn": "No conflict",
+    "weeklyConflict": "주봉 RSI 38.7로 일봉 과매도 구간 진입과 유사하나, 주봉 MACD 히스토그램은 여전히 약세 구간에 머물러 있어 일봉의 단기 반등 신호와 충돌 가능성 존재. 일봉 기준 우선 적용.",
+    "weeklyConflictEn": "Weekly RSI at 38.7 is similar to the daily oversold entry, but the weekly MACD histogram remains in a weak zone, posing a potential conflict with the daily short-term rebound signal. Daily indicators take precedence.",
     "profitTarget1": 101611.66,
     "profitTarget2": 115484.15,
     "stopLoss": 73866.67,
-    "narrative": "[추세 위치]\n· 현재가(83,115원) vs SMA5(82,477원) 상회, SMA20(87,140원) 하회, SMA50(98,539원) 하회: 단기 추세 약세, 중기 추세 하락 우위\n· SMA100(106,000원) 및 SMA200(101,409원) 대비 큰 폭 하회: 중장기 추세 약세 심화\n· 52주 위치(29.6%): 역사적 저점 구간 근접\n[모멘텀 지표]\n· RSI 궤적 (31.1 → 39.3): 과매도 구간 탈출 시도, 중립 구간 회복 여부 관건\n· MACD 히스토그램 궤적 (-335.1573 → 79.7573): 음수 구간에서 개선세 확인, 추세 전환 신호 가능성 탐색\n· 볼린저밴드 현재가 위치 (하단 78,132원 근처): 하단 접근 구간, 밴드폭 20.67%로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 (83,045원): 현재가 근접, 지지력 확인 필요\n· 스윙 저항선 (89,580원): 단기 반등 시 첫 저항 구간\n· 5일 고가(86,835원) / 5일 저가(78,000원): Higher Low 패턴 형성 가능성 시사\n[거래량·결론]\n· 거래량 비율 (0.78배): 거래량 위축, 방향성 확인 신뢰도 하락\n· 현 구간 진단 (축적구간): RSI 과매도 탈출 시도 및 MACD 개선세는 긍정적이나, 거래량 부재로 인한 방향성 불확실성으로 관망 유지 조건",
-    "narrativeEn": "[Trend Position]\n· Current price (83,115 KRW) above SMA5 (82,477 KRW), below SMA20 (87,140 KRW) and SMA50 (98,539 KRW): short-term trend weak, medium-term trend showing downward bias\n· Significantly below SMA100 (106,000 KRW) and SMA200 (101,409 KRW): deepening long-term downtrend\n· 52-week position (29.6%): approaching historical low levels\n[Momentum Indicators]\n· RSI trajectory (31.1 → 39.3): attempting to exit oversold territory, recovery to neutral zone is key\n· MACD histogram trajectory (-335.1573 → 79.7573): improvement observed from negative territory, exploring potential trend reversal signal\n· Bollinger Bands current price position (near lower band 78,132 KRW): approaching lower band, band width at 20.67% suggests potential for increased volatility\n[Support & Resistance Structure]\n· Swing support (83,045 KRW): close to current price, support strength needs confirmation\n· Swing resistance (89,580 KRW): first resistance zone on short-term rebound\n· 5-day high (86,835 KRW) / 5-day low (78,000 KRW): suggesting potential formation of a Higher Low pattern\n[Volume & Conclusion]\n· Volume ratio (0.78x): subdued volume, reducing confidence in directional confirmation\n· Current phase diagnosis (Accumulation phase): RSI oversold exit attempt and MACD improvement are positive, but maintaining a wait-and-see approach due to directional uncertainty from lack of volume",
-    "patternNote": "Higher Low 패턴 형성 초입 구간 진입 가능성. RSI 과매도 탈출 시도와 MACD 개선세가 이를 뒷받침하나 거래량 부재로 인한 확인 필요.",
-    "patternNoteEn": "Potential entry into the initial phase of a Higher Low pattern formation. RSI's attempt to exit oversold and MACD's improvement support this, but confirmation is needed due to lack of volume.",
+    "narrative": "[추세 위치]\n· 현재가($83,115) vs SMA5/20/50($82,477/$87,140/$98,539): 단기 상회, 중기 하회\n· SMA100/200($106,000/$101,409) 대비 하회: 중장기 추세 약세\n· 52주 위치(29.6%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (31.1→39.3): 과매도 탈출, 회복세\n· MACD 히스토그램 궤적 (-335.1573→79.7573): 개선 중, 바닥 다지기 신호\n· 볼린저밴드 현재가 위치 (하단 $78,132 근처): 하단 접근, 밴드폭 20.67%로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($83,045): 피벗 및 SMA5 기반\n· 스윙 저항선 ($89,580): 돌파 시 중기 추세 전환 기대\n· 5일/20일 고가·저가 패턴 (Higher Low 형성 중): 회복 신호\n[거래량·결론]\n· 거래량 비율 (0.80배): 위축, 움직임 신뢰도 하락\n· 현 구간 진단 (축적구간): 관망하며 RSI 회복 및 거래량 증가 확인 필요",
+    "narrativeEn": "[Trend Position]\n· Current Price ($83,115) vs SMA5/20/50 ($82,477/$87,140/$98,539): Above short-term, below mid-term\n· Below SMA100/200 ($106,000/$101,409): Mid-to-long term trend weak\n· 52-week position (29.6%) + Current price near historical lows\n[Momentum Indicators]\n· RSI trajectory (31.1→39.3): Exiting oversold, showing recovery\n· MACD histogram trajectory (-335.1573→79.7573): Improving, bottoming signal\n· Bollinger Band current price position (near lower band $78,132): Approaching lower band, band width 20.67% suggests potential volatility expansion\n[Support & Resistance Structure]\n· Swing Support ($83,045): Based on pivot and SMA5\n· Swing Resistance ($89,580): Breakout could signal mid-term trend reversal\n· 5-day/20-day High/Low Pattern (Higher Low forming): Recovery signal\n[Volume & Conclusion]\n· Volume Ratio (0.80x): Subdued, reducing confidence in price movement\n· Current Stage Diagnosis (Accumulation): Requires observation for RSI recovery and volume increase",
+    "patternNote": "Higher Low 패턴 초입 구간, 5일 저가 78,000원 > 20일 저가 76,460원 확인",
+    "patternNoteEn": "Early stage of Higher Low pattern, confirmed by 5-day low $78,000 > 20-day low $76,460",
     "keyPoints": [
-      "RSI 31.1 → 39.3 과매도 구간 탈출 시도 확인",
-      "MACD 히스토그램 -335.1573 → 79.7573 개선세 지속",
-      "5일 저가 78,000원 대비 현재가 83,115원 상승하며 Higher Low 패턴 초입 진입 가능성",
-      "거래량 비율 0.78배로 위축, 방향성 확인 신뢰도 하락"
+      "RSI 과매도 구간 탈출 및 회복세 진입",
+      "Higher Low 패턴 초입 형성, 5일 저가 78,000원 > 20일 저가 76,460원",
+      "거래량 위축으로 추세 전환 신뢰도 미흡"
     ],
     "keyPointsEn": [
-      "RSI 31.1 → 39.3 oversold exit attempt confirmed",
-      "MACD histogram -335.1573 → 79.7573 improvement continues",
-      "Current price 83,115 KRW rising from 5-day low of 78,000 KRW, indicating potential entry into Higher Low pattern",
-      "Volume ratio at 0.78x subdued, reducing confidence in directional confirmation"
+      "RSI exiting oversold and entering recovery phase",
+      "Early Higher Low pattern formation, 5-day low $78,000 > 20-day low $76,460",
+      "Subdued volume limits confidence in trend reversal"
     ],
-    "riskNote": "ADX 27.9로 뚜렷한 추세 형성 중이나, -DI(28.5)가 +DI(18.5)보다 높아 하락 압력 우위 지속 가능성. 거래량 위축으로 인한 급락 시 추세적 붕괴 가능성 경계.",
-    "riskNoteEn": "ADX at 27.9 indicates a clear trend, but -DI (28.5) is higher than +DI (18.5), suggesting continued downward pressure. Beware of potential trend breakdown on sharp declines due to subdued volume.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 과매도 구간 진입 및 MACD 히스토그램 개선세 확인으로 매수 점수 소폭 상승했으나, 거래량 위축 및 중장기 이평선 하회 추세 지속으로 관망 유지 결정.",
-    "continuityEn": "The wait-and-see read has now held for 3 consecutive trading days. Today's RSI entering oversold and MACD histogram improvement slightly increased the buy score, but the decision to maintain a wait-and-see approach persists due to subdued volume and the ongoing downtrend below medium-to-long term moving averages.",
+    "riskNote": "MACD 히스토그램 개선 미흡 및 거래량 위축으로 인한 추세 전환 실패 가능성",
+    "riskNoteEn": "Risk of failed trend reversal due to insufficient MACD histogram improvement and subdued trading volume",
+    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 과매도 탈출 및 Higher Low 패턴 초입 형성이 관망 유지 근거로 작용하나, MACD 개선 미흡 및 거래량 위축으로 매수 전환에는 이르지 못함.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 3 trading sessions. Today's RSI exit from oversold and initial Higher Low pattern formation support the continued observation, but insufficient MACD improvement and subdued volume prevent a shift to a buy action.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
-      "adxLowRisk": false,
+      "adxLowRisk": true,
       "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
-      "score": "1/5",
-      "verdict": "위장 가능성: 신중 필요"
+      "score": "2/5",
+      "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.45 < 1.5 · 손절폭 ATR 0.58배 < 1"
+    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 1.00배 < 1"
   }
 }
