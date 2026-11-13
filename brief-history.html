@@ -806,7 +806,6 @@ window.BH_T = {
   const T = window.BH_T;
   const BH_DATA = window.BH_DATA;
   const fmt = (tpl, vars) => String(tpl).replace(/\{(\w+)\}/g, (_, k) => vars[k]);
-  /* 근거 글 안내(인사이트 타임스·뉴스레터 문장)는 2026-11-14 오너 지시로 뺐다. */
   const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches;
   const COLORS = {
