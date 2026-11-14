@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-11-14-19:48",
+      "timestamp_kst": "2026-11-14(토) 19:48 KST",
+      "key_event": {
+        "name": "PPI 생산자물가 예상 상회",
+        "name_en": "PPI Exceeds Expectations",
+        "time": "2026년 11월 13일(금) ET 발표 완료",
+        "why": "인플레이션 압력 재확인, 연준 긴축 우려 재부각",
+        "why_en": "Reconfirmed inflation pressure, renewed Fed tightening concerns"
+      },
+      "positive_total": 25,
+      "negative_total": 75,
+      "summary": "PPI 생산자물가 예상 상회로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to higher-than-expected PPI and semiconductor sector weakness",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "일부 기술주 선방",
+          "name_en": "Resilience in select tech stocks",
+          "desc": "AAPL, MSFT 소폭 상승: 시장 전반의 하락 속에서도 일부 대형 기술주 안정세",
+          "desc_en": "AAPL, MSFT show slight gains: Stability in some large-cap tech stocks amid broader market decline",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 55,
+          "name": "PPI 생산자물가 예상 상회",
+          "name_en": "PPI Exceeds Expectations",
+          "desc": "10월 PPI 예상 상회: 인플레이션 압력 재확인, 연준 긴축 우려 재부각",
+          "desc_en": "October PPI higher than expected: Reconfirmed inflation pressure, renewed Fed tightening concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 5.15%(+1.00%) 상승: 높은 금리 수준 유지, 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rises to 5.15% (+1.00%): High interest rate levels persist, pressuring growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "NVDA 실적 발표 대기",
+          "name_en": "Anticipation of NVDA Earnings",
+          "desc": "2026년 11월 17일(화) 장 마감 후 ET 발표 예정: 시장의 기대와 우려가 교차하는 상황",
+          "desc_en": "Scheduled for post-market on November 17, 2026 (Tuesday) ET: Mixed market expectations and concerns",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "report": {
+        "overview": "- 11월13일(금, 뉴욕) 시장 총평: PPI 생산자물가 예상 상회로 인한 인플레이션 압력 재확인 및 연준 긴축 우려 재부각으로 부정적 우위 지속.\n- 주요 하락 요인: 10월 PPI가 예상치를 상회하며 인플레이션 압력이 재확인되었고, 미 국채금리 상승이 성장주에 대한 할인율 압박으로 작용.\n- 일부 긍정 요인: 시장 전반의 하락세 속에서도 애플(AAPL)과 마이크로소프트(MSFT) 등 일부 대형 기술주가 소폭 상승하며 안정세를 보임.",
+        "positive": "- 일부 기술주 선방: 시장 전반의 하락 압력에도 불구하고 애플(AAPL)과 마이크로소프트(MSFT)가 소폭 상승하며 대형 기술주의 상대적 안정성을 보여줌. 이는 시장의 특정 섹터에 대한 선별적 매수세가 여전히 존재함을 시사.",
+        "negative": "- PPI 생산자물가 예상 상회: 10월 생산자물가지수(PPI)가 시장 예상치를 상회하며 인플레이션 압력이 재확인됨. 이는 연방준비제도(Fed)의 추가적인 긴축 정책 가능성에 대한 우려를 다시 불러일으키는 요인으로 작용.\n- 미 국채금리 상승: 미국 10년물 국채금리가 5.15%(+1.00%)로 상승하며 높은 금리 수준을 유지. 이는 특히 성장주에 대한 할인율을 높여 주가에 부정적인 압박으로 작용하며, 시장 전반의 투자 심리를 위축시킴.",
+        "mixed": "- NVDA 실적 발표 대기: 엔비디아(NVDA)의 실적 발표가 11월 17일(화) 장 마감 후 ET로 예정되어 있어 시장의 기대와 우려가 교차하는 상황. 인공지능(AI) 관련 주식의 강세에 대한 기대감과 함께, 최근 AI 관련 주식의 변동성 확대에 대한 우려가 공존.",
+        "watch": "- 미 국채금리 추이: 향후 12시간 동안 미국 10년물 국채금리의 추가적인 상승 또는 하락 여부 확인. 금리 변동은 시장 전반의 투자 심리와 성장주에 직접적인 영향을 미칠 수 있음.\n- 주요 지수 선물 흐름: 다우, S&P 500, 나스닥 등 주요 지수 선물의 움직임 확인. 이는 개장 전 시장 분위기를 예측하고 투자자들의 심리를 파악하는 중요한 지표."
+      },
+      "report_at": "2026-11-14(토) 19:48 KST"
+    },
+    {
       "id": "2026-11-14-10:31",
       "timestamp_kst": "2026-11-14(토) 10:31 KST",
       "key_event": {
@@ -512,84 +572,8 @@
         "watch": "- PPI 생산자물가(10월분): 11월 13일(금) 08:30 ET 발표 예정. 예상치를 상회할 경우 인플레이션 압력 우려가 증폭되어 국채금리 상승 및 증시 하방 압력으로 작용할 가능성.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승세가 지속될 경우 성장주 전반의 할인율 부담이 심화되며 기술주 중심의 시장에 부정적 영향 지속.\n- 유가 및 인플레이션 지표: WTI 원유 가격의 추가 상승 여부 및 관련 인플레이션 지표 변화 확인. 유가 상승세가 지속될 경우 인플레이션 우려가 고조되어 연준의 긴축 기조 유지 가능성 증대."
       },
       "report_at": "2026-11-13(금) 08:20 KST"
-    },
-    {
-      "id": "2026-11-13-07:01",
-      "timestamp_kst": "2026-11-13(금) 07:01 KST",
-      "key_event": {
-        "name": "엔비디아 CEO 사임 충격 지속",
-        "name_en": "Nvidia CEO Resignation Impact Continues",
-        "time": "2026-11-12 포스트마켓",
-        "why": "AI 반도체 리더십 불확실성, 기술주 투자 심리 위축",
-        "why_en": "Uncertainty in AI semiconductor leadership, tech sector sentiment weakened"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "엔비디아 CEO 사임 충격 지속 속 기술주 일부 반등으로 혼조세",
-      "summary_en": "Mixed sentiment as Nvidia CEO resignation impact persists, some tech stocks rebound",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "AI 칩 수요 지속",
-          "name_en": "Sustained AI Chip Demand",
-          "desc": "Applied Materials 기록적 매출 및 Cerebras 실적 호조로 AI 칩 수요 확인",
-          "desc_en": "Applied Materials' record revenue and Cerebras' strong earnings confirm sustained AI chip demand",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Continues",
-          "desc": "젠슨 황 사임 관련 불확실성 지속, AI 반도체 리더십 우려",
-          "desc_en": "Uncertainty surrounding Jensen Huang's resignation persists, raising concerns about AI chip leadership",
-          "category": "company_specific"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.10 (+2.10%) 상승, 성장주 할인율 압박 가중",
-          "desc_en": "US 10-year Treasury yield rose to 5.10 (+2.10%), increasing pressure on growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 5,
-          "name": "유가 상승 및 인플레이션 우려",
-          "name_en": "Oil Price Hike and Inflation Concerns",
-          "desc": "WTI 원유 88.69 (+4.01%) 상승, 지정학적 불확실성 및 인플레이션 압력",
-          "desc_en": "WTI crude oil rose to 88.69 (+4.01%), driven by geopolitical uncertainty and inflation pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 부채 시장 포화 경고",
-          "name_en": "AI Debt Market Saturation Warning",
-          "desc": "웰스 파고, AI 부채 시장 포화 경고: AI 투자 지속 가능성에 대한 상반된 시각",
-          "desc_en": "Wells Fargo warns of AI debt market saturation, leading to mixed views on AI investment sustainability",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "report": {
-        "overview": "- 11월12일(목, 뉴욕)장 결론: 엔비디아 CEO 사임 충격이 지속되는 가운데 기술주 일부 반등으로 시장 혼조세 마감.\n- 주요 원인: 엔비디아 젠슨 황 CEO 사임 관련 불확실성 지속으로 AI 반도체 리더십 우려 및 기술주 투자 심리 위축.\n- 시장 하방 압력: 미 국채금리 상승과 유가 상승 및 인플레이션 우려가 성장주 할인율 압박 가중.",
-        "positive": "- AI 칩 수요 지속: Applied Materials의 기록적인 매출과 Cerebras의 3분기 실적 호조 및 대형 고객사 확보로 AI 칩에 대한 견조한 수요 확인.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 젠슨 황 CEO 사임 관련 불확실성이 지속되며 엔비디아 시가총액 하락, AI 반도체 리더십에 대한 우려 심화 및 기술주 전반의 투자 심리 위축.\n- 미 국채금리 상승: 미 10년 국채금리가 5.10%(+2.10%)로 2.10% 상승하며 성장주 가치 평가에 대한 할인율 압박 가중, 기술주 전반의 하방 압력으로 작용.\n- 유가 상승 및 인플레이션 우려: WTI 원유 가격이 88.69달러로 4.01% 상승, 지정학적 불확실성 증대와 함께 인플레이션 압력 재점화 우려 확산.",
-        "mixed": "- AI 부채 시장 포화 경고: 웰스 파고가 AI 부채 시장의 포화를 경고하며 AI 투자 지속 가능성에 대한 상반된 시각 제시, 캐시 우드는 젠슨 황 사임 이후에도 AI 추진은 멈추지 않을 것이라고 언급.",
-        "watch": "- PPI 생산자물가(10월분) 발표: 11월 13일(금) 08:30 ET 예정인 생산자물가지수 발표를 통해 인플레이션 압력 변화 확인.\n- 미 10년 국채금리 추이: 미 10년 국채금리의 추가 상승 여부 확인, 성장주 할인율 압박 지속 여부 판단.\n- 유가 변동성: WTI 원유 가격의 추가 상승 또는 하락 여부 확인, 인플레이션 및 지정학적 불확실성 영향 분석."
-      },
-      "report_at": "2026-11-13(금) 07:01 KST"
     }
   ],
-  "updated_at": "2026-11-14T01:32:16Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-14(토) 19:18 KST",
-    "at_utc": "2026-11-14T10:18:44Z",
-    "kind": "direction",
-    "count": 4,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-11-14T10:48:32Z",
+  "max_entries": 10
 }
