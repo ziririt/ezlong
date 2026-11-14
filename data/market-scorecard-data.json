@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-11-14-23:20",
+      "timestamp_kst": "2026-11-14(토) 23:20 KST",
+      "key_event": {
+        "name": "엔비디아 CEO 사임 충격 지속",
+        "name_en": "Nvidia CEO Resignation Impact Continues",
+        "time": "직전 거래일(11월 14일 금요일) 마감 기준",
+        "why": "반도체 섹터 전반 투자 심리 위축, 불확실성 증대",
+        "why_en": "Widespread investor sentiment contraction in semiconductor sector, increased uncertainty"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "엔비디아 CEO 사임 충격 및 매크로 지표 부담으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to Nvidia CEO resignation shock and macro indicator burden",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 빅테크 주가 선방",
+          "name_en": "Select Big Tech Stocks Hold Up",
+          "desc": "AAPL, MSFT 소폭 상승: 시장 전반 하락 속 상대적 강세",
+          "desc_en": "AAPL, MSFT slightly up: Relative strength amid broader market decline",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "엔비디아 CEO 사임 충격",
+          "name_en": "Nvidia CEO Resignation Shock",
+          "desc": "NVDA -4.18% 하락: 반도체 섹터 전반 투자 심리 위축, SOXX -6.48% 동반 하락",
+          "desc_en": "NVDA down 4.18%: Widespread investor sentiment contraction in semiconductor sector, SOXX down 6.48%",
+          "category": "company_specific"
+        },
+        {
+          "score": 35,
+          "name": "인플레이션 압력 재확인",
+          "name_en": "Inflationary Pressure Reconfirmed",
+          "desc": "FRED PCE 물가상승률 3.65% (+0.20%p), 근원 PCE 3.12% (+0.09%p) 상승",
+          "desc_en": "FRED PCE inflation 3.65% (+0.20%p), Core PCE 3.12% (+0.09%p) rise",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "NVDA 실적 발표 대기",
+          "name_en": "Anticipation of NVDA Earnings",
+          "desc": "11월 17일(화) 장 마감 후 ET 엔비디아 실적 발표 예정: 불확실성 및 기대감 혼재",
+          "desc_en": "Nvidia earnings scheduled for Nov 17 (Tue) after market close ET: Mixed uncertainty and anticipation",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월13일(금, 뉴욕) 미10년 5.15%(+1.00%) · 미30년 5.48%(+0.88%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 5.15%(+1.00%) · 미30년 5.48%(+0.88%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 11월13일(금, 뉴욕) 시장 총평: 엔비디아 CEO 사임 충격과 매크로 지표 부담으로 부정적 심리가 우세, 총점 긍정 20 대 부정 80으로 마감.\n- 핵심 하락 요인: 엔비디아 CEO 젠슨 황의 사임 소식에 따른 반도체 섹터 전반의 투자 심리 위축과 인플레이션 압력 재확인.\n- 시장 불확실성: 엔비디아 실적 발표 대기 및 미 국채금리 변동성으로 인해 시장 방향성 판단에 대한 혼조세 잔존.",
+        "positive": "- 일부 빅테크 주가 선방: 시장 전반의 하락세 속에서도 애플(AAPL)과 마이크로소프트(MSFT)가 소폭 상승하며 상대적 강세 시현, 이는 엔비디아 발 악재와 인플레이션 우려 속에서도 특정 대형 기술주의 견고함을 보여주는 신호.",
+        "negative": "- 엔비디아 CEO 사임 충격: 젠슨 황 CEO 사임 소식으로 엔비디아(NVDA) 주가가 4.18% 하락, 이는 반도체 섹터 전반의 투자 심리 위축으로 이어져 SOXX 지수가 6.48% 동반 하락하는 결과를 초래, 관련 뉴스에서 엔비디아 주가가 165달러 아래로 떨어졌다는 언급과 함께 테크 억만장자들이 이번 사태를 실수이자 교훈으로 본다는 시각이 존재.\n- 인플레이션 압력 재확인: FRED PCE 물가상승률이 전년 동월 대비 3.65%(+0.20%p)로 상승하고, 근원 PCE 물가상승률도 3.12%(+0.09%p)로 상승하여 인플레이션 압력이 재확인, 이는 연준의 금리 인상 기조 유지 가능성을 높여 시장에 부담으로 작용, 블룸버그 통신은 미국 인플레이션이 예상치를 초과했다고 보도하며 인플레이션 상승이 시장 붕괴를 유발할 경우 투자자들이 취해야 할 행동에 대한 역사적 분석이 제시.",
+        "mixed": "- NVDA 실적 발표 대기: 11월 17일(화) 장 마감 후 ET로 예정된 엔비디아 실적 발표를 앞두고 시장에는 불확실성과 기대감이 혼재, 이는 반도체 섹터 전반의 향방을 결정할 중요한 변수로 작용할 전망.\n- 미 국채금리 수준: 11월 13일(금, 뉴욕) 기준 미 10년물 국채금리가 5.15%(+1.00%), 미 30년물 국채금리가 5.48%(+0.88%)를 기록, 국채금리는 성장주 할인율을 좌우하는 핵심 변수이나, 현재 움직임이 작아 시장 방향성 판단에 대한 유보적인 시각이 지배적.",
+        "watch": "- 미 국채금리 변동성: 미 10년물 및 30년물 국채금리의 추가적인 상승 또는 하락 여부 확인, 이는 성장주 전반의 밸류에이션에 직접적인 영향을 미칠 변수.\n- 주요 경제 지표 발표: 향후 12시간 내 발표될 수 있는 추가적인 인플레이션 관련 지표 또는 연준 관계자의 발언 확인, 이는 금리 인상 경로에 대한 시장의 우려를 조정할 수 있는 요인."
+      },
+      "report_at": "2026-11-14(토) 23:20 KST"
+    },
+    {
       "id": "2026-11-14-19:48",
       "timestamp_kst": "2026-11-14(토) 19:48 KST",
       "key_event": {
@@ -512,76 +579,8 @@
         "watch": "- 미 10년물 국채금리 및 WTI 원유 가격 추이: 인플레이션 압력의 주요 지표인 미 10년물 국채금리와 WTI 원유 가격의 추가 상승 여부 확인. 금리 및 유가 상승세가 지속될 경우 시장의 인플레이션 우려가 심화되며 증시 하방 압력으로 작용할 수 있음."
       },
       "report_at": "2026-11-13(금) 09:58 KST"
-    },
-    {
-      "id": "2026-11-13-08:20",
-      "timestamp_kst": "2026-11-13(금) 08:20 KST",
-      "key_event": {
-        "name": "엔비디아 CEO 사임 충격 지속",
-        "name_en": "Nvidia CEO Resignation Impact Continues",
-        "time": "2026-11-12 포스트마켓",
-        "why": "AI 반도체 리더십 불확실성, 기술주 투자 심리 위축",
-        "why_en": "Uncertainty in AI chip leadership, dampened tech investor sentiment"
-      },
-      "positive_total": 50,
-      "negative_total": 50,
-      "summary": "엔비디아 CEO 사임 충격 지속 속 기술주 일부 반등으로 혼조세",
-      "summary_en": "Mixed sentiment with ongoing Nvidia CEO resignation impact and partial tech rebound",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "AI 랠리 재개 기대감",
-          "name_en": "Optimism for AI Rally Resumption",
-          "desc": "AI 랠리가 다시 궤도에 올랐다는 긍정적 신호 포착",
-          "desc_en": "Positive signs indicate the AI rally is back on track",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Continues",
-          "desc": "엔비디아 시가총액 $490억 급감, AI 반도체 리더십 불확실성 증대",
-          "desc_en": "Nvidia's market cap plunges $490 billion, increasing uncertainty in AI chip leadership",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 20,
-          "name": "국채금리 상승 압력",
-          "name_en": "Treasury Yields Upward Pressure",
-          "desc": "미10년 국채금리 5.10%(+2.10%), 미30년 국채금리 5.43%(+1.44%) 상승: 성장주 할인율 부담",
-          "desc_en": "US 10-year Treasury yield at 5.10% (+2.10%), 30-year at 5.43% (+1.44%) rise, pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 상승 및 인플레이션 우려",
-          "name_en": "Oil Price Hike and Inflation Concerns",
-          "desc": "WTI 원유 88.83 (+4.17%) 상승: 에너지 섹터에는 긍정적이나 전반적인 인플레이션 압력 우려",
-          "desc_en": "WTI crude oil rises to 88.83 (+4.17%): positive for energy sector but raises broader inflation concerns",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 긍정 50 대 부정 50으로 혼조세 마감, 엔비디아 CEO 사임 충격이 지속되는 가운데 일부 기술주 반등으로 상쇄되는 양상.\n- 주요 원인: 엔비디아 CEO 사임으로 인한 AI 반도체 리더십 불확실성 증대 및 기술주 투자 심리 위축이 시장 전반에 부정적 영향 미침.\n- 지지 요인: AI 랠리 재개에 대한 기대감이 형성되며 기술주 내에서도 선별적인 반등이 나타나 시장 하단을 지지하는 모습.\n- 추가 압력: 미 국채금리 상승 압력이 지속되며 성장주 할인율 부담을 가중, 유가 상승으로 인한 인플레이션 우려도 잔존.",
-        "positive": "- AI 랠리 재개 기대감: AI 랠리가 다시 궤도에 올랐다는 긍정적 신호가 포착되며 기술주 전반에 대한 투자 심리 개선 기대감 형성.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 엔비디아 CEO의 사임 소식 이후 시가총액이 490억 달러 급감하며 AI 반도체 리더십에 대한 불확실성이 증대. 이는 AI 관련 기술주 전반의 투자 심리 위축으로 이어지며 시장에 지속적인 하방 압력으로 작용.\n- 국채금리 상승 압력: 미 10년 국채금리가 5.10%(+2.10%), 미 30년 국채금리가 5.43%(+1.44%)로 상승하며 성장주에 대한 할인율 부담이 가중. 이는 기술주 중심의 시장에 부정적인 영향을 미치며 투자자들의 보수적인 접근을 유도.",
-        "mixed": "- 유가 상승 및 인플레이션 우려: WTI 원유 가격이 88.83달러로 4.17% 상승하며 에너지 섹터에는 긍정적인 영향을 미쳤으나, 전반적인 인플레이션 압력에 대한 우려를 증폭. 이는 연준의 기준금리 인상 기조 유지 가능성을 높여 시장 전반의 불확실성을 키우는 요인으로 작용.",
-        "watch": "- PPI 생산자물가(10월분): 11월 13일(금) 08:30 ET 발표 예정. 예상치를 상회할 경우 인플레이션 압력 우려가 증폭되어 국채금리 상승 및 증시 하방 압력으로 작용할 가능성.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승세가 지속될 경우 성장주 전반의 할인율 부담이 심화되며 기술주 중심의 시장에 부정적 영향 지속.\n- 유가 및 인플레이션 지표: WTI 원유 가격의 추가 상승 여부 및 관련 인플레이션 지표 변화 확인. 유가 상승세가 지속될 경우 인플레이션 우려가 고조되어 연준의 긴축 기조 유지 가능성 증대."
-      },
-      "report_at": "2026-11-13(금) 08:20 KST"
     }
   ],
-  "updated_at": "2026-11-14T10:48:32Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-14(토) 21:50 KST",
-    "at_utc": "2026-11-14T12:51:12Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-11-14T14:21:14Z",
+  "max_entries": 10
 }
