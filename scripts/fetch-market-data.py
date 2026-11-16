@@ -764,7 +764,7 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
             "\"최근 며칠 흐름이 가장 최근 거래일 시그널로 어떻게 이어졌는지\" 딱 2~3문장으로 서술하라.\n\n"
             "[QQQ 매수/매도 점수 최근 흐름 — 날짜별]\n"
             + "\n".join(history_lines) + "\n\n"
-            "[최근 5거래일 일봉 등락률 — 과거→가장 최근 거래일 순]\n"
+            "[최근 5거래일 일봉 등락률 — 과거→가장 최근 거래일 순. 숫자 하나가 하루치 등락률이다. 맨 끝 숫자는 가장 최근 거래일 하루의 등락률이지 5거래일 누적이 아니다]\n"
             + "\n".join(returns_lines) + "\n\n"
             f"[참고] VIX: {qqq.get('vix')} · Fear&Greed: {fg_data.get('score') if fg_data else 'N/A'}\n\n"
             "절대 규칙:\n"
