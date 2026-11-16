@@ -3,22 +3,10 @@
   "stopCount": 0,
   "exposure": 0.2,
   "initDay": "2026-07-30",
-  "target": 0.0,
+  "target": 0.2,
   "targetWhy": "lifeline",
-  "lastDay": "2026-11-13",
+  "lastDay": "2026-11-16",
   "history": [
-   {
-    "d": "2026-08-27",
-    "price": 711.37,
-    "buy": 59,
-    "sell": 22,
-    "gear": 3,
-    "dev": 8.91,
-    "target": 1.0,
-    "expo": 1.0,
-    "act": "WAIT",
-    "st": "hold"
-   },
    {
     "d": "2026-08-28",
     "price": 721.11,
@@ -726,13 +714,25 @@
     "expo": 0.2,
     "act": "TRIM",
     "st": "risk_off"
+   },
+   {
+    "d": "2026-11-16",
+    "price": 668.71,
+    "buy": 58,
+    "sell": 11,
+    "gear": 2,
+    "dev": -1.87,
+    "target": 0.2,
+    "expo": 0.2,
+    "act": "WAIT",
+    "st": "wait"
    }
   ],
   "reboundWatch": null,
-  "stanceStreak": 4,
-  "lastStance": "risk_off",
-  "changedDay": "2026-11-10",
-  "daysSince": 0,
+  "stanceStreak": 1,
+  "lastStance": "wait",
+  "changedDay": "2026-11-16",
+  "daysSince": 1,
   "lastAction": {
    "day": "2026-11-13",
    "type": "TRIM",
@@ -743,6 +743,6 @@
  },
  "llmCalls": {
   "date": "2026-11-16",
-  "calls": 1
+  "calls": 2
  }
 }
