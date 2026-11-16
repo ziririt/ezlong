@@ -2716,9 +2716,9 @@ function getSellScoreClass(score) {
 function getSellScoreLabel(score) {
   if (score >= 80) return 'Strong Take-Profit Zone';
   if (score >= 65) return 'Consider Partial Profit-Taking';
-  if (score >= 50) return 'Hold: Neutral Sell Pressure';
-  if (score >= 35) return 'No Sell Signal: Keep Holding';
-  return 'No Sell Signal: Maintain Position';
+  if (score >= 50) return 'Neutral Take-Profit Pressure';
+  if (score >= 35) return 'No Take-Profit Signal';
+  return 'Not Overheated: No Take-Profit Signal';
 }
 
 function getGear(dev200) {
@@ -3969,11 +3969,11 @@ function renderScoreGrid(qqq, voo, soxx) {
     if (s >= 38) return 'var(--or)';
     return 'var(--rd)';
   }
-  function buyText(s) {
+  function buyText(s, g) {
     if (s >= 80) return { msg: 'Prime Zone for Scaling In',   c: 'var(--gr)' };
     if (s >= 65) return { msg: 'Consider a Small Starter Position', c: 'var(--gr)' };
-    if (s >= 50) return { msg: 'Wait for Signal: Sidelines', c: '#5AC8FA'   };
-    if (s >= 38) return { msg: 'Buying Not Advised: Sidelines', c: 'var(--or)' };
+    if (s >= 50) return { msg: g === 1 ? 'Weak Entry Signal: Wait (Downtrend)' : 'Weak Entry Signal: Wait', c: '#5AC8FA' };
+    if (s >= 38) return { msg: 'Buying Not Advised',            c: 'var(--or)' };
     return         { msg: 'Risk-Off: Hold Cash',             c: 'var(--rd)' };
   }
 
@@ -3989,12 +3989,14 @@ function renderScoreGrid(qqq, voo, soxx) {
     if (s >= 55) return 'var(--or)';
     return 'rgba(120,120,128,0.2)';      // 옅은 선: 매도 압력 없음 시각화
   }
-  function sellText(s) {
+  // Sell pressure is a take-profit (overheating) score. A low reading does not mean "safe to hold".
+  function sellText(s, g) {
     if (s >= 80) return { msg: 'Strong Take-Profit Zone',      c: 'var(--rd)' };
     if (s >= 65) return { msg: 'Consider Partial Profit-Taking', c: 'var(--rd)' };
     if (s >= 55) return { msg: 'Sell Pressure Rising: Caution', c: 'var(--or)' };
-    if (s >= 38) return { msg: 'Hold: Neutral Pressure',       c: 'var(--t2)' };
-    return         { msg: 'No Sell Signal: Keep Holding',      c: 'var(--t2)' };
+    if (g === 1) return { msg: 'Not Overheated, but in a Downtrend: see the trend card for holdings', c: 'var(--t2)' };
+    if (s >= 38) return { msg: 'Neutral Take-Profit Pressure', c: 'var(--t2)' };
+    return         { msg: 'Not Overheated: No Take-Profit Signal', c: 'var(--t2)' };
   }
 
   // ── RSI 색상: 과잉→보라, 과열→빨강, 과매도→초록, 중립→기본 ──
@@ -4010,10 +4012,10 @@ function renderScoreGrid(qqq, voo, soxx) {
     const ss = d.sellScore ?? 50;
     const bColor = buyColor(bs);
     const bGauge = buyGauge(bs);
-    const bText  = buyText(bs);
+    const bText  = buyText(bs, d.gear);
     const sColor = sellColor(ss);
     const sGauge = sellGauge(ss);
-    const sText  = sellText(ss);
+    const sText  = sellText(ss, d.gear);
 
     const displayName = d.symbol==='QQQ'?'Nasdaq 100 QQQ':d.symbol==='VOO'?'S&P 500 VOO':d.symbol==='SOXX'?'Semiconductors SOXX':d.symbol;
     const dev200str   = d.dev200 != null ? (d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1) + '%' : ': ';
@@ -4318,13 +4320,13 @@ function renderOptionsMarket(opts) {
     const aboveFlip = o.spyPrice > o.gammaFlip;
     const posGEX    = o.netGEX > 0;
     if (aboveFlip && posGEX) {
-      gexSignal = 'SPY above the gamma flip + positive GEX: a stable, "pinned" market zone';
+      gexSignal = 'Calmer zone: options dealers sell into rallies and buy dips, which dampens moves';
       gexColor  = 'var(--gr)'; gexBg = 'var(--gr-s)';
     } else if (!aboveFlip && !posGEX) {
-      gexSignal = 'SPY below the gamma flip + negative GEX: downside acceleration risk zone';
+      gexSignal = 'Choppier zone: options dealers sell into drops and buy into rallies, which amplifies moves. Declines can run further';
       gexColor  = 'var(--rd)'; gexBg = 'var(--rd-s)';
     } else {
-      gexSignal = 'Mixed GEX signal: direction unclear';
+      gexSignal = 'Mixed readings: hard to gauge how large swings will be';
       gexColor  = 'var(--or)'; gexBg = 'var(--yl-s)';
     }
   }
@@ -4369,7 +4371,7 @@ function renderOptionsMarket(opts) {
     ? `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:rgba(10,132,255,0.12);color:var(--ac);font-weight:700;margin-left:8px;">
         Buy score ${overlayBuySign}${ov.buyAdj ?? 0}pt · Sell score ${overlaySellSign}${ov.sellAdj ?? 0}pt applied
        </span>`
-    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">No overlay applied (neutral)</span>`;
+    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">No adjustment to buy/sell scores</span>`;
 
   // ── 항목별 행 렌더러 ─────────────────────────────
   const row = (label, value, color) => value
@@ -4392,7 +4394,7 @@ function renderOptionsMarket(opts) {
 
         ${gexSignal ? `
         <div style="padding:10px 14px;border-radius:10px;background:${gexBg};margin-bottom:10px;">
-          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Gamma Exposure (GEX)</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Dealer Hedging Direction (Gamma Exposure)</div>
           <div style="font-size:16px;font-weight:600;color:${gexColor};">${gexSignal}</div>
           ${o.spyPrice !== null ? `<div style="font-size:16px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · Gamma Flip ${numFmt(o.gammaFlip)} · Net GEX ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
         </div>` : ''}
@@ -4402,8 +4404,8 @@ function renderOptionsMarket(opts) {
           ${vol.vix1m !== null && vol.vix3m !== null ? row('VIX 1M / 3M', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
           ${row('SKEW', skewSignal || null, skewColor)}
           ${row('VVIX', vvixSignal || null, vvixColor)}
-          ${o.callWall !== null ? row('Call Wall (Resistance)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
-          ${o.putWall  !== null ? row('Put Wall (Support)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
+          ${o.callWall !== null ? row('Ceiling Above (Call Wall)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
+          ${o.putWall  !== null ? row('Floor Below (Put Wall)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
           ${oi.pcRatio !== null ? row('P/C Ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(contrarian buy signal)' : oi.pcRatio < 0.7 ? '(call overheating warning)' : '(normal)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
         </div>
 
@@ -4931,7 +4933,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
     col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
   } else {
-    act1 = 'Downtrend: avoid new QQQ/VOO buys. Recommend raising cash weighting';
+    act1 = 'Downtrend: avoid new buys. Recommend raising cash weighting';
     rsn1 = `<b>Gear ${compGear} downtrend confirmed</b><br>· Below the 200-day MA: long-term direction has turned down. Even a temporary bounce faces the 200-day MA as resistance<br>· New buys in this zone = "catching a falling knife." Nobody knows where the bottom is<br><br><b>What to do</b><br>· Stop new buys immediately<br>· If you hold a position, reduce it and raise cash weighting<br>· Re-enter only after confirming a Gear 3 (uptrend) transition`;
 
     col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
