@@ -1871,7 +1871,7 @@ li.gear-other-sep { display: none !important; }
            눌림목인지 반락 시작인지를 가격 구조·모멘텀·거래 참여·200일선 네 축으로
            나눠 본다. 판정은 코드가 한다 - 모델을 부르지 않는다. -->
       <div id="reversal-panel"></div>
-      <script src="/swing-reversal.js"></script>
+      <script src="/swing-reversal.js?v=20261117a"></script>
 
       <!-- 시그널 히스토리 (최근 4회) -->
       <div id="history-wrap"></div>
@@ -2636,6 +2636,12 @@ const EZ_THRESH = Object.freeze({
 });
 
 // (3) 단일 진실값. renderAll 이 한 번 만들고 모든 카드가 읽는다.
+// (2-1) 추세 관문(2026-11-17). 간판은 가장 엄격한 잣대를 따른다.
+//   서버 판정 'wait'(관망)는 "모형 계좌에 이번 거래일 조정할 것이 없다"는 뜻이지
+//   시장이 중립이라는 뜻이 아니다. 종합 추세가 하락(Gear 1)이면 간판은 추세를 말하고,
+//   진입 점수는 그 아래 줄로 내려간다. 같은 화면에서 '관망'과 '비중 축소'가 맞서던 것을 없앤다.
+function ezIsGated(stance, gear) { return stance === 'wait' && gear != null && gear <= 1; }
+function ezGateLabel(stance, label, gear) { return ezIsGated(stance, gear) ? '하락 추세: 신규 매수 중단' : label; }
 window.EZ_TRUTH = null;
 function buildTruth(data, vix) {
   const qqq = data['QQQ'], voo = data['VOO'], soxx = data['SOXX'];
@@ -2658,7 +2664,8 @@ function buildTruth(data, vix) {
   const target   = typeof sv?.target   === 'number' ? sv.target   : null;
   const top = {
     stance,
-    label: sv?.stanceLabel || null,
+    label: ezGateLabel(sv?.stance, sv?.stanceLabel, comp.gear) || null,
+    regimeGated: ezIsGated(sv?.stance, comp.gear),
     source: sv ? 'swing-view' : 'score-fallback',
     // 하위 카드 지배 규칙(원칙 2): 최상단이 '쌓기(accumulate)'일 때만 새 레버리지 진입 문구가 열린다
     leverageEntryAllowed: stance === 'accumulate',
@@ -2860,7 +2867,7 @@ function _v2ChiefCardHtml() {
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
-      <span style="font-weight:800;color:var(--t1);font-size:17px;">${c.stanceLabel}</span>
+      <span style="font-weight:800;color:var(--t1);font-size:17px;">${ezGateLabel(c.stance, c.stanceLabel, window.EZ_TRUTH?.comp?.gear)}</span>
       <span style="color:var(--t2);font-size:14px;">확신도 ${c.confidence ?? ': '}</span>
       <span style="margin-left:auto;flex-shrink:0;white-space:nowrap;color:var(--t3);font-size:14px;font-weight:600;">${sv.generatedAtKST}</span>
     </div>
@@ -3237,9 +3244,9 @@ function getSellScoreClass(score) {
 function getSellScoreLabel(score) {
   if (score >= 80) return '지금 적극적으로 익절할 구간';
   if (score >= 65) return '분할로 익절 검토할 구간';
-  if (score >= 50) return '보유 유지: 매도 압력 중립';
-  if (score >= 35) return '매도 신호 없음: 보유 계속';
-  return '매도 시그널 없음: 포지션 유지';
+  if (score >= 50) return '익절 압력 중립';
+  if (score >= 35) return '익절 신호 없음';
+  return '과열 아님: 익절 신호 없음';
 }
 
 function getGear(dev200) {
@@ -3400,8 +3407,9 @@ function getMarketVerdict(score, gear, rsi, sellP) {
     const _st = window._swingView.comp.stance;
     const _colors = { accumulate: 'var(--gr)', accumulate_wait: 'var(--gr)', hold: 'var(--bl)',
                       trim: 'var(--or)', risk_off: 'var(--rd)', wait: 'var(--t2)' };
-    return { score, headline: window._swingView.comp.stanceLabel,
-             headlineColor: _colors[_st] || 'var(--bl)' };
+    const _gated = ezIsGated(_st, gear);
+    return { score, headline: ezGateLabel(_st, window._swingView.comp.stanceLabel, gear),
+             headlineColor: _gated ? 'var(--rd)' : (_colors[_st] || 'var(--bl)') };
   }
   const g  = gear  ?? 1;
   const sp = sellP ?? 50;
@@ -4436,7 +4444,7 @@ function buildTrendLineHtml() {
       if (op.aboveGammaFlip && op.netGEX > 0) {
         signals.push({ icon: '▲', text: `옵션 수급: SPY $${op.spyPrice}: 감마 플립($${op.gammaFlip}) 위. 시장 조성자 상방 헤지 중. 단기 급락 가능성 낮음.`, color: 'var(--gr)' });
       } else if (!op.aboveGammaFlip && op.netGEX < 0) {
-        signals.push({ icon: '▼', text: `옵션 수급: SPY $${op.spyPrice}: 감마 플립($${op.gammaFlip}) 아래. 하방 가속 구조. 변동성 확대 가능성 주의.`, color: 'var(--rd)' });
+        signals.push({ icon: '▼', text: `옵션 수급: SPY $${op.spyPrice}: 경계 가격($${op.gammaFlip}) 아래. 출렁임이 커지는 구간: 하락 때 낙폭 확대 주의.`, color: 'var(--rd)' });
       }
     }
 
@@ -4480,7 +4488,8 @@ function buildTrendLineHtml() {
   // ── [v2] v2 뷰 오버라이드: 무기억 문구 대신 스탠스 + 논평 ──────────
   if (window._swingView?.comp?.commentary?.length) {
     const _c = window._swingView.comp;
-    title = _c.stanceLabel;
+    const _gatedTop = ezIsGated(_c.stance, window.EZ_TRUTH?.comp?.gear);
+    title = ezGateLabel(_c.stance, _c.stanceLabel, window.EZ_TRUTH?.comp?.gear);
     /* 주말 국면: 금 마감 후 월 개장 전에는 "오늘"이 성립하지 않는다.
        현지 일요일 오전을 넘기면 새 주 전망으로 갈아탄다.
        판정 함수는 ez-nav.js 의 window.ezWeekPhase 하나뿐: chief-strip.js 와 공유한다. */
@@ -4494,7 +4503,9 @@ function buildTrendLineHtml() {
     _swingLabel = (_wkPhase === 'session' && !_holToday) ? '이번 거래일 시그널'
                 : _useAhead ? '새 주 전망' : '직전 장 마감 시그널';
     const _flowLine = (window._swingView.flow && !_useAhead)
-      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>` : '';
+      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>`
+        + (_gatedTop ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 모형 계좌가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 Gear 1): 신규 매수 중단이 먼저.</div>` : '')
+      : '';
     const _dk = _useAhead ? _wa : window._swingView.desked;
     /* 88항 원칙 5: 최상단 카드의 모델 문장도 숫자 검문을 거친다. 걸린 줄은 빠진다.
        한 절의 불릿이 통째로 걸리면 그 절 자체를 싣지 않는다 - 제목만 남은 빈 절은
@@ -4635,11 +4646,11 @@ function renderScoreGrid(qqq, voo, soxx) {
     if (s >= 38) return 'var(--or)';
     return 'var(--rd)';
   }
-  function buyText(s) {
+  function buyText(s, g) {
     if (s >= 80) return { msg: '분할 매수 최적 구간',       c: 'var(--gr)' };
     if (s >= 65) return { msg: '소량 정찰대 투입 고려',      c: 'var(--gr)' };
-    if (s >= 50) return { msg: '신호 대기: 관망',          c: '#5AC8FA'   };
-    if (s >= 38) return { msg: '매수 자제: 관망',          c: 'var(--or)' };
+    if (s >= 50) return { msg: g === 1 ? '진입 신호 약함: 하락 추세라 대기' : '진입 신호 약함: 대기', c: '#5AC8FA' };
+    if (s >= 38) return { msg: '매수 자제',                c: 'var(--or)' };
     return         { msg: '리스크 오프: 현금 보유',        c: 'var(--rd)' };
   }
 
@@ -4655,12 +4666,15 @@ function renderScoreGrid(qqq, voo, soxx) {
     if (s >= 55) return 'var(--or)';
     return 'rgba(120,120,128,0.2)';      // 옅은 선: 매도 압력 없음 시각화
   }
-  function sellText(s) {
+  // 매도 압력은 '많이 올라 과열됐는가'를 재는 익절 점수다. 낮다고 '들고 있어도 안전'이 아니다.
+  // 보유 여부는 추세 카드 한 곳에서만 말한다(2026-11-17).
+  function sellText(s, g) {
     if (s >= 80) return { msg: '적극 익절 구간',            c: 'var(--rd)' };
     if (s >= 65) return { msg: '분할 익절 검토 구간',        c: 'var(--rd)' };
     if (s >= 55) return { msg: '매도 압력 상승: 주의',     c: 'var(--or)' };
-    if (s >= 38) return { msg: '보유 유지: 압력 중립',     c: 'var(--t2)' };
-    return         { msg: '매도 시그널 없음: 보유 유지',   c: 'var(--t2)' };
+    if (g === 1) return { msg: '과열 아님. 다만 하락 추세: 보유 판단은 아래 추세 카드 기준', c: 'var(--t2)' };
+    if (s >= 38) return { msg: '익절 압력 중립',           c: 'var(--t2)' };
+    return         { msg: '과열 아님: 익절 신호 없음',     c: 'var(--t2)' };
   }
 
   // ── RSI 색상: 과잉→보라, 과열→빨강, 과매도→초록, 중립→기본 ──
@@ -4676,10 +4690,10 @@ function renderScoreGrid(qqq, voo, soxx) {
     const ss = d.sellScore ?? 50;
     const bColor = buyColor(bs);
     const bGauge = buyGauge(bs);
-    const bText  = buyText(bs);
+    const bText  = buyText(bs, d.gear);
     const sColor = sellColor(ss);
     const sGauge = sellGauge(ss);
-    const sText  = sellText(ss);
+    const sText  = sellText(ss, d.gear);
 
     const displayName = d.symbol==='QQQ'?'나스닥100 QQQ':d.symbol==='VOO'?'S&P500 VOO':d.symbol==='SOXX'?'반도체 SOXX':d.symbol;
     const dev200str   = d.dev200 != null ? (d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1) + '%' : ': ';
@@ -4984,13 +4998,13 @@ function renderOptionsMarket(opts) {
     const aboveFlip = o.spyPrice > o.gammaFlip;
     const posGEX    = o.netGEX > 0;
     if (aboveFlip && posGEX) {
-      gexSignal = 'SPY가 감마 플립 위 + GEX 양수: 시장 안정·pin 효과 구간';
+      gexSignal = '출렁임이 줄어드는 구간: 옵션을 판 큰손이 오르면 팔고 내리면 사서 움직임을 눌러 줌';
       gexColor  = 'var(--gr)'; gexBg = 'var(--gr-s)';
     } else if (!aboveFlip && !posGEX) {
-      gexSignal = 'SPY가 감마 플립 아래 + GEX 음수: 하방 가속 위험 구간';
+      gexSignal = '출렁임이 커지는 구간: 옵션을 판 큰손이 내리면 따라 팔고 오르면 따라 사서 움직임을 키움. 하락 때 낙폭이 커질 수 있음';
       gexColor  = 'var(--rd)'; gexBg = 'var(--rd-s)';
     } else {
-      gexSignal = 'GEX 혼재 신호: 방향성 불명확';
+      gexSignal = '신호가 서로 달라 출렁임의 크기를 가늠하기 어려운 구간';
       gexColor  = 'var(--or)'; gexBg = 'var(--yl-s)';
     }
   }
@@ -5035,7 +5049,7 @@ function renderOptionsMarket(opts) {
     ? `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:rgba(10,132,255,0.12);color:var(--ac);font-weight:700;margin-left:8px;">
         매수 스코어 ${overlayBuySign}${ov.buyAdj ?? 0}pt · 매도 스코어 ${overlaySellSign}${ov.sellAdj ?? 0}pt 반영됨
        </span>`
-    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">오버레이 없음 (중립)</span>`;
+    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">매수·매도 점수 조정 없음</span>`;
 
   // ── 항목별 행 렌더러 ─────────────────────────────
   const row = (label, value, color) => value
@@ -5058,9 +5072,9 @@ function renderOptionsMarket(opts) {
 
         ${gexSignal ? `
         <div style="padding:10px 14px;border-radius:10px;background:${gexBg};margin-bottom:10px;">
-          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Gamma Exposure (GEX)</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">큰손의 헤지 방향 (감마 노출)</div>
           <div style="font-size:16px;font-weight:600;color:${gexColor};">${gexSignal}</div>
-          ${o.spyPrice !== null ? `<div style="font-size:16px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · 감마 플립 ${numFmt(o.gammaFlip)} · 순GEX ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
+          ${o.spyPrice !== null ? `<div style="font-size:16px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · 경계 가격(감마 플립) ${numFmt(o.gammaFlip)} · 순 감마 노출 ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
         </div>` : ''}
 
         <div style="padding:0 4px;">
@@ -5068,8 +5082,8 @@ function renderOptionsMarket(opts) {
           ${vol.vix1m !== null && vol.vix3m !== null ? row('VIX 1M / 3M', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
           ${row('SKEW', skewSignal || null, skewColor)}
           ${row('VVIX', vvixSignal || null, vvixColor)}
-          ${o.callWall !== null ? row('콜 월 (저항)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
-          ${o.putWall  !== null ? row('풋 월 (지지)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
+          ${o.callWall !== null ? row('위쪽 천장 (콜 월)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
+          ${o.putWall  !== null ? row('아래쪽 바닥 (풋 월)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
           ${oi.pcRatio !== null ? row('P/C Ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(역발상 매수 신호)' : oi.pcRatio < 0.7 ? '(콜 과열 경고)' : '(보통)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
         </div>
 
@@ -5691,8 +5705,9 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
     col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
   } else {
-    act1 = '하락 추세: QQQ·VOO 신규 매수 자제. 현금 비중 확대 권고';
-    rsn1 = `<b>Gear ${compGear} 하락 추세 확인</b><br>· 200일선 아래: 장기 방향이 하락으로 전환. 일시 반등이 나와도 200일선이 저항선으로 작용<br>· 이 구간에서 신규 매수 = '떨어지는 칼 잡기'. 바닥이 어딘지 아무도 모름<br><br><b>대응 원칙</b><br>· 신규 매수 즉시 중단<br>· 보유 중이라면 비중 축소, 현금 비중 높이기<br>· Gear 3(상승 추세) 전환 확인 후 재진입`;
+    const _dnNames = ['QQQ','VOO','SOXX'].filter(k => window.EZ_TRUTH?.sym?.[k]?.gear === 1);
+    act1 = '하락 추세: 신규 매수 자제. 현금 비중 확대 권고';
+    rsn1 = `<b>Gear ${compGear} 하락 추세 확인 (종합)</b><br>· 200일선 아래${_dnNames.length ? '(' + _dnNames.join('·') + ')' : ''}: 장기 방향이 하락으로 전환. 일시 반등이 나와도 200일선이 저항선으로 작용<br>· 이 구간에서 신규 매수 = '떨어지는 칼 잡기'. 바닥이 어딘지 아무도 모름<br><br><b>대응 원칙</b><br>· 신규 매수 즉시 중단<br>· 보유 중이라면 비중 축소, 현금 비중 높이기<br>· Gear 3(상승 추세) 전환 확인 후 재진입`;
 
     col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
   }
@@ -5709,7 +5724,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       if (_op.aboveGammaFlip && _op.netGEX > 0) {
         _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 감마 플립 $${_op.gammaFlip} 위: 시장 조성자 안정 구간, 단기 급락 가능성 낮음`);
       } else if (!_op.aboveGammaFlip && _op.netGEX < 0) {
-        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 감마 플립 $${_op.gammaFlip} 아래: 하방 가속 구조 주의`);
+        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 경계 가격 $${_op.gammaFlip} 아래: 출렁임이 커지는 구간, 하락 때 낙폭 확대 주의`);
       }
     }
     if (_vol.termStructure === 'backwardation') {
