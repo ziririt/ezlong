@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "2026-11-17-07:00",
+      "timestamp_kst": "2026-11-17(화) 07:00 KST",
+      "key_event": {
+        "name": "엔비디아 CEO 사임 충격 지속",
+        "name_en": "Nvidia CEO Resignation Impact Persists",
+        "time": "2026-11-16 포스트마켓",
+        "why": "반도체 섹터 투자 심리 위축, AI 밸류에이션 재조정 압력",
+        "why_en": "Semiconductor sector sentiment weakened, AI valuation readjustment pressure"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "엔비디아 CEO 사임 충격 지속 및 AI 섹터 전반의 투자 심리 위축으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to ongoing Nvidia CEO resignation impact and weakened AI sector investment sentiment.",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 100,
+          "name": "엔비디아 CEO 사임 충격 지속",
+          "name_en": "Nvidia CEO Resignation Impact Continues",
+          "desc": "반도체 섹터 투자 심리 위축, AI 밸류에이션 재조정 압력 지속: NVDA -3.04% 하락",
+          "desc_en": "Semiconductor sector investment sentiment weakened, AI valuation readjustment pressure persists: NVDA down 3.04%",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "NVDA 실적 발표 대기",
+          "name_en": "Awaiting NVDA Earnings Release",
+          "desc": "11월 17일(화) 장 마감 후 ET 예정: 실적 결과에 따라 AI 섹터 방향성 결정될 전망",
+          "desc_en": "Scheduled for November 17 (Tue) after market close ET: AI sector direction expected to be determined by earnings results",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월16일(월, 뉴욕) 미10년 5.12%(-0.64%) · 미30년 5.47%(-0.26%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 5.12%(-0.64%) · 미30년 5.47%(-0.26%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-11-16-23:20",
       "timestamp_kst": "2026-11-16(월) 23:20 KST",
       "key_event": {
@@ -538,68 +580,8 @@
         "watch": "- 미 10년물 국채금리 추이: 미 10년물 국채금리가 현재 수준(5.15%(+1.00%))을 유지하거나 추가 상승하는지 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 예상."
       },
       "report_at": "2026-11-15(일) 21:17 KST"
-    },
-    {
-      "id": "2026-11-15-11:50",
-      "timestamp_kst": "2026-11-15(일) 11:50 KST",
-      "key_event": {
-        "name": "엔비디아 CEO 사임 충격 지속",
-        "name_en": "Nvidia CEO Resignation Impact Continues",
-        "time": "직전 거래일(11월 14일) 마감 기준",
-        "why": "반도체 섹터 투자 심리 위축, 불확실성 증대",
-        "why_en": "Semiconductor sector sentiment weakened, increased uncertainty"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "엔비디아 CEO 사임 충격 및 매크로 지표 부담으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to Nvidia CEO resignation and macro data burden",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "애플 AI 개인 비서 경쟁력 부각",
-          "name_en": "Apple's AI Personal Agent Competitiveness Highlighted",
-          "desc": "에버코어, 애플의 AI 개인 비서 시장 경쟁력 분석: 관련 기술주 투자 심리 개선",
-          "desc_en": "Evercore analyzes Apple's competitiveness in the AI personal agent market: improving sentiment for related tech stocks",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Continues",
-          "desc": "엔비디아(-4.18%) 주가 하락 지속: 반도체 섹터 전반 투자 심리 위축",
-          "desc_en": "Nvidia stock (-4.18%) continues to fall: overall semiconductor sector sentiment weakened",
-          "category": "company_specific"
-        },
-        {
-          "score": 35,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Upward Pressure",
-          "desc": "미10년 국채금리 5.15%(+1.00%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 5.15% (+1.00%): increased discount rate burden for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총점: 엔비디아 CEO 사임 충격과 매크로 지표 부담으로 부정적 우위 지속, 총점 긍정 20 대 부정 80 기록.\n- 핵심 원인: 엔비디아 CEO 젠슨 황의 사임 발표 이후 반도체 섹터 전반의 투자 심리 위축 및 불확실성 증대.\n- 매크로 부담: 미 10년물 국채금리 5.15% (+1.00%p) 상승으로 성장주 할인율 부담 가중.\n- 긍정 요인: 애플의 AI 개인 비서 시장 경쟁력 부각 분석으로 일부 기술주 투자 심리 개선.",
-        "positive": "- 애플 AI 개인 비서 경쟁력 부각: 에버코어(Evercore)의 분석에 따르면 애플이 AI 개인 비서 시장에서 경쟁 우위를 확보할 자산을 보유하고 있다는 평가. 이는 관련 기술주 투자 심리 개선에 기여.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 엔비디아 주가가 -4.18% 하락세를 지속하며 반도체 섹터 전반의 투자 심리를 위축. 엘론 머스크를 포함한 일부 기술 경영진이 젠슨 황 CEO의 복귀를 요청하는 청원에 서명하는 등 사임 충격이 시장에 미치는 영향이 큼.\n- 미 국채금리 상승 압력: 미 10년물 국채금리가 5.15%(+1.00%)로 11월12일(목, 뉴욕) 대비 1.00%p 상승하며 성장주에 대한 할인율 부담을 가중. 이는 연준의 기준금리 3.88% (+0.13%p) 및 근원 PCE 물가상승률 3.12% (+0.09%p) 등 매크로 지표의 상승 압력과 맞물려 시장에 부정적 영향.",
-        "mixed": "",
-        "watch": "- 미 국채금리 변동성: 미 10년물 국채금리 5.15%(+1.00%) 수준 유지 여부 및 추가 상승 압력 발생 시 성장주 전반의 추가 하락 여부 확인.\n- S&P 500 지수 추이: S&P 500 지수가 최근의 변동성을 극복하고 상승세를 이어갈 수 있을지 여부 확인."
-      },
-      "report_at": "2026-11-15(일) 11:50 KST"
     }
   ],
-  "updated_at": "2026-11-16T14:21:20Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-17(화) 04:22 KST",
-    "at_utc": "2026-11-16T19:23:28Z",
-    "kind": "company_only",
-    "count": 2,
-    "reason": "한쪽 편이 개별 기업 뉴스뿐이라, 시장 전체의 판정 근거로 삼을 수 없었습니다.",
-    "reason_en": "One side rested only on single-company news, which cannot carry a market-wide verdict."
-  }
+  "updated_at": "2026-11-16T22:01:46Z",
+  "max_entries": 10
 }
