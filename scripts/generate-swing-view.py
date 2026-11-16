@@ -224,6 +224,14 @@ def stance_of(state, action, buy, sell, gear):
         if expo >= 0.95 and gear >= 3:
             return 'hold', '1배수 목표 비중 채움 — 신호 강화 시 레버리지 검토'
         return 'hold', '보유 유지 구간'
+    # 2026-11-17: 'wait' 는 "모형 계좌에 조정할 것이 없다"는 뜻이다. 그런데 생명선으로 비중을
+    # 낮춘 채 유지 중이거나 200일선 아래(Gear 1)일 때 간판에 '관망 구간'이라고만 쓰면 독자는
+    # '시장이 중립'으로 읽는다. 같은 화면의 추세 카드는 비중 축소를 말하고 있어 서로 맞선다.
+    # 스탠스 값(wait)은 그대로 두고(원장·채점이 이 값을 쓴다) 간판 문구만 추세를 따르게 한다.
+    if state.get('targetWhy') == 'lifeline' and state.get('target', 1) <= 0.2:
+        return 'wait', '위험 관리 유지 구간 — 낮은 비중 유지, 신규 매수 중단'
+    if gear is not None and gear <= 1:
+        return 'wait', '하락 추세 — 신규 매수 중단 구간'
     return 'wait', '관망 구간'
 
 
@@ -1923,6 +1931,10 @@ def main():
     # 판단 흐름 라인 — "관망 2일 → 보유(오늘, 4일째)"
     SHORT = dict(accumulate='분할매수', accumulate_wait='매수대기', hold='보유',
                  trim='축소', risk_off='위험관리', wait='관망')
+    # 2026-11-17: 간판이 '관망 구간'이 아닌 wait(생명선 유지·하락 추세)는 흐름 문장에서도
+    # '관망'이라 부르지 않는다. "위험관리 4일 → 오늘부터 '관망'"은 위험이 풀린 것처럼 읽혔다.
+    if st == 'wait' and label != '관망 구간':
+        SHORT['wait'] = '낮은 비중 유지' if comp.get('targetWhy') == 'lifeline' else '매수 중단'
     flow = None
     # 88항 단일 진실값: 15개 창으로 세면 31거래일째가 '15일째'로 찍힌다(2026-09-07 실사고).
     # 현재 런의 길이는 stanceStreak 하나만 쓰고, 창은 등락 계산용으로만 넓게 잡는다.

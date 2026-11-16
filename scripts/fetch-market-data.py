@@ -694,20 +694,32 @@ def fetch_fear_and_greed():
 def _qqq_score_history_lines(previous_signals, today_qqq):
     """previousSignals(최신이 맨 앞)에서 날짜별 '가장 최근' QQQ 스냅샷만 추려
     오래된 날짜 → 최근 날짜 순으로 최대 4일 + 오늘(today_qqq) 리스트 반환."""
+    # 2026-11-17: 날짜 열쇠를 한국 날짜가 아니라 뉴욕 거래일로 잡는다. 예전에는 한국 날짜로 묶고
+    # 맨 끝 줄을 '오늘'이라 불러 넘겼다. 프롬프트는 '오늘'을 쓰지 말라고 하면서 재료에는 '오늘'을
+    # 준 셈이라 모델이 "오늘(11월 17일, 뉴욕)"이라 쓰고, 89항 교정이 '오늘'만 바꿔
+    # "11월16일(월, 뉴욕)(11월 17일, 뉴욕)"처럼 날짜가 두 번 찍혔다(한국 아침 = 뉴욕 전날 마감).
+    def _ny_day(dt_kst):
+        d = (dt_kst - timedelta(hours=14)).date()      # 한국 시각 - 14시간 = 뉴욕 장 기준 날짜
+        while d.weekday() >= 5:                        # 주말에 쌓인 스냅샷은 금요일 장의 것
+            d -= timedelta(days=1)
+        return d
     by_date = {}
     # 오래된 것부터 순회하며 덮어써서, 같은 날짜는 그날의 마지막(가장 최근) 값만 남긴다.
     for s in reversed(previous_signals):
-        d = (s.get('atKST') or '')[:10]
         q = s.get('qqq') or {}
-        if d and isinstance(q.get('buyScore'), (int, float)):
+        try:
+            d = _ny_day(datetime.strptime((s.get('atKST') or '')[:16], '%Y-%m-%d %H:%M')).isoformat()
+        except Exception:
+            continue
+        if isinstance(q.get('buyScore'), (int, float)):
             by_date[d] = q
     days = list(by_date.items())[-4:]
-    today_kst = (datetime.now(timezone.utc) + timedelta(hours=9)).strftime('%Y-%m-%d')
+    today_kst = _ny_day(datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(hours=9)).isoformat()
     if today_qqq is not None and today_qqq.get('buyScore') is not None:
         days = [d for d in days if d[0] != today_kst] + [(today_kst, today_qqq)]
     lines = []
     for d, q in days:
-        label = '오늘' if d == today_kst else d[5:]
+        label = f"{int(d[5:7])}월{int(d[8:10])}일(뉴욕)" + (' [가장 최근 거래일]' if d == today_kst else '')
         lines.append(
             f"{label}: 매수점수 {q.get('buyScore')} · 매도점수 {q.get('sellScore')} · "
             f"RSI {q.get('rsi')} · Gear {q.get('gear')}"
@@ -749,16 +761,22 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
 
         prompt = (
             "너는 15년 경력 스윙 트레이더다. 아래 데이터만 근거로 "
-            "\"최근 며칠 흐름이 오늘 시그널로 어떻게 이어졌는지\" 딱 2~3문장으로 서술하라.\n\n"
+            "\"최근 며칠 흐름이 가장 최근 거래일 시그널로 어떻게 이어졌는지\" 딱 2~3문장으로 서술하라.\n\n"
             "[QQQ 매수/매도 점수 최근 흐름 — 날짜별]\n"
             + "\n".join(history_lines) + "\n\n"
-            "[최근 5거래일 일봉 등락률 — 과거→오늘 순]\n"
+            "[최근 5거래일 일봉 등락률 — 과거→가장 최근 거래일 순]\n"
             + "\n".join(returns_lines) + "\n\n"
             f"[참고] VIX: {qqq.get('vix')} · Fear&Greed: {fg_data.get('score') if fg_data else 'N/A'}\n\n"
             "절대 규칙:\n"
             "- 위에 주어진 숫자만 사용하라. 새로운 숫자를 지어내지 마라.\n"
             "- \"~하세요\", \"~하십시오\" 같은 명령형 금지. \"~구간\", \"~권고\", \"~흐름\" 같은 진단형 표현만 사용.\n"
-            "- 오늘 점수가 며칠 전과 비교해 개선/악화/유지 중 무엇인지 반드시 언급하라.\n"
+            "- 가장 최근 거래일 점수가 며칠 전과 비교해 어떻게 달라졌는지 반드시 언급하라.\n"
+            "- [점수의 뜻] 매수점수는 높을수록 진입 매력이 크다. 매도점수는 높을수록 과열(익절 압력)이 크다. "
+            "매수점수가 내려간 것을 '개선'이라 쓰지 마라. 두 점수가 함께 내려갔으면 "
+            "'진입 신호 약화, 과열 해소'라고 서술하라. Gear 1은 200일선 아래 하락 추세다.\n"
+            "- [비교] 종목을 견줄 때는 주어진 등락률 숫자의 크기 순서를 지켜라. 더 많이 내린 종목을 "
+            "'선방'·'상대적 강세'라고 쓰지 마라.\n"
+            "- [날짜] 재료에 적힌 날짜 표기를 그대로 쓰고, 날짜 뒤에 괄호로 다른 날짜나 '기준'을 덧붙이지 마라.\n"
             "- [89항] 시장 날짜에 '오늘·어제·내일'을 쓰지 마라. 이 글은 한국 독자가 "
             "한국 시계로 읽는데, 뉴욕 장중은 한국 시각 22:30~05:00이라 뉴욕의 '오늘'과 "
             "독자의 '오늘'은 자주 다른 날이다. 날짜를 그대로 적고 어느 시장인지 밝혀라 "
