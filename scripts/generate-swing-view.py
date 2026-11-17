@@ -100,7 +100,8 @@ def et_day_of(generated_at_iso):
 
 
 def comp_scores(syms):
-    parts = [(syms.get('QQQ'), 4), (syms.get('VOO'), 3), (syms.get('SOXX'), 3)]
+    # 2026-11-17: S&P500 대표를 SPY 로(오너 결정). 수집에 SPY 가 아직 없는 옛 파일이면 VOO 로 받는다 - 같은 지수라 점수는 사실상 같다.
+    parts = [(syms.get('QQQ'), 4), (syms.get('SPY') or syms.get('VOO'), 3), (syms.get('SOXX'), 3)]
     parts = [(s, w) for s, w in parts if s]
     tw = sum(w for _, w in parts)
     buy = round(sum((s.get('buyScore') or 50) * w for s, w in parts) / tw)
@@ -212,10 +213,11 @@ _PLAIN_SKIP = ('stance', 'session', 'dataDay', 'generatedAt', 'generatedAtKST', 
 def plain_text(t):
     if not isinstance(t, str) or not t:
         return t
-    t = _re_plain.sub(r'1배수 칸\s*\(QQQ·VOO·SOXX\)', '일반 ETF(QQQ·VOO·SOXX)', t)
+    t = _re_plain.sub(r'1배수 칸\s*\(QQQ·(?:VOO|SPY)·SOXX\)', '일반 ETF(QQQ·SPY·SOXX)', t)
     _J = {'은': '는', '이': '가', '을': '를', '과': '와', '으로': '로'}
     t = _re_plain.sub(r'1배수 칸(으로|은|이|을|과)(?=[\s,.:])', lambda m: '일반 ETF' + _J[m.group(1)], t)
     t = t.replace('1배수 칸', '일반 ETF').replace('1배수', '일반 ETF')
+    t = t.replace('QQQ·VOO·SOXX', 'QQQ·SPY·SOXX').replace('QQQ·VOO', 'QQQ·SPY')   # 스윙 시그널의 S&P500 대표는 SPY
     t = _re_plain.sub(r'레버리지 ([23])배수|([23])배수 레버리지', lambda m: f'{m.group(1) or m.group(2)}배 레버리지', t)
     t = _re_plain.sub(r'([23])배수', r'\1배 레버리지', t).replace('레버리지 레버리지', '레버리지')
     t = _re_plain.sub(r'노출 (상한|목표|규율|축소|확대)', r'주식 비중 \1', t)
@@ -1680,7 +1682,7 @@ def desk_with_fable(view, sc_entry, ca):
   "이 지면의 모형 비중은 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
 - [누구나 아는 말로 쓴다 — 2026-11-17 운영 제보] 이 지면을 처음 보는 사람도 알아들어야 한다.
   이 지면 안에서만 통하는 낱말을 쓰지 마라. 왼쪽 말은 금지, 오른쪽 말로 쓴다:
-  1배수 칸·1배수 → 일반 ETF(QQQ·VOO·SOXX, 레버리지가 아닌 ETF) / 2배수·3배수 → 2배·3배 레버리지 ETF /
+  1배수 칸·1배수 → 일반 ETF(QQQ·SPY·SOXX, 레버리지가 아닌 ETF) / 2배수·3배수 → 2배·3배 레버리지 ETF /
   노출·노출 상한 → 주식 비중·주식 비중 상한 / 생명선 → 30주 이동평균선 / 정찰대 → 소량 시험 매수 /
   본대 → 본격 매수 / 관문 → 확인 조건 / 기어 1·2·3(Gear) → 하락 추세·횡보·상승 추세 / 스탠스 → 판단 /
   리밸런싱 → 비중 조정 / 휩쏘 → 가짜 신호 / 체급 → 쓰지 않는다 / 칸 → 쓰지 않는다.
@@ -1700,7 +1702,7 @@ def desk_with_fable(view, sc_entry, ca):
 - 틀리지 않으려고 애매하거나 하나마나한 소리("변동성 유의", "지켜볼 필요") 금지 — 모든 항목은 수치·조건·판단 중 하나를 반드시 담을 것. 담을 게 없는 섹션은 빼라.
 - 결과 재료('VIX 하락', '지수 상승', '섹터 강세' 등)는 근거 인용 금지 — 원인 재료만.
 - "~하세요" 행동 촉구 금지. 분석/진단형.
-- [칸을 구분해서 쓴다 — 2026-08-14 운영 제보] 이 스탠스는 **1배수(QQQ·VOO·SOXX) 칸**에
+- [칸을 구분해서 쓴다 — 2026-08-14 운영 제보] 이 스탠스는 **1배수(QQQ·SPY·SOXX) 칸**에
   대한 판단이다. 같은 화면에는 2배수·3배수 레버리지 카드가 따로 있고, 그 카드는 지표
   조건으로 별도 판정한다. 그래서 **주어 없는 시장 선언을 쓰지 마라** — "새로 살 자리도
   팔 자리도 아니다", "지금은 사는 구간이 아니다" 같은 문장은 레버리지 카드가 "신규 진입

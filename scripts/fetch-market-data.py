@@ -31,7 +31,7 @@ except ImportError:
     sys.exit(1)
 
 # ─── 설정 ──────────────────────────────────────────────────────────────────
-SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX',
+SYMBOLS = ['QQQ', 'VOO', 'SPY', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX',
            # TOP9 집중분석 확장 (2026-08-03, 운영 승인): 빅테크 7종 — 시가총액순.
            # 합성점수(QQQ/VOO/SOXX 가중)나 브레드스 계산은 심볼을 명시 참조하므로
            # 이 추가가 기존 점수에 영향을 주지 않는다 (fmt_returns도 명시 리스트).
@@ -1032,7 +1032,9 @@ def main():
     # 되면서 "전량 실패" 임계가 절반으로 느슨해졌다. 합성점수·스윙뷰·대시보드의
     # 하드 의존인 코어 심볼이 하나라도 빠진 채 커밋되면 하류가 연쇄로 죽으므로,
     # 코어 결손 시에는 신규 심볼이 몇 개 성공했든 실패 처리한다.
-    _CORE = ('QQQ', 'VOO', 'SOXX', 'TSLA', 'NVDA')
+    # 2026-11-17: 스윙 시그널의 S&P500 대표가 VOO 에서 SPY 로 바뀌었다(오너 결정 - 거래량·옵션 기준의 대표).
+    # VOO 는 다른 지면이 계속 쓰므로 둘 다 모은다.
+    _CORE = ('QQQ', 'VOO', 'SPY', 'SOXX', 'TSLA', 'NVDA')
     _missing_core = [s for s in _CORE if s not in processed]
     if _missing_core:
         print(f"코어 심볼 수집 실패: {_missing_core} — 하류 파이프라인 보호를 위해 실패 처리.")
