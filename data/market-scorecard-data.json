@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-11-17-16:47",
+      "timestamp_kst": "2026-11-17(화) 16:47 KST",
+      "key_event": {
+        "name": "엔비디아 CEO 사임 충격 지속",
+        "name_en": "Nvidia CEO Resignation Impact Continues",
+        "time": "직전 정규장 및 다음 정규장",
+        "why": "반도체 섹터 투자 심리 위축, AI 밸류에이션 재조정 압력",
+        "why_en": "Semiconductor sector sentiment weak, AI valuation pressure"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "엔비디아 CEO 사임 충격 지속 및 AI 섹터 투자 심리 위축으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to ongoing Nvidia CEO resignation impact and weakened AI sector investor confidence.",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "엔비디아 CEO 사임 충격 지속",
+          "name_en": "Nvidia CEO Resignation Impact Lingers",
+          "desc": "에버코어 목표가 60% 하향 조정, 반도체 섹터 전반 투자 심리 위축 지속",
+          "desc_en": "Evercore slashes NVDA price target by 60%, semiconductor sector sentiment remains weak.",
+          "category": "company_specific"
+        },
+        {
+          "score": 25,
+          "name": "AI 섹터 밸류에이션 재조정 압력",
+          "name_en": "AI Sector Valuation Readjustment Pressure",
+          "desc": "직전 정규장 SOXX 4.19% 하락, 주요 기술주 전반 약세 심화",
+          "desc_en": "SOXX fell 4.19% in the last trading session, deepening weakness across major tech stocks.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "매크로 지표 부담 지속",
+          "name_en": "Persistent Macro Data Burden",
+          "desc": "근원 PCE 3.12%, PCE 3.65%로 인플레이션 압력 유지, Fed 기준금리 3.88%",
+          "desc_en": "Core PCE at 3.12% and PCE at 3.65% indicate persistent inflation, Fed rate at 3.88%.",
+          "category": "macro_data"
+        },
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yield Levels",
+          "desc": "미10년 국채금리 5.12%(-0.64%)로 소폭 하락했으나 여전히 높은 수준 유지, 성장주 할인율 압박 상존",
+          "desc_en": "US 10-year Treasury yield slightly fell to 5.12% but remains high, maintaining pressure on growth stock valuations.",
+          "category": "rates_treasury",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "NVDA 실적 발표 대기",
+          "name_en": "Awaiting NVDA Earnings Release",
+          "desc": "11월 17일(화) 장 마감 후 ET 발표 예정, 시장의 기대와 우려 교차",
+          "desc_en": "Scheduled for release after market close ET on Tuesday, November 17th, market expectations and concerns are mixed.",
+          "category": "earnings_bellwether"
+        }
+      ]
+    },
+    {
       "id": "2026-11-17-11:50",
       "timestamp_kst": "2026-11-17(화) 11:50 KST",
       "key_event": {
@@ -477,84 +536,8 @@
         "watch": "- 엔비디아 실적 발표 포지셔닝: 엔비디아 실적 발표(11월 17일(화) 장 마감 후 ET, 약 46시간 뒤)를 앞둔 시장의 포지셔닝 변화 및 관련 섹터의 움직임 확인.\n- 미 10년 국채금리 추이: 미 10년 국채금리의 추가 상승 여부 및 시장에 미치는 영향 확인. 성장주 투자 심리 변화에 주요 지표.\n- 주요 지수 선물 변동성: 다우존스, 나스닥 100, S&P 500 선물 지수의 장 초반 움직임을 통해 시장 전반의 투자 심리 변화 확인."
       },
       "report_at": "2026-11-16(월) 08:20 KST"
-    },
-    {
-      "id": "2026-11-16-04:02",
-      "timestamp_kst": "2026-11-16(월) 04:02 KST",
-      "key_event": {
-        "name": "매크로 지표 부담 지속",
-        "name_en": "Persistent Macro Data Burden",
-        "time": "2026-11-15 마감 기준",
-        "why": "높은 금리, 인플레이션 압력, 경기 선행 지표 둔화",
-        "why_en": "High interest rates, inflation pressure, weakening leading indicators"
-      },
-      "positive_total": 10,
-      "negative_total": 90,
-      "summary": "엔비디아 CEO 사임 충격 및 매크로 지표 부담으로 부정 우위 지속",
-      "summary_en": "Negative dominance continues due to Nvidia CEO resignation shock and macro data burden",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "MSFT 주식 전망 상향",
-          "name_en": "MSFT Stock Outlook Upgraded",
-          "desc": "Morgan Stanley, Microsoft 주식 전망 상향: 빅테크 전반 투자 심리 일부 개선",
-          "desc_en": "Morgan Stanley upgraded Microsoft stock outlook: partially improved investment sentiment across big tech",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Shock Persists",
-          "desc": "Jensen Huang 사임 후 반도체 섹터 투자 심리 위축 지속: SOXX -6.48%",
-          "desc_en": "Semiconductor sector sentiment remains weak after Jensen Huang's resignation: SOXX -6.48%",
-          "category": "company_specific"
-        },
-        {
-          "score": 25,
-          "name": "높은 미10년 국채금리 수준",
-          "name_en": "High US 10-Year Treasury Yields",
-          "desc": "미10년 국채금리 5.15%(+1.00%)로 상승: 성장주 할인율 압박 지속",
-          "desc_en": "US 10-year Treasury yield rose to 5.15%(+1.00%): continued pressure on growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "매크로 지표 부담 지속",
-          "name_en": "Persistent Macro Data Burden",
-          "desc": "근원 PCE 3.12%, Fed 기준금리 3.88% 등 높은 물가 및 금리 수준 지속",
-          "desc_en": "Core PCE 3.12%, Fed policy rate 3.88%: high inflation and interest rate levels persist",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "NVDA 실적 발표 대기",
-          "name_en": "Awaiting NVDA Earnings Release",
-          "desc": "11월 17일(화) 장 마감 후 ET 예정: 반도체 섹터 전반에 영향 예상, 불확실성 증대",
-          "desc_en": "Scheduled for November 17 (Tue) after market close ET: expected to impact the broader semiconductor sector, increasing uncertainty",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 엔비디아 CEO 사임 충격과 거시경제 지표 부담으로 부정적 우위 지속, 총점 긍정 10대 부정 90 기록.\n- 주요 원인: 엔비디아 젠슨 황 CEO 사임 소식에 따른 반도체 섹터 투자 심리 위축과 미 10년 국채금리 상승, 높은 인플레이션 압력 등 거시경제 지표 악화가 복합적으로 작용.\n- 하방 압력: 높은 금리 수준이 성장주 할인율에 지속적인 압박을 가하며, 경기 선행 지표 둔화 우려가 시장 전반의 투자 심리를 저해하는 상황.",
-        "positive": "- MSFT 주식 전망 상향: Morgan Stanley가 Microsoft 주식 전망을 상향 조정하며 빅테크 전반의 투자 심리에 일부 긍정적인 영향을 미침.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: Jensen Huang CEO 사임 소식 이후 반도체 섹터 투자 심리가 지속적으로 위축, SOXX 지수가 -6.48% 하락하는 등 시장에 큰 충격을 주는 상황. 월스트리트에서는 엔비디아 주식에 대한 비관적인 전망이 확산되며, 일부 억만장자 투자자들은 황 CEO 없이는 엔비디아에 추가 투자를 하지 않겠다고 밝힘.\n- 높은 미10년 국채금리 수준: 미 10년 국채금리가 5.15%(+1.00%)로 상승하며 성장주 할인율에 지속적인 압박을 가하는 상황. '채권왕' 제프리 건들락은 주식 매수에 관심이 없으며 향후 10년간 손실을 경고하는 등 시장 전반의 금리 부담이 가중.\n- 매크로 지표 부담 지속: 근원 PCE 물가상승률 3.12%, Fed 기준금리 3.88% 등 높은 물가 및 금리 수준이 지속되며 시장에 부담으로 작용. 캔자스시티 연은 총재는 연준이 인플레이션에 대해 할 일이 남아있다고 언급하며 금리 인상 기조가 유지될 가능성 시사.",
-        "mixed": "- NVDA 실적 발표 대기: 11월 17일(화) 장 마감 후 ET로 예정된 엔비디아 실적 발표를 앞두고 반도체 섹터 전반에 불확실성이 증대. 실적 결과에 따라 반도체 섹터의 향방이 결정될 수 있어 투자자들의 관망세가 짙어지는 상황.",
-        "watch": "- 미 10년 국채금리 추이: 현재 5.15%(+1.00%) 수준인 미 10년 국채금리의 추가 상승 여부 및 시장 반응 확인."
-      },
-      "report_at": "2026-11-16(월) 04:02 KST"
     }
   ],
-  "updated_at": "2026-11-16T23:21:02Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-11-17(화) 11:52 KST",
-    "at_utc": "2026-11-17T02:53:05Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-11-17T07:48:34Z",
+  "max_entries": 10
 }
