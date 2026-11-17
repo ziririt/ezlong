@@ -101,7 +101,12 @@ def et_day_of(generated_at_iso):
 
 def comp_scores(syms):
     # 2026-11-17: S&P500 대표를 SPY 로(오너 결정). 수집에 SPY 가 아직 없는 옛 파일이면 VOO 로 받는다 - 같은 지수라 점수는 사실상 같다.
-    parts = [(syms.get('QQQ'), 4), (syms.get('SPY') or syms.get('VOO'), 3), (syms.get('SOXX'), 3)]
+    # 2026-11-17 실사고: SPY 를 수집에 넣은 첫 실행에서 SPY 만 마지막 거래일 봉이 빠져 왔다
+    # (QQQ·VOO 는 11-16 봉, SPY 는 11-13 봉 - 하루 전 값으로 상승 추세가 찍혔다).
+    # SPY 의 봉 날짜가 QQQ 와 같을 때만 SPY 를 쓰고, 다르면 같은 지수인 VOO 로 받는다.
+    _q, _spy = syms.get('QQQ') or {}, syms.get('SPY')
+    _sp = _spy if (_spy and _spy.get('barDate') and _spy.get('barDate') == _q.get('barDate')) else (syms.get('VOO') or _spy)
+    parts = [(syms.get('QQQ'), 4), (_sp, 3), (syms.get('SOXX'), 3)]
     parts = [(s, w) for s, w in parts if s]
     tw = sum(w for _, w in parts)
     buy = round(sum((s.get('buyScore') or 50) * w for s, w in parts) / tw)
