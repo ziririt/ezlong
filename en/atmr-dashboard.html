@@ -52,7 +52,7 @@
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title id="page-title-tag">Swing Signal Dashboard: Today's US Stock Buy/Sell Timing | EZLONG</title>
-<meta name="description" content="Live swing signal scores for QQQ, VOO, TSLA and NVDA: today's US stock buy/sell timing, powered by RSI, MACD, and a 200-day moving average Gear system. Data-driven answers to 'should I buy now?'" />
+<meta name="description" content="Live swing signal scores for QQQ, SPY, TSLA and NVDA: today's US stock buy/sell timing, powered by RSI, MACD, and a 200-day moving average Gear system. Data-driven answers to 'should I buy now?'" />
 <meta name="keywords" content="US stock buy timing, QQQ buy signal, best time to buy NVDA, TSLA sell signal, TQQQ trading timing, SOXL swing strategy, nasdaq VIX fear greed index, RSI overbought oversold, MACD trading signal, 200 day moving average gear, US stock swing strategy, QQQ 200-day trading, NVDA RSI oversold, TSLA 200-day support, swing signal, Swing Signal Score, gear shift trading method, 3-3-4 scaled buying, US stock technical analysis, ezlong" />
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG: Data Tools for US Stock Investors" />
@@ -86,7 +86,7 @@
     "name": "Swing Signal Dashboard",
     "alternateName": "Swing Signal Dashboard",
     "url": "https://ezlong.com/en/atmr-dashboard.html",
-    "description": "A US stock investing tool that analyzes QQQ, VOO, TSLA, and NVDA swing signal buy/sell scores in real time, based on RSI, MACD, and 200-day moving average Gear status. Combines position vs. the 200-day moving average (Gear 3/2/1), RSI, MACD histogram, and the VIX volatility index into a 0-100 buy attractiveness score and sell suitability score.",
+    "description": "A US stock investing tool that analyzes QQQ, SPY, TSLA, and NVDA swing signal buy/sell scores in real time, based on RSI, MACD, and 200-day moving average Gear status. Combines position vs. the 200-day moving average (Gear 3/2/1), RSI, MACD histogram, and the VIX volatility index into a 0-100 buy attractiveness score and sell suitability score.",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "inLanguage": "en",
@@ -98,7 +98,7 @@
       "url": "https://ezlong.com"
     },
     "featureList": [
-      "QQQ · VOO · SOXX buy attractiveness & sell suitability scores (0-100)",
+      "QQQ · SPY · SOXX buy attractiveness & sell suitability scores (0-100)",
       "TSLA · NVDA swing signal scores",
       "Gear 3/2/1 trend status based on the 200-day moving average",
       "Combined RSI · MACD · VIX signal analysis",
@@ -1852,8 +1852,8 @@ li.gear-other-sep { display: none !important; }
             <div class="tv-chart-frame" id="tv-QQQ"></div>
           </div>
           <div class="tv-chart-card">
-            <div class="tv-chart-label">S&amp;P500 VOO <span>Daily · TradingView</span></div>
-            <div class="tv-chart-frame" id="tv-VOO"></div>
+            <div class="tv-chart-label">S&amp;P500 SPY <span>Daily · TradingView</span></div>
+            <div class="tv-chart-frame" id="tv-SPY"></div>
           </div>
           <div class="tv-chart-card">
             <div class="tv-chart-label">Semiconductors SOXX <span>Daily · TradingView</span></div>
@@ -1900,8 +1900,8 @@ li.gear-other-sep { display: none !important; }
           <div class="skeleton skel-card" style="height:220px;"></div>
         </div>
 
-        <!-- ①-2 AI 차트분석 코멘트 (QQQ/VOO/SOXX): 2026-07-04 신설.
-             chart-analysis 파이프라인이 이미 생성한 data/analysis-{QQQ,VOO,SOXX}.json을
+        <!-- ①-2 AI 차트분석 코멘트 (QQQ/SPY/SOXX): 2026-07-04 신설.
+             chart-analysis 파이프라인이 이미 생성한 data/analysis-{QQQ,SPY,SOXX}.json을
              그대로 재사용한다. 별도 Gemini 호출 없음: 비용 중복 없음. -->
         <div id="chart-ai-comments-wrap"></div>
 
@@ -1924,7 +1924,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-sub">Can make up the entire account · core defensive holding</div>
               <div class="ltier-etf-row">
                 <span class="ltier-etf-chip">QQQ</span>
-                <span class="ltier-etf-chip">VOO</span>
+                <span class="ltier-etf-chip">SPY</span>
                 <span class="ltier-etf-chip">SOXX</span>
               </div>
             </div>
@@ -1959,7 +1959,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're starting a new position</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">Gear 3 uptrend + buy signal confirmed</span>: 3-3-4 scaled buying into QQQ/VOO. Start with tranche 1 (30%), add tranches 2 and 3 once the signal strengthens</li>
+                  <li data-for-gear="3"><span class="ok">Gear 3 uptrend + buy signal confirmed</span>: 3-3-4 scaled buying into QQQ/SPY. Start with tranche 1 (30%), add tranches 2 and 3 once the signal strengthens</li>
                   <li data-for-gear="2"><span class="warn">While direction stays unclear like now</span>: New buys worth holding off on. There's no rush: entering once the trend clearly turns up isn't too late</li>
                   <li data-for-gear="1"><span class="no">While in a downtrend like now</span>: A zone worth avoiding for new buys. Worth revisiting once the market confirms an uptrend</li>
                 </ul>
@@ -2368,7 +2368,7 @@ let swingBriefData = null; // 전역 캐시
 // ─── 종목 정의 ────────────────────────────────────
 const SYMBOLS = {
   QQQ:  { name: 'Invesco QQQ (Nasdaq 100)',    type: 'market', role: 'primary' },
-  VOO:  { name: 'Vanguard VOO (S&P 500)',      type: 'market', role: 'primary' },
+  SPY:  { name: 'SPDR SPY (S&P 500)',      type: 'market', role: 'primary' },
   DIA:  { name: 'SPDR DIA (Dow Jones)',        type: 'breadth', role: 'breadth' },
   IWM:  { name: 'iShares IWM (Russell 2000)',  type: 'breadth', role: 'breadth' },
   SOXX: { name: 'iShares SOXX (Semiconductors)', type: 'breadth', role: 'breadth' },
@@ -2381,7 +2381,7 @@ const SYMBOLS = {
 function pick(en, ko) { return (en && String(en).trim()) ? en : (ko || ''); }
 
 // 페치 순서: 중요도 순
-const FETCH_ORDER = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'VIX', 'DIA', 'IWM', 'SOXX'];
+const FETCH_ORDER = ['QQQ', 'SPY', 'TSLA', 'NVDA', 'VIX', 'DIA', 'IWM', 'SOXX'];
 
 let stockData    = {};
 let isLoading    = false;
@@ -2733,7 +2733,7 @@ function getGear(dev200) {
 //
 // CNN 원본 vs EZLONG 개선:
 //   CNN: 주가 모멘텀·강도·폭, 풋콜비율, 정크본드, VIX, 안전자산 수요
-//   EZLONG: 풋콜/정크본드 대신 → 섹터 폭(QQQ/VOO/DIA/IWM/SOXX), MACD 방향,
+//   EZLONG: 풋콜/정크본드 대신 → 섹터 폭(QQQ/SPY/DIA/IWM/SOXX), MACD 방향,
 //           52주 위치, CNN 지수 보완 반영 추가
 //
 // ─── S-CORE v3: 스윙 복합 오실레이터 (0=극단공포/매수, 100=극단탐욕/매도) ───
@@ -2881,7 +2881,7 @@ function getMarketVerdict(score, gear, rsi, sellP) {
   if (score >= 80) {
     // ── Prime buy zone ───────────────────────────────────────────────────────
     headline      = g >= 3
-      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/VOO 3-3-4 Rule'
+      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 3-3-4 Rule'
       : 'Strong Buy Signal: Start Scaling In After Confirming Trend Recovery';
     headlineColor = 'var(--gr)';
   } else if (score >= 65) {
@@ -3118,7 +3118,7 @@ async function fetchAnalysisJSON(symbol, _retry) {
   const safe = symbol.replace(/[^a-zA-Z0-9]/g, '_');
   const bust = Math.floor(Date.now() / 3600000);
   try {
-    // 2026-07-04: 6s→9s로 상향. 콜드 로드 시 QQQ/VOO/SOXX 등 여러 종목을
+    // 2026-07-04: 6s→9s로 상향. 콜드 로드 시 QQQ/SPY/SOXX 등 여러 종목을
     // 동시에 fetch하면 커넥션 경합으로 6s 안에 응답이 안 오는 경우가 실측 확인됨.
     const r = await fetch(_ANALYSIS_RAW + 'analysis-' + safe + '.json?t=' + bust, {
       signal: AbortSignal.timeout(9000)
@@ -3159,7 +3159,7 @@ async function fetchOptionsJSON() {
 const AI_LOADING_STEPS = [
   'Initializing Swing Signal engine...',
   '200-day moving average data collected. Analyzing trend direction...',
-  'Cross-checking combined RSI / MACD signals: QQQ, VOO, SOXX...',
+  'Cross-checking combined RSI / MACD signals: QQQ, SPY, SOXX...',
   'Gear state determined. Simulating 1x + leverage strategies...',
   'VIX volatility index applied. Trade signal scoring complete.',
   'AI analysis complete: rendering today\'s strategy.',
@@ -3208,7 +3208,7 @@ async function loadAllData(forceRefresh = false) {
   const _tslaAiP = fetchAnalysisJSON('TSLA').catch(() => null);
   const _nvdaAiP = fetchAnalysisJSON('NVDA').catch(() => null);
   const _qqqAiP  = fetchAnalysisJSON('QQQ').catch(() => null);
-  const _vooAiP  = fetchAnalysisJSON('VOO').catch(() => null);
+  const _vooAiP  = fetchAnalysisJSON('SPY').catch(() => null);
   const _soxxAiP = fetchAnalysisJSON('SOXX').catch(() => null);
 
   // ── 1. 로컬 캐시 체크 (1시간 TTL, 강제 새로고침 시 건너뜀) ──────────────
@@ -3248,7 +3248,7 @@ async function loadAllData(forceRefresh = false) {
         window._qqqAnalysis  = q; window._vooAnalysis  = v; window._soxxAnalysis = s;
         console.log('[ChartAI/KingAI] AI data arrived via cache path: TSLA:', t ? 'OK' : 'none',
                     '/ NVDA:', n ? 'OK' : 'none', '/ QQQ:', q ? 'OK' : 'none',
-                    '/ VOO:', v ? 'OK' : 'none', '/ SOXX:', s ? 'OK' : 'none');
+                    '/ SPY:', v ? 'OK' : 'none', '/ SOXX:', s ? 'OK' : 'none');
         try { renderChartAiComments(); } catch(e) { console.error('[renderChartAiComments]', e); }
         try { renderKings(stockData['TSLA'], stockData['NVDA']); } catch(e) { console.error('[renderKings]', e); }
       });
@@ -3297,7 +3297,7 @@ async function loadAllData(forceRefresh = false) {
     return null;
   });
 
-  // (TSLA/NVDA/QQQ/VOO/SOXX Gemini 분석 fetch는 1-A에서 함수 최상단으로 이동함: 2026-07-04)
+  // (TSLA/NVDA/QQQ/SPY/SOXX Gemini 분석 fetch는 1-A에서 함수 최상단으로 이동함: 2026-07-04)
 
   // ── 4. GitHub JSON 실패 시에만 → 실시간 API 직접 호출 ─────────────────
   if (!Object.keys(fetchedData).length) {
@@ -3373,11 +3373,11 @@ async function loadAllData(forceRefresh = false) {
   console.log('[KingAI]', 'TSLA:', window._tslaAnalysis ? 'OK' : 'none',
               '/ NVDA:', window._nvdaAnalysis ? 'OK' : 'none');
 
-  // QQQ/VOO/SOXX 차트분석 JSON 완료 대기 (2026-07-04 신설)
+  // QQQ/SPY/SOXX 차트분석 JSON 완료 대기 (2026-07-04 신설)
   [window._qqqAnalysis, window._vooAnalysis, window._soxxAnalysis] =
     await Promise.all([_qqqAiP, _vooAiP, _soxxAiP]);
   console.log('[ChartAI]', 'QQQ:', window._qqqAnalysis ? 'OK' : 'none',
-              '/ VOO:', window._vooAnalysis ? 'OK' : 'none',
+              '/ SPY:', window._vooAnalysis ? 'OK' : 'none',
               '/ SOXX:', window._soxxAnalysis ? 'OK' : 'none');
 
   clearTimeout(hardTimeout);
@@ -3393,7 +3393,7 @@ function renderAll(data) {
   window._renderData = data;   // TOP9 chips/cards read from this
   const vix  = data['VIX']?.price ?? 18;
   const qqq  = data['QQQ'];
-  const voo  = data['VOO'];
+  const voo  = data['SPY'];
   const tsla = data['TSLA'];
   const nvda = data['NVDA'];
   const dia  = data['DIA'];
@@ -3427,7 +3427,7 @@ function renderAll(data) {
     }
   });
 
-  // ── FlashAlpha 오버레이 적용 (시장 전체 ETF: QQQ, VOO, SOXX에만 적용) ────
+  // ── FlashAlpha 오버레이 적용 (시장 전체 ETF: QQQ, SPY, SOXX에만 적용) ────
   // TSLA, NVDA는 개별 종목이므로 시장 수급 구조 오버레이를 적용하지 않는다.
   // 오버레이가 없거나 실패한 경우 기존 점수 그대로 유지 (graceful fallback).
   if (optionsData?.overlay) {
@@ -3445,8 +3445,8 @@ function renderAll(data) {
     }
   }
 
-  // ── 섹터 너비 보너스 (0~6pt): QQQ·VOO·SOXX 동시 방향 신호 [2026-06-16 TV AI 추천] ──
-  // SPY 대신 VOO 사용 (S&P500 추종 ETF, 동일 역할)
+  // ── 섹터 너비 보너스 (0~6pt): QQQ·SPY·SOXX 동시 방향 신호 [2026-06-16 TV AI 추천] ──
+  // SPY 대신 SPY 사용 (S&P500 추종 ETF, 동일 역할)
   // SOXX가 QQQ보다 1.3배+ 강하면 반도체 리드 = 역사적으로 신뢰도 높은 강세 신호
   {
     const qqqChg  = qqq?.changePct  ?? 0;
@@ -3780,11 +3780,11 @@ function buildTrendLineHtml() {
   if (score >= 80) {
     // ── Prime buy zone ───────────────────────────────────────────────────────
     title = gear >= 3
-      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/VOO 3-3-4 Rule'
+      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 3-3-4 Rule'
       : 'Strong Buy Signal: Start Scaling In After Confirming Trend Recovery';
     desc  = gear >= 3
       ? `${buildRecentContextHtml()}<b>Why Enter Now</b><br>· Trend (Gear) <strong>${gearText}</strong>: above the 200-day MA. Trading above institutions' average cost basis<br>· Buy score <strong>${score}</strong>: prime zone (80+). All combined buy signals are met<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: below the overbought line (70), room left to run<br><br><b>The 3-3-4 Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react if volatility spikes<br>· Buying in stages lowers your average cost automatically even if the price falls<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal holds 75+ → 3rd tranche (40%) once the trend stabilizes<br>· TQQQ/UPRO leverage entries are also viable here: but strictly cap it at 20% of your total account`
-      : `${buildRecentContextHtml()}<b>Why Enter: Signal Is Strong But Trend Needs Confirmation</b><br>· Buy score <strong>${score}</strong>: combined signal is strong<br>· QQQ/VOO <strong>${gearText}</strong>: direction relative to the 200-day MA not yet confirmed. Avoid new leveraged buys in this state<br><br><b>What To Do</b><br>· Start the 1st tranche (30%) once Gear 3 is confirmed<br>· Hold off on TQQQ/UPRO leverage ETFs until Gear 3 is confirmed`;
+      : `${buildRecentContextHtml()}<b>Why Enter: Signal Is Strong But Trend Needs Confirmation</b><br>· Buy score <strong>${score}</strong>: combined signal is strong<br>· QQQ/SPY <strong>${gearText}</strong>: direction relative to the 200-day MA not yet confirmed. Avoid new leveraged buys in this state<br><br><b>What To Do</b><br>· Start the 1st tranche (30%) once Gear 3 is confirmed<br>· Hold off on TQQQ/UPRO leverage ETFs until Gear 3 is confirmed`;
     pills = [
       {text: gearText,                            tone: gear >= 3 ? 'negative' : 'caution'},
       {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,     tone: rsiTone},
@@ -3802,7 +3802,7 @@ function buildTrendLineHtml() {
       ];
     } else {
       title = `Buy Signal ${score}: Prepare First Tranche (30%) After Confirming Gear 3`;
-      desc  = `Buy score <strong>${score}</strong> is sufficient, but QQQ/VOO is <strong>${gearText}</strong>. Consider the 1st tranche (30%) once Gear 3 is confirmed. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Leverage ETFs are a re-entry candidate only after Gear 3 returns.`;
+      desc  = `Buy score <strong>${score}</strong> is sufficient, but QQQ/SPY is <strong>${gearText}</strong>. Consider the 1st tranche (30%) once Gear 3 is confirmed. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Leverage ETFs are a re-entry candidate only after Gear 3 returns.`;
       pills = [
         {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
         {text: 'Waiting for Gear 3',              tone: 'caution'},
@@ -3813,7 +3813,7 @@ function buildTrendLineHtml() {
     // ── Wait for trend confirmation (sidelines) ───────────────────────────────────
     if (gear >= 3) {
       title = `Gear 3 Trend Holding: Buy Signal ${score}, Wait For Signal To Strengthen`;
-      desc  = `QQQ/VOO <strong>${gearText}</strong>. The uptrend is holding, but buy score <strong>${score}</strong> still hasn't cleared the 65 threshold. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Hold your current position. Consider entering once the signal strengthens to 65+.`;
+      desc  = `QQQ/SPY <strong>${gearText}</strong>. The uptrend is holding, but buy score <strong>${score}</strong> still hasn't cleared the 65 threshold. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Hold your current position. Consider entering once the signal strengthens to 65+.`;
       pills = [
         {text: gearText,                          tone: 'neutral'},
         {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,   tone: rsiTone},
@@ -3822,7 +3822,7 @@ function buildTrendLineHtml() {
       ];
     } else {
       title = `Waiting for Trend Confirmation: Buy Signal ${score}, Stay on Sidelines`;
-      desc  = `Buy score is <strong>${score}</strong>, but QQQ/VOO is <strong>${gearText}</strong>. Both a trend reversal and signal strengthening need to be confirmed together. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Consider entering once Gear 3 is confirmed and the buy score clears 65.`;
+      desc  = `Buy score is <strong>${score}</strong>, but QQQ/SPY is <strong>${gearText}</strong>. Both a trend reversal and signal strengthening need to be confirmed together. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Consider entering once Gear 3 is confirmed and the buy score clears 65.`;
       pills = [
         {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
         {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,   tone: rsiTone},
@@ -3835,8 +3835,8 @@ function buildTrendLineHtml() {
       ? `Buy Signal Weakening: ${score}, Hold Current Position, Avoid New Entries`
       : `Low Buy Attractiveness: ${score}, Keep Cash Weighting`;
     desc  = gear >= 3
-      ? `QQQ/VOO is <strong>${gearText}</strong>, but buy score <strong>${score}</strong> falls short of the threshold. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Hold your current position, avoid new entries. New leverage ETF buys not advised here.`
-      : `QQQ/VOO <strong>${gearText}</strong>. Buy score <strong>${score}</strong> doesn't clear the bar for a new entry. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Keep cash weighting and wait for both trend and signal to recover.`;
+      ? `QQQ/SPY is <strong>${gearText}</strong>, but buy score <strong>${score}</strong> falls short of the threshold. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Hold your current position, avoid new entries. New leverage ETF buys not advised here.`
+      : `QQQ/SPY <strong>${gearText}</strong>. Buy score <strong>${score}</strong> doesn't clear the bar for a new entry. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Keep cash weighting and wait for both trend and signal to recover.`;
     pills = [
       {text: gearText,                            tone: gear >= 3 ? 'caution' : 'negative'},
       {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,     tone: rsiTone},
@@ -3849,8 +3849,8 @@ function buildTrendLineHtml() {
       ? `Risk-Off Signal: ${score}, Review Leverage Exposure, Raise Cash Weighting`
       : `Risk-Off: ${score}, Favor Cash, Wait for Trend Recovery`;
     desc  = gear >= 3
-      ? `Buy score is very low at <strong>${score}</strong>. QQQ/VOO is <strong>${gearText}</strong>, but the combined signal points to risk-off. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Review your leverage ETF exposure. Consider switching down to 1x.`
-      : `QQQ/VOO <strong>${gearText}</strong>, buy score <strong>${score}</strong>. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. All signals point to risk-off. Favor holding cash for now. Consider re-entering once Gear reaches 2+ and the signal recovers to 50+.`;
+      ? `Buy score is very low at <strong>${score}</strong>. QQQ/SPY is <strong>${gearText}</strong>, but the combined signal points to risk-off. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Review your leverage ETF exposure. Consider switching down to 1x.`
+      : `QQQ/SPY <strong>${gearText}</strong>, buy score <strong>${score}</strong>. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. All signals point to risk-off. Favor holding cash for now. Consider re-entering once Gear reaches 2+ and the signal recovers to 50+.`;
     pills = [
       {text: gearText,                            tone: gear >= 3 ? 'caution' : 'negative'},
       {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,     tone: rsiTone},
@@ -4017,7 +4017,7 @@ function renderScoreGrid(qqq, voo, soxx) {
     const sGauge = sellGauge(ss);
     const sText  = sellText(ss, d.gear);
 
-    const displayName = d.symbol==='QQQ'?'Nasdaq 100 QQQ':d.symbol==='VOO'?'S&P 500 VOO':d.symbol==='SOXX'?'Semiconductors SOXX':d.symbol;
+    const displayName = d.symbol==='QQQ'?'Nasdaq 100 QQQ':d.symbol==='SPY'?'S&P 500 SPY':d.symbol==='SOXX'?'Semiconductors SOXX':d.symbol;
     const dev200str   = d.dev200 != null ? (d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1) + '%' : ': ';
     const dev5str     = d.dev5   != null ? (d.dev5   >= 0 ? '+' : '') + d.dev5.toFixed(1)   + '%' : ': ';
     const macdStr     = d.macd?.histogram != null ? (d.macd.histogram >= 0 ? '+' : '') + d.macd.histogram.toFixed(2) : ': ';
@@ -4435,7 +4435,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
   const vix = vixPrice ?? 18;
 
-  // ── 종합 신호: QQQ 40% + VOO 30% + SOXX 30% ─────────────────
+  // ── 종합 신호: QQQ 40% + SPY 30% + SOXX 30% ─────────────────
   // 세 ETF를 가중 평균해서 단일 복합 판단 기준을 만든다.
   // 시장 신호 탭의 오늘의 행동 가이드와 동일한 데이터 기반을 공유.
   const ci = [
@@ -4499,33 +4499,33 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (sellPressureHigh) {
     // High sell pressure: be explicit about both new buys and take-profit
     holdLabel = compSell >= 75
-      ? 'Consider partial profit-taking on existing QQQ/VOO/SOXX holdings (new buys not advised)'
-      : 'Consider gradually trimming existing QQQ/VOO/SOXX holdings (new buys not advised)';
+      ? 'Consider partial profit-taking on existing QQQ/SPY/SOXX holdings (new buys not advised)'
+      : 'Consider gradually trimming existing QQQ/SPY/SOXX holdings (new buys not advised)';
     holdColor = 'var(--rd)';
     holdSub   = `Combined sell pressure ${compSell}: entering take-profit zone`;
   } else if (compGear === 3 && compBuy >= 60) {
     // Uptrend + sufficient buy attractiveness: new entries recommended
-    holdLabel = 'Hold existing QQQ/VOO/SOXX positions + consider a small new staged buy';
+    holdLabel = 'Hold existing QQQ/SPY/SOXX positions + consider a small new staged buy';
     holdColor = 'var(--gr)';
     holdSub   = `Uptrend + buy score ${compBuy}: staged entry possible under the 3-3-4 rule`;
   } else if (compGear === 3 && compBuy >= 50) {
     // Uptrend but signal somewhat weak: a small staged entry may be worth considering
-    holdLabel = 'Hold existing QQQ/VOO/SOXX positions + a small staged entry may be worth considering';
+    holdLabel = 'Hold existing QQQ/SPY/SOXX positions + a small staged entry may be worth considering';
     holdColor = 'var(--or)';
     holdSub   = `Uptrend holding + buy signal ${compBuy}: entry conditions are in place. Recommend approaching in small amounts over 3 stages`;
   } else if (compGear === 3) {
     // Uptrend but not a buy timing (RSI overheated, etc.)
-    holdLabel = 'Hold existing QQQ/VOO/SOXX positions (new buys not advised right now)';
+    holdLabel = 'Hold existing QQQ/SPY/SOXX positions (new buys not advised right now)';
     holdColor = 'var(--t1)';
     holdSub   = `Buy score ${compBuy}: uptrend is holding, but this isn't the timing for adding more`;
   } else if (compGear === 2) {
     // Sideways: keep existing 1x, swap leverage down
-    holdLabel = 'Hold existing 1x QQQ/VOO/SOXX positions (avoid new QQQ/VOO buys)';
+    holdLabel = 'Hold existing 1x QQQ/SPY/SOXX positions (avoid new QQQ/SPY buys)';
     holdColor = 'var(--t1)';
     holdSub   = 'Sideways zone: avoid new swing entries, recommend switching leverage ETFs down to 1x';
   } else {
     // Downtrend: review exposure
-    holdLabel = 'Review existing QQQ/VOO/SOXX exposure (new buys not advised)';
+    holdLabel = 'Review existing QQQ/SPY/SOXX exposure (new buys not advised)';
     holdColor = 'var(--rd)';
     holdSub   = `Combined Gear ${compGear} downtrend: clear leverage ETFs first, consider raising cash weighting`;
   }
@@ -4542,7 +4542,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     lev2Color = 'var(--rd)';
     lev2Sub   = `Combined sell pressure ${compSell} ≥ 65: same threshold as the take-profit signal on the Market Signal tab`;
   } else if (compGear < 3) {
-    lev2Label = 'New 2x entries not advised right now: if you hold QLD/SSO, it\'s safer to switch to 1x (QQQ/VOO)';
+    lev2Label = 'New 2x entries not advised right now: if you hold QLD/SSO, it\'s safer to switch to 1x (QQQ/SPY)';
     lev2Color = 'var(--rd)';
     lev2Sub   = `Combined Gear ${compGear}: uptrend broken (near or below the 200-day MA)`;
   } else {
@@ -4586,26 +4586,26 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   let buyAction, buyActionColor;
   if (sellPressureHigh) {
     buyAction      = compSell >= 75
-      ? 'New QQQ/VOO/SOXX buys not advised: actively consider partial profit-taking on existing holdings'
-      : 'Avoid new QQQ/VOO/SOXX buys: consider gradually trimming existing exposure and taking some profit';
+      ? 'New QQQ/SPY/SOXX buys not advised: actively consider partial profit-taking on existing holdings'
+      : 'Avoid new QQQ/SPY/SOXX buys: consider gradually trimming existing exposure and taking some profit';
     buyActionColor = 'var(--rd)';
   } else if (compBuy >= 75) {
-    buyAction      = 'Good timing for a first tranche (30%) QQQ/VOO/SOXX entry: consider starting a 3-stage staged buy';
+    buyAction      = 'Good timing for a first tranche (30%) QQQ/SPY/SOXX entry: consider starting a 3-stage staged buy';
     buyActionColor = 'var(--gr)';
   } else if (compBuy >= 60) {
-    buyAction      = 'Deploy a small QQQ/VOO/SOXX starter position (10–20%) first, then wait for further signal';
+    buyAction      = 'Deploy a small QQQ/SPY/SOXX starter position (10–20%) first, then wait for further signal';
     buyActionColor = 'var(--gr)';
   } else if (compBuy >= 50) {
-    buyAction      = 'Avoid new QQQ/VOO/SOXX swing entries: wait until the buy signal strengthens further';
+    buyAction      = 'Avoid new QQQ/SPY/SOXX swing entries: wait until the buy signal strengthens further';
     buyActionColor = 'var(--t1)';
   } else if (compGear === 3) {
-    buyAction      = 'New QQQ/VOO/SOXX buys not advised (buy signal insufficient): also avoid new entries into leverage ETFs like TQQQ/QLD/SOXL';
+    buyAction      = 'New QQQ/SPY/SOXX buys not advised (buy signal insufficient): also avoid new entries into leverage ETFs like TQQQ/QLD/SOXL';
     buyActionColor = 'var(--t1)';
   } else if (compGear === 2) {
-    buyAction      = 'Avoid new QQQ/VOO buys: recommend switching TQQQ/QLD/SOXL leverage ETFs down to 1x';
+    buyAction      = 'Avoid new QQQ/SPY buys: recommend switching TQQQ/QLD/SOXL leverage ETFs down to 1x';
     buyActionColor = 'var(--rd)';
   } else {
-    buyAction      = 'Avoid adding to QQQ/VOO: clear TQQQ/QLD/SOXL leverage ETFs immediately, consider raising cash weighting';
+    buyAction      = 'Avoid adding to QQQ/SPY: clear TQQQ/QLD/SOXL leverage ETFs immediately, consider raising cash weighting';
     buyActionColor = 'var(--rd)';
   }
 
@@ -4820,7 +4820,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       <!-- 헤더: 현재 추세 상태 -->
       <div class="now-header" style="background:var(--bg);border-bottom:1px solid ${nowHeadlineColor}33;flex-direction:column;align-items:flex-start;gap:12px;">
         <div>
-          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Current Market State: QQQ · VOO · SOXX Combined</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Current Market State: QQQ · SPY · SOXX Combined</div>
           <div style="font-size:20px;font-weight:800;color:${nowHeadlineColor};letter-spacing:-.02em;line-height:1.3;">${nowHeadline}</div>
         </div>
         <div style="display:flex;align-items:center;gap:2px;">${gearStepHTML}</div>
@@ -4912,17 +4912,17 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (compBuy >= 65) {
-      act1 = 'QQQ/VOO first-tranche entry zone (3-3-4 rule)';
+      act1 = 'QQQ/SPY first-tranche entry zone (3-3-4 rule)';
       rsn1 = `<b>Why Enter</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Long-term uptrend intact<br>· Buy score ${compBuy}: above the threshold (65). Buying pressure outweighs selling pressure<br>· RSI ${rsi.toFixed(0)}: below the overbought line (70), room left to rise<br><br><b>The 3-3-4 Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react to an unexpected drop<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal strengthens → 3rd tranche (40%) once the trend stabilizes`;
 
       col1 = 'var(--gr)'; bg1 = 'var(--gr-s)'; bd1 = 'rgba(48,209,88,0.3)';
     } else if (compBuy >= 50) {
-      act1 = 'Hold your QQQ/VOO position. A small additional buy is possible';
+      act1 = 'Hold your QQQ/SPY position. A small additional buy is possible';
       rsn1 = `<b>Why: signal is sufficient but not complete</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Long-term direction still up<br>· Buy score ${compBuy}: meets the threshold (50), but falls short of a strong signal (65+)<br>· Buying the full amount when the signal isn't strong = no dry powder left if it drops<br><br><b>What to do</b><br>· Deploy only a small 1st tranche (30%) first: a "starter position"<br>· Consider adding a 2nd tranche (30%) once the buy score strengthens to 65+`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else {
-      act1 = `Hold off on QQQ/VOO entries: uptrend but buy signal insufficient (${compBuy})`;
+      act1 = `Hold off on QQQ/SPY entries: uptrend but buy signal insufficient (${compBuy})`;
       rsn1 = `<b>Trend is up, but the buy signal falls short</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Not a downtrend<br>· Buy score ${compBuy}: below the threshold (50). Buying pressure isn't strong enough yet<br>· Trend OK + signal insufficient = the direction is right, but the timing isn't yet<br><br><b>What to do</b><br>· Hold off on new buys. Buying now risks getting caught in a short-term pullback<br>· Reconsider entry once the buy score recovers to 50+ and the trend is confirmed holding`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
@@ -4984,12 +4984,12 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (compGear === 3) {
     if (lev2x) {
       act2 = 'Hold 2x ETFs (QLD/SSO): all 3 conditions met';
-      rsn2 = `<b>2x holding: 3-condition check</b><br>· Trend (Gear ${compGear}): above the 200-day MA, uptrend intact<br>· Buy score ${compBuy}: above the threshold, buying pressure dominant<br>· Sell pressure ${compSell}: ${65 - compSell} points of room before the exit threshold (65)<br><br><b>2x holding rule</b><br>· QLD/SSO currently meet all conditions: keep holding<br>· Switch to 1x (QQQ/VOO) immediately if sell pressure exceeds 65<br>· Never exceed 30–50% of your total account`;
+      rsn2 = `<b>2x holding: 3-condition check</b><br>· Trend (Gear ${compGear}): above the 200-day MA, uptrend intact<br>· Buy score ${compBuy}: above the threshold, buying pressure dominant<br>· Sell pressure ${compSell}: ${65 - compSell} points of room before the exit threshold (65)<br><br><b>2x holding rule</b><br>· QLD/SSO currently meet all conditions: keep holding<br>· Switch to 1x (QQQ/SPY) immediately if sell pressure exceeds 65<br>· Never exceed 30–50% of your total account`;
 
       col2 = 'var(--gr)'; bg2 = 'var(--gr-s)'; bd2 = 'rgba(48,209,88,0.3)';
     } else if (compSell >= 65) {
       act2 = 'Consider switching to a 1x ETF';
-      rsn2 = `<b>Sell pressure ${compSell}: above the 2x exit threshold</b><br>· Sell pressure = a combined score of RSI overheating, MACD reversal, and other bearish signals<br>· Above 65 = selling pressure has strengthened, and holding 2x leverage here doubles your loss if it drops<br>· The moment the 2x holding conditions break: now is the switch timing<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/VOO<br>· Consider re-entering 2x once sell pressure drops back below 65`;
+      rsn2 = `<b>Sell pressure ${compSell}: above the 2x exit threshold</b><br>· Sell pressure = a combined score of RSI overheating, MACD reversal, and other bearish signals<br>· Above 65 = selling pressure has strengthened, and holding 2x leverage here doubles your loss if it drops<br>· The moment the 2x holding conditions break: now is the switch timing<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/SPY<br>· Consider re-entering 2x once sell pressure drops back below 65`;
 
       col2 = 'var(--rd)'; bg2 = 'var(--rd-s)'; bd2 = 'rgba(255,69,58,0.3)';
     } else {
@@ -5000,11 +5000,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     }
   } else if (compGear === 2) {
     act2 = 'Consider switching from 2x to 1x';
-    rsn2 = `<b>Gear 2 sideways: a risky zone for 2x leverage</b><br>· Sideways = market direction undecided. Not clear whether it goes up or down<br>· Holding 2x leverage here doubles your losses in either direction with no clear payoff<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/VOO<br>· Consider re-entering 2x once Gear 3 (uptrend) returns`;
+    rsn2 = `<b>Gear 2 sideways: a risky zone for 2x leverage</b><br>· Sideways = market direction undecided. Not clear whether it goes up or down<br>· Holding 2x leverage here doubles your losses in either direction with no clear payoff<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/SPY<br>· Consider re-entering 2x once Gear 3 (uptrend) returns`;
     col2 = 'var(--or)'; bg2 = 'rgba(255,159,10,0.08)'; bd2 = 'rgba(255,159,10,0.3)';
   } else {
     act2 = 'Recommend liquidating all 2x positions and switching to 1x';
-    rsn2 = `<b>Gear 1 downtrend: liquidate 2x immediately</b><br>· Below the 200-day MA = long-term direction confirmed down. Holding 2x here compounds losses<br>· A 10% market drop means roughly a 20% loss on QLD. Waiting for a bounce only grows the loss<br>· Even while down, selling now is the smaller loss<br><br><b>What to do</b><br>· Liquidate all QLD/SSO → switch to 1x QQQ/VOO or cash<br>· Re-enter 2x only after confirming Gear 3 returns`;
+    rsn2 = `<b>Gear 1 downtrend: liquidate 2x immediately</b><br>· Below the 200-day MA = long-term direction confirmed down. Holding 2x here compounds losses<br>· A 10% market drop means roughly a 20% loss on QLD. Waiting for a bounce only grows the loss<br>· Even while down, selling now is the smaller loss<br><br><b>What to do</b><br>· Liquidate all QLD/SSO → switch to 1x QQQ/SPY or cash<br>· Re-enter 2x only after confirming Gear 3 returns`;
     col2 = 'var(--rd)'; bg2 = 'var(--rd-s)'; bd2 = 'rgba(255,69,58,0.3)';
   }
   const el2xAct = document.getElementById('now-action-2x');
@@ -5146,9 +5146,9 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         if (compSell >= 65) {
           li.innerHTML = '<span class="no">No new buys</span>. Sell pressure ' + compSell + ' exceeds the threshold (65). Consider re-entering once sell pressure drops to 64 or below';
         } else if (rsi >= 70) {
-          li.innerHTML = '<span class="no">Don\'t buy new right now</span>. RSI ' + rsi.toFixed(0) + ' overheated: start a QQQ/VOO 3-3-4 staged buy once RSI drops back to 65 or below';
+          li.innerHTML = '<span class="no">Don\'t buy new right now</span>. RSI ' + rsi.toFixed(0) + ' overheated: start a QQQ/SPY 3-3-4 staged buy once RSI drops back to 65 or below';
         } else if (compBuy >= 65) {
-          li.innerHTML = '<span class="ok">1st tranche (30%) entry zone</span>. QQQ/VOO 3-3-4: 1st 30% → 30% more once the signal strengthens → 40% once the trend stabilizes. Buy score ' + compBuy;
+          li.innerHTML = '<span class="ok">1st tranche (30%) entry zone</span>. QQQ/SPY 3-3-4: 1st 30% → 30% more once the signal strengthens → 40% once the trend stabilizes. Buy score ' + compBuy;
         } else if (compBuy >= 50) {
           li.innerHTML = '<span class="ok">A small (1st tranche, 30%) entry is possible</span>. Gear 3 + buy ' + compBuy + ' met. Signal is weak though: start with just the 1st tranche, add a 2nd once it confirms 60+';
         } else {
@@ -5268,7 +5268,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     `VIX: ${vix.toFixed(1)}`;
 }
 
-// ─── AI 차트분석 코멘트 (QQQ/VOO/SOXX) ────────────────────────────────────
+// ─── AI 차트분석 코멘트 (QQQ/SPY/SOXX) ────────────────────────────────────
 // 2026-07-04 신설. calcBuyScore/calcSellScore/lev3x 판단 로직은 전혀 건드리지 않는다 -
 // window._qqqAnalysis 등(chart-analysis 파이프라인이 이미 만든 data/analysis-*.json)을
 // "지금 상황" 카드 아래에 참고용으로 덧붙이기만 한다. 데이터 없으면 조용히 비움.
@@ -5278,7 +5278,7 @@ function renderChartAiComments() {
 
   const items = [
     { sym: 'QQQ',  label: 'Nasdaq 100 ETF', ai: window._qqqAnalysis },
-    { sym: 'VOO',  label: 'S&P 500 ETF',   ai: window._vooAnalysis },
+    { sym: 'SPY',  label: 'S&P 500 ETF',   ai: window._vooAnalysis },
     { sym: 'SOXX', label: 'Semiconductor ETF',    ai: window._soxxAnalysis },
   ].filter(x => x.ai);
 
@@ -6416,14 +6416,14 @@ function loadTVChart(frameId, symbol) {
 
 function initAllCharts() {
   loadTVChart('tv-QQQ',  'NASDAQ:QQQ');
-  loadTVChart('tv-VOO',  'AMEX:VOO');
+  loadTVChart('tv-SPY',  'AMEX:SPY');
   loadTVChart('tv-SOXX', 'NASDAQ:SOXX');
   loadTVChart('tv-TSLA', 'NASDAQ:TSLA');
   loadTVChart('tv-NVDA', 'NASDAQ:NVDA');
   // 다크/라이트 전환 시 차트 재생성: 리스너 중복 등록 방지 (initAllCharts 재귀 호출로 리스너 누적 방지)
   if (!window._tvDarkListener) {
     window._tvDarkListener = () => {
-      ['tv-QQQ','tv-VOO','tv-SOXX','tv-TSLA','tv-NVDA'].forEach(id => {
+      ['tv-QQQ','tv-SPY','tv-SOXX','tv-TSLA','tv-NVDA'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.innerHTML = '';
       });
@@ -6559,7 +6559,7 @@ async function updateLivePrices() {
         if (vixCardEl) vixCardEl.innerHTML = vixHtml;
       }
       // ② 카드 현재가: JSON symbols에서 읽어옴 (Yahoo Finance CORS 전면 차단)
-      const cardSymbols = ['QQQ', 'VOO', 'SOXX', 'TSLA', 'NVDA'];
+      const cardSymbols = ['QQQ', 'SPY', 'SOXX', 'TSLA', 'NVDA'];
       for (const sym of cardSymbols) {
         const s = j?.symbols?.[sym];
         if (!s?.price) continue;
