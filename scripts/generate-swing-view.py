@@ -13,6 +13,7 @@ v4 노출 변조 모델을 '하루 1스텝' 진행시키고 두 파일을 쓴다
   - 자기 채점: 과거 스탠스 vs 실현 수익 대조, 빗나가면 논평이 스스로 인정한다.
   - 기존 라이브 파이프라인·페이지는 일절 건드리지 않는다.
 """
+import re as _re_plain
 import json
 import os
 import re as _re
@@ -196,6 +197,60 @@ def _streak_line(word, stance, days, chg):
     if not passive and chg <= -3:
         return base + f' — 그 사이 {chg:+.1f}%. 방향 불일치 — 손절 기준 재확인 구간.'
     return base + f' — 그 사이 {chg:+.1f}%.'
+
+
+
+# ─── 쉬운 말 변환 (2026-11-17 운영 제보) ─────────────────────────────────────
+# "1배수 칸은 비중 상한 20%" 같은 문장은 이 지면을 오래 본 사람만 알아듣는다.
+# 프롬프트로 시켜도 새는 낱말이라(89항과 같은 교훈) 파일에 쓰기 직전에 코드가 바꾼다.
+# 영어 필드와 식별자는 한글 낱말이 없어 건드려지지 않는다.
+_PLAIN_TREND = {'3': '상승 추세', '2': '횡보', '1': '하락 추세'}
+_PLAIN_SKIP = ('stance', 'session', 'dataDay', 'generatedAt', 'generatedAtKST', 'history',
+               'symbol', 'id', 'url', 'link', 'megaOrder')
+
+
+def plain_text(t):
+    if not isinstance(t, str) or not t:
+        return t
+    t = _re_plain.sub(r'1배수 칸\s*\(QQQ·VOO·SOXX\)', '일반 ETF(QQQ·VOO·SOXX)', t)
+    _J = {'은': '는', '이': '가', '을': '를', '과': '와', '으로': '로'}
+    t = _re_plain.sub(r'1배수 칸(으로|은|이|을|과)(?=[\s,.:])', lambda m: '일반 ETF' + _J[m.group(1)], t)
+    t = t.replace('1배수 칸', '일반 ETF').replace('1배수', '일반 ETF')
+    t = _re_plain.sub(r'레버리지 ([23])배수|([23])배수 레버리지', lambda m: f'{m.group(1) or m.group(2)}배 레버리지', t)
+    t = _re_plain.sub(r'([23])배수', r'\1배 레버리지', t).replace('레버리지 레버리지', '레버리지')
+    t = _re_plain.sub(r'노출 (상한|목표|규율|축소|확대)', r'주식 비중 \1', t)
+    t = _re_plain.sub(r'(목표|현재|계획) 노출', r'\1 주식 비중', t)
+    t = t.replace('강세장 생명선', '강세장 기준선').replace('생명선(30주선)', '30주 이동평균선')
+    t = t.replace('생명선(30주선) 절단', '30주 이동평균선 이탈').replace('생명선 절단', '30주 이동평균선 이탈').replace('생명선 발동', '30주 이동평균선 이탈 규칙 발동')
+    t = t.replace('생명선', '30주 이동평균선')
+    t = _re_plain.sub(r'30주선(?! 이동)', '30주 이동평균선', t)
+    t = t.replace('30주 이동평균선(30주 이동평균선)', '30주 이동평균선')
+    t = t.replace('이동평균선 절단', '이동평균선 이탈')
+    t = t.replace('소량 정찰대', '소량 시험 매수').replace('정찰대', '소량 시험 매수').replace('본대', '본격 매수')
+    t = t.replace('터닝포인트 관문', '반등 확인 조건').replace('확인 관문', '확인 조건').replace('관문', '확인 조건')
+    t = _re_plain.sub(r'(상승 추세|하락 추세|횡보 구간|횡보)\s*\((?:Gear|기어)\s*[123]\)', r'\1', t)
+    t = _re_plain.sub(r'추세\s*(?:Gear|기어)\s*([123])', lambda m: '추세는 ' + _PLAIN_TREND[m.group(1)], t)
+    t = _re_plain.sub(r'(?:Gear|기어)\s*([123])', lambda m: _PLAIN_TREND[m.group(1)], t)
+    _K = {'는': '은', '가': '이', '를': '을', '와': '과', '로': '으로'}
+    t = _re_plain.sub(r'스탠스(는|가|를|와|로)(?=[\s,.:])', lambda m: '판단' + _K[m.group(1)], t)
+    t = t.replace('스탠스', '판단')
+    t = t.replace('리밸런싱', '비중 조정').replace('모형 비중', '예시 포트폴리오 비중')
+    t = _re_plain.sub(r'휩쏘(?!\()', '가짜 신호', t).replace('휩쏘(가짜 신호)', '가짜 신호')
+    for w in ('상승 추세', '하락 추세', '횡보'):
+        t = t.replace(f'{w} {w}', w).replace(f'{w}({w})', w)
+    return t
+
+
+def plain_walk(node, key=None):
+    if key in _PLAIN_SKIP or (isinstance(key, str) and key.endswith('En')):
+        return node
+    if isinstance(node, str):
+        return plain_text(node)
+    if isinstance(node, list):
+        return [plain_walk(x, key) for x in node]
+    if isinstance(node, dict):
+        return {k: plain_walk(v, k) for k, v in node.items()}
+    return node
 
 
 def stance_of(state, action, buy, sell, gear):
@@ -1623,6 +1678,14 @@ def desk_with_fable(view, sc_entry, ca):
   금지 표현: "계좌가 …", "이미 줄여 둔", "이미 채운", "들고 있는 물량은", "버텨 온", "안전벨트" 처럼 독자의 포지션을 전제하는 말.
   초안의 "목표 비중·현재 비중·1배수 칸" 숫자는 **이 지면이 공개 운용하는 모형 비중**이다. 언급할 때는 반드시
   "이 지면의 모형 비중은 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
+- [누구나 아는 말로 쓴다 — 2026-11-17 운영 제보] 이 지면을 처음 보는 사람도 알아들어야 한다.
+  이 지면 안에서만 통하는 낱말을 쓰지 마라. 왼쪽 말은 금지, 오른쪽 말로 쓴다:
+  1배수 칸·1배수 → 일반 ETF(QQQ·VOO·SOXX, 레버리지가 아닌 ETF) / 2배수·3배수 → 2배·3배 레버리지 ETF /
+  노출·노출 상한 → 주식 비중·주식 비중 상한 / 생명선 → 30주 이동평균선 / 정찰대 → 소량 시험 매수 /
+  본대 → 본격 매수 / 관문 → 확인 조건 / 기어 1·2·3(Gear) → 하락 추세·횡보·상승 추세 / 스탠스 → 판단 /
+  리밸런싱 → 비중 조정 / 휩쏘 → 가짜 신호 / 체급 → 쓰지 않는다 / 칸 → 쓰지 않는다.
+  초안과 [오늘의 확정 스탠스]에 이 낱말이 있어도 그대로 옮기지 말고 오른쪽 말로 바꿔 써라.
+  투자자가 널리 쓰는 말(200일선, 분할 매수, 익절, 물타기)은 그대로 써도 된다.
 - 문장 부호(80항): **긴 대시(em dash)를 쓰지 마라.** 항목과 설명, 부연, 한 줄 안의 다른
   문장을 잇는 자리에는 **콜론 ':'**을 쓴다. 하이픈은 마이너스와 구분이 안 된다.
   나쁜 예: "1배수 칸은 채운 채로 유지 - 레버리지 검토는 반등 관문".
@@ -2114,6 +2177,7 @@ def main():
 
     with open(LEDGER, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, ensure_ascii=False, indent=1)
+    view = plain_walk(view)         # 2026-11-17 — 내부 용어를 누구나 아는 말로
     view = _ez_scrub(view)          # 80항 — ' — ' → ' - '
     with open(VIEW, 'w', encoding='utf-8') as f:
         json.dump(view, f, ensure_ascii=False, indent=1)
