@@ -3,9 +3,9 @@
   /* 반등·반락 판별 엔진.
      원안: 외부 세션(Codex) 미리보기 `swing-reversal-beta-1` - 종목 하나를 고르는 형태였다.
      2026-09-13 개편: 이 자리는 **미국 시장**을 판정하는 자리다. 종목을 고르지 않는다.
-       나스닥100(QQQ) · S&P500(VOO) · 반도체(SOXX) 셋을 함께 보고 하나의 판정을 낸다.
+       나스닥100(QQQ) · S&P500(SPY) · 반도체(SOXX) 셋을 함께 보고 하나의 판정을 낸다.
        개별 종목은 TOP9 집중분석이 본다 - 두 자리의 일이 섞이면 둘 다 흐려진다.
-       S&P500 대표는 이 사이트 전체가 VOO 를 쓴다(수집 스크립트·라이브 차트 동일).
+       S&P500 대표는 SPY 다(2026-11-17 오너 결정 - 거래량·옵션 기준의 대표. 다른 지면은 VOO 를 계속 쓴다).
 
      함수가 둘인 이유.
        primitives(s)      가격 구조·모멘텀·거래·200일선. 두 함수가 같은 이 하나를 쓴다.
@@ -34,7 +34,7 @@
   const AGREE = 2;                 // 셋 중 둘 이상이 같은 방향일 때만 시장을 판정한다
   const MARKET = [
     { t:'QQQ',  name:'나스닥100', etf:'QQQ'  },
-    { t:'VOO',  name:'S&P500',   etf:'VOO'  },
+    { t:'SPY',  name:'S&P500',   etf:'SPY'  },
     { t:'SOXX', name:'반도체',    etf:'SOXX' }
   ];
   const valid = v => typeof v === 'number' && Number.isFinite(v);
@@ -83,9 +83,9 @@
       text:!p.momentumOK ? '비교 데이터가 부족합니다.' : p.up ? 'RSI와 MACD 히스토그램이 5거래일 전보다 함께 개선됐습니다.' : p.down ? 'RSI와 MACD 히스토그램이 5거래일 전보다 함께 약해졌습니다.' : 'RSI와 MACD 변화가 일치하지 않습니다. 둘은 하나의 근거 묶음으로 봅니다.' });
     axes.push({ name:'거래 참여', direction:p.volDir,
       text:!p.volumeOK ? '거래량 비교 데이터가 없습니다.' : `거래량 비율 ${p.volRatio.toFixed(2)}배. ${p.volRatio >= 1.2 ? '거래량 증가가 당일 가격 방향에 동반됩니다.' : '거래량 증가 확인 조건(1.2배)은 충족하지 않았습니다.'}` });
-    const market = ['QQQ','VOO'].map(k => snapshot.symbols[k]).filter(x => x && [x.price,x.sma20,x.sma50].every(valid));
+    const market = ['QQQ','SPY'].map(k => snapshot.symbols[k]).filter(x => x && [x.price,x.sma20,x.sma50].every(valid));
     const marketDir = market.length === 2 && market.every(x=>x.price>x.sma20 && x.price>x.sma50) ? 1 : market.length === 2 && market.every(x=>x.price<x.sma20 && x.price<x.sma50) ? -1 : 0;
-    axes.push({name:'시장 환경', direction:marketDir, text:market.length !== 2 ? '시장 비교 데이터가 부족합니다.' : marketDir > 0 ? 'QQQ·VOO가 각각 20일·50일 평균 위에 있습니다.' : marketDir < 0 ? 'QQQ·VOO가 각각 20일·50일 평균 아래에 있습니다.' : 'QQQ·VOO의 추세가 일치하지 않습니다.'});
+    axes.push({name:'시장 환경', direction:marketDir, text:market.length !== 2 ? '시장 비교 데이터가 부족합니다.' : marketDir > 0 ? 'QQQ·SPY가 각각 20일·50일 평균 위에 있습니다.' : marketDir < 0 ? 'QQQ·SPY가 각각 20일·50일 평균 아래에 있습니다.' : 'QQQ·SPY의 추세가 일치하지 않습니다.'});
     // Price-derived indicators are not independent votes; structure gates the state.
     let state = '방향 혼재 · 관찰';
     if (p.breakdown) state = '하방 이탈 · 반락 경계';
@@ -266,7 +266,7 @@
   let snapshot;
   /* 머리 위 작은 줄은 주어를 밝히는 자리다(53항). 바로 위 BUY·SELL·HOLD 는 매매 점수이고
      이 판은 가격의 자리다. 둘이 다른 말을 하는 날에도 무엇을 재는지가 갈리면 읽힌다. */
-  host.innerHTML = `<p class="rv-scope">가격 흐름 · 나스닥100 QQQ · S&amp;P500 VOO · 반도체 SOXX</p><div id="rv-result" aria-live="polite"><p class="rv-line">시세 확인 중</p></div><p id="rv-time"></p><details class="rv-more"><summary>근거와 기준 보기</summary><div id="rv-plan"></div><p class="rv-note">일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 VOO 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
+  host.innerHTML = `<p class="rv-scope">가격 흐름 · 나스닥100 QQQ · S&amp;P500 SPY · 반도체 SOXX</p><div id="rv-result" aria-live="polite"><p class="rv-line">시세 확인 중</p></div><p id="rv-time"></p><details class="rv-more"><summary>근거와 기준 보기</summary><div id="rv-plan"></div><p class="rv-note">일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 SPY 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
   const price = x => '$' + x.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
   const WD = '일월화수목금토';
   function stamp(t) {

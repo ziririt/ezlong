@@ -28,7 +28,7 @@ console.log('\n[1부] 원안 12건 기준선');
   const now = Date.parse('2026-09-13T00:00:00Z');
   const base = {price:110,sma20:105,sma50:100,sma200:90,high20dExcl:115,low20dExcl:95,
                 rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
-  const doc = s => ({generatedAt:new Date(now).toISOString(), symbols:{QQQ:{...base,...s}, VOO:base}});
+  const doc = s => ({generatedAt:new Date(now).toISOString(), symbols:{QQQ:{...base,...s}, SPY:base}});
   const T = [
     ['기본',                     doc(),                                          r => r.state === '회복 우세 · 추세 관찰'],
     ['20일 저가 이탈',            doc({price:94}),                                r => r.state === '하방 이탈 · 반락 경계'],
@@ -58,7 +58,7 @@ console.log('[2부] 경과 시간 · 모델 미호출 · 화면 규칙');
   const now = Date.parse('2026-09-13T00:00:00Z');
   const base = {price:110,sma20:105,sma50:100,sma200:90,high20dExcl:115,low20dExcl:95,
                 rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
-  const doc = s => ({generatedAt:new Date(now).toISOString(), symbols:{QQQ:{...base,...s}, VOO:base}});
+  const doc = s => ({generatedAt:new Date(now).toISOString(), symbols:{QQQ:{...base,...s}, SPY:base}});
 
   /* 2026-09-13: '기존 판정과 견주면' 상자를 화면에서 들어냈다(운영 피드백).
      같은 탭 아래에 매수 점수 카드와 Gear 박스가 이미 있어 중복이었다.
@@ -137,12 +137,12 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
              rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
   const mk = (over = {}) => ({
     generatedAt: new Date(now).toISOString(),
-    symbols: { QQQ:{...B, ...(over.QQQ || {})}, VOO:{...B, ...(over.VOO || {})},
+    symbols: { QQQ:{...B, ...(over.QQQ || {})}, SPY:{...B, ...(over.SPY || {})},
                SOXX:{...B, ...(over.SOXX || {})}, TSLA:{...B, price:1}, NVDA:{...B, price:1} }
   });
 
   /* ── 대상이 셋으로 고정돼 있다 ── */
-  ok('판정 대상은 QQQ·VOO·SOXX 셋', MARKET.map(m => m.t).join(',') === 'QQQ,VOO,SOXX',
+  ok('판정 대상은 QQQ·SPY·SOXX 셋', MARKET.map(m => m.t).join(',') === 'QQQ,SPY,SOXX',
      MARKET.map(m => m.t).join(','));
   ok('둘 이상 합의 기준', AGREE === 2, String(AGREE));
   {
@@ -162,28 +162,28 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     const one = evaluateMarket(mk({SOXX:{price:94}}), now);
     ok('한 곳만 이탈하면 시장 판정은 이탈이 아니다', one.state !== '하방 이탈 · 반락 경계', one.state);
     ok('한 곳만 이탈해도 판정 자체는 나온다', one.ready === true);
-    const two = evaluateMarket(mk({SOXX:{price:94}, VOO:{price:94}}), now);
+    const two = evaluateMarket(mk({SOXX:{price:94}, SPY:{price:94}}), now);
     ok('두 곳이 이탈하면 하방 이탈', two.state === '하방 이탈 · 반락 경계', two.state);
     ok('이탈한 지수 이름을 가격 구조 축에 적는다',
        /S&P500|반도체/.test(two.axes[0].text), two.axes[0].text.slice(0, 60));
   }
   {
-    const r = evaluateMarket(mk({QQQ:{price:120}, VOO:{price:120}}), now);
+    const r = evaluateMarket(mk({QQQ:{price:120}, SPY:{price:120}}), now);
     ok('두 곳 돌파 + 모멘텀·추세 동반 -> 지지 확인 대기',
        r.state === '상방 돌파 · 지지 확인 대기', r.state);
     const r2 = evaluateMarket(mk({QQQ:{price:120, rsi:30, macd:{histogram:-2}},
-                                 VOO:{price:120, rsi:30, macd:{histogram:-2}}}), now);
+                                 SPY:{price:120, rsi:30, macd:{histogram:-2}}}), now);
     ok('돌파했는데 모멘텀이 따라오지 않으면 근거 충돌',
        r2.state === '상방 돌파 · 근거 충돌', r2.state);
   }
   {
     const down = {price:99, rsi:30, rsi5dAgo:60, macd:{histogram:-2}, hist5dAgo:1};
-    const r = evaluateMarket(mk({QQQ:down, VOO:down}), now);
+    const r = evaluateMarket(mk({QQQ:down, SPY:down}), now);
     ok('200일선 위인데 둘이 평균 아래 + 약화 -> 상승 추세 속 반락 경계',
        r.state === '상승 추세 속 반락 경계', r.state);
   }
   {
-    const r = evaluateMarket(mk({QQQ:{sma200:130}, VOO:{sma200:130}, SOXX:{sma200:130}}), now);
+    const r = evaluateMarket(mk({QQQ:{sma200:130}, SPY:{sma200:130}, SOXX:{sma200:130}}), now);
     ok('200일선 아래 + 모멘텀 개선 -> 하락 추세 속 반등 시도',
        r.state === '하락 추세 속 반등 시도', r.state);
     ok('추세 축이 하락을 가리킨다', r.axes[3].direction === -1, String(r.axes[3].direction));
@@ -191,7 +191,7 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
 
   /* ── 재료가 없으면 판정하지 않는다(13절) ── */
   {
-    const snap = mk(); delete snap.symbols.VOO; delete snap.symbols.SOXX;
+    const snap = mk(); delete snap.symbols.SPY; delete snap.symbols.SOXX;
     const r = evaluateMarket(snap, now);
     ok('판단 가능한 지수가 하나면 판정 보류', r.ready === false, r.state);
     ok('보류 사유에 몇 곳인지 적는다', /1곳/.test(r.reason), r.reason);
@@ -228,7 +228,7 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
 
   /* ── 화면에서 들어낸 것들이 되살아나지 않는다 (2026-09-13 운영 피드백) ── */
   {
-    const r = evaluateMarket(mk({QQQ:{buyScore:70, gear:3}, VOO:{buyScore:72, gear:3},
+    const r = evaluateMarket(mk({QQQ:{buyScore:70, gear:3}, SPY:{buyScore:72, gear:3},
                                  SOXX:{buyScore:74, gear:3}}), now);
     ok('시장 판정도 견주기 결과를 담지 않는다', r.alignment === undefined,
        JSON.stringify(r.alignment));
@@ -251,7 +251,7 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok('종목 선택 드롭다운이 없다', !/rv-ticker/.test(src));
     ok('화면은 evaluateMarket 을 부른다', /evaluateMarket\(snapshot\)/.test(src));
     ok('화면 상태에 종목 변수가 없다', !/ticker\s*=\s*'QQQ'/.test(src));
-    ok('세 지수를 화면 안내에 적는다', /QQQ[\s\S]{0,40}VOO[\s\S]{0,40}SOXX/.test(src));
+    ok('세 지수를 화면 안내에 적는다', /QQQ[\s\S]{0,40}SPY[\s\S]{0,40}SOXX/.test(src));
     /* 주석에는 남아 있어도 된다 - 왜 뺐는지를 적었다. 실제 코드만 본다. */
     const code = src.replace(/\/\*[\s\S]*?\*\//g, '');
     ok("'기존 판정과 견주면' 상자가 없다", !/rv-align|견주면/.test(code));
@@ -344,8 +344,8 @@ console.log('[5부] 화면 머리 압축');
   const B = {price:110,sma20:105,sma50:100,sma200:90,high20dExcl:115,low20dExcl:95,
              rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
   const mk = (o = {}) => ({ generatedAt:new Date(now).toISOString(),
-    symbols:{ QQQ:{...B,...(o.QQQ||{})}, VOO:{...B,...(o.VOO||{})}, SOXX:{...B,...(o.SOXX||{})} } });
-  const all = x => ({QQQ:x, VOO:x, SOXX:x});
+    symbols:{ QQQ:{...B,...(o.QQQ||{})}, SPY:{...B,...(o.SPY||{})}, SOXX:{...B,...(o.SOXX||{})} } });
+  const all = x => ({QQQ:x, SPY:x, SOXX:x});
   const weak = {rsi:40, rsi5dAgo:50, macd:{histogram:-2}, hist5dAgo:1};
   const cases = [
     ['하방 이탈 · 반락 경계',       mk(all({price:94})),                                   'down'],
@@ -355,7 +355,7 @@ console.log('[5부] 화면 머리 압축');
     ['상승 추세 속 반락 경계',       mk(all({price:99, ...weak})),                          'mixed'],
     ['회복 우세 · 추세 관찰',       mk(),                                                   'up'],
     ['약세 지속 · 회복 미확인',     mk(all({price:99, sma200:130, ...weak})),               'down'],
-    ['방향 혼재 · 관찰',           mk({QQQ:{price:94}, VOO:{price:120}, SOXX:{price:102}}), 'mixed']
+    ['방향 혼재 · 관찰',           mk({QQQ:{price:94}, SPY:{price:120}, SOXX:{price:102}}), 'mixed']
   ];
   for (const [want, snap, tone] of cases) {
     const r = evaluateMarket(snap, now);
@@ -376,7 +376,7 @@ console.log('[5부] 화면 머리 압축');
     ok('하방 이탈: 회복선은 직전 20일 저가', h.chips.every(c => c.levels[0].label === '회복선' && c.levels[0].value === 95));
     ok('하방 이탈: 회복선까지 거리는 +', h.chips.every(c => c.levels[0].dist.startsWith('+')));
     ok('세 곳 모두면 "세 지수 모두"', h.head.startsWith('세 지수 모두'));
-    const two = hero(evaluateMarket(mk({QQQ:{price:94}, VOO:{price:94}}), now));
+    const two = hero(evaluateMarket(mk({QQQ:{price:94}, SPY:{price:94}}), now));
     ok('두 곳이면 이름을 적는다', two.head.startsWith('나스닥100·S&P500'), two.head);
   }
   ok('판정 보류면 머리를 만들지 않는다', hero(evaluateMarket(mk(), now + 200 * 3600000)) === null);
