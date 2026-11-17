@@ -238,6 +238,7 @@ def plain_text(t):
     t = _re_plain.sub(r'(상승 추세|하락 추세|횡보 구간|횡보)\s*\((?:Gear|기어)\s*[123]\)', r'\1', t)
     t = _re_plain.sub(r'추세\s*(?:Gear|기어)\s*([123])', lambda m: '추세는 ' + _PLAIN_TREND[m.group(1)], t)
     t = _re_plain.sub(r'(?:Gear|기어)\s*([123])', lambda m: _PLAIN_TREND[m.group(1)], t)
+    t = t.replace('추세 기어', '추세 단계').replace('기어', '추세 단계')
     _K = {'는': '은', '가': '이', '를': '을', '와': '과', '로': '으로'}
     t = _re_plain.sub(r'스탠스(는|가|를|와|로)(?=[\s,.:])', lambda m: '판단' + _K[m.group(1)], t)
     t = t.replace('스탠스', '판단')
@@ -248,8 +249,31 @@ def plain_text(t):
     return t
 
 
+_PLAIN_TREND_EN = {'3': 'uptrend', '2': 'sideways', '1': 'downtrend'}
+
+
+def plain_text_en(t):
+    """영문 필드도 같은 원칙 - 이 지면 안에서만 통하는 말을 풀어 쓴다(2026-11-17)."""
+    if not isinstance(t, str) or not t:
+        return t
+    t = _re_plain.sub(r'\s*\(Gear ([123])\)', lambda m: ' (' + _PLAIN_TREND_EN[m.group(1)] + ')', t)
+    t = _re_plain.sub(r'\bGear ([123])\b', lambda m: _PLAIN_TREND_EN[m.group(1)], t)
+    t = t.replace('scout tranche', 'small starter position').replace('lifeline', '30-week moving average')
+    for w in ('uptrend', 'sideways', 'downtrend'):
+        t = t.replace(f'{w} ({w})', w)
+    return t
+
+
 def plain_walk(node, key=None):
-    if key in _PLAIN_SKIP or (isinstance(key, str) and key.endswith('En')):
+    if key in _PLAIN_SKIP:
+        return node
+    if isinstance(key, str) and key.endswith('En'):
+        if isinstance(node, str):
+            return plain_text_en(node)
+        if isinstance(node, list):
+            return [plain_walk(x, key) for x in node]
+        if isinstance(node, dict):
+            return {k: plain_walk(v, key) for k, v in node.items()}
         return node
     if isinstance(node, str):
         return plain_text(node)

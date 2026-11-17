@@ -266,7 +266,7 @@
   let snapshot;
   /* 머리 위 작은 줄은 주어를 밝히는 자리다(53항). 바로 위 BUY·SELL·HOLD 는 매매 점수이고
      이 판은 가격의 자리다. 둘이 다른 말을 하는 날에도 무엇을 재는지가 갈리면 읽힌다. */
-  host.innerHTML = `<p class="rv-scope">가격 흐름 · 나스닥100 QQQ · S&amp;P500 SPY · 반도체 SOXX</p><div id="rv-result" aria-live="polite"><p class="rv-line">시세 확인 중</p></div><p id="rv-time"></p><details class="rv-more"><summary>근거와 기준 보기</summary><div id="rv-plan"></div><p class="rv-note">일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 SPY 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
+  host.innerHTML = `<p class="rv-scope">가격 흐름 · 나스닥100 QQQ · S&amp;P500 SPY · 반도체 SOXX</p><div id="rv-result" aria-live="polite"><p class="rv-line">시세 확인 중</p></div><p id="rv-time"></p><details class="rv-more"><summary>근거와 기준 보기</summary><div id="rv-plan"></div><p class="rv-note">일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 SPY 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 성공률·수익성 검증 전 베타이며 기존 추세·매매점수와 별도로 봅니다.</p></details>`;
   const price = x => '$' + x.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
   const WD = '일월화수목금토';
   function stamp(t) {

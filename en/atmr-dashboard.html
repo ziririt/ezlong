@@ -52,8 +52,8 @@
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title id="page-title-tag">Swing Signal Dashboard: Today's US Stock Buy/Sell Timing | EZLONG</title>
-<meta name="description" content="Live swing signal scores for QQQ, SPY, TSLA and NVDA: today's US stock buy/sell timing, powered by RSI, MACD, and a 200-day moving average Gear system. Data-driven answers to 'should I buy now?'" />
-<meta name="keywords" content="US stock buy timing, QQQ buy signal, best time to buy NVDA, TSLA sell signal, TQQQ trading timing, SOXL swing strategy, nasdaq VIX fear greed index, RSI overbought oversold, MACD trading signal, 200 day moving average gear, US stock swing strategy, QQQ 200-day trading, NVDA RSI oversold, TSLA 200-day support, swing signal, Swing Signal Score, gear shift trading method, 3-3-4 scaled buying, US stock technical analysis, ezlong" />
+<meta name="description" content="Live swing signal scores for QQQ, SPY, TSLA and NVDA: today's US stock buy/sell timing, powered by RSI, MACD, and a 200-day moving average three-stage trend system. Data-driven answers to 'should I buy now?'" />
+<meta name="keywords" content="US stock buy timing, QQQ buy signal, best time to buy NVDA, TSLA sell signal, TQQQ trading timing, SOXL swing strategy, nasdaq VIX fear greed index, RSI overbought oversold, MACD trading signal, 200 day moving average gear, US stock swing strategy, QQQ 200-day trading, NVDA RSI oversold, TSLA 200-day support, swing signal, Swing Signal Score, three-stage trend method, 30/30/40 three-step scaled buying, US stock technical analysis, ezlong" />
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG: Data Tools for US Stock Investors" />
 <link rel="canonical" href="https://ezlong.com/en/atmr-dashboard.html" />
@@ -86,7 +86,7 @@
     "name": "Swing Signal Dashboard",
     "alternateName": "Swing Signal Dashboard",
     "url": "https://ezlong.com/en/atmr-dashboard.html",
-    "description": "A US stock investing tool that analyzes QQQ, SPY, TSLA, and NVDA swing signal buy/sell scores in real time, based on RSI, MACD, and 200-day moving average Gear status. Combines position vs. the 200-day moving average (Gear 3/2/1), RSI, MACD histogram, and the VIX volatility index into a 0-100 buy attractiveness score and sell suitability score.",
+    "description": "A US stock investing tool that analyzes QQQ, SPY, TSLA, and NVDA swing signal buy/sell scores in real time, based on RSI, MACD, and 200-day moving average trend status. Combines position vs. the 200-day moving average (uptrend/sideways/downtrend), RSI, MACD histogram, and the VIX volatility index into a 0-100 buy attractiveness score and sell suitability score.",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "inLanguage": "en",
@@ -100,7 +100,7 @@
     "featureList": [
       "QQQ · SPY · SOXX buy attractiveness & sell suitability scores (0-100)",
       "TSLA · NVDA swing signal scores",
-      "Gear 3/2/1 trend status based on the 200-day moving average",
+      "uptrend/sideways/downtrend trend status based on the 200-day moving average",
       "Combined RSI · MACD · VIX signal analysis",
       "Market breadth indicators (DIA · IWM · SOXX)",
       "Automatic updates every 30 minutes during US market hours (approx. 22:30-06:00 KST)"
@@ -116,7 +116,7 @@
         "name": "Should I buy QQQ today?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check QQQ's buy attractiveness score on the Swing Signal Dashboard. A score of 80+ suggests a prime scaled-buying zone, 60-79 suggests considering a small starter position, 40-59 suggests waiting for a clearer signal, and below 40 suggests holding off on buying or holding cash. Gear 3 (200-day line +2% or more) combined with RSI 45 or below is historically the most aggressive buying zone."
+          "text": "Check QQQ's buy attractiveness score on the Swing Signal Dashboard. A score of 80+ suggests a prime scaled-buying zone, 60-79 suggests considering a small starter position, 40-59 suggests waiting for a clearer signal, and below 40 suggests holding off on buying or holding cash. uptrend (200-day line +2% or more) combined with RSI 45 or below is historically the most aggressive buying zone."
         }
       },
       {
@@ -124,7 +124,7 @@
         "name": "Is it okay to chase NVDA right now?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check NVDA's buy attractiveness score and Gear status on the Swing Signal Dashboard. If RSI is above 70 (overbought) or the price is more than 15% above the 200-day line, the 3-3-4 scaled-buying principle suggests holding off on new buys and instead considering a partial profit-take on existing holdings (see the sell suitability score)."
+          "text": "Check NVDA's buy attractiveness score and trend status on the Swing Signal Dashboard. If RSI is above 70 (overbought) or the price is more than 15% above the 200-day line, the 30/30/40 three-step scaled-buying principle suggests holding off on new buys and instead considering a partial profit-take on existing holdings (see the sell suitability score)."
         }
       },
       {
@@ -132,7 +132,7 @@
         "name": "Is it okay to buy TSLA right now?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check TSLA's Gear status and RSI together. Gear 3 (uptrend above the 200-day line) combined with RSI 40-60 supports considering a trend-following scaled buy. Even in Gear 3, if RSI is above 70 (overbought), holding existing positions is more appropriate than chasing the price. In Gear 2 (range-bound), only a small starter position is recommended; in Gear 1 (downtrend), it's worth waiting for confirmation of a shift back to Gear 2 or higher before entering."
+          "text": "Check TSLA's trend status and RSI together. uptrend (above the 200-day line) combined with RSI 40-60 supports considering a trend-following scaled buy. Even in uptrend, if RSI is above 70 (overbought), holding existing positions is more appropriate than chasing the price. In sideways, only a small starter position is recommended; in downtrend, it's worth waiting for confirmation of a shift back to sideways or better before entering."
         }
       },
       {
@@ -148,7 +148,7 @@
         "name": "When should I buy leveraged ETFs like TQQQ or SOXL?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check the 1x and leveraged blended strategy on the Swing Signal's Strategy Guide tab. The general principle is to expand leveraged (TQQQ) exposure when QQQ is in Gear 3 with a buy attractiveness score of 70+, and to reduce leveraged exposure in favor of the 1x position (QQQ) when Gear drops to 2 or below or the score falls below 50. It's recommended to cap leveraged exposure at 5-10% of a personal account."
+          "text": "Check the 1x and leveraged blended strategy on the Swing Signal's Strategy Guide tab. The general principle is to expand leveraged (TQQQ) exposure when QQQ is in uptrend with a buy attractiveness score of 70+, and to reduce leveraged exposure in favor of the 1x position (QQQ) when the trend weakens to sideways or downtrend or the score falls below 50. It's recommended to cap leveraged exposure at 5-10% of a personal account."
         }
       },
       {
@@ -156,7 +156,7 @@
         "name": "How is the Swing Signal score calculated?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Swing Signal buy attractiveness score (0-100) is calculated from Gear status (0-25) + RSI zone (0-20, with RSI 60-70 in an uptrend scoring 13) + RSI momentum adjustment (±5) + short-term trend alignment (0-15, an uptrend-confirming signal above the 5-day line) + market environment/VIX (0-15, a stable uptrend also scores positively) + composite MACD (0-14, line position + histogram depth) + proximity to the 52-week low (0-5) + price pattern HL/LH (±3). The key design goal is to recognize healthy momentum signals not just during corrections and fear phases, but also during calm bull markets. The sell suitability score (0-100) reflects 200-day line overheating + RSI overbought status and trend + 5-day line overheating + VIX-driven optimism + MACD overheating and trend + proximity to the 52-week high + price pattern. Data is collected every 30 minutes during US market hours (approx. 22:30-06:00 KST), with one automatic update each for pre-market and after-hours outside of that window."
+          "text": "The Swing Signal buy attractiveness score (0-100) is calculated from trend status (0-25) + RSI zone (0-20, with RSI 60-70 in an uptrend scoring 13) + RSI momentum adjustment (±5) + short-term trend alignment (0-15, an uptrend-confirming signal above the 5-day line) + market environment/VIX (0-15, a stable uptrend also scores positively) + composite MACD (0-14, line position + histogram depth) + proximity to the 52-week low (0-5) + price pattern HL/LH (±3). The key design goal is to recognize healthy momentum signals not just during corrections and fear phases, but also during calm bull markets. The sell suitability score (0-100) reflects 200-day line overheating + RSI overbought status and trend + 5-day line overheating + VIX-driven optimism + MACD overheating and trend + proximity to the 52-week high + price pattern. Data is collected every 30 minutes during US market hours (approx. 22:30-06:00 KST), with one automatic update each for pre-market and after-hours outside of that window."
         }
       }
     ]
@@ -1801,7 +1801,7 @@ li.gear-other-sep { display: none !important; }
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="market" onclick="switchTab('market')">
         Swing Signal
-        <span class="tab-btn-sub">Nasdaq 100 · S&P 500 · Semiconductors · 3-3-4</span>
+        <span class="tab-btn-sub">Nasdaq 100 · S&P 500 · Semiconductors · 30/30/40 three-step</span>
       </button>
       <button class="tab-btn" data-tab="kings" onclick="switchTab('kings')">
         TOP9 <span class="tab-new-badge">NEW</span>
@@ -1907,11 +1907,11 @@ li.gear-other-sep { display: none !important; }
 
         <!-- ② Gear 개념 설명: 현황 아래 참고 -->
         <div class="gear-explain-card">
-          <div class="gear-explain-title">What is "Gear"?: This site's trend-classification signal</div>
+          <div class="gear-explain-title">What are the three trend stages?: This site's trend-classification signal</div>
           <ul class="dot-list">
-            <li><span class="ok">Gear 3: Uptrend.</span> QQQ trading above the 200-day moving average. The only market state where leveraged entries are considered.</li>
-            <li><span class="warn">Gear 2: Range-bound / neutral.</span> Near the 200-day line with no clear direction. Worth avoiding new leveraged entries and reviewing existing positions.</li>
-            <li><span class="no">Gear 1: Downtrend.</span> Price has broken below the 200-day line. Leverage exit recommended, cash allocation expansion worth considering.</li>
+            <li><span class="ok">Uptrend.</span> QQQ trading above the 200-day moving average. The only market state where leveraged entries are considered.</li>
+            <li><span class="warn">Sideways (range-bound).</span> Near the 200-day line with no clear direction. Worth avoiding new leveraged entries and reviewing existing positions.</li>
+            <li><span class="no">Downtrend.</span> Price has broken below the 200-day line. Leverage exit recommended, cash allocation expansion worth considering.</li>
           </ul>
         </div>
 
@@ -1948,9 +1948,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're already holding</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="hold-g3-1x" data-for-gear="3"><span class="ok">Gear 3 uptrend still intact</span>: Holding the position is recommended. Consider shifting to scaled profit-taking once RSI hits 70+ or sell pressure reaches 65+</li>
+                  <li id="hold-g3-1x" data-for-gear="3"><span class="ok">uptrend still intact</span>: Holding the position is recommended. Consider shifting to scaled profit-taking once RSI hits 70+ or sell pressure reaches 65+</li>
                   <li data-for-gear="2"><span class="warn">Direction is currently unclear</span>: Trimming roughly half the position is recommended; consider re-entry once a trend is confirmed</li>
-                  <li data-for-gear="1"><span class="no">Currently in a downtrend</span>: Stop adding; trimming the position to 30% or less of the account is recommended</li>
+                  <li data-for-gear="1"><span class="no">Currently in a downtrend</span>: Stop adding; trimming the position to 20% or less of the account is recommended</li>
                 </ul>
               </div>
             </div>
@@ -1959,7 +1959,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're starting a new position</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">Gear 3 uptrend + buy signal confirmed</span>: 3-3-4 scaled buying into QQQ/SPY. Start with tranche 1 (30%), add tranches 2 and 3 once the signal strengthens</li>
+                  <li data-for-gear="3"><span class="ok">uptrend + buy signal confirmed</span>: 30/30/40 three-step scaled buying into QQQ/SPY. Start with tranche 1 (30%), add tranches 2 and 3 once the signal strengthens</li>
                   <li data-for-gear="2"><span class="warn">While direction stays unclear like now</span>: New buys worth holding off on. There's no rush: entering once the trend clearly turns up isn't too late</li>
                   <li data-for-gear="1"><span class="no">While in a downtrend like now</span>: A zone worth avoiding for new buys. Worth revisiting once the market confirms an uptrend</li>
                 </ul>
@@ -1970,7 +1970,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're currently at a loss</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">Gear 3 uptrend intact</span>: If market conditions allow new buys (buy signal 65+, sell pressure below 65, RSI below 70), averaging down can be considered too. Keep it small (within 30%, not a full add) and always set a stop-loss level first</li>
+                  <li data-for-gear="3"><span class="ok">uptrend intact</span>: If market conditions allow new buys (buy signal 65+, sell pressure below 65, RSI below 70), averaging down can be considered too. Keep it small (within 30%, not a full add) and always set a stop-loss level first</li>
                   <li data-for-gear="2"><span class="warn">While direction stays unclear like now</span>: Additional buys worth holding off on; re-entry worth considering once a trend direction is confirmed</li>
                   <li data-for-gear="1"><span class="no">Averaging down during a downtrend like now is strongly discouraged</span>: Nobody knows where the bottom is. Buying more here only compounds the loss</li>
                 </ul>
@@ -1981,7 +1981,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're currently in profit</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">Gear 3 + RSI below 65 + buy score 60+</span>: When all three conditions are met together, a small add to the existing winning position can be considered</li>
+                  <li data-for-gear="3"><span class="ok">uptrend + RSI below 65 + buy score 60+</span>: When all three conditions are met together, a small add to the existing winning position can be considered</li>
                   <li data-for-gear="2"><span class="warn">While direction stays unclear like now</span>: Additional buys worth holding off on. Trimming the winning position gradually is actually the better move here</li>
                   <li data-for-gear="1"><span class="no">While in a downtrend like now</span>: Additional buys worth avoiding. Reducing the size of the profitable position is recommended</li>
                 </ul>
@@ -2023,9 +2023,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're already holding</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="hold-g3-2x" data-for-gear="3"><span class="ok">Gear 3 + buy 50pt+ + sell below 65pt: all 3 conditions met</span>: Holding QLD/SSO 2x is recommended</li>
+                  <li id="hold-g3-2x" data-for-gear="3"><span class="ok">uptrend + buy 50pt+ + sell below 65pt: all 3 conditions met</span>: Holding QLD/SSO 2x is recommended</li>
                   <li data-for-gear="2"><span class="warn">If the market loses direction and turns range-bound, or any condition breaks</span>: Converting half the 2x position to the regular ETF is recommended</li>
-                  <li data-for-gear="1"><span class="no">Downtrend (Gear 1): a zone for winding down 2x</span>: Trimming the 2x ETF by half or more is recommended, with the rest converted to the regular ETF. If sell pressure exceeds 80 or the decline persists, clearing the remainder is recommended too. Holding onto 2x through a downtrend compounds losses at double speed</li>
+                  <li data-for-gear="1"><span class="no">Downtrend: a zone for winding down 2x</span>: Trimming the 2x ETF by half or more is recommended, with the rest converted to the regular ETF. If sell pressure exceeds 80 or the decline persists, clearing the remainder is recommended too. Holding onto 2x through a downtrend compounds losses at double speed</li>
                 </ul>
               </div>
             </div>
@@ -2034,9 +2034,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're starting a new position</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="tier2-new-g3" data-for-gear="3"><span class="no">New QLD/SSO buys not currently supported</span>: Updates automatically once live conditions (Gear · buy score · sell pressure) are met</li>
-                  <li data-for-gear="2"><span class="no">New 2x buys not recommended right now</span>: Range-bound zone. Leveraged entry is better reserved for a return to Gear 3</li>
-                  <li data-for-gear="1"><span class="no">New 2x buys strongly discouraged right now</span>: Downtrend. Leverage is only supported in Gear 3</li>
+                  <li id="tier2-new-g3" data-for-gear="3"><span class="no">New QLD/SSO buys not currently supported</span>: Updates automatically once live conditions (trend · buy score · sell pressure) are met</li>
+                  <li data-for-gear="2"><span class="no">New 2x buys not recommended right now</span>: Range-bound zone. Leveraged entry is better reserved for a return to uptrend</li>
+                  <li data-for-gear="1"><span class="no">New 2x buys strongly discouraged right now</span>: Downtrend. Leverage is only supported in uptrend</li>
                 </ul>
               </div>
             </div>
@@ -2045,9 +2045,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're currently at a loss</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="warn">Gear 3 intact: apply a stricter bar and keep any add small</span>: Since 2x carries double the risk of 1x, averaging-down conditions should be stricter too. Only worth considering a small (within 20%) cost-basis reduction when all three hold at once: sell pressure below 55 + buy signal 70+ + RSI 65 or below. Stop immediately if sell pressure breaks above 65 or a Gear 2 downshift appears</li>
-                  <li data-for-gear="2"><span class="no">Range-bound (Gear 2): additional 2x buys not recommended</span>: In an undecided zone, averaging down on 2x compounds losses at double speed whichever way it breaks. Holding the existing position without adding is recommended. Worth revisiting once Gear 3 (above the 200-day line) is confirmed</li>
-                  <li data-for-gear="1"><span class="no">Downtrend (Gear 1): averaging down discouraged; trimming is the better move</span>: Averaging down on 2x during a downtrend compounds losses at double speed. Trimming the position by half without adding is recommended. Re-check the stop-loss on the remainder, and clearing the full position is recommended if the decline accelerates</li>
+                  <li data-for-gear="3"><span class="warn">uptrend intact: apply a stricter bar and keep any add small</span>: Since 2x carries double the risk of 1x, averaging-down conditions should be stricter too. Only worth considering a small (within 20%) cost-basis reduction when all three hold at once: sell pressure below 55 + buy signal 70+ + RSI 65 or below. Stop immediately if sell pressure breaks above 65 or a sideways downshift appears</li>
+                  <li data-for-gear="2"><span class="no">Range-bound: additional 2x buys not recommended</span>: In an undecided zone, averaging down on 2x compounds losses at double speed whichever way it breaks. Holding the existing position without adding is recommended. Worth revisiting once uptrend (above the 200-day line) is confirmed</li>
+                  <li data-for-gear="1"><span class="no">Downtrend: averaging down discouraged; trimming is the better move</span>: Averaging down on 2x during a downtrend compounds losses at double speed. Trimming the position by half without adding is recommended. Re-check the stop-loss on the remainder, and clearing the full position is recommended if the decline accelerates</li>
                 </ul>
               </div>
             </div>
@@ -2098,9 +2098,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're already holding</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="hold-g3-3x" data-for-gear="3"><span class="ok">Gear 3 + buy 65pt+ + sell below 65pt: all 3 conditions met</span>: Holding TQQQ/UPRO 3x is recommended. Never exceed the 20%-of-account cap</li>
+                  <li id="hold-g3-3x" data-for-gear="3"><span class="ok">uptrend + buy 65pt+ + sell below 65pt: all 3 conditions met</span>: Holding TQQQ/UPRO 3x is recommended. Never exceed the 20%-of-account cap</li>
                   <li data-for-gear="2"><span class="warn">If the market shifts to range-bound or RSI drops below 55</span>: Converting 3x down to 2x is recommended. When direction is unclear, 3x can swing sharply within a single day</li>
-                  <li data-for-gear="1"><span class="no">Downtrend (Gear 1): clearing the full 3x position is recommended</span>: With 3x, a 3% daily drop during a downtrend means a 9% hit to the account. Even at a loss, exiting now is the more appropriate move: waiting it out while the trend hardens further only makes recovery take much longer. Converting to the regular ETF or cash is recommended, with re-entry possible once Gear 3 is confirmed again</li>
+                  <li data-for-gear="1"><span class="no">Downtrend: clearing the full 3x position is recommended</span>: With 3x, a 3% daily drop during a downtrend means a 9% hit to the account. Even at a loss, exiting now is the more appropriate move: waiting it out while the trend hardens further only makes recovery take much longer. Converting to the regular ETF or cash is recommended, with re-entry possible once an uptrend is confirmed again</li>
                 </ul>
               </div>
             </div>
@@ -2110,7 +2110,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-body">
                 <ul class="dot-list">
                   <li id="tier3-new-g3" data-for-gear="3"><span class="no">New TQQQ/UPRO buys not currently supported</span>: Entry only when 5 conditions are met simultaneously. Live conditions are checked automatically</li>
-                  <li data-for-gear="2"><span class="no">New 3x buys strongly discouraged right now</span>: Range-bound zone. 3x leverage is only supported in Gear 3</li>
+                  <li data-for-gear="2"><span class="no">New 3x buys strongly discouraged right now</span>: Range-bound zone. 3x leverage is only supported in uptrend</li>
                   <li data-for-gear="1"><span class="no">New 3x buys strongly discouraged right now</span>: Downtrend. If already holding, full liquidation is recommended: downtrend confirmed</li>
                 </ul>
               </div>
@@ -2120,9 +2120,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">If you're currently at a loss</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="warn">Gear 3 intact: averaging down on 3x is generally discouraged, with a narrow exception</span>: 3x is where averaging down is most dangerous. First considering a step-down to 2x is recommended. If averaging down anyway, it's only supportable when conditions are ideal: sell pressure below 55 + buy signal 75+ + RSI 60 or below + a positive MACD line. Only worth considering a small add (within 10-15%) when all four hold at once: stop immediately if even one breaks</li>
-                  <li data-for-gear="2"><span class="no">Range-bound (Gear 2): averaging down on 3x strongly discouraged</span>: In an undecided zone, adding to 3x means a 3% daily drop translates directly into a 9% loss. Reducing risk via a step-down to 2x or 1x without adding is recommended. 3x is only supported in Gear 3</li>
-                  <li data-for-gear="1"><span class="no">Downtrend (Gear 1): averaging down on 3x discouraged; considering full liquidation instead</span>: Adding to 3x during a downtrend compounds losses at triple speed. Clearing the position instead of averaging down is recommended. If the stop-loss has already been breached, full liquidation is the appropriate move. Re-entering fresh once Gear 3 is confirmed again is far better than holding 3x through the decline</li>
+                  <li data-for-gear="3"><span class="warn">uptrend intact: averaging down on 3x is generally discouraged, with a narrow exception</span>: 3x is where averaging down is most dangerous. First considering a step-down to 2x is recommended. If averaging down anyway, it's only supportable when conditions are ideal: sell pressure below 55 + buy signal 75+ + RSI 60 or below + a positive MACD line. Only worth considering a small add (within 10-15%) when all four hold at once: stop immediately if even one breaks</li>
+                  <li data-for-gear="2"><span class="no">Range-bound: averaging down on 3x strongly discouraged</span>: In an undecided zone, adding to 3x means a 3% daily drop translates directly into a 9% loss. Reducing risk via a step-down to 2x or 1x without adding is recommended. 3x is only supported in uptrend</li>
+                  <li data-for-gear="1"><span class="no">Downtrend: averaging down on 3x discouraged; considering full liquidation instead</span>: Adding to 3x during a downtrend compounds losses at triple speed. Clearing the position instead of averaging down is recommended. If the stop-loss has already been breached, full liquidation is the appropriate move. Re-entering fresh once an uptrend is confirmed again is far better than holding 3x through the decline</li>
                 </ul>
               </div>
             </div>
@@ -2147,8 +2147,8 @@ li.gear-other-sep { display: none !important; }
             <strong>Staged Leverage Reduction Thresholds</strong>
             <ul class="dot-list" style="margin-top:10px;">
               <li><strong>Sell pressure 65-79: pause new entries, begin scaled profit-taking</strong><br>This isn't a danger alarm yet: it could still be the middle of a strong bull run. Still, from this point on, pausing new leveraged buys is recommended. There's no need to sell existing holdings right away: trimming a little on each rally to gradually bring exposure down naturally is the recommended approach. It leaves room to maneuver if a sharp drop follows</li>
-              <li><strong>Sell pressure 80+ or a Gear 3&rarr;2 downshift: clearing half or more of leverage</strong><br>From here, the risk has become clear. Reducing 2x/3x by half or more is recommended, with the remaining position converted to the regular ETF. Holding on stubbornly only to watch the trend fully break means a much longer recovery given how leverage compounds. Trimming while gains remain is the more appropriate move</li>
-              <li><strong>Shift to Gear 1 (below the 200-day line): clear all leverage, raise cash</strong><br>This isn't a short-term pullback: it's a signal that the trend itself has broken. Clearing all leveraged positions is recommended. The same applies even at a loss: holding 3x through a downtrend lets losses snowball. Trimming the regular ETF to half or less and raising cash is recommended too. That cash is the only tool available to re-enter near the bottom</li>
+              <li><strong>Sell pressure 80+ or a uptrend&rarr;2 downshift: clearing half or more of leverage</strong><br>From here, the risk has become clear. Reducing 2x/3x by half or more is recommended, with the remaining position converted to the regular ETF. Holding on stubbornly only to watch the trend fully break means a much longer recovery given how leverage compounds. Trimming while gains remain is the more appropriate move</li>
+              <li><strong>Shift to downtrend (below the 200-day line): clear all leverage, raise cash</strong><br>This isn't a short-term pullback: it's a signal that the trend itself has broken. Clearing all leveraged positions is recommended. The same applies even at a loss: holding 3x through a downtrend lets losses snowball. Trimming the regular ETF to half or less and raising cash is recommended too. That cash is the only tool available to re-enter near the bottom</li>
             </ul>
           </div>
         </div>
@@ -2166,7 +2166,7 @@ li.gear-other-sep { display: none !important; }
             <div style="background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--bd);">
               <div style="font-size:16px;font-weight:700;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-bottom:6px;">Sharp-drop / fear zone</div>
               <div style="font-size:16px;font-weight:700;color:var(--gr);">Deploy cash to buy the dip</div>
-              <div style="font-size:16px;color:var(--t2);margin-top:4px;line-height:1.5;">RSI 35 or below · deep-buy once the uptrend (Gear 3) is confirmed intact</div>
+              <div style="font-size:16px;color:var(--t2);margin-top:4px;line-height:1.5;">RSI 35 or below · deep-buy once the uptrend is confirmed intact</div>
             </div>
           </div>
           <p class="strategy-desc" style="margin-bottom:0;">The moment the market drops sharply, <strong>without cash on hand, that opportunity belongs to someone else</strong>. No matter how good the signal looks, keeping at least 10-20% of the account in cash at all times is recommended. Sharp drops always arrive without warning.</p>
@@ -2195,14 +2195,14 @@ li.gear-other-sep { display: none !important; }
             </div>
           </div>
           <div style="margin-top:14px;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:3px solid var(--bl);">
-            <div style="font-size:16px;font-weight:800;color:var(--bl);margin-bottom:6px;">Downtrend (Gear 1): a zone for holding off on swing buys</div>
-            <p style="font-size:16px;color:var(--t1);line-height:1.65;margin:0;">During a downtrend, holding cash and waiting is recommended. Once the uptrend is confirmed to have returned (back to Gear 3), deploying the accumulated cash into deep buys completes the cycle. <strong>Take profits near highs &rarr; build cash &rarr; deep-buy on sharp drops</strong>: that's the full strategy.</p>
+            <div style="font-size:16px;font-weight:800;color:var(--bl);margin-bottom:6px;">Downtrend: a zone for holding off on swing buys</div>
+            <p style="font-size:16px;color:var(--t1);line-height:1.65;margin:0;">During a downtrend, holding cash and waiting is recommended. Once the uptrend is confirmed to have returned (back to uptrend), deploying the accumulated cash into deep buys completes the cycle. <strong>Take profits near highs &rarr; build cash &rarr; deep-buy on sharp drops</strong>: that's the full strategy.</p>
           </div>
         </div>
 
         <!-- ⑨ 3-3-4 원칙 (참고 가이드, 맨 아래) -->
         <div class="strategy-card">
-          <div class="strategy-tier-badge t1">3-3-4 Scaled Buying Rule: Reference Guide</div>
+          <div class="strategy-tier-badge t1">30/30/40 three-step Scaled Buying Rule: Reference Guide</div>
           <h2 class="strategy-title">Never Buy It All at Once</h2>
           <p class="strategy-desc">Split entries and exits into three stages to spread out risk. The market can always prove you wrong.</p>
           <div class="split-344">
@@ -2296,7 +2296,7 @@ li.gear-other-sep { display: none !important; }
       This dashboard automatically calculates technical indicators to provide reference information only.
       Final responsibility for investment decisions rests with the investor, and no returns are guaranteed.
       Analysis data is collected in real time from multiple global financial data sources and may be delayed.
-      The Swing Signal's analysis logic follows a quant-based scoring system that combines a 200-day moving average Gear-shift strategy, combined RSI/MACD signals, and the VIX volatility index.
+      The Swing Signal's analysis logic follows a quant-based scoring system that combines a 200-day moving average three-stage trend strategy, combined RSI/MACD signals, and the VIX volatility index.
     </div>
 
     <!-- AEO(AI 답변 최적화) FAQ 섹션: 검색엔진 및 AI 엔진 인덱싱용 -->
@@ -2305,30 +2305,30 @@ li.gear-other-sep { display: none !important; }
       <div style="display:flex;flex-direction:column;gap:16px;">
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">Should I buy the Nasdaq 100 (QQQ) today?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check the Nasdaq 100 (QQQ) buy attractiveness score on the dashboard above. A score of 80+ suggests a prime scaled-buying zone, 60-79 suggests a small starter position, 40-59 suggests waiting, and below 40 suggests holding off on buying or holding cash instead. Gear 3 (200-day line +2% or more) combined with RSI 45 or below is the prime zone for aggressive buying.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check the Nasdaq 100 (QQQ) buy attractiveness score on the dashboard above. A score of 80+ suggests a prime scaled-buying zone, 60-79 suggests a small starter position, 40-59 suggests waiting, and below 40 suggests holding off on buying or holding cash instead. uptrend (200-day line +2% or more) combined with RSI 45 or below is the prime zone for aggressive buying.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">Is it okay to chase NVDA right now?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check NVDA's buy attractiveness score and Gear status. If RSI is above 70 (overbought) or the price is more than 15% above the 200-day line, considering a partial profit-take on existing holdings (see the sell suitability score) makes more sense than adding.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check NVDA's buy attractiveness score and trend status. If RSI is above 70 (overbought) or the price is more than 15% above the 200-day line, considering a partial profit-take on existing holdings (see the sell suitability score) makes more sense than adding.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">Is it okay to buy TSLA right now?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check the Gear status and RSI on the TSLA·NVDA tab first. Gear 3 (above the 200-day line) combined with RSI 40-60 is a trend-following scaled-buy window. Even in Gear 3, if RSI is above 70 (overbought), holding existing positions makes more sense than chasing; in Gear 2 (range-bound), only a small starter position is recommended; in Gear 1 (downtrend), waiting for confirmation of a recovery above the 200-day line before entering is recommended. Following the 3-3-4 rule, split entries into three stages instead of committing all at once.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">Check the trend status and RSI on the TSLA·NVDA tab first. uptrend (above the 200-day line) combined with RSI 40-60 is a trend-following scaled-buy window. Even in uptrend, if RSI is above 70 (overbought), holding existing positions makes more sense than chasing; in sideways, only a small starter position is recommended; in downtrend, waiting for confirmation of a recovery above the 200-day line before entering is recommended. Following the 30/30/40 three-step rule, split entries into three stages instead of committing all at once.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">When should I buy leveraged ETFs like TQQQ or SOXL?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">The general principle is to expand leveraged (TQQQ) exposure when the Nasdaq 100 (QQQ) is in Gear 3 with a buy attractiveness score of 70+, and to run mainly the 1x position (Nasdaq 100 QQQ) when Gear drops to 2 or below or the score falls below 50. Capping leverage at 5-10% of a personal account is recommended.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">The general principle is to expand leveraged (TQQQ) exposure when the Nasdaq 100 (QQQ) is in uptrend with a buy attractiveness score of 70+, and to run mainly the 1x position (Nasdaq 100 QQQ) when the trend weakens to sideways or downtrend or the score falls below 50. Capping leverage at 5-10% of a personal account is recommended.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">How is the Swing Signal score calculated?</summary>
           <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>Buy attractiveness (0-100pt) = &Sigma; [ factor&#7522; &times; weight&#7522; ]</strong> &nbsp;(i = 1 to 8)</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">Eight independent factors are calculated in parallel, then combined by weight: Gear status (0-25) + RSI zone (0-20) + RSI momentum adjustment (±5) + short-term trend alignment (0-15) + market environment/VIX (0-15) + composite MACD (0-14) + proximity to the 52-week low (0-5) + price pattern HL/LH (±3).</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">Eight independent factors are calculated in parallel, then combined by weight: trend status (0-25) + RSI zone (0-20) + RSI momentum adjustment (±5) + short-term trend alignment (0-15) + market environment/VIX (0-15) + composite MACD (0-14) + proximity to the 52-week low (0-5) + price pattern HL/LH (±3).</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">Each factor isn't just a raw indicator value: it's <strong>adjusted non-linearly based on the current market regime</strong>. RSI isn't used as a single value; it's combined with a 5-day sliding window to separately identify an exit from oversold or an entry into overbought (±5pt), and the price pattern compares the last 5 days' highs/lows against the prior 20-day range to compute a Higher Low (+3pt) / Lower High (-3pt). MACD combines the line's sign (medium-term trend direction) + the histogram's absolute value (short-term acceleration) + the directional change versus 5 days earlier, compressing all three into a 0-14pt score.</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">The sell suitability score (0-100pt) recalculates the same set of factors <strong>in reverse</strong>, designed to internally offset and check the buy score. The gap and cross-direction between the two scores determines the strength of the final entry/exit signal. Data is collected and recalculated every 30 minutes during US market hours (approx. 22:30-06:00 KST), with one automatic update each for pre-market and after-hours outside that window.</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">Data is collected every 30 minutes during US market hours (approx. 22:30-06:00 KST), with one automatic update each for pre-market and after-hours outside that window.</p>
         </details>
       </div>
-      <p style="margin-top:16px;font-size:16px;color:var(--t3);">This analysis data is calculated based on a 200-day moving average Gear-shift strategy and the 3-3-4 scaled-trading rule. It's a reference resource for swing traders who enter when trend and signal align, then sell in stages once profit-taking thresholds are reached.</p>
+      <p style="margin-top:16px;font-size:16px;color:var(--t3);">This analysis data is calculated based on a 200-day moving average three-stage trend strategy and the 30/30/40 three-step scaled-trading rule. It's a reference resource for swing traders who enter when trend and signal align, then sell in stages once profit-taking thresholds are reached.</p>
       <p style="margin-top:12px;font-size:16px;color:var(--t3);line-height:1.7;">If you have ideas for a better diagnostic algorithm, feel free to email <a href="mailto:easy.invest.good@gmail.com" style="color:var(--t2);text-decoration:underline;">easy.invest.good@gmail.com</a> any time.</p>
     </section>
 
@@ -2721,6 +2721,8 @@ function getSellScoreLabel(score) {
   return 'Not Overheated: No Take-Profit Signal';
 }
 
+// 2026-11-17: say the trend stage in plain words on screen.
+function ezTrendWord(g) { return g >= 3 ? 'uptrend' : g === 2 ? 'sideways' : 'downtrend'; }
 function getGear(dev200) {
   if (dev200 > 2)  return 3;
   if (dev200 > -2) return 2;
@@ -2881,7 +2883,7 @@ function getMarketVerdict(score, gear, rsi, sellP) {
   if (score >= 80) {
     // ── Prime buy zone ───────────────────────────────────────────────────────
     headline      = g >= 3
-      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 3-3-4 Rule'
+      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 30/30/40 three-step Rule'
       : 'Strong Buy Signal: Start Scaling In After Confirming Trend Recovery';
     headlineColor = 'var(--gr)';
   } else if (score >= 65) {
@@ -2892,14 +2894,14 @@ function getMarketVerdict(score, gear, rsi, sellP) {
       headlineColor = 'var(--or)';
     } else {
       headline      = g >= 3
-        ? `Buy Signal ${Math.round(score)}: First Tranche (30%) Entry Possible (3-3-4 Rule)`
-        : `Buy Signal ${Math.round(score)}: Prepare First Tranche (30%) After Confirming Gear 3`;
+        ? `Buy Signal ${Math.round(score)}: First Tranche (30%) Entry Possible (30/30/40 three-step Rule)`
+        : `Buy Signal ${Math.round(score)}: Prepare First Tranche (30%) After Confirming an Uptrend`;
       headlineColor = g >= 3 ? 'var(--gr)' : 'var(--or)';
     }
   } else if (score >= 50) {
     // ── Wait for signal (sidelines) ────────────────────────────────────────────────────
     headline      = g >= 3
-      ? `Gear 3 Trend Holding: Buy Signal ${Math.round(score)}, Enter After Further Strengthening`
+      ? `uptrend Trend Holding: Buy Signal ${Math.round(score)}, Enter After Further Strengthening`
       : `Buy Signal ${Math.round(score)}: Stay on Sidelines Until Trend Direction Confirms`;
     headlineColor = 'var(--t2)';
   } else if (score >= 38) {
@@ -3160,7 +3162,7 @@ const AI_LOADING_STEPS = [
   'Initializing Swing Signal engine...',
   '200-day moving average data collected. Analyzing trend direction...',
   'Cross-checking combined RSI / MACD signals: QQQ, SPY, SOXX...',
-  'Gear state determined. Simulating 1x + leverage strategies...',
+  'Trend stage determined. Simulating 1x + leverage strategies...',
   'VIX volatility index applied. Trade signal scoring complete.',
   'AI analysis complete: rendering today\'s strategy.',
 ];
@@ -3737,8 +3739,8 @@ function buildTrendLineHtml() {
     ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', [
       'No buy signal: risk-off zone. Favor holding cash.',                          // 0 balls: score <50
       'Waiting for trend confirmation: consider a small entry once signal strengthens.',  // 1 ball: score 50~64
-      'First tranche (30%) entry zone: 3-3-4 rule.',                                    // 2 balls: score 65~79
-      'Prime buy zone: aggressive scaling-in timing under the 3-3-4 rule.'               // 3 balls: score 80+
+      'First tranche (30%) entry zone: 30/30/40 three-step rule.',                                    // 2 balls: score 65~79
+      'Prime buy zone: aggressive scaling-in timing under the 30/30/40 three-step rule.'               // 3 balls: score 80+
     ])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', [
       'No sell signal: buy attractiveness still sufficient. Hold zone.',               // 0 balls: score ≥65
@@ -3780,20 +3782,20 @@ function buildTrendLineHtml() {
   if (score >= 80) {
     // ── Prime buy zone ───────────────────────────────────────────────────────
     title = gear >= 3
-      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 3-3-4 Rule'
+      ? 'Prime Zone for Scaling In: Enter Actively on the QQQ/SPY 30/30/40 three-step Rule'
       : 'Strong Buy Signal: Start Scaling In After Confirming Trend Recovery';
     desc  = gear >= 3
-      ? `${buildRecentContextHtml()}<b>Why Enter Now</b><br>· Trend (Gear) <strong>${gearText}</strong>: above the 200-day MA. Trading above institutions' average cost basis<br>· Buy score <strong>${score}</strong>: prime zone (80+). All combined buy signals are met<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: below the overbought line (70), room left to run<br><br><b>The 3-3-4 Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react if volatility spikes<br>· Buying in stages lowers your average cost automatically even if the price falls<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal holds 75+ → 3rd tranche (40%) once the trend stabilizes<br>· TQQQ/UPRO leverage entries are also viable here: but strictly cap it at 20% of your total account`
-      : `${buildRecentContextHtml()}<b>Why Enter: Signal Is Strong But Trend Needs Confirmation</b><br>· Buy score <strong>${score}</strong>: combined signal is strong<br>· QQQ/SPY <strong>${gearText}</strong>: direction relative to the 200-day MA not yet confirmed. Avoid new leveraged buys in this state<br><br><b>What To Do</b><br>· Start the 1st tranche (30%) once Gear 3 is confirmed<br>· Hold off on TQQQ/UPRO leverage ETFs until Gear 3 is confirmed`;
+      ? `${buildRecentContextHtml()}<b>Why Enter Now</b><br>· Trend (Gear) <strong>${gearText}</strong>: above the 200-day MA. Trading above institutions' average cost basis<br>· Buy score <strong>${score}</strong>: prime zone (80+). All combined buy signals are met<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: below the overbought line (70), room left to run<br><br><b>The 30/30/40 three-step Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react if volatility spikes<br>· Buying in stages lowers your average cost automatically even if the price falls<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal holds 75+ → 3rd tranche (40%) once the trend stabilizes<br>· TQQQ/UPRO leverage entries are also viable here: but strictly cap it at 20% of your total account`
+      : `${buildRecentContextHtml()}<b>Why Enter: Signal Is Strong But Trend Needs Confirmation</b><br>· Buy score <strong>${score}</strong>: combined signal is strong<br>· QQQ/SPY <strong>${gearText}</strong>: direction relative to the 200-day MA not yet confirmed. Avoid new leveraged buys in this state<br><br><b>What To Do</b><br>· Start the 1st tranche (30%) once an uptrend is confirmed<br>· Hold off on TQQQ/UPRO leverage ETFs until an uptrend is confirmed`;
     pills = [
       {text: gearText,                            tone: gear >= 3 ? 'negative' : 'caution'},
       {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,     tone: rsiTone},
-      {text: gear >= 3 ? 'Start 3-3-4 Staged Entry' : 'Enter After Confirming Gear 3', tone: 'negative'},
+      {text: gear >= 3 ? 'Start 30/30/40 three-step Staged Entry' : 'Enter After Confirming an Uptrend', tone: 'negative'},
     ];
   } else if (score >= 65) {
     // ── Small starter position ─────────────────────────────────────────────────────
     if (gear >= 3) {
-      title = `Buy Signal ${score}: First Tranche (30%) Entry Zone (3-3-4 Rule)`;
+      title = `Buy Signal ${score}: First Tranche (30%) Entry Zone (30/30/40 three-step Rule)`;
       desc  = `${buildRecentContextHtml()}<b>Why Enter Now</b><br>· Trend (Gear) <strong>${gearText}</strong>: above the 200-day MA. Long-term uptrend intact<br>· Buy score <strong>${score}</strong>: above the entry threshold (65). Direction, momentum, and flow conditions all met<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: below the overbought line (70), still room to rise<br><br><b>Why a "Small Starter Position"</b><br>· Going all-in when the signal isn't perfect leaves you with no dry powder if it drops<br>· Deploy the 1st tranche (30%) first → add a 2nd tranche (30%) once the signal strengthens to 75+ → finish with a 3rd tranche (40%)<br>· For leverage (TQQQ/UPRO), enter only after confirming the MACD histogram has turned positive`;
       pills = [
         {text: gearText,                          tone: 'neutral'},
@@ -3801,18 +3803,18 @@ function buildTrendLineHtml() {
         {text: 'Consider 1st Tranche (30%)',      tone: 'negative'},
       ];
     } else {
-      title = `Buy Signal ${score}: Prepare First Tranche (30%) After Confirming Gear 3`;
-      desc  = `Buy score <strong>${score}</strong> is sufficient, but QQQ/SPY is <strong>${gearText}</strong>. Consider the 1st tranche (30%) once Gear 3 is confirmed. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Leverage ETFs are a re-entry candidate only after Gear 3 returns.`;
+      title = `Buy Signal ${score}: Prepare First Tranche (30%) After Confirming an Uptrend`;
+      desc  = `Buy score <strong>${score}</strong> is sufficient, but QQQ/SPY is <strong>${gearText}</strong>. Consider the 1st tranche (30%) once an uptrend is confirmed. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Leverage ETFs are a re-entry candidate only after an uptrend returns.`;
       pills = [
         {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
-        {text: 'Waiting for Gear 3',              tone: 'caution'},
+        {text: 'Waiting for uptrend',              tone: 'caution'},
         {text: 'Leverage ETFs: Be Cautious',      tone: 'caution'},
       ];
     }
   } else if (score >= 50) {
     // ── Wait for trend confirmation (sidelines) ───────────────────────────────────
     if (gear >= 3) {
-      title = `Gear 3 Trend Holding: Buy Signal ${score}, Wait For Signal To Strengthen`;
+      title = `uptrend Trend Holding: Buy Signal ${score}, Wait For Signal To Strengthen`;
       desc  = `QQQ/SPY <strong>${gearText}</strong>. The uptrend is holding, but buy score <strong>${score}</strong> still hasn't cleared the 65 threshold. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Hold your current position. Consider entering once the signal strengthens to 65+.`;
       pills = [
         {text: gearText,                          tone: 'neutral'},
@@ -3822,7 +3824,7 @@ function buildTrendLineHtml() {
       ];
     } else {
       title = `Waiting for Trend Confirmation: Buy Signal ${score}, Stay on Sidelines`;
-      desc  = `Buy score is <strong>${score}</strong>, but QQQ/SPY is <strong>${gearText}</strong>. Both a trend reversal and signal strengthening need to be confirmed together. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Consider entering once Gear 3 is confirmed and the buy score clears 65.`;
+      desc  = `Buy score is <strong>${score}</strong>, but QQQ/SPY is <strong>${gearText}</strong>. Both a trend reversal and signal strengthening need to be confirmed together. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Consider entering once an uptrend is confirmed and the buy score clears 65.`;
       pills = [
         {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
         {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,   tone: rsiTone},
@@ -3850,7 +3852,7 @@ function buildTrendLineHtml() {
       : `Risk-Off: ${score}, Favor Cash, Wait for Trend Recovery`;
     desc  = gear >= 3
       ? `Buy score is very low at <strong>${score}</strong>. QQQ/SPY is <strong>${gearText}</strong>, but the combined signal points to risk-off. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. Review your leverage ETF exposure. Consider switching down to 1x.`
-      : `QQQ/SPY <strong>${gearText}</strong>, buy score <strong>${score}</strong>. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. All signals point to risk-off. Favor holding cash for now. Consider re-entering once Gear reaches 2+ and the signal recovers to 50+.`;
+      : `QQQ/SPY <strong>${gearText}</strong>, buy score <strong>${score}</strong>. RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>. All signals point to risk-off. Favor holding cash for now. Consider re-entering once the trend is sideways or better and the signal recovers to 50+.`;
     pills = [
       {text: gearText,                            tone: gear >= 3 ? 'caution' : 'negative'},
       {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,     tone: rsiTone},
@@ -3954,6 +3956,8 @@ function buildTrendLineHtml() {
 function renderScoreGrid(qqq, voo, soxx) {
   const grid = document.getElementById('score-grid');
   const items = [qqq, voo, soxx].filter(Boolean);
+  // 2026-11-17: one symbol can arrive a day late (the data source returns an empty last bar). Say which close it is.
+  const _refBar = items.map(x => x.barDate).filter(Boolean).sort().pop() || null;
   if (!items.length) { grid.innerHTML = ''; return; }
 
   // ── 매수 매력도 색상 (높을수록 긍정) ──────────────
@@ -4049,6 +4053,7 @@ function renderScoreGrid(qqq, voo, soxx) {
           <div class="score-price-block">
             <div class="score-price" id="live-price-${d.symbol}">${priceStr}</div>
             <div class="score-change ${changeCls}">${changeStr}</div>
+            ${(d.barDate && _refBar && d.barDate < _refBar) ? `<div style="font-size:14px;font-weight:700;color:var(--or);margin-top:2px;">Delayed quote: ${d.barDate} close</div>` : ''}
           </div>
         </div>
 
@@ -4086,11 +4091,11 @@ function renderScoreGrid(qqq, voo, soxx) {
             <span class="ind-value" style="color:${gearColor};">${gearLabel}</span>
           </div>
           <div class="ind-row">
-            <span class="ind-label">200-day SMA Deviation</span>
+            <span class="ind-label">200-day moving average Deviation</span>
             <span class="ind-value" style="color:${d.dev200 >= 0 ? 'var(--gr)' : 'var(--rd)'};">${dev200str}</span>
           </div>
           <div class="ind-row">
-            <span class="ind-label">5-day SMA Deviation</span>
+            <span class="ind-label">5-day moving average Deviation</span>
             <span class="ind-value" style="color:${dev5Color};">${dev5str}</span>
           </div>
           <div class="ind-row">
@@ -4102,7 +4107,7 @@ function renderScoreGrid(qqq, voo, soxx) {
             <span class="ind-value" style="color:${macdColor};">${macdStr}</span>
           </div>
           <div class="ind-row">
-            <span class="ind-label">200-day SMA</span>
+            <span class="ind-label">200-day moving average</span>
             <span class="ind-value neutral">$${d.sma200?.toFixed(2) ?? ': '}</span>
           </div>
         </div>
@@ -4125,7 +4130,7 @@ function renderGearBox(qqq, vix) {
   const gearDescs = {
     3: 'Current state: uptrend holding above the 200-day MA. → Recommended action: buy with the trend, leverage permitted.',
     2: 'Current state: direction undecided near the 200-day MA. → Recommended action: wait on sidelines, raise cash weighting.',
-    1: 'Current state: downtrend in progress below the 200-day MA. → Recommended action: keep 70%+ cash, consider inverse.'
+    1: 'Current state: downtrend in progress below the 200-day MA. → Recommended action: keep 80%+ cash, consider inverse.'
   };
   const gearNames = { 3: 'Uptrend', 2: 'Sideways', 1: 'Downtrend' };
 
@@ -4135,7 +4140,7 @@ function renderGearBox(qqq, vix) {
       <div class="gear-items">
         ${[1,2,3].map(n => `
           <div class="gear-item ${gearItemCls(n)}">
-            <div class="gear-num">G${n}</div>
+            <div class="gear-num">${({3:"Up",2:"Flat",1:"Down"})[n]}</div>
             <div class="gear-name">${gearNames[n]}</div>
             <div class="gear-desc">${gearDescs[n]}</div>
           </div>
@@ -4147,15 +4152,15 @@ function renderGearBox(qqq, vix) {
           <div class="gear-sma-val">$${qqq.price.toFixed(2)}</div>
         </div>
         <div class="gear-sma-item">
-          <div class="gear-sma-label">200-day SMA</div>
+          <div class="gear-sma-label">200-day moving average</div>
           <div class="gear-sma-val">$${qqq.sma200?.toFixed(2) ?? ': '}</div>
         </div>
         <div class="gear-sma-item">
-          <div class="gear-sma-label">Deviation from SMA</div>
+          <div class="gear-sma-label">vs. 200-day average</div>
           <div class="gear-sma-val" style="color:${qqq.dev200 >= 0 ? 'var(--gr)' : 'var(--rd)'}">${(qqq.dev200 >= 0 ? '+' : '') + qqq.dev200.toFixed(2)}%</div>
         </div>
         <div class="gear-sma-item">
-          <div class="gear-sma-label">50-day SMA</div>
+          <div class="gear-sma-label">50-day moving average</div>
           <div class="gear-sma-val">$${qqq.sma50?.toFixed(2) ?? ': '}</div>
         </div>
         <div class="gear-sma-item">
@@ -4252,7 +4257,7 @@ function renderVIX(vixData) {
   let cls, interpretation, hint;
   if (vix > 35) {
     cls = 'panic'; interpretation = 'Extreme Fear: Watch for Panic-Buying Opportunity';
-    hint = 'Historically, VIX 35+ has been a strong contrarian buy zone. Consider staged buying under the 3-3-4 rule.';
+    hint = 'Historically, VIX 35+ has been a strong contrarian buy zone. Consider staged buying under the 30/30/40 three-step rule.';
   } else if (vix > 28) {
     cls = 'fear'; interpretation = 'High Fear: Favorable for Staged Buying';
     hint = 'Market anxiety is elevated. Rather than joining the panic selling, staged buying to lower your average cost is a valid strategy here.';
@@ -4261,7 +4266,7 @@ function renderVIX(vixData) {
     hint = 'Volatility is above normal. Focus on managing existing positions rather than new leveraged entries.';
   } else if (vix > 15) {
     cls = 'normal'; interpretation = 'Normal Level: Follow the Trend';
-    hint = 'The market is stable. Recommend maintaining your normal trend-following strategy based on Gear state.';
+    hint = 'The market is stable. Recommend maintaining your normal trend-following strategy based on the trend stage.';
   } else {
     cls = 'calm'; interpretation = 'Excessive Complacency: Be Wary';
     hint = 'VIX is unusually low. Risk often builds up when the market feels too comfortable. Review your leverage exposure.';
@@ -4454,7 +4459,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   const dev200   = qqq.dev200 ?? 0;
 
   // ── 기어 상태 (종합) ───────────────────────────
-  const gearLabel = compGear === 3 ? 'Uptrend (Gear 3)' : compGear === 2 ? 'Sideways (Gear 2)' : 'Downtrend (Gear 1)';
+  const gearLabel = compGear === 3 ? 'Uptrend' : compGear === 2 ? 'Sideways' : 'Downtrend';
   const gearColor = compGear === 3 ? 'var(--gr)' : compGear === 2 ? 'var(--t2)' : 'var(--rd)';
   const gearBg    = compGear === 3 ? 'var(--gr-s)' : compGear === 2 ? 'var(--yl-s)' : 'var(--rd-s)';
 
@@ -4465,8 +4470,8 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   const gearStepHTML = [1,2,3].map(n => {
     const on = n === compGear;
     const chip = on
-      ? `<span style="padding:3px 11px;border-radius:20px;font-size:16px;font-weight:800;color:${_gc[n]};background:transparent;border:1.5px solid ${_ge[n]};">Gear&nbsp;${n}</span>`
-      : `<span style="padding:3px 11px;border-radius:20px;font-size:16px;font-weight:500;color:var(--t3);border:1.5px solid var(--bd);">Gear&nbsp;${n}</span>`;
+      ? `<span style="padding:3px 11px;border-radius:20px;font-size:16px;font-weight:800;color:${_gc[n]};background:transparent;border:1.5px solid ${_ge[n]};">${ezTrendWord(n)}</span>`
+      : `<span style="padding:3px 11px;border-radius:20px;font-size:16px;font-weight:500;color:var(--t3);border:1.5px solid var(--bd);">${ezTrendWord(n)}</span>`;
     return chip + (n < 3 ? `<span style="color:var(--t3);font-size:16px;margin:0 1px;">→</span>` : '');
   }).join('');
 
@@ -4507,7 +4512,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     // Uptrend + sufficient buy attractiveness: new entries recommended
     holdLabel = 'Hold existing QQQ/SPY/SOXX positions + consider a small new staged buy';
     holdColor = 'var(--gr)';
-    holdSub   = `Uptrend + buy score ${compBuy}: staged entry possible under the 3-3-4 rule`;
+    holdSub   = `Uptrend + buy score ${compBuy}: staged entry possible under the 30/30/40 three-step rule`;
   } else if (compGear === 3 && compBuy >= 50) {
     // Uptrend but signal somewhat weak: a small staged entry may be worth considering
     holdLabel = 'Hold existing QQQ/SPY/SOXX positions + a small staged entry may be worth considering';
@@ -4527,7 +4532,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     // Downtrend: review exposure
     holdLabel = 'Review existing QQQ/SPY/SOXX exposure (new buys not advised)';
     holdColor = 'var(--rd)';
-    holdSub   = `Combined Gear ${compGear} downtrend: clear leverage ETFs first, consider raising cash weighting`;
+    holdSub   = `Combined ${ezTrendWord(compGear)} downtrend: clear leverage ETFs first, consider raising cash weighting`;
   }
 
   // ── 레버리지 행별 메시지 사전 계산 ──────────────
@@ -4536,7 +4541,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (lev2x) {
     lev2Label = 'New entry possible: keep it within 30–50% of your total';
     lev2Color = 'var(--gr)';
-    lev2Sub   = `Combined Gear ${compGear} ✓ · Buy ${compBuy} ✓ · Sell pressure ${compSell} is healthy`;
+    lev2Sub   = `Combined ${ezTrendWord(compGear)} ✓ · Buy ${compBuy} ✓ · Sell pressure ${compSell} is healthy`;
   } else if (sellPressureHigh) {
     lev2Label = 'Avoid new 2x entries: also consider gradually trimming existing QLD/SSO';
     lev2Color = 'var(--rd)';
@@ -4544,7 +4549,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   } else if (compGear < 3) {
     lev2Label = 'New 2x entries not advised right now: if you hold QLD/SSO, it\'s safer to switch to 1x (QQQ/SPY)';
     lev2Color = 'var(--rd)';
-    lev2Sub   = `Combined Gear ${compGear}: uptrend broken (near or below the 200-day MA)`;
+    lev2Sub   = `Combined ${ezTrendWord(compGear)}: uptrend broken (near or below the 200-day MA)`;
   } else {
     // Gear 3 but buy score insufficient (compBuy < 50)
     lev2Label = 'New 2x entries not advised right now: no need to unwind existing holdings immediately, but be ready to trim if the signal worsens';
@@ -4557,7 +4562,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     // All 5 conditions met = enter actively
     lev3Label = 'New 3x entry possible: keep it within 5–20% of your total, enter the first half (50%) first';
     lev3Color = 'var(--gr)';
-    lev3Sub   = `All 5 conditions met: Gear ${compGear} ✓ · RSI ${rsi.toFixed(0)}>55 ✓ · MACD line + histogram both positive ✓ · Buy ${compBuy} ✓ · Sell pressure ${compSell} healthy`;
+    lev3Sub   = `All 5 conditions met: ${ezTrendWord(compGear)} ✓ · RSI ${rsi.toFixed(0)}>55 ✓ · MACD line + histogram both positive ✓ · Buy ${compBuy} ✓ · Sell pressure ${compSell} healthy`;
   } else if (lev3x) {
     // MACD line positive but histogram negative = brief pause, partial entry allowed
     lev3Label = `3x first tranche (50%) entry: trend direction is up (MACD line +${macdLine.toFixed(2)}). Short-term momentum has briefly eased; enter half first and confirm recovery`;
@@ -4574,7 +4579,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   } else if (compGear < 3) {
     lev3Label = '3x is the position you should unwind first right now: once the trend breaks, 3x losses compound quickly';
     lev3Color = 'var(--rd)';
-    lev3Sub   = `Combined Gear ${compGear}: 3x leverage should be the first thing you unwind here`;
+    lev3Sub   = `Combined ${ezTrendWord(compGear)}: 3x leverage should be the first thing you unwind here`;
   } else {
     const condStr = `RSI>55: ${rsi>55?'✓':'✗ ('+rsi.toFixed(0)+')'} · MACD line>0: ${macdLine>0?'✓ (+'+macdLine.toFixed(2)+')':'✗ ('+macdLine.toFixed(2)+')'} · Buy 60+: ${compBuy>=60?'✓':'✗ ('+compBuy+')'}`;
     lev3Label = 'New 3x entry conditions not yet met: reconsider once the conditions below are also satisfied';
@@ -4644,7 +4649,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       soxxRowLabel = 'Recommend reducing existing exposure (downtrend)';
       soxxRowColor = 'var(--rd)';
     }
-    soxxRowSub = `Gear ${sGear} · 200-day MA ${(soxx.dev200 ?? 0) >= 0 ? '+' : ''}${soxx.dev200?.toFixed(1) ?? ': '}% · Sell pressure ${sSell} · Buy score ${sBuy}`;
+    soxxRowSub = `${ezTrendWord(sGear)} · 200-day MA ${(soxx.dev200 ?? 0) >= 0 ? '+' : ''}${soxx.dev200?.toFixed(1) ?? ': '}% · Sell pressure ${sSell} · Buy score ${sBuy}`;
   }
 
   // ── 52-week drawdown calc (deep buying) ────────────────────
@@ -4669,7 +4674,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       ? `Stop-loss condition not applicable: +${pctFrom200.toFixed(1)}% above the 200-day MA`
       : 'Stop-loss condition not applicable (uptrend holding)';
     stopLossColor = 'var(--gr)';
-    stopLossSub   = sma200val ? `Reference level: 2 consecutive closes below QQQ $${sma200val.toFixed(2)} (200-day SMA) → liquidate all leverage immediately` : '';
+    stopLossSub   = sma200val ? `Reference level: 2 consecutive closes below QQQ $${sma200val.toFixed(2)} (200-day moving average) → liquidate all leverage immediately` : '';
   } else if (qqq.gear === 2) {
     // Near the 200-day MA: watch zone
     stopLossLabel = pctFrom200 !== null
@@ -4706,7 +4711,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (compGear === 3) {
     invLabel = 'Currently in an uptrend: inverse ETF entries strongly not advised';
     invColor = 'var(--t3)';
-    invSub   = 'Even in an overbought zone, if the uptrend is still alive and it continues, losses on an inverse position compound. Professional traders also avoid fighting Gear 3 with inverse strategies. Adjusting cash weighting is enough here.';
+    invSub   = 'Even in an overbought zone, if the uptrend is still alive and it continues, losses on an inverse position compound. Professional traders also avoid fighting uptrend with inverse strategies. Adjusting cash weighting is enough here.';
   } else if (compGear === 2) {
     invLabel = 'Sideways zone: direction is undecided, making inverse even riskier here';
     invColor = 'var(--t2)';
@@ -4893,12 +4898,12 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (compGear === 3) {
     if (compSell >= 75) {
       act1 = 'Consider partial profit-taking on your position';
-      rsn1 = `<b>Sell pressure ${compSell}: extreme overheating zone</b><br>· Sell pressure = a combined score of bearish signals like RSI overheating, MACD reversal, and price overextension<br>· Above 75 = a historically overheated level where institutions start taking profit<br>· The trend (Gear ${compGear}) is still alive, but that doesn't mean it's fine to buy right now<br><br><b>Partial profit-taking rule</b><br>· Never sell the full amount at once: you'd miss further gains if the trend extends<br>· Take profit on the 1st third now → watch RSI and take the 2nd/3rd portions in stages`;
+      rsn1 = `<b>Sell pressure ${compSell}: extreme overheating zone</b><br>· Sell pressure = a combined score of bearish signals like RSI overheating, MACD reversal, and price overextension<br>· Above 75 = a historically overheated level where institutions start taking profit<br>· The trend (${ezTrendWord(compGear)}) is still alive, but that doesn't mean it's fine to buy right now<br><br><b>Partial profit-taking rule</b><br>· Never sell the full amount at once: you'd miss further gains if the trend extends<br>· Take profit on the 1st third now → watch RSI and take the 2nd/3rd portions in stages`;
 
       col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
     } else if (compSell >= 65) {
       act1 = `Sell pressure ${compSell}: avoid new buys, consider taking some profit`;
-      rsn1 = `<b>Sell pressure ${compSell}: entering the take-profit zone</b><br>· Above 65 = the point where selling pressure starts to outweigh buying pressure in the market<br>· The trend (Gear ${compGear}) is holding, but upside room is gradually shrinking<br>· No new buys right now: if you already hold a position, reduce risk by taking some profit<br><br><b>Profit-taking rule</b><br>· Take profit on 1/3 of your position first. Decide on the rest based on RSI and sell pressure trends<br>· Consider taking more profit if sell pressure exceeds 75`;
+      rsn1 = `<b>Sell pressure ${compSell}: entering the take-profit zone</b><br>· Above 65 = the point where selling pressure starts to outweigh buying pressure in the market<br>· The trend (${ezTrendWord(compGear)}) is holding, but upside room is gradually shrinking<br>· No new buys right now: if you already hold a position, reduce risk by taking some profit<br><br><b>Profit-taking rule</b><br>· Take profit on 1/3 of your position first. Decide on the rest based on RSI and sell pressure trends<br>· Consider taking more profit if sell pressure exceeds 75`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (rsi >= 75) {
@@ -4908,33 +4913,33 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (rsi >= 70) {
       act1 = `RSI ${rsi.toFixed(0)} overheated: avoid new buys`;
-      rsn1 = `<b>RSI ${rsi.toFixed(0)}: overbought warning zone</b><br>· RSI above 70 = the recent pace of price gains has become excessive<br>· New buys in an overbought zone = timing risk of buying near a short-term top<br>· The trend (Gear ${compGear}) is still alive: no need to rush, opportunities will come<br><br><b>What to do</b><br>· Existing position: keep as is<br>· Hold off on new buys. Reconsider entry timing once RSI drops back to 65 or below`;
+      rsn1 = `<b>RSI ${rsi.toFixed(0)}: overbought warning zone</b><br>· RSI above 70 = the recent pace of price gains has become excessive<br>· New buys in an overbought zone = timing risk of buying near a short-term top<br>· The trend (${ezTrendWord(compGear)}) is still alive: no need to rush, opportunities will come<br><br><b>What to do</b><br>· Existing position: keep as is<br>· Hold off on new buys. Reconsider entry timing once RSI drops back to 65 or below`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (compBuy >= 65) {
-      act1 = 'QQQ/SPY first-tranche entry zone (3-3-4 rule)';
-      rsn1 = `<b>Why Enter</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Long-term uptrend intact<br>· Buy score ${compBuy}: above the threshold (65). Buying pressure outweighs selling pressure<br>· RSI ${rsi.toFixed(0)}: below the overbought line (70), room left to rise<br><br><b>The 3-3-4 Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react to an unexpected drop<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal strengthens → 3rd tranche (40%) once the trend stabilizes`;
+      act1 = 'QQQ/SPY first-tranche entry zone (30/30/40 three-step rule)';
+      rsn1 = `<b>Why Enter</b><br>· Trend (${ezTrendWord(compGear)}): above the 200-day MA. Long-term uptrend intact<br>· Buy score ${compBuy}: above the threshold (65). Buying pressure outweighs selling pressure<br>· RSI ${rsi.toFixed(0)}: below the overbought line (70), room left to rise<br><br><b>The 30/30/40 three-step Staged Entry Rule</b><br>· Never buy the full amount at once: leaves no room to react to an unexpected drop<br>· 1st tranche (30%) today → 2nd tranche (30%) once the signal strengthens → 3rd tranche (40%) once the trend stabilizes`;
 
       col1 = 'var(--gr)'; bg1 = 'var(--gr-s)'; bd1 = 'rgba(48,209,88,0.3)';
     } else if (compBuy >= 50) {
       act1 = 'Hold your QQQ/SPY position. A small additional buy is possible';
-      rsn1 = `<b>Why: signal is sufficient but not complete</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Long-term direction still up<br>· Buy score ${compBuy}: meets the threshold (50), but falls short of a strong signal (65+)<br>· Buying the full amount when the signal isn't strong = no dry powder left if it drops<br><br><b>What to do</b><br>· Deploy only a small 1st tranche (30%) first: a "starter position"<br>· Consider adding a 2nd tranche (30%) once the buy score strengthens to 65+`;
+      rsn1 = `<b>Why: signal is sufficient but not complete</b><br>· Trend (${ezTrendWord(compGear)}): above the 200-day MA. Long-term direction still up<br>· Buy score ${compBuy}: meets the threshold (50), but falls short of a strong signal (65+)<br>· Buying the full amount when the signal isn't strong = no dry powder left if it drops<br><br><b>What to do</b><br>· Deploy only a small 1st tranche (30%) first: a "starter position"<br>· Consider adding a 2nd tranche (30%) once the buy score strengthens to 65+`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else {
       act1 = `Hold off on QQQ/SPY entries: uptrend but buy signal insufficient (${compBuy})`;
-      rsn1 = `<b>Trend is up, but the buy signal falls short</b><br>· Trend (Gear ${compGear}): above the 200-day MA. Not a downtrend<br>· Buy score ${compBuy}: below the threshold (50). Buying pressure isn't strong enough yet<br>· Trend OK + signal insufficient = the direction is right, but the timing isn't yet<br><br><b>What to do</b><br>· Hold off on new buys. Buying now risks getting caught in a short-term pullback<br>· Reconsider entry once the buy score recovers to 50+ and the trend is confirmed holding`;
+      rsn1 = `<b>Trend is up, but the buy signal falls short</b><br>· Trend (${ezTrendWord(compGear)}): above the 200-day MA. Not a downtrend<br>· Buy score ${compBuy}: below the threshold (50). Buying pressure isn't strong enough yet<br>· Trend OK + signal insufficient = the direction is right, but the timing isn't yet<br><br><b>What to do</b><br>· Hold off on new buys. Buying now risks getting caught in a short-term pullback<br>· Reconsider entry once the buy score recovers to 50+ and the trend is confirmed holding`;
 
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     }
   } else if (compGear === 2) {
     act1 = 'Sideways zone: avoid new buys, hold or gradually reduce exposure';
-    rsn1 = `<b>Gear ${compGear} sideways: direction undecided</b><br>· Moving back and forth near the 200-day MA. Whether the market returns to an uptrend or flips to a downtrend hasn't been decided yet<br>· New buys in this zone = a straight loss if the direction turns out to be down<br><br><b>What to do</b><br>· Existing holdings: keep as is<br>· No new buys: wait for a Gear 3 signal (200-day MA +2% or more)`;
+    rsn1 = `<b>${ezTrendWord(compGear)} sideways: direction undecided</b><br>· Moving back and forth near the 200-day MA. Whether the market returns to an uptrend or flips to a downtrend hasn't been decided yet<br>· New buys in this zone = a straight loss if the direction turns out to be down<br><br><b>What to do</b><br>· Existing holdings: keep as is<br>· No new buys: wait for a uptrend signal (200-day MA +2% or more)`;
 
     col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
   } else {
     act1 = 'Downtrend: avoid new buys. Recommend raising cash weighting';
-    rsn1 = `<b>Gear ${compGear} downtrend confirmed</b><br>· Below the 200-day MA: long-term direction has turned down. Even a temporary bounce faces the 200-day MA as resistance<br>· New buys in this zone = "catching a falling knife." Nobody knows where the bottom is<br><br><b>What to do</b><br>· Stop new buys immediately<br>· If you hold a position, reduce it and raise cash weighting<br>· Re-enter only after confirming a Gear 3 (uptrend) transition`;
+    rsn1 = `<b>${ezTrendWord(compGear)} downtrend confirmed</b><br>· Below the 200-day MA: long-term direction has turned down. Even a temporary bounce faces the 200-day MA as resistance<br>· New buys in this zone = "catching a falling knife." Nobody knows where the bottom is<br><br><b>What to do</b><br>· Stop new buys immediately<br>· If you hold a position, reduce it and raise cash weighting<br>· Re-enter only after confirming a uptrend transition`;
 
     col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
   }
@@ -4984,7 +4989,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   if (compGear === 3) {
     if (lev2x) {
       act2 = 'Hold 2x ETFs (QLD/SSO): all 3 conditions met';
-      rsn2 = `<b>2x holding: 3-condition check</b><br>· Trend (Gear ${compGear}): above the 200-day MA, uptrend intact<br>· Buy score ${compBuy}: above the threshold, buying pressure dominant<br>· Sell pressure ${compSell}: ${65 - compSell} points of room before the exit threshold (65)<br><br><b>2x holding rule</b><br>· QLD/SSO currently meet all conditions: keep holding<br>· Switch to 1x (QQQ/SPY) immediately if sell pressure exceeds 65<br>· Never exceed 30–50% of your total account`;
+      rsn2 = `<b>2x holding: 3-condition check</b><br>· Trend (${ezTrendWord(compGear)}): above the 200-day MA, uptrend intact<br>· Buy score ${compBuy}: above the threshold, buying pressure dominant<br>· Sell pressure ${compSell}: ${65 - compSell} points of room before the exit threshold (65)<br><br><b>2x holding rule</b><br>· QLD/SSO currently meet all conditions: keep holding<br>· Switch to 1x (QQQ/SPY) immediately if sell pressure exceeds 65<br>· Never exceed 30–50% of your total account`;
 
       col2 = 'var(--gr)'; bg2 = 'var(--gr-s)'; bd2 = 'rgba(48,209,88,0.3)';
     } else if (compSell >= 65) {
@@ -4994,17 +4999,17 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       col2 = 'var(--rd)'; bg2 = 'var(--rd-s)'; bd2 = 'rgba(255,69,58,0.3)';
     } else {
       act2 = 'Recommend cutting 2x exposure in half';
-      rsn2 = `<b>Buy signal ${compBuy}: below the 2x threshold</b><br>· 2x leverage is only a valid tool when direction is clear<br>· Buy signal below 50 = buying pressure isn't strong enough, so holding leverage here just amplifies volatility<br><br><b>What to do</b><br>· Cut your 2x exposure in half<br>· Consider re-entering once the buy signal reaches 65+ and Gear 3 is confirmed holding`;
+      rsn2 = `<b>Buy signal ${compBuy}: below the 2x threshold</b><br>· 2x leverage is only a valid tool when direction is clear<br>· Buy signal below 50 = buying pressure isn't strong enough, so holding leverage here just amplifies volatility<br><br><b>What to do</b><br>· Cut your 2x exposure in half<br>· Consider re-entering once the buy signal reaches 65+ and an uptrend is confirmed holding`;
 
       col2 = 'var(--or)'; bg2 = 'rgba(255,159,10,0.08)'; bd2 = 'rgba(255,159,10,0.3)';
     }
   } else if (compGear === 2) {
     act2 = 'Consider switching from 2x to 1x';
-    rsn2 = `<b>Gear 2 sideways: a risky zone for 2x leverage</b><br>· Sideways = market direction undecided. Not clear whether it goes up or down<br>· Holding 2x leverage here doubles your losses in either direction with no clear payoff<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/SPY<br>· Consider re-entering 2x once Gear 3 (uptrend) returns`;
+    rsn2 = `<b>sideways: a risky zone for 2x leverage</b><br>· Sideways = market direction undecided. Not clear whether it goes up or down<br>· Holding 2x leverage here doubles your losses in either direction with no clear payoff<br><br><b>What to do</b><br>· Switch QLD/SSO → QQQ/SPY<br>· Consider re-entering 2x once uptrend returns`;
     col2 = 'var(--or)'; bg2 = 'rgba(255,159,10,0.08)'; bd2 = 'rgba(255,159,10,0.3)';
   } else {
     act2 = 'Recommend liquidating all 2x positions and switching to 1x';
-    rsn2 = `<b>Gear 1 downtrend: liquidate 2x immediately</b><br>· Below the 200-day MA = long-term direction confirmed down. Holding 2x here compounds losses<br>· A 10% market drop means roughly a 20% loss on QLD. Waiting for a bounce only grows the loss<br>· Even while down, selling now is the smaller loss<br><br><b>What to do</b><br>· Liquidate all QLD/SSO → switch to 1x QQQ/SPY or cash<br>· Re-enter 2x only after confirming Gear 3 returns`;
+    rsn2 = `<b>downtrend: liquidate 2x immediately</b><br>· Below the 200-day MA = long-term direction confirmed down. Holding 2x here compounds losses<br>· A 10% market drop means roughly a 20% loss on QLD. Waiting for a bounce only grows the loss<br>· Even while down, selling now is the smaller loss<br><br><b>What to do</b><br>· Liquidate all QLD/SSO → switch to 1x QQQ/SPY or cash<br>· Re-enter 2x only after confirming an uptrend returns`;
     col2 = 'var(--rd)'; bg2 = 'var(--rd-s)'; bd2 = 'rgba(255,69,58,0.3)';
   }
   const el2xAct = document.getElementById('now-action-2x');
@@ -5049,11 +5054,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     }
   } else if (compGear === 2) {
     act3 = 'Recommend reducing to 2x exposure or below';
-    rsn3 = `<b>Gear 2 = market is sideways</b><br>· Direction undecided near the 200-day MA: could go up or down<br>· 3x leverage in this zone swings widely in both directions with no clear payoff<br><br><b>Risk in numbers</b><br>· A 3% daily drop → 9% account loss<br>· 3 consecutive days of 3% drops → roughly 27% account loss<br>· 2x, by contrast, would lose 6% and 18% in the same scenario<br><br><b>The takeaway</b><br>· Holding 3x through a sideways zone is "a game you can't win"<br>· Reduce to 2x right now, and scale back up once Gear 3 returns`;
+    rsn3 = `<b>sideways = market is sideways</b><br>· Direction undecided near the 200-day MA: could go up or down<br>· 3x leverage in this zone swings widely in both directions with no clear payoff<br><br><b>Risk in numbers</b><br>· A 3% daily drop → 9% account loss<br>· 3 consecutive days of 3% drops → roughly 27% account loss<br>· 2x, by contrast, would lose 6% and 18% in the same scenario<br><br><b>The takeaway</b><br>· Holding 3x through a sideways zone is "a game you can't win"<br>· Reduce to 2x right now, and scale back up once an uptrend returns`;
     col3 = 'var(--rd)'; bg3 = 'var(--rd-s)'; bd3 = 'rgba(255,69,58,0.3)';
   } else {
     act3 = 'Recommend liquidating fully: downtrend confirmed';
-    rsn3 = `<b>Gear 1 = downtrend confirmed</b><br>· Below the 200-day MA: the market's long-term direction has turned down<br>· 3x leverage compounds losses in this zone<br><br><b>Loss math on the way down</b><br>· A 10% market drop → roughly a 30% loss on TQQQ<br>· A 20% market drop → roughly a 56% loss on TQQQ (leverage compounding effect)<br>· "It'll probably bounce soon" is the most expensive mistake to make in a downtrend<br><br><b>What to do</b><br>· Liquidate fully right now: not letting the loss grow further comes first<br>· Re-enter only once Gear 3 returns and MACD/RSI conditions are confirmed`;
+    rsn3 = `<b>downtrend = downtrend confirmed</b><br>· Below the 200-day MA: the market's long-term direction has turned down<br>· 3x leverage compounds losses in this zone<br><br><b>Loss math on the way down</b><br>· A 10% market drop → roughly a 30% loss on TQQQ<br>· A 20% market drop → roughly a 56% loss on TQQQ (leverage compounding effect)<br>· "It'll probably bounce soon" is the most expensive mistake to make in a downtrend<br><br><b>What to do</b><br>· Liquidate fully right now: not letting the loss grow further comes first<br>· Re-enter only once an uptrend returns and MACD/RSI conditions are confirmed`;
     col3 = 'var(--rd)'; bg3 = 'var(--rd-s)'; bd3 = 'rgba(255,69,58,0.3)';
   }
   const el3xAct = document.getElementById('now-action-3x');
@@ -5090,7 +5095,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       } else if (rsi >= 70) {
         el1x.innerHTML = `<span class="warn">RSI ${rsi.toFixed(0)} overheated: avoid new buys</span>. Hold your existing position. Consider re-entering once RSI drops back to 65 or below.`;
       } else if (compBuy >= 50) {
-        el1x.innerHTML = `<span class="ok">Gear 3 uptrend holding (buy score ${compBuy})</span>: hold your position. RSI ${rsi.toFixed(0)}, ${(dev200 >= 0 ? '+' : '') + dev200.toFixed(1)}% vs. 200-day MA`;
+        el1x.innerHTML = `<span class="ok">uptrend holding (buy score ${compBuy})</span>: hold your position. RSI ${rsi.toFixed(0)}, ${(dev200 >= 0 ? '+' : '') + dev200.toFixed(1)}% vs. 200-day MA`;
       } else {
         el1x.innerHTML = `<span class="warn">Uptrend, but buy signal ${compBuy} is weakening</span>: hold your position, but wait for the signal to recover (50) before any new buys`;
       }
@@ -5107,7 +5112,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         }
       } else {
         // lev2x=true: show the actual numbers
-        el2x.innerHTML = `<span class="ok">Gear ${compGear} + buy ${compBuy} + sell pressure ${compSell}: all 3 conditions met</span>: hold your QLD/SSO 2x position. ${65 - compSell} points of room before the exit threshold.`;
+        el2x.innerHTML = `<span class="ok">${ezTrendWord(compGear)} + buy ${compBuy} + sell pressure ${compSell}: all 3 conditions met</span>: hold your QLD/SSO 2x position. ${65 - compSell} points of room before the exit threshold.`;
       }
     }
 
@@ -5127,7 +5132,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       } else {
         // lev3x=true: break down further (lev3xFull vs. partial)
         if (lev3xFull) {
-          el3x.innerHTML = `<span class="ok">All 5 conditions met: TQQQ/UPRO holding and adding more are both fine</span>. Gear ${compGear} + RSI ${rsi.toFixed(0)} + MACD line and histogram both positive + buy ${compBuy} + sell ${compSell}. Never exceed 20% of your account.`;
+          el3x.innerHTML = `<span class="ok">All 5 conditions met: TQQQ/UPRO holding and adding more are both fine</span>. ${ezTrendWord(compGear)} + RSI ${rsi.toFixed(0)} + MACD line and histogram both positive + buy ${compBuy} + sell ${compSell}. Never exceed 20% of your account.`;
         } else {
           el3x.innerHTML = `<span class="ok">Medium-term trend still up: hold your position</span>. Line +${macdLine.toFixed(2)} (medium-term trend still up) / Histogram ${macdHist.toFixed(2)} (short-term momentum briefly negative). Consider adding more once the histogram turns positive again. Keep it within 20% of your account.`;
         }
@@ -5146,11 +5151,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         if (compSell >= 65) {
           li.innerHTML = '<span class="no">No new buys</span>. Sell pressure ' + compSell + ' exceeds the threshold (65). Consider re-entering once sell pressure drops to 64 or below';
         } else if (rsi >= 70) {
-          li.innerHTML = '<span class="no">Don\'t buy new right now</span>. RSI ' + rsi.toFixed(0) + ' overheated: start a QQQ/SPY 3-3-4 staged buy once RSI drops back to 65 or below';
+          li.innerHTML = '<span class="no">Don\'t buy new right now</span>. RSI ' + rsi.toFixed(0) + ' overheated: start a QQQ/SPY 30/30/40 three-step staged buy once RSI drops back to 65 or below';
         } else if (compBuy >= 65) {
-          li.innerHTML = '<span class="ok">1st tranche (30%) entry zone</span>. QQQ/SPY 3-3-4: 1st 30% → 30% more once the signal strengthens → 40% once the trend stabilizes. Buy score ' + compBuy;
+          li.innerHTML = '<span class="ok">1st tranche (30%) entry zone</span>. QQQ/SPY 30/30/40 three-step: 1st 30% → 30% more once the signal strengthens → 40% once the trend stabilizes. Buy score ' + compBuy;
         } else if (compBuy >= 50) {
-          li.innerHTML = '<span class="ok">A small (1st tranche, 30%) entry is possible</span>. Gear 3 + buy ' + compBuy + ' met. Signal is weak though: start with just the 1st tranche, add a 2nd once it confirms 60+';
+          li.innerHTML = '<span class="ok">A small (1st tranche, 30%) entry is possible</span>. uptrend + buy ' + compBuy + ' met. Signal is weak though: start with just the 1st tranche, add a 2nd once it confirms 60+';
         } else {
           li.innerHTML = '<span class="no">Don\'t buy new right now</span>. Buy signal ' + compBuy + ' is below the threshold (50). Reconsider once it recovers by ' + (50 - compBuy) + ' points';
         }
@@ -5164,8 +5169,8 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         } else if (compBuy >= 65) {
           // Conditions allow both new entries and adding to winners: averaging down possible, with an explicit stop condition
           li.innerHTML = '<span class="ok">Averaging down possible: but real-time condition monitoring is required</span><br>'
-            + 'Buy signal ' + compBuy + ' · sell pressure ' + compSell + ' · Gear 3 trend holding. Since market conditions currently allow new buys too, lowering your average cost on the losing position is worth considering. Keep it small (30% or less), staged, and set your stop-loss before entering.<br>'
-            + '<b>Stop averaging down immediately if any of the following happen</b>: sell pressure breaks above 65 (selling pressure takes over), RSI reaches 70+ (risk of buying near a top), or Gear drops to 2 (trend starting to weaken). Recheck your stop-loss if conditions break down.';
+            + 'Buy signal ' + compBuy + ' · sell pressure ' + compSell + ' · uptrend trend holding. Since market conditions currently allow new buys too, lowering your average cost on the losing position is worth considering. Keep it small (30% or less), staged, and set your stop-loss before entering.<br>'
+            + '<b>Stop averaging down immediately if any of the following happen</b>: sell pressure breaks above 65 (selling pressure takes over), RSI reaches 70+ (risk of buying near a top), or the trend weakens to sideways (trend starting to weaken). Recheck your stop-loss if conditions break down.';
         } else if (compBuy >= 50) {
           // Conditions insufficient: proceed cautiously, and note when it's OK to resume
           li.innerHTML = '<span class="warn">Averaging down: wait for conditions to improve</span><br>'
@@ -5202,11 +5207,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       } else if (rsi >= 70) {
         li2new.innerHTML = '<span class="no">No new QLD/SSO buys right now</span>: RSI ' + rsi.toFixed(0) + ' overheated. Enter once RSI drops back to 65 or below';
       } else if (lev2x) {
-        li2new.innerHTML = '<span class="ok">A 30% first-tranche QLD/SSO entry is possible right now</span>: Gear 3 + buy ' + compBuy + ' + sell pressure ' + compSell + ': all 3 conditions met. Strictly cap 2x exposure at 50% of your account';
+        li2new.innerHTML = '<span class="ok">A 30% first-tranche QLD/SSO entry is possible right now</span>: uptrend + buy ' + compBuy + ' + sell pressure ' + compSell + ': all 3 conditions met. Strictly cap 2x exposure at 50% of your account';
       } else if (compGear === 3 && compBuy >= 50) {
-        li2new.innerHTML = '<span class="warn">A cautious QLD/SSO entry is possible right now</span>: Gear 3, buy ' + compBuy + ' met. Sell pressure ' + compSell + ' needs checking though: start with just the 1st tranche (30%)';
+        li2new.innerHTML = '<span class="warn">A cautious QLD/SSO entry is possible right now</span>: uptrend, buy ' + compBuy + ' met. Sell pressure ' + compSell + ' needs checking though: start with just the 1st tranche (30%)';
       } else {
-        li2new.innerHTML = '<span class="no">No new QLD/SSO buys right now</span>: ' + (compGear !== 3 ? 'In Gear ' + compGear + '. Re-enter once the uptrend (Gear 3) returns' : 'Buy signal ' + compBuy + ' is below the threshold (50). Re-enter once the signal recovers');
+        li2new.innerHTML = '<span class="no">No new QLD/SSO buys right now</span>: ' + (compGear !== 3 ? 'Trend: ' + ezTrendWord(compGear) + '. Re-enter once the uptrend returns' : 'Buy signal ' + compBuy + ' is below the threshold (50). Re-enter once the signal recovers');
       }
     }
 
@@ -5226,7 +5231,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const li3new = document.getElementById('tier3-new-g3');
     if (li3new) {
       if (lev3xFull) {
-        li3new.innerHTML = '<span class="ok">Actively entering TQQQ/UPRO is possible</span>: Gear ' + compGear + ' + RSI ' + rsi.toFixed(0) + ' + MACD line and histogram both positive + buy ' + compBuy + ' + sell pressure ' + compSell + ': all 5 conditions fully met. Strictly cap it at 5–20% of your account';
+        li3new.innerHTML = '<span class="ok">Actively entering TQQQ/UPRO is possible</span>: ' + ezTrendWord(compGear) + ' + RSI ' + rsi.toFixed(0) + ' + MACD line and histogram both positive + buy ' + compBuy + ' + sell pressure ' + compSell + ': all 5 conditions fully met. Strictly cap it at 5–20% of your account';
       } else if (lev3x) {
         li3new.innerHTML = '<span class="ok">A first-tranche (50%) TQQQ/UPRO entry is possible</span>: MACD line +' + macdLine.toFixed(2) + ' (medium-term trend still up) / Histogram ' + macdHist.toFixed(2) + ' (short-term momentum briefly negative). Add the remaining 50% once the histogram turns positive again. Strictly cap it at 5–20% of your account';
       } else if (compSell >= 70) {
@@ -5462,25 +5467,25 @@ function _deepAnalysisCardHtml(d, _ai) {
     const _acRsi  = d.rsi ?? 50;
     if (_acGear === 1) {
       if (sellScore >= 65) {
-        actionRec = 'Recommend reducing your position by 30% or more: downtrend (Gear 1) + sell pressure over the threshold.';
+        actionRec = 'Recommend reducing your position by 30% or more: downtrend + sell pressure over the threshold.';
       } else {
         actionRec = 'Avoid new buys, recommend unwinding leverage: downtrend below the 200-day MA. A zone for raising cash weighting.';
       }
     } else if (_acGear === 2) {
-      actionRec = 'A zone to hold off on new buys: sideways (Gear 2), direction unclear. Consider entry once Gear 3 is confirmed.';
+      actionRec = 'A zone to hold off on new buys: sideways, direction unclear. Consider entry once an uptrend is confirmed.';
     } else { // gear 3
       if (sellScore >= 65) {
         actionRec = 'Consider partial profit-taking: sell pressure exceeds the threshold. Consider taking profit on 1/3 of your position.';
       } else if (_acRsi >= 70) {
         actionRec = 'Avoid new buys: RSI ' + _acRsi.toFixed(0) + ' overheated. Hold your existing position; chasing here risks buying near a top.';
       } else if (score >= 65 && _acMacd > 0) {
-        actionRec = 'First-tranche 30% entry zone: Gear 3 (uptrend) + buy score ' + score + ' + MACD positive (bullish momentum), all 3 conditions met. The 3-3-4 staged-entry rule applies.';
+        actionRec = 'First-tranche 30% entry zone: uptrend + buy score ' + score + ' + MACD positive (bullish momentum), all 3 conditions met. The 30/30/40 three-step staged-entry rule applies.';
       } else if (score >= 65 && _acMacd <= 0) {
-        actionRec = 'A small (10–15%) first-tranche entry is possible: Gear 3 + buy ' + score + ', but the MACD histogram is still negative (short-term momentum pausing). Consider adding once the histogram turns positive.';
+        actionRec = 'A small (10–15%) first-tranche entry is possible: uptrend + buy ' + score + ', but the MACD histogram is still negative (short-term momentum pausing). Consider adding once the histogram turns positive.';
       } else if (score >= 50) {
-        actionRec = 'Approach cautiously: Gear 3, but a buy score of ' + score + ' means the signal is weak. A small (10%) starter position, then watch how it develops.';
+        actionRec = 'Approach cautiously: uptrend, but a buy score of ' + score + ' means the signal is weak. A small (10%) starter position, then watch how it develops.';
       } else {
-        actionRec = 'Avoid new entries: uptrend (Gear 3), but buy score ' + score + ' falls short. Recommend waiting for the signal to strengthen.';
+        actionRec = 'Avoid new entries: uptrend, but buy score ' + score + ' falls short. Recommend waiting for the signal to strengthen.';
       }
     }
 
@@ -5593,12 +5598,12 @@ function _deepAnalysisCardHtml(d, _ai) {
             </div>
           </div>
           <div class="king-ind-row">
-            <span class="king-ind-label">200-day SMA Deviation</span>
+            <span class="king-ind-label">200-day moving average Deviation</span>
             <span class="king-ind-val" style="color:${d.dev200 >= 0 ? 'var(--gr)' : 'var(--rd)'}">${(d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1)}%</span>
             <div style="width:80px;"></div>
           </div>
           <div class="king-ind-row">
-            <span class="king-ind-label">5-day SMA Deviation</span>
+            <span class="king-ind-label">5-day moving average Deviation</span>
             <span class="king-ind-val" style="color:${d.dev5 >= 0 ? 'var(--yl)' : 'var(--bl)'}">${(d.dev5 >= 0 ? '+' : '') + d.dev5.toFixed(1)}%</span>
             <div style="width:80px;"></div>
           </div>
@@ -5693,19 +5698,19 @@ function generateKingBrief(d, ai) {
   const _sma200str = sma200 != null ? `$${sma200.toFixed(2)}` : 'the 200-day line';
   if (gear === 3) {
     if (rsi > 70) {
-      lines.push(`<b>[Weekly] ${symbol}: Gear 3 Holding, RSI Overheated Zone</b><br>· Uptrend intact above the 200-day line (${_sma200str}). Trading above institutional average cost basis<br>· RSI ${rsi.toFixed(0)}: above the overbought threshold (70). Price has climbed too fast in too short a window<br>· Once RSI clears 70, institutions typically start booking profits too: near-term pullback risk is elevated<br><b>Guidance</b><br>· New buys not advised: chasing here means buying near a short-term top<br>· Consider taking partial profit (about 1/3) on existing holdings; reassess re-entry once RSI drops back to 60 or below`);
+      lines.push(`<b>[Weekly] ${symbol}: uptrend Holding, RSI Overheated Zone</b><br>· Uptrend intact above the 200-day line (${_sma200str}). Trading above institutional average cost basis<br>· RSI ${rsi.toFixed(0)}: above the overbought threshold (70). Price has climbed too fast in too short a window<br>· Once RSI clears 70, institutions typically start booking profits too: near-term pullback risk is elevated<br><b>Guidance</b><br>· New buys not advised: chasing here means buying near a short-term top<br>· Consider taking partial profit (about 1/3) on existing holdings; reassess re-entry once RSI drops back to 60 or below`);
     } else if (rsi < 40) {
-      lines.push(`<b>[Weekly] ${symbol}: Gear 3 Holding, Short-Term Oversold Zone</b><br>· Uptrend intact above the 200-day line (${_sma200str}). Long-term direction remains up<br>· RSI ${rsi.toFixed(0)}: below the oversold threshold (40). The short-term pullback looks stretched<br>· Long-term uptrend + short-term oversold: a combination historically flagged as a scaled-buy opportunity<br><b>Guidance</b><br>· Deploy a first starter tranche now (about 30% of the planned buy amount)<br>· Add a second and third tranche on further weakness: avoid putting it all in at once`);
+      lines.push(`<b>[Weekly] ${symbol}: uptrend Holding, Short-Term Oversold Zone</b><br>· Uptrend intact above the 200-day line (${_sma200str}). Long-term direction remains up<br>· RSI ${rsi.toFixed(0)}: below the oversold threshold (40). The short-term pullback looks stretched<br>· Long-term uptrend + short-term oversold: a combination historically flagged as a scaled-buy opportunity<br><b>Guidance</b><br>· Deploy a first starter tranche now (about 30% of the planned buy amount)<br>· Add a second and third tranche on further weakness: avoid putting it all in at once`);
     } else {
-      lines.push(`<b>[Weekly] ${symbol}: Gear 3 Uptrend Holding Steady</b><br>· Above the 200-day line (${_sma200str}): trading above institutional average cost. A relatively safe backdrop from a long-term view<br>· RSI ${rsi.toFixed(0)}: neither overbought (70+) nor oversold (below 40). Trend remains intact<br>· No special buy or sell signal at the moment<br><b>Guidance</b><br>· Keep existing positions as-is: no need to rush with no sell signal in place<br>· Consider adding new capital in scaled tranches on a pullback to RSI 45 or below`);
+      lines.push(`<b>[Weekly] ${symbol}: uptrend Uptrend Holding Steady</b><br>· Above the 200-day line (${_sma200str}): trading above institutional average cost. A relatively safe backdrop from a long-term view<br>· RSI ${rsi.toFixed(0)}: neither overbought (70+) nor oversold (below 40). Trend remains intact<br>· No special buy or sell signal at the moment<br><b>Guidance</b><br>· Keep existing positions as-is: no need to rush with no sell signal in place<br>· Consider adding new capital in scaled tranches on a pullback to RSI 45 or below`);
     }
   } else if (gear === 2) {
-    lines.push(`<b>[Weekly] ${symbol}: Gear 2 Sideways Zone, Direction Undecided</b><br>· Price is drifting around the 200-day line (${_sma200str}). Not yet clear whether it resolves up or down<br>· Gear 2 = the market sitting at a fork between "reclaiming the uptrend" and "rolling into a downtrend." Institutions also tend to scale back directional bets here<br>· Why new leveraged (2x/3x) entries are avoided here: if direction resolves lower, losses get amplified 2–3x<br><b>Guidance</b><br>· Hold off on new buys: wait for confirmation of a Gear 3 return (200-day line +2% or more) or a shift to Gear 1<br>· If already holding, consider trimming exposure and raising cash to reduce risk`);
+    lines.push(`<b>[Weekly] ${symbol}: sideways Sideways Zone, Direction Undecided</b><br>· Price is drifting around the 200-day line (${_sma200str}). Not yet clear whether it resolves up or down<br>· sideways = the market sitting at a fork between "reclaiming the uptrend" and "rolling into a downtrend." Institutions also tend to scale back directional bets here<br>· Why new leveraged (2x/3x) entries are avoided here: if direction resolves lower, losses get amplified 2–3x<br><b>Guidance</b><br>· Hold off on new buys: wait for confirmation of a uptrend return (200-day line +2% or more) or a shift to downtrend<br>· If already holding, consider trimming exposure and raising cash to reduce risk`);
   } else {
     if (rsi < 30) {
-      lines.push(`<b>[Weekly] ${symbol}: Gear 1 Downtrend, Extreme Short-Term Oversold</b><br>· Below the 200-day line (${_sma200str}): long-term direction is down. Trading below institutional average cost basis<br>· RSI ${rsi.toFixed(0)}: below the extreme-oversold threshold (30). Panic selling looks overdone<br>· A short-term technical bounce is possible, but whether this marks a trend reversal or just a temporary retracement is still unclear<br><b>Guidance</b><br>· Only a small starter position (within 10% of total planned capital) is appropriate: "catching a falling knife" risk remains<br>· Keep the rest in cash; consider a full-size buy only after a confirmed reclaim above the 200-day line`);
+      lines.push(`<b>[Weekly] ${symbol}: downtrend Downtrend, Extreme Short-Term Oversold</b><br>· Below the 200-day line (${_sma200str}): long-term direction is down. Trading below institutional average cost basis<br>· RSI ${rsi.toFixed(0)}: below the extreme-oversold threshold (30). Panic selling looks overdone<br>· A short-term technical bounce is possible, but whether this marks a trend reversal or just a temporary retracement is still unclear<br><b>Guidance</b><br>· Only a small starter position (within 10% of total planned capital) is appropriate: "catching a falling knife" risk remains<br>· Keep the rest in cash; consider a full-size buy only after a confirmed reclaim above the 200-day line`);
     } else {
-      lines.push(`<b>[Weekly] ${symbol}: Gear 1 Downtrend Confirmed</b><br>· Below the 200-day line (${_sma200str}): long-term trend points down. That alone is a strong signal to hold off on buying<br>· Even if a bounce shows up, the 200-day line tends to act as firm resistance: bounce-then-fail patterns tend to repeat<br>· RSI ${rsi.toFixed(0)}: not yet in oversold territory. Room for further downside remains; a bottom hasn't been confirmed<br><b>Guidance</b><br>· Consider exiting leveraged ETF positions right away: leverage amplifies losses 2–3x in a downtrend<br>· Keep cash allocation at 70%+ ; avoid new buys until a confirmed reclaim above the 200-day line`);
+      lines.push(`<b>[Weekly] ${symbol}: downtrend Downtrend Confirmed</b><br>· Below the 200-day line (${_sma200str}): long-term trend points down. That alone is a strong signal to hold off on buying<br>· Even if a bounce shows up, the 200-day line tends to act as firm resistance: bounce-then-fail patterns tend to repeat<br>· RSI ${rsi.toFixed(0)}: not yet in oversold territory. Room for further downside remains; a bottom hasn't been confirmed<br><b>Guidance</b><br>· Consider exiting leveraged ETF positions right away: leverage amplifies losses 2–3x in a downtrend<br>· Keep cash allocation at 80%+ ; avoid new buys until a confirmed reclaim above the 200-day line`);
     }
   }
 
@@ -6192,7 +6197,7 @@ function updateSEOWithScores(data) {
   document.title = `QQQ Buy Score ${qqqBuy}${nvdaBuy !== null ? ` · NVDA ${nvdaBuy}` : ''}: Swing Signal ${dateStr} | EZLONG`;
 
   // Dynamic meta description update
-  const gearLabel = qqq.gear === 3 ? 'Uptrend (Gear 3)' : qqq.gear === 2 ? 'Sideways (Gear 2)' : 'Downtrend (Gear 1)';
+  const gearLabel = qqq.gear === 3 ? 'Uptrend' : qqq.gear === 2 ? 'Sideways' : 'Downtrend';
   const desc = `Swing Signal analysis for ${dateStr}: QQQ buy score ${qqqBuy}, currently ${gearLabel}. RSI ${Math.round(qqq.rsi)}, ${qqq.dev200.toFixed(1)}% vs. 200-day MA. Should you buy US stocks right now? Check the data.`;
   const metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) metaDesc.content = desc;

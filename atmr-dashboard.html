@@ -53,7 +53,7 @@
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title id="page-title-tag">스윙 시그널(Swing Signal): 오늘의 미국주식 매수·매도 타이밍 분석 | EZLONG</title>
-<meta name="description" content="QQQ·SPY·TSLA·NVDA의 스윙 시그널 점수로 오늘 미국주식 매수/매도 타이밍을 분석. RSI, MACD, 200일 이동평균선 기반 Gear 변속 전략. 지금 사도 될까? 데이터로 답합니다." />
+<meta name="description" content="QQQ·SPY·TSLA·NVDA의 스윙 시그널 점수로 오늘 미국주식 매수/매도 타이밍을 분석. RSI, MACD, 200일 이동평균선 기반 추세 3단계(상승·횡보·하락) 전략. 지금 사도 될까? 데이터로 답합니다." />
 <meta name="keywords" content="미국주식 매수 타이밍, QQQ 매수 신호, 엔비디아 매수 적기, 테슬라 매도 신호, TQQQ 매매 타이밍, SOXL 스윙 전략, 나스닥 VIX 공포탐욕지수, RSI 과매도 과매수, MACD 매매 신호, 200일 이동평균선 기어, 미국주식 스윙 전략, QQQ 40주선 매매, NVDA RSI 과매도, TSLA 200일선 지지, 스윙 시그널, Swing Signal Score, 기어 변속 매매법, 3회 분할 매수(30·30·40%), 미국주식 기술적 분석, ezlong" />
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG: 미국주식투자자를 위한 데이터 툴" />
@@ -87,7 +87,7 @@
     "name": "스윙 시그널(Swing Signal) 대시보드",
     "alternateName": "Swing Signal Dashboard",
     "url": "https://ezlong.com/atmr-dashboard.html",
-    "description": "QQQ, SPY, TSLA, NVDA의 스윙 시그널 매수·매도 점수를 RSI, MACD, 200일 이동평균선 추세 상태 기반으로 실시간 분석하는 미국주식 투자 도구. 200일 이동평균선 대비 위치(Gear 3·2·1)와 RSI, MACD 히스토그램, VIX 변동성 지수를 종합해 0~100점 매수 매력도와 매도 적합도를 산출합니다.",
+    "description": "QQQ, SPY, TSLA, NVDA의 스윙 시그널 매수·매도 점수를 RSI, MACD, 200일 이동평균선 추세 상태 기반으로 실시간 분석하는 미국주식 투자 도구. 200일 이동평균선 대비 위치(상승·횡보·하락 3단계)와 RSI, MACD 히스토그램, VIX 변동성 지수를 종합해 0~100점 매수 매력도와 매도 적합도를 산출합니다.",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "inLanguage": "ko",
@@ -101,7 +101,7 @@
     "featureList": [
       "QQQ·SPY·SOXX 매수 매력도 & 매도 적합도 점수 (0~100점)",
       "TSLA·NVDA 스윙 시그널 스코어",
-      "200일 이동평균선 기반 Gear 3·2·1 상태 판정",
+      "200일 이동평균선 기반 상승·횡보·하락 추세 판정",
       "RSI·MACD·VIX 복합 신호 분석",
       "시장 폭 지표 (DIA·IWM·SOXX)",
       "미국 장중 30분 간격 자동 업데이트 (KST 약 22:30~06:00)"
@@ -133,7 +133,7 @@
         "name": "테슬라(TSLA) 지금 매수해도 될까요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "스윙 시그널의 TSLA 기어(Gear) 상태와 RSI를 함께 확인하세요. 상승 추세(200일선 위 상승 추세) + RSI 40~60이면 추세 추종 분할 매수를 고려할 수 있습니다. 상승 추세이라도 RSI 70 이상 과매수 구간이라면 추격 매수보다 기존 보유 유지가 적절합니다. 횡보라면 소량 시험 매수만, 하락 추세이라면 횡보 또는 상승 추세 전환 확인 후 진입을 권장합니다."
+          "text": "스윙 시그널의 TSLA 추세 상태와 RSI를 함께 확인하세요. 상승 추세(200일선 위 상승 추세) + RSI 40~60이면 추세 추종 분할 매수를 고려할 수 있습니다. 상승 추세이라도 RSI 70 이상 과매수 구간이라면 추격 매수보다 기존 보유 유지가 적절합니다. 횡보라면 소량 시험 매수만, 하락 추세이라면 횡보 또는 상승 추세 전환 확인 후 진입을 권장합니다."
         }
       },
       {
@@ -1871,7 +1871,7 @@ li.gear-other-sep { display: none !important; }
            눌림목인지 반락 시작인지를 가격 구조·모멘텀·거래 참여·200일선 네 축으로
            나눠 본다. 판정은 코드가 한다 - 모델을 부르지 않는다. -->
       <div id="reversal-panel"></div>
-      <script src="/swing-reversal.js?v=20261117b"></script>
+      <script src="/swing-reversal.js?v=20261117c"></script>
 
       <!-- 시그널 히스토리 (최근 4회) -->
       <div id="history-wrap"></div>
@@ -1950,12 +1950,12 @@ li.gear-other-sep { display: none !important; }
 
         <!-- ② Gear 개념 설명: 현황 아래 참고 -->
         <details style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:8px 4px;">Gear란?: 이 사이트의 추세 판별 신호 (자세히보기)</summary>
+          <summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:8px 4px;">추세 3단계란?: 이 사이트가 추세를 가르는 기준 (자세히보기)</summary>
         <div class="gear-explain-card" style="margin-top:8px;">
           <ul class="dot-list">
-            <li><span class="ok">상승 추세: 상승 추세.</span> QQQ가 200일 이동평균선 위에서 움직이는 구간. 레버리지 진입 가능한 유일한 시장 상태.</li>
-            <li><span class="warn">횡보: 횡보·중립.</span> 200일선 근처, 방향성 없음. 레버리지 신규 진입 자제, 기존 포지션 점검.</li>
-            <li><span class="no">하락 추세: 하락 추세.</span> 200일선을 하향 이탈한 구간. 레버리지 즉시 정리, 현금 비중 확대.</li>
+            <li><span class="ok">상승 추세.</span> QQQ가 200일 이동평균선 위에서 움직이는 구간. 레버리지 진입 가능한 유일한 시장 상태.</li>
+            <li><span class="warn">횡보·중립.</span> 200일선 근처, 방향성 없음. 레버리지 신규 진입 자제, 기존 포지션 점검.</li>
+            <li><span class="no">하락 추세.</span> 200일선을 하향 이탈한 구간. 레버리지 즉시 정리, 현금 비중 확대.</li>
           </ul>
         </div>
         </details>
@@ -1995,7 +1995,7 @@ li.gear-other-sep { display: none !important; }
                 <ul class="dot-list">
                   <li id="hold-g3-1x" data-for-gear="3"><span class="ok">상승 추세 유지 중</span>: 포지션 유지 권고. RSI 70 이상 또는 매도 압력 65점 이상 시 분할 익절 전환</li>
                   <li data-for-gear="2"><span class="warn">지금은 방향이 불명확한 구간입니다</span>: 보유량 절반 정도 매도 권고, 추세 확인 후 재진입 검토</li>
-                  <li data-for-gear="1"><span class="no">지금은 하락 추세입니다</span>: 추가 매수 중단, 보유량 전체 계좌 30% 이하 축소 권고</li>
+                  <li data-for-gear="1"><span class="no">지금은 하락 추세입니다</span>: 추가 매수 중단, 보유량 전체 계좌 20% 이하 축소 권고</li>
                 </ul>
               </div>
             </div>
@@ -2347,7 +2347,7 @@ li.gear-other-sep { display: none !important; }
       본 대시보드는 기술적 지표를 자동 계산하여 참고 정보를 제공하는 도구입니다.
       투자 판단의 최종 책임은 투자자 본인에게 있으며, 어떠한 수익도 보장하지 않습니다.
       분석 데이터는 복수의 글로벌 금융 데이터 소스에서 실시간 수집되며 지연될 수 있습니다.
-      스윙 시그널의 분석 로직은 200일 이동평균선 Gear 변속 전략, RSI·MACD 복합 신호, VIX 변동성 지수를 종합한 퀀트 기반 점수 산출 체계를 따릅니다.
+      스윙 시그널의 분석 로직은 200일 이동평균선 기반 추세 3단계 전략, RSI·MACD 복합 신호, VIX 변동성 지수를 종합한 퀀트 기반 점수 산출 체계를 따릅니다.
     </div>
 
     <!-- AEO(AI 답변 최적화) FAQ 섹션: 검색엔진 및 AI 엔진 인덱싱용 -->
@@ -4356,7 +4356,7 @@ function buildTrendLineHtml() {
       ? '분할 매수 최적 구간: QQQ·SPY 3회 분할 매수(30·30·40%) 원칙으로 적극 진입'
       : '강한 매수 신호: 추세 회복 확인 후 분할 진입 시작';
     desc  = gear >= 3
-      ? `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong>: 200일선 위. 기관 평균 매입단가 위에서 거래 중<br>· 매수 매력도 <strong>${score}점</strong>: 최적 구간(80점+). 복합 매수 신호 전부 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 추가 상승 여력 확보<br><br><b>3회 분할 매수(30·30·40%) 원칙</b><br>· 한 번에 전량 매수 금지: 변동성 급등 시 대응 불가 상태가 됨<br>· 나눠 사면 하락해도 평균단가가 내려가 리스크 자동 관리<br>· 1차(30%) 지금 → 2차(30%) 신호 75점+ 유지 확인 후 → 3차(40%) 추세 안정 후<br>· TQQQ·UPRO 레버리지도 진입 가능 구간: 단, 전체 계좌 20% 한도 엄수`
+      ? `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세 <strong>${gearText}</strong>: 200일선 위. 기관 평균 매입단가 위에서 거래 중<br>· 매수 매력도 <strong>${score}점</strong>: 최적 구간(80점+). 복합 매수 신호 전부 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 추가 상승 여력 확보<br><br><b>3회 분할 매수(30·30·40%) 원칙</b><br>· 한 번에 전량 매수 금지: 변동성 급등 시 대응 불가 상태가 됨<br>· 나눠 사면 하락해도 평균단가가 내려가 리스크 자동 관리<br>· 1차(30%) 지금 → 2차(30%) 신호 75점+ 유지 확인 후 → 3차(40%) 추세 안정 후<br>· TQQQ·UPRO 레버리지도 진입 가능 구간: 단, 전체 계좌 20% 한도 엄수`
       : `${buildRecentContextHtml()}<b>진입 근거: 신호는 강하나 추세 확인 필요</b><br>· 매수 매력도 <strong>${score}점</strong>: 복합 신호 강함<br>· QQQ·SPY <strong>${gearText}</strong>: 200일선 위/아래 방향 미확정. 이 상태에서 레버리지 신규 매수 금지<br><br><b>대응 원칙</b><br>· 상승 추세 전환 확인 후 1차(30%) 진입 시작<br>· TQQQ·UPRO 레버리지 ETF는 상승 추세 복귀 확인 전까지 보류`;
     pills = [
       {text: gearText,                            tone: gearTone},
@@ -4367,7 +4367,7 @@ function buildTrendLineHtml() {
     // ── 소량 정찰대 ─────────────────────────────────────────────────────────
     if (gear >= 3) {
       title = `매수 신호 ${score}점: 1차(30%) 분할 진입 적합 구간 (3회 분할 매수(30·30·40%) 원칙)`;
-      desc  = `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong>: 200일선 위. 장기 상승 추세 유효<br>· 매수 매력도 <strong>${score}점</strong>: 진입 기준선(65점) 이상. 방향·모멘텀·수급 조건 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 더 오를 여지 있음<br><br><b>왜 '소량 시험 매수'인가</b><br>· 신호가 완벽하지 않을 때 전량 매수하면 하락 시 대응 자금 없어짐<br>· 1차(30%) 먼저 투입 → 신호가 75점+로 강화되면 2차(30%) 추가 → 3차(40%)로 마무리<br>· 레버리지(TQQQ·UPRO)는 MACD 히스토그램 양전 추가 확인 후 진입`;
+      desc  = `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세 <strong>${gearText}</strong>: 200일선 위. 장기 상승 추세 유효<br>· 매수 매력도 <strong>${score}점</strong>: 진입 기준선(65점) 이상. 방향·모멘텀·수급 조건 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 더 오를 여지 있음<br><br><b>왜 '소량 시험 매수'인가</b><br>· 신호가 완벽하지 않을 때 전량 매수하면 하락 시 대응 자금 없어짐<br>· 1차(30%) 먼저 투입 → 신호가 75점+로 강화되면 2차(30%) 추가 → 3차(40%)로 마무리<br>· 레버리지(TQQQ·UPRO)는 MACD 히스토그램 양전 추가 확인 후 진입`;
       pills = [
         {text: gearText,                          tone: gearTone},
         {text: `RSI ${rsi?.toFixed(0) ?? ': '}`,   tone: rsiTone},
@@ -4635,6 +4635,9 @@ function buildTrendLineHtml() {
 function renderScoreGrid(qqq, voo, soxx) {
   const grid = document.getElementById('score-grid');
   const items = [qqq, voo, soxx].filter(Boolean);
+  // 2026-11-17: 한 종목만 마지막 거래일 봉이 늦게 들어오는 날이 있다(야후가 빈 값을 주는 경우).
+  // 그 카드에는 며칠 종가인지 밝혀, 하루 전 값을 오늘 값으로 읽지 않게 한다.
+  const _refBar = items.map(x => x.barDate).filter(Boolean).sort().pop() || null;
   if (!items.length) { grid.innerHTML = ''; return; }
 
   // ── 매수 매력도 색상 (높을수록 긍정) ──────────────
@@ -4731,6 +4734,7 @@ function renderScoreGrid(qqq, voo, soxx) {
           <div class="score-price-block">
             <div class="score-price" id="live-price-${d.symbol}">${priceStr}</div>
             <div class="score-change ${changeCls}">${changeStr}</div>
+            ${(d.barDate && _refBar && d.barDate < _refBar) ? `<div style="font-size:14px;font-weight:700;color:var(--or);margin-top:2px;">시세 지연: ${Number(d.barDate.slice(5,7))}월 ${Number(d.barDate.slice(8,10))}일 종가</div>` : ''}
           </div>
         </div>
 
@@ -4807,9 +4811,10 @@ function renderGearBox(qqq, vix) {
   const gearDescs = {
     3: '현재 상태: 200일선 위 상승 추세 유지 중. → 권장 행동: 추세 추종 매수, 레버리지 허용.',
     2: '현재 상태: 200일선 근처 방향 탐색 중. → 권장 행동: 관망, 현금 비중 확대.',
-    1: '현재 상태: 200일선 아래 하락 추세 진행 중. → 권장 행동: 현금 70%+ 유지, 인버스 검토.'
+    1: '현재 상태: 200일선 아래 하락 추세 진행 중. → 권장 행동: 현금 80%+ 유지, 인버스 검토.'
   };
-  const gearNames = { 3: '상승 추세', 2: '횡보 구간', 1: '하락 추세' };
+  const gearNames = { 3: '200일선 위', 2: '200일선 근처', 1: '200일선 아래' };
+  const gearWords = { 3: '상승', 2: '횡보', 1: '하락' };   // 2026-11-17: G1·G2·G3 대신 누구나 아는 말
 
   wrap.innerHTML = `
     <div class="gear-card">
@@ -4817,7 +4822,7 @@ function renderGearBox(qqq, vix) {
       <div class="gear-items">
         ${[1,2,3].map(n => `
           <div class="gear-item ${gearItemCls(n)}">
-            <div class="gear-num">G${n}</div>
+            <div class="gear-num">${gearWords[n]}</div>
             <div class="gear-name">${gearNames[n]}</div>
             <div class="gear-desc">${gearDescs[n]}</div>
           </div>

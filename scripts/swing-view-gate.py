@@ -11,6 +11,7 @@
 규칙(평일, ET 기준):
   pre   04:00~09:29 ET
   open  09:30 ET ~ 한국 시각 자정(UTC 15:00) 전
+  close 16:10~18:29 ET  (2026-11-17 신설 - 마감 수치가 확정된 직후 한 번. 아래 참조)
   post  18:30~23:59 ET  (차트분석 엔진의 마감 후 갱신이 끝난 뒤)
 그 밖의 시각은 돌지 않는다. 같은 ET 날짜에 같은 슬롯을 이미 돌았으면 돌지 않는다.
 예약 실행이든 감시견의 수동 실행이든 똑같이 이 관문을 지난다.
@@ -28,7 +29,11 @@ ET = ZoneInfo('America/New_York')
 HERE = os.path.dirname(os.path.abspath(__file__))
 VIEW = os.path.join(HERE, '..', 'data', 'swing-view.json')
 
+# 2026-11-17 오너 결정: 마감 직후 재판정을 한 번 더 둔다. 그 전에는 장 초반(한국 23:45)에 쓴 판정이
+# 마감 뒤 2시간 반쯤(한국 06:00~08:37) 마감 수치와 함께 걸려, 하락 추세로 끝난 날에 장 초반의
+# '관망'이 남았다. "마감 후에도 1번만"이던 옛 지시는 이 결정으로 '마감 직후 1번 + 차트분석 반영 뒤 1번'이 된다.
 PRE = (240, 569)
+CLOSE = (970, 1109)
 OPEN_START = 570
 POST = (1110, 1439)
 KST_MIDNIGHT_UTC_H = 15
@@ -45,6 +50,8 @@ def slot_of(t_utc):
     if m >= OPEN_START and t_utc.astimezone(timezone.utc).hour < KST_MIDNIGHT_UTC_H \
             and t_utc.astimezone(timezone.utc).date() == et.date():
         return 'open'
+    if CLOSE[0] <= m <= CLOSE[1]:
+        return 'close'
     if POST[0] <= m <= POST[1]:
         return 'post'
     return None
@@ -58,8 +65,10 @@ def prev_slot_of(t_utc):
     m = et.hour * 60 + et.minute
     if m < OPEN_START:
         return 'pre'
-    if m < 960:
+    if m < CLOSE[0]:
         return 'open'
+    if m < POST[0]:
+        return 'close'
     return 'post'
 
 
