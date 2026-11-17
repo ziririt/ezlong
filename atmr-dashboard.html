@@ -4195,7 +4195,9 @@ function buildTrendLineHtml() {
       // 2026-07-09: 서버(fetch-market-data.py)가 Gemini로 생성한 다종목·다일 연속성
       // 서술이 있으면 그것을 우선 사용: QQQ 점수 숫자 나열보다 훨씬 풍부하다.
       // 없으면(구버전 캐시, Gemini 실패 등) 기존 숫자 나열 방식으로 조용히 폴백.
-      const _cont = _svSafeText(window._swingContinuity);
+      /* 2026-11-18 오너 결정: 모델이 쓴 흐름 서술은 쓰지 않는다(숫자 비교를 반복해서 틀렸다).
+         아래 코드가 쓰는 숫자 한 줄만 싣는다. 옛 캐시에 서술이 남아 있어도 싣지 않는다. */
+      const _cont = '';
       if (_cont) {
         return `<div class="swing-trend-line">${_cont}</div>`;
       }
@@ -4219,8 +4221,8 @@ function buildTrendLineHtml() {
       if (days.length < 2) return '';
       const parts = days.map(([d, v]) => `${ezNyShort(d)} <b>${v}</b>`).join(' → ');
       const diff  = days[days.length - 1][1] - days[0][1];
-      const label = diff >= 5 ? '개선 흐름' : diff <= -5 ? '약화 흐름' : '횡보';
-      return `<div class="swing-trend-line">매수 신호 흐름 (QQQ, 뉴욕 거래일 기준): ${parts}: ${label}</div>`;
+      const label = diff >= 5 ? '매수 매력도가 높아지는 흐름' : diff <= -5 ? '매수 매력도가 낮아지는 흐름' : '비슷한 수준';
+      return `<div class="swing-trend-line">QQQ 매수 매력도 흐름(100점 만점, 뉴욕 거래일 기준): ${parts}: ${label}</div>`;
     } catch { return ''; }
   }
   const trendLineHtml = buildTrendLineHtml();
@@ -4508,7 +4510,7 @@ function buildTrendLineHtml() {
                 : _useAhead ? '새 주 전망' : '직전 장 마감 시그널';
     const _flowLine = (window._swingView.flow && !_useAhead)
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>`
-        + ((_gatedTop && /'관망'/.test(window._swingView.flow)) ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 모형 계좌가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 하락 추세): 신규 매수 중단이 먼저.</div>` : '')
+        + ((_gatedTop && /'관망'/.test(window._swingView.flow)) ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 이 지면의 예시 포트폴리오가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 하락 추세): 신규 매수 중단이 먼저.</div>` : '')
       : '';
     const _dk = _useAhead ? _wa : window._swingView.desked;
     /* 88항 원칙 5: 최상단 카드의 모델 문장도 숫자 검문을 거친다. 걸린 줄은 빠진다.
@@ -7100,7 +7102,7 @@ function _numsBlockItems(f) {
   if (!f || f.buy == null) return null;
   const gearTxt = f.gear >= 3 ? '200일선 위' : f.gear === 2 ? '200일선 근처' : '200일선 아래';
   return [`매수점수 ${f.buy} · 매도압력 ${f.sell ?? ': '} · RSI ${f.rsi != null ? Math.round(f.rsi) : ': '}`,
-          `추세 기어 ${f.gear ?? ': '}: ${gearTxt}`];
+          `추세는 ${f.gear != null ? ezTrendWord(f.gear) : ': '}: ${gearTxt}`];
 }
 function _blocksHtml(blocks, fallbackText, facts) {
   const _g = (arr, tag) => facts ? ezGuardList(arr, facts, tag) : (arr && arr.length ? arr : null);

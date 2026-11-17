@@ -99,6 +99,12 @@ def et_day_of(generated_at_iso):
     return et.strftime('%Y-%m-%d')
 
 
+def _nz(v, default):
+    """값이 없을 때만 기본값. 0 은 값이다.
+    2026-11-18 실사고: `x or 50` 이 매도압력 0점을 50점으로 바꿨다(SPY 매도압력 0 → 종합 19, 맞는 값은 4)."""
+    return default if v is None else v
+
+
 def comp_scores(syms):
     # 2026-11-17: S&P500 대표를 SPY 로(오너 결정). 수집에 SPY 가 아직 없는 옛 파일이면 VOO 로 받는다 - 같은 지수라 점수는 사실상 같다.
     # 2026-11-17 실사고: SPY 를 수집에 넣은 첫 실행에서 SPY 만 마지막 거래일 봉이 빠져 왔다
@@ -109,9 +115,9 @@ def comp_scores(syms):
     parts = [(syms.get('QQQ'), 4), (_sp, 3), (syms.get('SOXX'), 3)]
     parts = [(s, w) for s, w in parts if s]
     tw = sum(w for _, w in parts)
-    buy = round(sum((s.get('buyScore') or 50) * w for s, w in parts) / tw)
-    sell = round(sum((s.get('sellScore') or 50) * w for s, w in parts) / tw)
-    gear = round(sum((s.get('gear') or 2) * w for s, w in parts) / tw)
+    buy = round(sum(_nz(s.get('buyScore'), 50) * w for s, w in parts) / tw)
+    sell = round(sum(_nz(s.get('sellScore'), 50) * w for s, w in parts) / tw)
+    gear = round(sum(_nz(s.get('gear'), 2) * w for s, w in parts) / tw)
     return buy, sell, gear
 
 
@@ -242,7 +248,7 @@ def plain_text(t):
     _K = {'는': '은', '가': '이', '를': '을', '와': '과', '로': '으로'}
     t = _re_plain.sub(r'스탠스(는|가|를|와|로)(?=[\s,.:])', lambda m: '판단' + _K[m.group(1)], t)
     t = t.replace('스탠스', '판단')
-    t = t.replace('리밸런싱', '비중 조정').replace('모형 비중', '예시 포트폴리오 비중')
+    t = t.replace('리밸런싱', '비중 조정').replace('모형 주식 비중', '예시 포트폴리오의 주식 비중').replace('모형 비중', '예시 포트폴리오 비중').replace('모형 계좌', '예시 포트폴리오')
     t = _re_plain.sub(r'휩쏘(?!\()', '가짜 신호', t).replace('휩쏘(가짜 신호)', '가짜 신호')
     for w in ('상승 추세', '하락 추세', '횡보'):
         t = t.replace(f'{w} {w}', w).replace(f'{w}({w})', w)
@@ -954,7 +960,7 @@ def _audit_view(sym, v):
           (과매도 탈출 반전 경로는 rsi5dAgo<42 를 전제로 하므로 RSI 50 미만이어야 자연스럽다)
           휴장·마감인데 현재형 '장중' → 경고(생성기는 캘린더를 쓰므로 새로 생기면 버그)."""
     n = v.get('nums') or {}
-    buy, gear, rsi = n.get('buy') or 50, n.get('gear') or 2, n.get('rsi')
+    buy, gear, rsi = _nz(n.get('buy'), 50), _nz(n.get('gear'), 2), n.get('rsi')
     sig_on = buy >= 80 or (rsi is not None and rsi < 30)
     if v.get('stance') == 'accumulate' and gear <= 1 and not sig_on and (rsi is None or rsi >= 50):
         print(f'[audit] {sym}: Gear {gear}·매수점수 {buy}·RSI {rsi} 인데 accumulate → watch 로 내림')
@@ -968,7 +974,7 @@ def _audit_view(sym, v):
 
 
 def tsla_view(s):
-    buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
+    buy, sell, gear = _nz(s.get('buyScore'), 50), _nz(s.get('sellScore'), 50), _nz(s.get('gear'), 2)
     rsi = s.get('rsi')
     if buy >= 80:
         st, label = 'accumulate', '많이 빠졌음 — 나눠서 사볼 만한 구간'
@@ -1388,7 +1394,7 @@ def mega_view(sym, s):
     tsla_view/nvda_view와 동일한 출력 형태(stance/stanceLabel/commentary/nums)."""
     cfg = MEGA_CFG[sym]
     cfe = MEGA_EN[sym]          # 영어 형제 문법 — 같은 분기에서 함께 생성
-    buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
+    buy, sell, gear = _nz(s.get('buyScore'), 50), _nz(s.get('sellScore'), 50), _nz(s.get('gear'), 2)
     rsi = s.get('rsi')
     rsi_panic = rsi is not None and rsi < 30
     buy_extreme = buy >= 80
@@ -1536,7 +1542,7 @@ def mega_view(sym, s):
 
 
 def nvda_view(s):
-    buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
+    buy, sell, gear = _nz(s.get('buyScore'), 50), _nz(s.get('sellScore'), 50), _nz(s.get('gear'), 2)
     rsi = s.get('rsi')
     if gear >= 3:
         st, label = 'hold', '오르막 유지 — 들고 가는 구간'
@@ -1705,10 +1711,10 @@ def desk_with_fable(view, sc_entry, ca):
   현금만 든 사람, 가득 실은 사람, 레버리지를 쓰는 사람, 아직 사 본 적 없는 사람이 같은 문장을 본다.
   그래서 **독자의 계좌·보유 상태·손익·심정을 이미 그런 것처럼 쓰지 마라.** 비유의 주어는 시장·지수·종목이다.
   나쁨: "계좌가 두들겨 맞은 날이지만 안전벨트는 이미 채워진 상태" (독자가 손실을 봤고 이미 비중을 줄였다고 단정)
-  좋음: "나스닥이 크게 밀린 날: 이 지면의 모형 비중은 이미 20%로 낮춰 둔 상태"
+  좋음: "나스닥이 크게 밀린 날: 이 지면의 예시 포트폴리오는 주식 비중을 이미 20%로 낮춰 둔 상태"
   금지 표현: "계좌가 …", "이미 줄여 둔", "이미 채운", "들고 있는 물량은", "버텨 온", "안전벨트" 처럼 독자의 포지션을 전제하는 말.
-  초안의 "목표 비중·현재 비중·1배수 칸" 숫자는 **이 지면이 공개 운용하는 모형 비중**이다. 언급할 때는 반드시
-  "이 지면의 모형 비중은 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
+  초안의 "목표 비중·현재 비중·1배수 칸" 숫자는 **이 지면이 공개 운용하는 예시 포트폴리오의 비중**이다('모형'이라는 말은 쓰지 않는다). 언급할 때는 반드시
+  "이 지면의 예시 포트폴리오는 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
 - [누구나 아는 말로 쓴다 — 2026-11-17 운영 제보] 이 지면을 처음 보는 사람도 알아들어야 한다.
   이 지면 안에서만 통하는 낱말을 쓰지 마라. 왼쪽 말은 금지, 오른쪽 말로 쓴다:
   1배수 칸·1배수 → 일반 ETF(QQQ·SPY·SOXX, 레버리지가 아닌 ETF) / 2배수·3배수 → 2배·3배 레버리지 ETF /

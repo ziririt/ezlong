@@ -982,7 +982,10 @@ def main():
 
     # ── 6.5. 스윙 연속성 서술 (실패해도 무시하고 계속) ──────────────────
     print("\n--- 스윙 연속성 서술 생성 (Gemini) ---")
-    _continuity = generate_swing_continuity(processed, previous_signals, fg_data)
+    # 2026-11-18 오너 결정: 이 서술은 끈다. 지시문을 두 번 고쳤는데도 숫자 비교를 계속 틀렸다
+    # (60 → 55 를 '소폭 개선', +0.17% 오른 종목을 '약세', 하루 등락률을 5거래일 수익률로 읽음).
+    # 화면은 코드가 숫자로 쓰는 한 줄(거래일별 매수 매력도 흐름)로 대신한다. 함수는 남겨 둔다.
+    _continuity = None   # generate_swing_continuity(processed, previous_signals, fg_data)
     # 2026-07-29: generate_swing_continuity가 {'ko':..., 'en':...} dict 또는 None을 반환하도록
     # 변경됨. swingContinuity(ko) 키 이름·값 형식은 기존과 완전히 동일하게 유지 —
     # atmr-dashboard.html이 이 값을 그대로 innerHTML에 꽂는 기존 코드를 건드리지 않기 위함.

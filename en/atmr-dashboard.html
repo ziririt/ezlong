@@ -3647,7 +3647,9 @@ function buildTrendLineHtml() {
       // 2026-07-09: 서버(fetch-market-data.py)가 Gemini로 생성한 다종목·다일 연속성
       // 서술이 있으면 그것을 우선 사용: QQQ 점수 숫자 나열보다 훨씬 풍부하다.
       // 없으면(구버전 캐시, Gemini 실패 등) 기존 숫자 나열 방식으로 조용히 폴백.
-      const _cont = _svSafeText(pick(window._swingContinuityEn, window._swingContinuity));
+      /* 2026-11-18: the model-written narration is switched off (it kept getting number comparisons wrong).
+         Only the code-written line below is shown. */
+      const _cont = '';
       if (_cont) {
         return `<div class="swing-trend-line">${_cont}</div>`;
       }
@@ -3658,15 +3660,16 @@ function buildTrendLineHtml() {
         .sort((a, b) => (a.atKST < b.atKST ? -1 : 1));
       if (sorted.length < 2) return '';
       const byDate = new Map();
-      for (const s of sorted) byDate.set(s.atKST.slice(0, 10), s.qqq.buyScore); // last value per date
+      // Group by New York trading day, not by the Korean calendar date of the snapshot.
+      const nyDay = (kst) => { const t = new Date(kst.slice(0, 16).replace(' ', 'T') + ':00Z'); t.setUTCHours(t.getUTCHours() - 14);
+        while (t.getUTCDay() === 0 || t.getUTCDay() === 6) t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
+      for (const s of sorted) byDate.set(nyDay(s.atKST), s.qqq.buyScore); // last value per NY trading day
       const days = [...byDate.entries()].slice(-4);
       if (days.length < 2) return '';
-      const todayKST = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
-      const parts = days.map(([d, v]) =>
-        `${d === todayKST ? 'Today' : d.slice(5).replace('-', '/')} <b>${v}</b>`).join(' → ');
+      const parts = days.map(([d, v]) => `${d.slice(5).replace('-', '/')} <b>${v}</b>`).join(' → ');
       const diff  = days[days.length - 1][1] - days[0][1];
-      const label = diff >= 5 ? 'Improving' : diff <= -5 ? 'Weakening' : 'Flat';
-      return `<div class="swing-trend-line">Buy signal trend (QQQ-based): ${parts}: ${label}</div>`;
+      const label = diff >= 5 ? 'buy score rising' : diff <= -5 ? 'buy score falling' : 'about the same';
+      return `<div class="swing-trend-line">QQQ buy score by New York trading day (out of 100): ${parts}: ${label}</div>`;
     } catch { return ''; }
   }
   const trendLineHtml = buildTrendLineHtml();
