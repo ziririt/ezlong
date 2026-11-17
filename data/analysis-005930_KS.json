@@ -3,13 +3,13 @@
   "name": "삼성전자",
   "assetType": "stock",
   "market": "kr",
-  "updatedAt": "2026-11-17T14:17:34.037Z",
-  "analysisAt": "2026-11-17T14:17:34.037Z",
+  "updatedAt": "2026-11-17T16:24:33.776Z",
+  "analysisAt": "2026-11-17T16:24:33.776Z",
   "analysisPreserved": false,
   "price": {
     "current": 190300,
-    "change": -6500,
-    "changePct": -3.3,
+    "change": -15700,
+    "changePct": -7.62,
     "high52": 374500,
     "low52": 94500,
     "pos52": 34.2,
@@ -20,93 +20,91 @@
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 212005,
-    "sma50": 236935.9781,
-    "sma100": 250661.4092,
-    "sma200": 237371.7318,
-    "rsi": 36.01,
+    "sma20": 213065,
+    "sma50": 238054.6041,
+    "sma100": 252229.3427,
+    "sma200": 237152.6681,
+    "rsi": 38.47,
     "macd": {
-      "macd": -11462.266063,
-      "signal": -10984.757362,
-      "histogram": -477.508701
+      "macd": -10933.192541,
+      "signal": -10865.380187,
+      "histogram": -67.812354
     },
     "bb": {
-      "upper": 241005.3086,
-      "middle": 212005,
-      "lower": 183004.6914,
-      "bandwidth": 0.2736
+      "upper": 240311.1575,
+      "middle": 213065,
+      "lower": 185818.8425,
+      "bandwidth": 0.2558
     },
     "adx": {
-      "plusDI": 19.42,
-      "minusDI": 32.38,
-      "adx": 23.03,
+      "plusDI": 20.16,
+      "minusDI": 30.84,
+      "adx": 22.88,
       "status": "추세 형성 초기"
     },
-    "atr": 13109.3244
+    "atr": 13602.3493
   },
   "levels": {
     "swingResistance": 209000,
     "swingSupport": 189200,
     "pivot": {
-      "pp": 206166.67,
-      "r1": 233133.33,
-      "r2": 275966.67,
-      "s1": 163333.33,
-      "s2": 136366.67
+      "pp": 208333.33,
+      "r1": 237466.67,
+      "r2": 278133.33,
+      "s1": 167666.67,
+      "s2": 138533.33
     }
   },
   "analysis": {
-    "trend": "횡보",
+    "trend": "약세",
     "strength": 2,
     "support": 189200,
     "resistance": 209000,
     "rsiStatus": "과매도",
-    "macdStatus": "중립",
+    "macdStatus": "약세수렴",
     "bbStatus": "하단접근",
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 4,
     "scoreReason": "RSI 과매도 구간 진입, ADX 추세 미형성",
-    "scoreReasonEn": "RSI enters oversold, ADX trendless",
-    "rsiTrajectory": "38.1 → 36.0 (과매도 구간 진입)",
-    "rsiTrajectoryEn": "38.1 → 36.0 (entering oversold)",
-    "macdTrajectory": "히스토 -2228.7534 → -477.5087 (개선)",
-    "macdTrajectoryEn": "histogram -2228.7534 → -477.5087 (improving)",
-    "pricePattern": "5일 저가 190100원, 20일 저가 179200원. Higher Low 패턴 형성 중.",
-    "pricePatternEn": "5-day low $190,100, 20-day low $179,200. Higher Low pattern forming.",
-    "volComment": "거래량비 1.14 (정상)",
+    "scoreReasonEn": "RSI entering oversold, ADX no trend",
+    "rsiTrajectory": "38.5 → 38.5 (중립지속)",
+    "rsiTrajectoryEn": "38.5 → 38.5 (staying neutral)",
+    "macdTrajectory": "히스토 -10933.1925 → -67.8124 (개선)",
+    "macdTrajectoryEn": "histo -10933.1925 → -67.8124 (improving)",
+    "pricePattern": "Higher Low 미확인, Lower High 미확인: 횡보",
+    "pricePatternEn": "No Higher Low or Lower High confirmed: sideways",
+    "volComment": "거래량비 0.96 (정상)",
     "bbPosition": "하단근처",
-    "reason": "3거래일 연속 관망 유지. RSI 36.0으로 과매도 구간 진입, 5일 저가 190100원으로 20일 저가 179200원 대비 Higher Low 패턴 형성 중. ADX 23.0으로 추세 형성 초기 단계로 방향성 확정은 아직 이르다. 매수점수 4점.",
-    "reasonEn": "3 consecutive sessions of wait-and-see. RSI at 36.0 entering oversold, 5-day low at $190,100 forms a Higher Low against the 20-day low of $179,200. ADX at 23.0 is in the early stages of trend formation, making direction confirmation premature. Buy score 4.",
+    "reason": "일봉 RSI 38.5로 과매도 구간 진입, 5일 연속 하락세 지속.\n주봉 RSI 40.9로 약세 구간.\nADX 22.9로 추세 형성 초기 단계로 방향성 판단 유보.",
+    "reasonEn": "Daily RSI at 38.5 entering oversold territory, with 5 consecutive days of decline.\nWeekly RSI at 40.9 in weak territory.\nADX at 22.9 in early trend formation, deferring directional judgment.",
     "entry": 190300,
-    "stop": 163333.33,
-    "target": 244233.34,
-    "invalidation": 163333.33,
-    "weeklyConflict": "주봉 RSI 39.8로 약세 구간이나 일봉 과매도 진입 신호 우선",
-    "weeklyConflictEn": "Weekly RSI at 39.8 in weak territory, but daily oversold entry signal takes precedence",
-    "profitTarget1": 244233.34,
-    "profitTarget2": 284683.34,
-    "stopLoss": 163333.33,
-    "narrative": "[추세 위치]\n· 현재가($190,300) vs SMA5($201,420)/SMA20($212,005)/SMA50($236,936): 단기·중기 추세 하회, 약세 구간\n· SMA100($250,661)/SMA200($237,372) 대비 위치: 중장기 추세 하회, 약세 강도 유지\n· 52주 위치(34.2%) + 현 가격대 역사적 저점 구간 근접\n[모멘텀 지표]\n· RSI 궤적 (38.1→36.0) + 과매도 구간 진입 + 하락 방향성 지속\n· MACD 히스토그램 궤적 (-2228.7534→-477.5087) + 개선 진단 + 약세 추세 전환 신호 미확인\n· 볼린저밴드 현재가 위치 (하단 $183,005 근처) + 밴드폭 27.36% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($189,200) + 피벗 S1($163,333) 기반 지지 구간\n· 스윙 저항선 ($209,000) + 돌파 시 중단 구간 회복 기대\n· 5일 고가/저가 패턴 (216,000원 / 190,100원), 20일 고가/저가 패턴 (249,000원 / 179,200원): Higher Low 패턴 형성 중\n[거래량·결론]\n· 거래량 비율 (1.14배) + 움직임의 신뢰도 정상 수준\n· 현 구간 진단 (축적구간) + 관망 조건: RSI 45 이상 회복 및 ADX 25 이상 추세 형성 확인",
-    "narrativeEn": "[Trend Position]\n· Current price ($190,300) vs SMA5 ($201,420)/SMA20 ($212,005)/SMA50 ($236,936): below short/mid-term trends, in weak territory\n· Position relative to SMA100 ($250,661)/SMA200 ($237,372): below long-term trends, maintaining strong weakness\n· 52-week position (34.2%) + current price level approaching historical lows\n[Momentum Indicators]\n· RSI trajectory (38.1→36.0) + entering oversold + continued downward momentum\n· MACD histogram trajectory (-2228.7534→-477.5087) + improving diagnosis + no confirmed reversal signal\n· Bollinger Band current price position (near lower band $183,005) + band width at 27.36%\n[Support & Resistance Structure]\n· Swing support ($189,200) + support zone based on Pivot S1 ($163,333)\n· Swing resistance ($209,000) + expectation to reclaim mid-band upon breakout\n· 5-day high/low pattern ($216,000 / $190,100), 20-day high/low pattern ($249,000 / $179,200): Higher Low pattern forming\n[Volume & Conclusion]\n· Volume ratio (1.14x) + normal confidence in price movement\n· Current phase diagnosis (Accumulation) + conditions for entry: RSI recovery above 45 and ADX trend formation above 25 confirmed",
-    "patternNote": "5일 저가 190100원, 20일 저가 179200원. Higher Low 패턴 형성 중. 볼린저밴드 하단 접근 구간.",
-    "patternNoteEn": "5-day low $190,100, 20-day low $179,200. Higher Low pattern forming. Approaching lower Bollinger Band.",
+    "stop": 167666.67,
+    "target": 235566.66,
+    "invalidation": 167666.67,
+    "weeklyConflict": "충돌 없음",
+    "weeklyConflictEn": "No conflict",
+    "profitTarget1": 235566.66,
+    "profitTarget2": 269516.66,
+    "stopLoss": 167666.67,
+    "narrative": "[추세 위치]\n· 현재가(190,300원) vs SMA5(203,140원)/SMA20(213,065원)/SMA50(238,055원): 단기·중기 하회, 약세 구간\n· SMA100(252,229원)/SMA200(237,153원) 대비 위치: 중장기 하회, 추세 약화\n· 52주 위치(34.2%) + 현 가격대 역사적 저점 구간\n[모멘텀 지표]\n· RSI 궤적 (32.7→38.5): 과매도 구간 탈출 시도, 중립 구간 진입 준비 중\n· MACD 히스토그램 궤적 (-2622.8306→-67.8124): 약세 수렴 구간, 개선 신호 확인\n· 볼린저밴드 현재가 위치 (하단 185,819원): 하단 접근 구간, 밴드폭 25.58%로 확대\n[지지·저항 구조]\n· 스윙 지지선 (189,200원): 피벗 S1(167,667원) 상단, 5일 저가(195,000원) 하단 기반\n· 스윙 저항선 (209,000원): SMA5(203,140원) 상단, 피벗 PP(208,333원) 근접\n· 5일/20일 고가·저가 패턴: 횡보, 추세 미확인\n[거래량·결론]\n· 거래량 비율 (0.96배): 움직임의 신뢰도 정상 수준\n· 현 구간 진단: 축적 구간, 매수/매도 방향성 확인 필요",
+    "narrativeEn": "[Trend Position]\n· Current price (KRW 190,300) vs SMA5 (KRW 203,140)/SMA20 (KRW 213,065)/SMA50 (KRW 238,055): below short/mid-term, weak zone\n· Position vs SMA100 (KRW 252,229)/SMA200 (KRW 237,153): below long/mid-term, trend weakening\n· 52-week position (34.2%) + current price level historically low\n[Momentum Indicators]\n· RSI trajectory (32.7→38.5): attempting to exit oversold, preparing to enter neutral zone\n· MACD histogram trajectory (-2,622.8306→-67.8124): weak convergence zone, improvement signal confirmed\n· Bollinger Band current price position (Lower Band KRW 185,819): approaching lower band, band width widening to 25.58%\n[Support & Resistance Structure]\n· Swing support (KRW 189,200): above Pivot S1 (KRW 167,667), based below 5-day low (KRW 195,000)\n· Swing resistance (KRW 209,000): above SMA5 (KRW 203,140), near Pivot PP (KRW 208,333)\n· 5-day/20-day high/low pattern: sideways, trend unconfirmed\n[Volume & Conclusion]\n· Volume ratio (0.96x): normal confidence level for movement\n· Current zone diagnosis: accumulation zone, directionality confirmation needed",
+    "patternNote": "5일/20일 고가·저가 패턴상 뚜렷한 추세 형성 없이 횡보 구간 지속 확인.",
+    "patternNoteEn": "Sideways consolidation continues without clear trend formation in 5-day/20-day high/low patterns.",
     "keyPoints": [
-      "RSI 36.0 과매도 구간 진입, 5일 연속 하락세 지속",
-      "MACD 히스토그램 개선세, 약세 추세 전환 신호는 아직 미약",
-      "ADX 23.0 추세 형성 초기, 방향성 확정 전 관망 필요",
-      "5일 저가 190100원, 20일 저가 179200원 대비 Higher Low 패턴 형성 중"
+      "RSI 38.5로 과매도 구간 진입, 5일 연속 하락세 지속.",
+      "주봉 RSI 40.9로 약세 구간 유지.",
+      "ADX 22.9로 추세 형성 초기 단계, 방향성 판단 유보."
     ],
     "keyPointsEn": [
-      "RSI at 36.0 enters oversold, continues 5-day downtrend",
-      "MACD histogram shows improvement, but weak reversal signal",
-      "ADX at 23.0 in early trend formation, wait for direction confirmation",
-      "5-day low at $190,100 forms Higher Low against 20-day low of $179,200"
+      "RSI at 38.5 entering oversold, 5 consecutive days of decline.",
+      "Weekly RSI remains in weak territory at 40.9.",
+      "ADX at 22.9 in early trend formation, deferring directional judgment."
     ],
-    "riskNote": "ADX 23.0으로 추세 미형성 구간, 충격성 변동 가능성 상존.",
-    "riskNoteEn": "ADX at 23.0 indicates a trendless phase, with potential for shock-like volatility.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 과매도 진입 및 Higher Low 패턴 형성으로 매수점수 4점 기록, 관망 유지.",
-    "continuityEn": "The wait-and-see stance has been maintained for the past 3 consecutive sessions. Today's RSI entering oversold and formation of a Higher Low pattern resulted in a buy score of 4, maintaining the wait-and-see action.",
+    "riskNote": "ADX 22.9로 추세 미형성 구간, 급격한 변동성 출현 가능성.",
+    "riskNoteEn": "ADX at 22.9 indicates no established trend, posing risk of sharp volatility.",
+    "continuity": "직전 3거래일 연속 관망 판독 지속. 금일 RSI 과매도 구간 진입 및 MACD 히스토그램 개선 신호 확인으로 매수 점수 소폭 상승했으나, ADX 추세 미형성으로 관망 유지.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 3 trading sessions. Today, RSI entered oversold territory and MACD histogram showed improvement, slightly increasing buy score, but ADX trend formation remains absent, thus maintaining a cautious outlook.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -114,9 +112,9 @@
       "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
       "score": "2/5",
-      "verdict": "위장 가능성: 신중 필요"
+      "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 1.00배 < 1"
+    "levelsAdjustedReason": "손익비 0.03 < 1.5"
   }
 }
