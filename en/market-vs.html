@@ -236,6 +236,9 @@
     .mv-factor-name { font-size: 15px; font-weight: 700; color: var(--ez-text); line-height: 1.3; margin-top: 1px; }
     .mv-factor-desc { font-size: 14px; font-weight: 500; color: var(--ez-text2); line-height: 1.35; margin-top: 1px; }
     .mv-factor-divider { height: 1px; background: var(--ez-border2); margin: 7px 0; }
+    .mv-shift { border-top: 1px solid var(--ez-border2); padding: 12px 14px; }
+    .mv-shift-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--ez-text); }
+    .mv-shift-line { font-size: 16px; font-weight: 500; color: var(--ez-text2); line-height: 1.45; margin-bottom: 6px; }
     .mv-mixed { border-top: 1px solid var(--ez-border2); padding: 12px 14px; }
     .mv-mixed-title { font-size: 14px; font-weight: 800; letter-spacing: -0.1px; margin-bottom: 10px; color: #92400E; }
     .mv-mixed-item { margin-bottom: 10px; }
@@ -607,6 +610,8 @@ function renderEntry(e, isLatest) {
         '</div>' +
         '<div class="mv-summary">' + escHtml(pick(e.summary_en, e.summary)) + '</div>' +
       '</div>' +
+
+      (function(){ var L = e.shift && (e.shift.lines_en || e.shift.lines); if (!L || !L.length) return ''; var h = '<div class="mv-shift"><div class="mv-shift-title">Why the call changed</div>'; for (var q = 0; q < L.length; q++) h += '<div class="mv-shift-line">' + escHtml(L[q]) + '</div>'; return h + '</div>'; })() +
 
       mixedHtml +
 

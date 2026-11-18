@@ -754,6 +754,9 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 직전 카드에서 언급된 핵심 이슈가 아직 해소되지 않은 이벤트라면, 이번 카드에도 반드시 포함해야 함
   예: 직전 카드에 "내일 도하 협상"이 핵심이라면, 협상이 끝나기 전까지 모든 카드에 불확실성 포함
 - 핵심 이슈가 바뀐 경우, 반드시 새로운 중대 뉴스 이벤트가 발생했기 때문이어야 함
+- [판정 변화 해명, 2026-11-19] 직전 카드와 우위(긍정/부정)가 뒤집히거나 같은 재료(예: 같은 기업 실적)의 편이
+  바뀌면, summary 에 '무엇이 바뀌어서'를 측정된 사실로 밝혀라. 예: "엔비디아 실적 호조에도 정규장 6.8% 하락,
+  기대 선반영 해석으로 부정 우위 전환". 어제의 호재가 왜 오늘 악재인지 말하지 않는 요약은 금지.
 - key_event.name은 뉴스 이벤트여야 함. "기술주 프리마켓 강세/약세" 같은 시장 상태 표현 절대 금지
 - [혼조 연속성 — 완화 적용, 2026-07-09 개정] 직전 카드의 혼조 재료(mixed_factors)는 참고만 하되,
   오늘 데이터에서 다시 확인되지 않으면 자동으로 유지하지 마라. 판단 기준은 항상 '오늘의 최신 뉴스·
@@ -3273,6 +3276,97 @@ def fetch_bellwether_earnings():
     return m
 
 
+# ─── 판정 변화 해명 (2026-11-19 오너 지적) ───────────────────────────────────
+# 실사고: 11-18 19:59 카드는 '엔비디아 실적 호조'로 긍정 80 대 20, 두 시간 뒤 21:50 카드는
+# '엔비디아 실적 후폭풍'으로 부정 100 이었다. 같은 재료가 편을 바꿨는데 카드 어디에도 그 말이 없었다.
+# 독자는 어제 호재라던 것이 왜 오늘 악재인지 알 수 없다. 우위가 뒤집히면 무엇이 바뀌었는지 카드가 스스로 밝힌다.
+# 문장은 모델이 아니라 코드가 두 카드의 재료를 맞대어 쓴다(지어낼 여지를 없앤다).
+# 뒤집힌 뒤 24시간 동안은 이어지는 카드에도 같은 해명을 싣는다 - 독자가 언제 들어올지 모른다.
+SHIFT_KEEP_HOURS = 24
+_SHIFT_STOP = set('실적 호조 후폭풍 지속 우려 기대 기대감 개선 하락 상승 강세 약세 발표 전환 확대 완화 부담 압력 시사 '
+                  '가능성 및 추가 투자 심리 섹터 급등 급락 둔화 서프라이즈 대기 직후 the of and in on to'.split())
+
+
+def _lead(e):
+    p, n = int(e.get('positive_total', 0) or 0), int(e.get('negative_total', 0) or 0)
+    return 'pos' if p > n else ('neg' if n > p else 'even')
+
+
+def _shift_when(eid, en=False):
+    try:
+        t = datetime.strptime(eid, '%Y-%m-%d-%H:%M')
+        return t.strftime('%b %d %H:%M KST').replace(' 0', ' ') if en else f"{t.month}월 {t.day}일 {t.strftime('%H:%M')}"
+    except Exception:
+        return eid
+
+
+def _shift_keys(name):
+    return {w for w in re.split(r'[\s·,/()]+', name or '') if len(w) >= 2 and w not in _SHIFT_STOP}
+
+
+def attach_shift(entry, older):
+    """entry 의 우위가 최근 24시간 안에 뒤집혔으면 entry['shift'] 에 해명을 단다. older 는 최신순."""
+    entry.pop('shift', None)
+    cur = _lead(entry)
+    if cur == 'even':
+        return None
+    try:
+        now = datetime.strptime(entry['id'], '%Y-%m-%d-%H:%M')
+    except Exception:
+        return None
+    frm, first = None, entry              # frm: 반대 우위였던 가장 최근 카드, first: 지금 우위의 첫 카드
+    for o in older:
+        lo = _lead(o)
+        if lo == cur or lo == 'even':
+            if lo == cur:
+                first = o
+            continue
+        frm = o
+        break
+    if not frm:
+        return None
+    try:
+        if (now - datetime.strptime(first['id'], '%Y-%m-%d-%H:%M')).total_seconds() > SHIFT_KEEP_HOURS * 3600:
+            return None
+    except Exception:
+        return None
+    side_new = 'negative_factors' if cur == 'neg' else 'positive_factors'
+    side_old = 'positive_factors' if cur == 'neg' else 'negative_factors'
+    ko_new, ko_old = ('부정', '긍정') if cur == 'neg' else ('긍정', '부정')
+    en_new, en_old = ('bearish', 'bullish') if cur == 'neg' else ('bullish', 'bearish')
+    olds = [f for f in (frm.get(side_old) or []) if int(f.get('score', 0) or 0) > 0]
+    news = [f for f in (entry.get(side_new) or []) if int(f.get('score', 0) or 0) > 0]
+    moved, used = [], set()
+    for a in olds:
+        for i, b in enumerate(news):
+            if i not in used and (_shift_keys(a.get('name')) & _shift_keys(b.get('name'))):
+                moved.append((a, b)); used.add(i)
+                break
+    fresh = [b for i, b in enumerate(news) if i not in used]
+    gone = [a for a in olds if all(a is not m[0] for m in moved)]
+    same_card = first is entry
+    ko = [f"{_shift_when(frm['id'])} 카드는 긍정 {frm.get('positive_total')} 대 부정 {frm.get('negative_total')}. "
+          f"{_shift_when(first['id'])} 카드부터 {ko_new} 우위로 전환"
+          + ('.' if same_card else f"(지금 긍정 {entry.get('positive_total')} 대 부정 {entry.get('negative_total')}).")]
+    en = [f"The {_shift_when(frm['id'], True)} card read {frm.get('positive_total')} bullish to {frm.get('negative_total')} bearish. "
+          f"From the {_shift_when(first['id'], True)} card the balance turned {en_new}"
+          + ('.' if same_card else f" (now {entry.get('positive_total')} to {entry.get('negative_total')}).")]
+    for a, b in moved:
+        ko.append(f"같은 재료가 편을 바꿈: 앞서는 {ko_old} 편의 '{a.get('name')}'({a.get('desc')}). "
+                  f"지금은 {ko_new} 편의 '{b.get('name')}'({b.get('desc')}).")
+        en.append(f"The same driver switched sides: earlier '{a.get('name_en') or a.get('name')}' "
+                  f"({a.get('desc_en') or a.get('desc')}) counted as {en_old}; now '{b.get('name_en') or b.get('name')}' "
+                  f"({b.get('desc_en') or b.get('desc')}) counts as {en_new}.")
+    if fresh:
+        ko.append(f"새로 올라온 {ko_new} 재료: " + ', '.join(f"{b.get('name')}({b.get('score')})" for b in fresh) + '.')
+        en.append(f"New {en_new} drivers: " + ', '.join(f"{b.get('name_en') or b.get('name')} ({b.get('score')})" for b in fresh) + '.')
+    if gone:
+        ko.append(f"빠진 {ko_old} 재료: " + ', '.join(f"{a.get('name')}({a.get('score')})" for a in gone) + '.')
+        en.append(f"{en_old.capitalize()} drivers no longer counted: " + ', '.join(f"{a.get('name_en') or a.get('name')} ({a.get('score')})" for a in gone) + '.')
+    entry['shift'] = {'from_id': frm['id'], 'since_id': first['id'], 'to': cur, 'lines': ko, 'lines_en': en}
+    return entry['shift']
+
+
 def past_bellwether_earnings(now_utc=None, hours=72):
     """최근 N시간 안에 발표가 끝난 벨웨더 실적 {기업 그룹: 발표 UTC datetime}."""
     now = now_utc or datetime.now(timezone.utc)
@@ -5247,6 +5341,14 @@ def main():
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
+
+    # 4-10. 판정 변화 해명 (2026-11-19) - 우위가 최근 24시간 안에 뒤집혔으면 무엇이 바뀌었는지 싣는다.
+    try:
+        _sh = attach_shift(entry, [e for e in entries if e.get("id") != entry["id"]])
+        if _sh:
+            print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']})")
+    except Exception as _se:
+        print(f"::warning::판정 변화 해명 실패(무시): {type(_se).__name__}: {_se}")
 
     # 같은 id가 있으면 덮어씀 (중복 방지)
     entries = [e for e in entries if e.get("id") != entry["id"]]

@@ -512,6 +512,12 @@
   margin: 7px 0;
 }
 
+/* ── 판정 변화 해명 (2026-11-19) ── */
+.mv-shift { border-top: 1px solid var(--ez-border2); padding: 12px 14px; }
+.mv-shift-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--ez-text); }
+.mv-shift-line { font-size: 16px; font-weight: 500; color: var(--ez-text2); line-height: 1.45; margin-bottom: 6px; }
+.mv-shift-line:last-child { margin-bottom: 0; }
+
 /* ── 혼조·양면 재료 (2026-07-03 신설, 같은 날 요인 2열 위로 이동) ── */
 .mv-mixed {
   border-top: 1px solid var(--ez-border2);
@@ -800,6 +806,14 @@ function renderEntry(e, isLatest) {
 
   if (!nf.length) negFactors = '<div class="mv-factor-item"><div class="mv-factor-desc">' + escHtml((e.one_sided && e.one_sided.note) || '부정 재료 없음') + '</div></div>';
 
+  // 판정 변화 해명 (2026-11-19): 우위가 최근 24시간 안에 뒤집힌 카드에만 붙는다
+  var shiftHtml = '';
+  if (e.shift && e.shift.lines && e.shift.lines.length) {
+    shiftHtml = '<div class="mv-shift"><div class="mv-shift-title">판정이 바뀐 까닭</div>';
+    for (var s2 = 0; s2 < e.shift.lines.length; s2++) shiftHtml += '<div class="mv-shift-line">' + escHtml(e.shift.lines[s2]) + '</div>';
+    shiftHtml += '</div>';
+  }
+
   // 혼조·양면 재료 (2026-07-03 신설): 없으면 섹션 자체를 렌더링하지 않음
   var mixedHtml = '';
   var mf = e.mixed_factors || [];
@@ -861,6 +875,8 @@ function renderEntry(e, isLatest) {
         '</div>' +
         '<div class="mv-summary">' + escHtml(e.summary || '') + '</div>' +
       '</div>' +
+
+      shiftHtml +
 
       /* 혼조·양면 재료 (있을 때만): 점수 구도 바로 아래, 요인 2열 위 (2026-07-03 상단 이동) */
       mixedHtml +
