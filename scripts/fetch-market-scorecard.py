@@ -246,15 +246,45 @@ def session_tag_for_ts(ts):
 MIN_GAP_MINUTES = 75
 
 
-POST_CLOSE_SLOT = (6 * 60 + 55, 7 * 60 + 30)     # KST 06:55 ~ 07:29
+# ─── 정시 회차 (2026-11-19 오너 확정) ────────────────────────────────────────
+# 이 지면이 반드시 카드를 내야 하는 시각(KST). 바깥 예약 서비스가 정시에 호출한다.
+#   07:00(미국 장 마감 1시간 뒤) · 08:20 · 11:50 · 18:20 · 21:50 · 23:20
+# 규칙:
+#   1) 정시 회차 창(정시 5분 전 ~ 30분 뒤)의 실행은 75분 간격 규칙을 면제한다.
+#      같은 창에서 이미 카드가 나왔으면 거른다(트리거 폭주 방지는 유지).
+#   2) 정시 회차가 40분 안으로 다가왔으면 그 밖의 실행은 거른다(정시 카드 바로 앞에 한 장 더 나가지 않게).
+#   3) 깃허브 예비 예약(정시 10분 뒤로 걸어 둠, 흔히 한두 시간 늦게 돈다)은 그 정시 카드가
+#      이미 나갔으면 거르고, 안 나갔을 때만 대신 낸다.
+SLOTS = [(7, 0), (8, 20), (11, 50), (18, 20), (21, 50), (23, 20)]
+SLOT_EARLY, SLOT_LATE, PRE_SLOT_QUIET = 5, 30, 40
+BACKUP_CRONS = {          # 깃허브 예약 문자열(UTC) -> 대신할 정시 회차(KST)
+    '10 22 * * *': (7, 0), '30 23 * * *': (8, 20), '0 3 * * *': (11, 50),
+    '30 9 * * *': (18, 20), '0 13 * * *': (21, 50), '30 14 * * *': (23, 20),
+}
 
 
-def _in_post_close_slot(dt):
-    m = dt.hour * 60 + dt.minute
-    return POST_CLOSE_SLOT[0] <= m < POST_CLOSE_SLOT[1]
+def _slot_of(dt):
+    """dt 가 정시 회차 창 안이면 그 창의 시작 시각(datetime), 아니면 None."""
+    for h, mi in SLOTS:
+        t = dt.replace(hour=h, minute=mi, second=0, microsecond=0)
+        if t - timedelta(minutes=SLOT_EARLY) <= dt < t + timedelta(minutes=SLOT_LATE):
+            return t
+    return None
+
+
+def _minutes_to_next_slot(dt):
+    best = None
+    for add in (0, 1):
+        for h, mi in SLOTS:
+            t = (dt + timedelta(days=add)).replace(hour=h, minute=mi, second=0, microsecond=0)
+            d = (t - timedelta(minutes=SLOT_EARLY) - dt).total_seconds() / 60
+            if d > 0 and (best is None or d < best):
+                best = d
+    return best
 
 
 def recent_entry_exists(kst_now):
+    """이번 실행을 거를지. 거르면 이유를 찍고 True."""
     if os.environ.get('FORCE_SCORECARD') == '1':
         return False
     try:
@@ -263,16 +293,40 @@ def recent_entry_exists(kst_now):
         if not entries:
             return False
         last = datetime.strptime(entries[0].get('id', ''), '%Y-%m-%d-%H:%M')
-        _now = kst_now.replace(tzinfo=None)
-        # 2026-11-19 오너 결정: 07:00 KST 회차(미국 장 마감 1시간 뒤, 실적·어닝콜의 시간외 반응까지
-        # 본 카드)는 이 지면의 기준 회차다. 앞선 예약(05:00·06:30)이 깃허브 지연으로 늦게 돌아
-        # 75분 안에 카드를 냈더라도 이 회차는 거르지 않는다(11-19 실사고: 05:50 카드 때문에 07:00 생략).
-        # 같은 날 이 시간대에 이미 카드가 나왔으면 예전대로 거른다(트리거 폭주 방지는 유지).
-        if _in_post_close_slot(_now) and not (last.date() == _now.date() and _in_post_close_slot(last)):
-            print('  마감 1시간 뒤 기준 회차 - 75분 간격 규칙 면제')
+        now = kst_now.replace(tzinfo=None)
+        diff_min = (now - last).total_seconds() / 60
+
+        # 3) 깃허브 예비 예약
+        bk = BACKUP_CRONS.get((os.environ.get('EVENT_SCHEDULE') or '').strip())
+        if bk:
+            t = now.replace(hour=bk[0], minute=bk[1], second=0, microsecond=0)
+            if t > now:
+                t -= timedelta(days=1)
+            if last >= t - timedelta(minutes=SLOT_EARLY):
+                print(f"  예비 예약: {bk[0]:02d}:{bk[1]:02d} 정시 카드가 이미 나갔다 - 건너뜀")
+                return True
+            print(f"  예비 예약: {bk[0]:02d}:{bk[1]:02d} 정시 카드가 없다 - 대신 낸다")
+            return 0 <= diff_min < 20          # 방금 다른 카드가 나왔으면 그것으로 갈음
+
+        # 1) 정시 회차 창
+        slot = _slot_of(now)
+        if slot is not None:
+            if last >= slot - timedelta(minutes=SLOT_EARLY):
+                print("  이 정시 회차 카드는 이미 나갔다 - 건너뜀")
+                return True
+            print("  정시 회차 - 75분 간격 규칙 면제")
             return False
-        diff_min = (_now - last).total_seconds() / 60
-        return 0 <= diff_min < MIN_GAP_MINUTES
+
+        # 2) 정시 회차 직전
+        nxt = _minutes_to_next_slot(now)
+        if nxt is not None and nxt <= PRE_SLOT_QUIET:
+            print(f"  정시 회차가 {int(nxt)}분 뒤 - 그 회차에 맡기고 건너뜀")
+            return True
+
+        if 0 <= diff_min < MIN_GAP_MINUTES:
+            print(f"  직전 카드가 {MIN_GAP_MINUTES}분 이내 생성됨 - 중복 실행 건너뜀")
+            return True
+        return False
     except Exception:
         return False
 
@@ -4881,7 +4935,7 @@ def main():
 
     # 0. 중복 실행 가드 (2026-07-03) — 감시견 구조 + 정기 cron 겹침 방지
     if recent_entry_exists(kst_now):
-        print(f"  직전 카드가 {MIN_GAP_MINUTES}분 이내 생성됨 — 중복 실행 건너뜀 (FORCE_SCORECARD=1로 우회 가능)")
+        print("  (FORCE_SCORECARD=1 로 우회 가능)")
         sys.exit(0)
 
     # 0-1. 현재 미국 시장 세션 판정 (2026-07-03)

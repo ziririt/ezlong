@@ -53,12 +53,13 @@ VIEW = os.path.join(HERE, '..', 'data', 'swing-view.json')
 # v4 파라미터 (백테스트 확정값 — 변경 시 재검증 필수)
 CFG = dict(
     # 2026-11-19 오너 결정: 하락 추세(200일선 아래)의 목표 비중 0.00 -> 0.20.
-    # 화면 전략 카드('보유량 20% 이하 축소')와 맞춘다. 0.00 은 연속 급락 손절(stopped)에만 남는다.
+    # 화면 전략 카드('보유량 20% 이하 축소')와 맞춘다. 같은 날 연속 급락 손절(stopped)의 바닥도 0.20 으로 맞췄다(stop_floor).
+    # 0.00 이 남는 곳: 30주선 규칙에서 세 지수가 모두 이탈했을 때의 상한(lifeline_status).
     # 주의: 아래 STATS 의 백테스트 수치는 0.00 기준으로 잰 것이다 - 0.20 기준 재검증은 아직 안 했다.
     base_g3=1.00, base_g2=0.60, base_g1=0.20,
     g1_dip=0.20, dip_level=70,
     warn_sell=60, warn_cap_g3=0.60, warn2_sell=75, warn2_cap=0.35,
-    hard_stop_dev=-5.0, hard_consec=2, reenter_dev=-2.0,
+    hard_stop_dev=-5.0, hard_consec=2, reenter_dev=-2.0, stop_floor=0.20,
     step=0.20, min_gap=0.10, cooldown=2,
 )
 
@@ -140,7 +141,7 @@ def comp_scores(syms):
 
 def target_exposure(buy, sell, gear, stopped):
     if stopped:
-        return 0.0, 'stop'
+        return CFG['stop_floor'], 'stop'
     if gear >= 3:
         t, why = CFG['base_g3'], 'g3'
         if sell >= CFG['warn2_sell']:
@@ -181,10 +182,10 @@ def advance(state, day, price, buy, sell, gear, dev200, cap=None):
     else:
         gap = target - expo
         cooled = state.get('daysSince', 99) >= CFG['cooldown']
-        urgent = state.get('stopped') and expo > 0
+        urgent = state.get('stopped') and expo > target + 1e-9
         action = None
         if (abs(gap) >= CFG['min_gap'] and cooled) or urgent:
-            move = max(-1.0 if urgent else -CFG['step'], min(CFG['step'], gap))
+            move = max(gap if urgent else -CFG['step'], min(CFG['step'], gap))
             state['exposure'] = round(max(0.0, min(1.0, expo + move)), 2)
             action = 'STOP' if urgent else ('ADD' if move > 0 else 'TRIM')
             state['lastAction'] = dict(day=day, type=action, price=price,
