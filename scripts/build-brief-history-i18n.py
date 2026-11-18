@@ -33,6 +33,9 @@ sys.path.insert(0, os.path.join(HERE, 'i18n'))
 from brief_history_strings import BODY, JS, SYMBOL_FULL, SEO  # noqa: E402
 
 LANGS = ('en', 'ja', 'zh', 'es', 'pt')
+# 애드센스 재도전(2026-11-18): 통과 전까지 한국어·영어판만 색인한다. 통과 뒤 이 튜플을 비운다.
+NOINDEX_LANGS = ('ja', 'zh', 'es', 'pt')
+ROBOTS_NOINDEX = '\n<meta name="robots" content="noindex, follow">'
 BASE = 'https://ezlong.com'
 
 
@@ -65,7 +68,7 @@ def seo_block(lang):
     }
     ld_json = json.dumps(ld, ensure_ascii=False, indent=1)
     return f'''<!-- BH_SEO_START — 빌더 생성. 원본은 /brief-history.html -->
-<title>{t['title']}</title>
+<title>{t['title']}</title>{ROBOTS_NOINDEX if lang in NOINDEX_LANGS else ''}
 <meta name="description" content="{t['desc']}">
 <meta name="keywords" content="{t['keywords']}">
 <link rel="canonical" href="{url}">
