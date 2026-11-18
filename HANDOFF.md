@@ -1,12 +1,29 @@
 # HANDOFF: ezlong.com
 
-최종 갱신: 2026-11-17(화) 08:1x KST (맨 위 2026-11-17 절만 보탰다) / 앞 갱신 2026-10-20(화) 01:32 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션 - 2-3c 절과 4-10 절만 보탰다. 나머지 절은 09-14 그대로다)
+최종 갱신: 2026-11-18(수) 09:5x KST (맨 위 2026-11-18 절만 보탰다) / 앞 갱신 2026-11-17(화) 08:1x KST / 앞 갱신 2026-10-20(화) 01:32 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션 - 2-3c 절과 4-10 절만 보탰다. 나머지 절은 09-14 그대로다)
 기준 커밋: `51b73ec51` (인사이트 타임스 - 지면 순서 · 썸네일)
 성격: **최신 상태 한 장.** 이력을 밑에 쌓지 않는다. 인수인계할 때마다 통째로 덮어쓴다.
 과거 이력이 필요하면 `CHANGELOG.md`(2026-06-19부터, 57개 세션)를 본다.
 
 이 문서 하나만 읽고 바로 이어서 개발할 수 있게 쓴다.
 더 깊은 규칙은 `CLAUDE.md`가 본체다. 이 문서와 충돌하면 `CLAUDE.md`가 이긴다.
+
+## [최신 2026-11-18] 애드센스 재도전 1주차 정비 · 앱 모음 남은 일
+
+> Dev Space 세션(1번 주자)이 보탰다. 전부 main 에 올라가 라이브다. 재신청은 11-27(금), 신청 버튼은 오너(`docs/PENDING.md` P-014).
+
+- **애드센스 1주차(커밋 0367b32, 원복 태그 `stable-20261118-adsense-before`):**
+  - 일·스·포·중판(ja/es/pt/zh) 86쪽 전부 `noindex, follow`. 소사 번역판은 `scripts/build-brief-history-i18n.py` 의 `NOINDEX_LANGS` 가 붙인다. **통과 뒤 되돌릴 때 이 튜플을 비우고 네 언어 페이지의 robots 를 `index, follow` 로, 사이트맵을 원복 태그에서 되살린다.**
+  - 사이트맵 131 → 55주소(한·영만). 네 언어 대체 주소 표기도 뺐다. `check-sitemap.py` 통과.
+  - 영문판 바닥(`en-footer`·`ez-lang-footer`) 22쪽에 About·Privacy·Terms·Disclaimer·Contact 줄(`p.ez-legal-en`). 한국어판은 원래 `ez-footer.js` 에 있다.
+  - 에세이 15쪽(한 11 + 영 4): 보이는 저자 줄(`a.ez-byline`), meta author·JSON-LD author 를 Person(김성동 / Seongdong Kim, about.html)으로. rsi-30-base-rate 설명 메타의 따옴표 깨짐 고침.
+  - 첫 화면 인사이트 타임스: `#insightimes-list` 안에 정적 대체 목록 6건(11-18 데이터). 불러오기 실패·빈 목록이면 `extKeepOrHide` 가 정적 목록을 두거나 코너를 접는다. "불러올 수 없습니다" 문구는 없앴다. 정적 목록은 손으로 갱신하는 것이라 낡을 수 있다(스크립트가 늘 최신으로 갈아 끼운다).
+  - 서점 링크 60개(index.html 30, ez-footer.js 30) `rel="sponsored noopener"`.
+  - 그대로 둔 것: 한·영 페이지 머리의 hreflang 은 네 언어를 계속 가리킨다(해롭지 않음).
+- **앱 모음(P-013 해소):** ezScan 카드 한국어 화면 4장(`app/shots/es-1~4.jpg`, 시뮬레이터 + 시험 자료, 앱의 `EZSCAN_SEED`/`EZSCAN_SHOW` 장치로 찍음. 촬영 스크립트 `_ops/tmp/es-ko-shots.sh`). 다국어 문구 `app/i18n.js` 에 6줄. Ez Converter 웹에 글로벌 헤더(그 저장소 f94b6ae).
+- **send.ezlong.com(P-015 해소):** 11-14 에 이미 반영돼 있었다.
+
+---
 
 ## [최신 2026-11-17] 스윙 시그널: 판정 서열과 문구 정리
 
