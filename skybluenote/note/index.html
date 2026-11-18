@@ -286,7 +286,8 @@ h1.title{font-size:26px;line-height:1.35;margin:0 0 6px;letter-spacing:-.01em}
   }
 
   // ── 줄 단위(제목·목록·표·인용·코드·그림) ───────────────────────────
-  var IMG = /^!\[([^\]]*)\]\(attach:([A-Za-z0-9_.-]{1,80})(?:#(\d+)x(\d+))?\)\s*$/;
+  // 앞줄 굵게의 닫는 ** 가 그림 줄 머리에 붙는 일이 있다(앱 image_blocks.dart 와 같은 규칙).
+  var IMG = /^(?:\*\*|__|\*|_)?!\[([^\]]*)\]\(attach:([A-Za-z0-9_.-]{1,80})(?:#(\d+)x(\d+))?\)(?:\*\*|__|\*|_)?\s*$/;
   function cells(line){
     var s = line.trim();
     if (s.charAt(0) === '|') s = s.slice(1);
