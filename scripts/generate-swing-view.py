@@ -2033,8 +2033,30 @@ def main():
         elif ll['count'] >= 2:
             ll_cap = 0.2
 
+    # ── 판정 진행 시점 (2026-11-18 오너 결정) ─────────────────────────────────
+    # 그 전에는 그날 첫 실행(개장 15분 뒤)에서 하루치 판정을 진행했다. 그때 숫자는 사실상
+    # '전날 종가 + 15분'이라, 크게 빠진 날의 종가가 다음 날 밤에야 판정에 들어갔다
+    # (11-16 하락 추세로 끝난 날 간판이 '관망'이던 근본 까닭). 백테스트는 종가 체결 가정이다.
+    # 이제 그 거래일 장이 끝나고 1시간 뒤(ET 17:00, 실적·어닝콜의 시간외 반응까지 본 뒤)부터,
+    # 그리고 QQQ 일봉 날짜가 그 거래일일 때만 진행한다. 장중·개장 전 실행은 뷰만 갱신한다.
+    # 마감 뒤 실행을 놓치면 다음 실행(마감 후·다음 날 프리마켓)이 대신 진행한다.
+    _ph_adv = us_session_now()
+    _bar_day = qqq.get('barDate')
+    _close_ready = (_ph_adv != 'open')
+    try:
+        from zoneinfo import ZoneInfo as _ZI
+        _et_now = datetime.now(timezone.utc).astimezone(_ZI('America/New_York'))
+        if _et_now.strftime('%Y-%m-%d') == day and (_et_now.hour * 60 + _et_now.minute) < 17 * 60:
+            _close_ready = False            # 그 거래일의 마감 1시간 전에는 진행하지 않는다
+    except Exception:
+        pass
+    if _bar_day and _bar_day != day:
+        _close_ready = False                # 종가 봉이 아직 안 들어왔다(야후 지연) - 다음 실행에 맡긴다
+    if comp.get('lastDay') != day and not stale and not _close_ready:
+        print(f'판정 진행 보류: day={day} phase={_ph_adv} barDate={_bar_day} - 마감 1시간 뒤 종가로 진행한다')
+
     advanced = False
-    if comp.get('lastDay') != day and not stale:
+    if comp.get('lastDay') != day and not stale and _close_ready:
         action = advance(comp, day, price, buy, sell, gear, dev200, cap=ll_cap)
         advanced = True
     else:
