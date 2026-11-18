@@ -12,6 +12,33 @@ service firebase.storage {
       allow write: if false;
     }
 
+    // Skyblue Note '링크로 공유' (2026-11-18 성동님). 보기 페이지는
+    // ezlong.com/skybluenote/note/<번호>. 아무나 한 개씩 읽을 수 있되 목록은
+    // 못 본다(get 만, list 없음). 올리고 고치고 지우는 것은 그 공유를 만든
+    // 익명 계정(metadata.owner)만. 앱 쪽은 simpletext_app lib/share_service.dart.
+    function sbnId(sid) {
+      return sid.matches('^[A-Za-z0-9]{12}$');
+    }
+    function sbnBody(file) {
+      return (file == 'note.json'
+          && request.resource.size < 1024 * 1024
+          && request.resource.contentType == 'application/json')
+        || (file.matches('^[A-Za-z0-9_.-]{1,80}$') && file != 'note.json'
+          && request.resource.size < 8 * 1024 * 1024
+          && request.resource.contentType.matches('image/(jpeg|png|gif|webp|heic|heif)'));
+    }
+    match /skyblue/notes/{sid}/{file} {
+      allow get: if sbnId(sid);
+      // 덮어쓰기 올림도 'create' 로 판정된다(2026-11-18 시험으로 확인 — 남의
+      // 익명 계정이 덮어써 주인이 바뀌었다). 그래서 create 에서도 이미 있는
+      // 파일이면 주인을 본다.
+      allow create, update: if request.auth != null && sbnId(sid) && sbnBody(file)
+        && request.resource.metadata.owner == request.auth.uid
+        && (resource == null || resource.metadata.owner == request.auth.uid);
+      allow delete: if request.auth != null
+        && resource.metadata.owner == request.auth.uid;
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }
