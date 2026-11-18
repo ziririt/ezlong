@@ -82,6 +82,28 @@ jobs:
           ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
           FRED_API_KEY:          ${{ secrets.FRED_API_KEY }}
 
+      # ── 4-1. 보류로 끝났으면 7분 뒤 한 번 더 (2026-11-18 신설) ─────────
+      # 실사고: 08:20 KST 회차가 '한쪽 편이 개별 기업 뉴스뿐'으로 게시를 포기했는데, 다음 예약(09:30)이
+      # 깃허브 지연으로 한 시간 반 넘게 돌지 않아 엔비디아 실적 직후에 '실적 기대' 카드가 네 시간 가까이 걸렸다.
+      # 보류는 그 회차의 모델 답이 검증을 못 넘었다는 뜻이라, 뉴스가 조금 더 쌓인 뒤 한 번 더 묻는다.
+      - name: Retry once after a hold
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
+        run: |
+          HELD=$(python3 -c "import json,datetime as d;h=(json.load(open('data/market-scorecard-data.json')).get('hold') or {});t=h.get('at_utc');print('yes' if t and (d.datetime.now(d.timezone.utc)-d.datetime.fromisoformat(t.replace('Z','+00:00'))).total_seconds()<300 else 'no')" 2>/dev/null || echo no)
+          if [ "$HELD" = "yes" ]; then
+            echo "이번 회차가 보류로 끝났다 — 7분 뒤 한 번 더 시도"
+            sleep 420
+            python scripts/fetch-market-scorecard.py || true
+          else
+            echo "보류 아님 — 재시도 없음"
+          fi
+        env:
+          FORCE_SCORECARD:       '1'
+          GEMINI_API_KEY:        ${{ secrets.GEMINI_API_KEY }}
+          ALPHAVANTAGE_API_KEY:  ${{ secrets.ALPHAVANTAGE_API_KEY }}
+          ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
+          FRED_API_KEY:          ${{ secrets.FRED_API_KEY }}
+
       # ── 5. 변경사항 커밋 및 푸시 ──────────────────────────────────────
       # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙 16)
       - name: Commit and push JSON
@@ -91,6 +113,7 @@ jobs:
           git config user.email "scorecard-bot@ezlong.com"
 
           git add data/market-scorecard-data.json data/judgment-history-scorecard.json
+          [ -f data/bellwether-earnings-seen.json ] && git add data/bellwether-earnings-seen.json || true
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 건너뜀."
             exit 0

@@ -50,6 +50,7 @@ OUTPUT_PATH = os.path.normpath(
 # 판단 원장 (judgment ledger) — 3영업일 판단 연속성 (2026-07-03)
 # market-scorecard-data.json은 10개 상한(약 2일치)이라 3영업일 맥락에 부족 → 별도 원장 유지.
 # 원장이 없거나 깨져도 기존처럼 동작한다 (무중단 폴백).
+EARN_SEEN_PATH = os.path.normpath(os.path.join(os.path.dirname(OUTPUT_PATH), 'bellwether-earnings-seen.json'))
 LEDGER_PATH = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '..', 'data', 'judgment-history-scorecard.json')
 )
@@ -1959,6 +1960,8 @@ def validate_content(entry, session_code='', snap=None):
     # 잭슨홀이 끝난 다음 날에도 '잭슨홀 연설 대기'가 남아 있으면 독자를 속이는 것이다.
     for _stale in stale_event_offenders(entry):
         errors.append(_stale)
+    for _stale in stale_earnings_offenders(entry):    # 2026-11-18: 끝난 실적을 '대기'로
+        errors.append(_stale)
 
     # ── 체크 9: 금리가 긍정·부정 양쪽에 (2026-08-17 신설, 60항) ──────────────
     _both = rate_on_both_sides(entry)
@@ -3014,6 +3017,13 @@ def just_released_lines(now_utc=None, hours=24):
     for dt, name in _past_events(now, hours).values():
         h = (now - dt).total_seconds() / 3600.0
         out.append(f"- {name}: {et_stamp(dt)} 발표 완료 (약 {h:.0f}시간 전)")
+    # 2026-11-18: 벨웨더 실적도 '방금 나온 결과'로 알린다(실적은 지표 달력에 없어 빠져 있었다).
+    for g, dt in sorted(past_bellwether_earnings(now, hours).items(), key=lambda x: x[1]):
+        h = (now - dt).total_seconds() / 3600.0
+        tk = _BELLWETHER_TICKERS.get(g, g)
+        out.append(f"- {tk} 실적 발표: {et_stamp(dt, 'close')} 발표 완료 (약 {h:.0f}시간 전) — 결과가 이미 나왔다. "
+                   f"'{tk} 실적 발표 대기·기대감'은 지난 이야기이므로 핵심 이슈·재료·요약 어디에도 쓰지 마라. "
+                   f"뉴스 헤드라인의 실제 결과와 시간외 주가 반응을 근거로 earnings_bellwether 재료로 평가하라")
     return out
 
 
@@ -3080,9 +3090,119 @@ def fetch_bellwether_earnings():
                             .astimezone(timezone.utc))
             except Exception:
                 pass
+    # 2026-11-18 실사고: 엔비디아 실적이 나온 40분 뒤 카드가 '실적 발표 대기'를 핵심 이슈로 걸었다.
+    # 달력에서 '아직 안 온 실적'만 읽고 '방금 끝난 실적'은 어디에도 알려 주지 않았기 때문이다.
+    # 발표일을 파일에 적어 두어, 야후 달력이 다음 분기로 넘어간 뒤에도 72시간은 기억한다.
+    now = datetime.now(timezone.utc)
+    seen = {}
+    try:
+        with open(EARN_SEEN_PATH, encoding='utf-8') as f:
+            for g, iso in (json.load(f) or {}).items():
+                seen[g] = datetime.fromisoformat(iso)
+    except Exception:
+        seen = {}
+    past = {}
+    for g, dt in list(seen.items()) + list(m.items()):
+        age = (now - dt).total_seconds() / 3600.0
+        if 0 < age <= 72:
+            past[g] = dt
+    keep = {g: dt for g, dt in seen.items() if (now - dt).total_seconds() / 3600.0 <= 72}
+    keep.update({g: dt for g, dt in m.items() if (now - dt).total_seconds() / 3600.0 <= 72})
+    try:
+        with open(EARN_SEEN_PATH, 'w', encoding='utf-8') as f:
+            json.dump({g: dt.isoformat() for g, dt in sorted(keep.items())}, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        print(f"::warning::실적 발표일 기록 실패(무시): {type(e).__name__}: {e}")
     _EARN_CACHE['done'] = True
     _EARN_CACHE['map'] = m
+    _EARN_CACHE['past'] = past
     return m
+
+
+def past_bellwether_earnings(now_utc=None, hours=72):
+    """최근 N시간 안에 발표가 끝난 벨웨더 실적 {기업 그룹: 발표 UTC datetime}."""
+    now = now_utc or datetime.now(timezone.utc)
+    fetch_bellwether_earnings()
+    return {g: dt for g, dt in (_EARN_CACHE.get('past') or {}).items()
+            if 0 < (now - dt).total_seconds() / 3600.0 <= hours}
+
+
+_EARN_STALE_FRAME = re.compile(r'대기|예정|앞두|앞둔|임박|기대감|기대\s*속|경계감|관망')
+_EARN_STALE_FIX = re.compile(r'실적\s*(?:발표\s*)?(?:를\s*|을\s*)?(?:대기|임박|예정|기대감|기대\s*속|앞두고|앞둔|경계감|관망세?)')
+
+
+def _stale_earnings_group(text, past):
+    """텍스트가 '이미 끝난 실적'을 아직 안 온 일처럼 말하면 그 기업 그룹을, 아니면 None."""
+    if not past or not text:
+        return None
+    low = text.lower()
+    if '실적' not in text and 'earnings' not in low:
+        return None
+    if not _EARN_STALE_FRAME.search(text):
+        return None
+    for g in _rpt_groups_in(low):
+        if g in past:
+            return g
+    return None
+
+
+def stale_earnings_offenders(entry, now_utc=None):
+    """이미 발표가 끝난 벨웨더 실적을 '대기·기대감'으로 쓴 자리. 재판정 사유 문자열 목록."""
+    now = now_utc or datetime.now(timezone.utc)
+    past = past_bellwether_earnings(now)
+    if not past:
+        return []
+    out = []
+    kev = entry.get('key_event') or {}
+    spots = [('핵심 이슈', f"{kev.get('name') or ''} {kev.get('time') or ''} {kev.get('why') or ''}", kev.get('name') or '')]
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(k) or []):
+            spots.append(('재료', f"{f.get('name') or ''} {f.get('desc') or ''}", f.get('name') or ''))
+    spots.append(('요약', entry.get('summary') or '', '요약'))
+    for kind, text, label in spots:
+        g = _stale_earnings_group(text, past)
+        if g:
+            tk = _BELLWETHER_TICKERS.get(g, g)
+            out.append(f"끝난 실적을 대기로 서술: {kind} '{label}' — {tk} 실적은 "
+                       f"{et_stamp(past[g], 'close')}에 이미 발표됐다. '발표 대기·기대감'이 아니라 "
+                       f"나온 결과(매출·가이던스·시간외 주가 반응)를 근거로 earnings_bellwether 재료로 평가하라")
+    return out
+
+
+def enforce_released_earnings(entry, now_utc=None):
+    """집행 — 재판정 뒤에도 '끝난 실적 대기'가 남으면 코드가 낱말을 사실로 고친다.
+    판정·점수는 건드리지 않는다. 고친 자리 이름 목록을 돌려준다."""
+    now = now_utc or datetime.now(timezone.utc)
+    past = past_bellwether_earnings(now)
+    if not past:
+        return []
+    fixed = []
+
+    def _fix(item, keys, label):
+        text = ' '.join(str(item.get(k) or '') for k in keys)
+        g = _stale_earnings_group(text, past)
+        if not g:
+            return
+        for k in keys:
+            v = item.get(k)
+            if isinstance(v, str) and v:
+                item[k] = _EARN_STALE_FIX.sub('실적 발표 직후', v)
+        for k in [x + '_en' for x in keys]:
+            v = item.get(k)
+            if isinstance(v, str) and v:
+                v = re.sub(r'(?i)awaiting\s+(?:the\s+)?(\w+\s+)?earnings(?:\s+(?:report|release|results))?', r'\1earnings just released', v)
+                item[k] = re.sub(r'(?i)earnings\s+(?:wait|anticipation|expectations?|optimism)', 'earnings just released', v)
+        if 'time' in item:
+            item['time'] = f"{et_stamp(past[g], 'close')} 발표 완료"
+        fixed.append(label)
+
+    kev = entry.get('key_event')
+    if isinstance(kev, dict):
+        _fix(kev, ['name', 'why'], f"핵심 이슈 '{kev.get('name', '')}'")
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(k) or []):
+            _fix(f, ['name', 'desc'], f"재료 '{f.get('name', '')}'")
+    return fixed
 
 _EVT_MENTION = {
     'cpi':  re.compile(r'(?<![a-z])cpi(?![a-z])|소비자\s*물가'),
@@ -3166,7 +3286,8 @@ def annotate_event_dates(entry, now_utc=None):
     ev = {}
     for dt, key, name, approx, name_en in _econ_events(now):
         ev.setdefault(key, (dt, name, approx, name_en))   # 같은 종류면 가장 가까운 것
-    earns = fetch_bellwether_earnings()
+    # 2026-11-18: 이미 지난 실적 시각을 '대기' 재료에 붙이지 않는다(발표 40분 뒤 카드에 '장 마감 후 ET'가 붙어 나갔다).
+    earns = {g: d for g, d in fetch_bellwether_earnings().items() if d > now}
     stamped = []
 
     def _do(item, ko_pair, en_pair, max_events=2):
@@ -4906,6 +5027,10 @@ def main():
         record_hold(data, kst_now, 'event_wait')      # 75항: 화면에 '갱신 보류'로 알린다
         print("=== 중단 (카드 미생성) ===")
         sys.exit(0)
+
+    # 4-7c-0. 끝난 실적을 '대기'로 쓴 낱말 교정 (2026-11-18) — 재판정으로도 남으면 코드가 고친다.
+    for _nm in enforce_released_earnings(entry):
+        print(f"::warning::[끝난 실적] 대기 표현 교정: {_nm} → '실적 발표 직후'")
 
     # 4-7c. 예정 이벤트 ET 날짜 표기 (70항) — 프롬프트로 시켰어도 빠지면 코드가 붙인다.
     # 판정·점수는 건드리지 않는다. 독자가 '언제'를 알 수 있게 사실을 더할 뿐이다.
