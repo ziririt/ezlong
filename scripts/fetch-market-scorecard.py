@@ -1576,6 +1576,70 @@ def _apportion(weights, units):
     return res
 
 
+# ─── 한쪽 편 게시 (2026-11-18 오너 결정) ─────────────────────────────────────
+# 그 전에는 한쪽 편의 재료가 전부 탈락하면 게시를 포기하고 직전 카드를 남겼다(52항·G4·72항).
+# 실사고: 엔비디아 실적 직후 분위기가 호재 쪽으로 기울었는데, 부정 편에 남는 것이 개별 기업
+# 뉴스와 가격 결과뿐이라 네 번 연속 보류됐고 '실적 발표 대기' 카드가 반나절 걸렸다.
+# 분위기가 바뀐 날일수록 카드가 옛 판정에 머무는 구조였다. 이제 그 편을 비우고
+# 남은 편만으로 낸다(100 : 0). 빈 편에는 '재료 없음'을 적는다 - 억지 재료를 채우지 않는다.
+# 남은 편에도 살아남은 재료가 없으면 예전대로 보류한다.
+_ONE_SIDED_NOTE = {
+    'negative_factors': ('부정 재료 없음: 이번 회차에는 시장 전체를 움직인 부정 재료가 확인되지 않았습니다. '
+                         '개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
+                         'No negative drivers this round: nothing market-wide on the downside passed our checks. '
+                         'Single-company news and price moves by themselves are not counted.'),
+    'positive_factors': ('긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. '
+                         '개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
+                         'No positive drivers this round: nothing market-wide on the upside passed our checks. '
+                         'Single-company news and price moves by themselves are not counted.'),
+}
+
+
+def publish_one_sided(entry, empty_side, why):
+    """empty_side 를 비우고 반대편만으로 100 을 채운다. 반대편에 점수 재료가 없으면 False."""
+    if empty_side not in _ONE_SIDED_NOTE:
+        return False
+    other = 'negative_factors' if empty_side == 'positive_factors' else 'positive_factors'
+    keep = [f for f in (entry.get(other) or []) if int(f.get('score', 0) or 0) > 0]
+    if not keep:
+        return False
+    entry[empty_side] = []
+    entry[empty_side.replace('_factors', '_total')] = 0
+    entry[other.replace('_factors', '_total')] = 100
+    entry[other] = _redistribute(keep, 100)
+    ko, en = _ONE_SIDED_NOTE[empty_side]
+    entry['one_sided'] = {'empty': empty_side.replace('_factors', ''), 'why': why, 'note': ko, 'note_en': en}
+    return True
+
+
+def one_sided_candidate(entry, snap):
+    """방향 위반으로 한쪽 편만 통째로 탈락하는가. 그렇다면 반대편의 위반 재료를 걷어내고 그 편 이름을 돌려준다."""
+    sides = ('positive_factors', 'negative_factors')
+    bad_ids = {id(f) for _s, f, _w in direction_offenders(entry, snap)}
+    keep = {s: [f for f in (entry.get(s) or []) if id(f) not in bad_ids and int(f.get('score', 0) or 0) > 0]
+            for s in sides}
+    empty = [s for s in sides if not keep[s]]
+    if len(empty) != 1:
+        return None
+    other = sides[1] if empty[0] == sides[0] else sides[0]
+    entry[other] = keep[other]
+    return empty[0]
+
+
+def g4_one_sided(entry):
+    """개별 기업 재료뿐인 편을 가려낸다. 한 편만 그렇다면 그 편 이름(반대편의 개별 기업 재료는 걷어낸다)."""
+    sides = ('positive_factors', 'negative_factors')
+    keep = {s: [f for f in (entry.get(s) or [])
+                if not (_company_only_factor(f) and int(f.get('score', 0) or 0) > 0)
+                and int(f.get('score', 0) or 0) > 0] for s in sides}
+    empty = [s for s in sides if not keep[s]]
+    if len(empty) != 1:
+        return None
+    other = sides[1] if empty[0] == sides[0] else sides[0]
+    entry[other] = keep[other]
+    return empty[0]
+
+
 def _redistribute(factors, total, step=5):
     """항목 점수를 비례 조정해 합이 정확히 total이 되게.
     가급적 step(5) 단위로 배분한다 (2026-08-01 유저 요청 — 26·19·27·14 같은 잔점수가
@@ -4944,14 +5008,17 @@ def main():
         if not ok:
             # 한쪽 편이 통째로 비는 판정은 코드가 정직하게 만들 수 없다.
             # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다.
-            print("::warning::[52항] 위반 재료가 한쪽 편의 전부 — 이번 사이클 게시 포기")
-            record_hold(data, kst_now, 'direction')   # 75항: 화면에 '갱신 보류'로 알린다
-            print("=== 중단 (카드 미생성) ===")
-            sys.exit(0)
+            _es = one_sided_candidate(entry, snap)
+            if not (_es and publish_one_sided(entry, _es, 'direction')):
+                print("::warning::[52항] 위반 재료가 한쪽 편의 전부이고 반대편에도 남는 재료가 없다 — 이번 사이클 게시 포기")
+                record_hold(data, kst_now, 'direction')   # 75항: 화면에 '갱신 보류'로 알린다
+                print("=== 중단 (카드 미생성) ===")
+                sys.exit(0)
+            print(f"::warning::[한쪽 편 게시] {_es} 의 재료가 전부 탈락 — 그 편을 비우고 남은 편만으로 낸다")
         # 재료 하나를 걷어낸 것만으로 총점이 크게 움직일 수 있다(부정 40→85 등).
         # 그러면 방금 4-2에서 맞춰놓은 G2(변화 상한)·G3(극단값 앵커)가 다시 깨지므로
         # 클램프를 한 번 더 돌린다. 순서가 중요하다 — 방향 집행이 먼저, 점수 앵커가 나중.
-        after = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+        after = [] if entry.get('one_sided') else guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
         if after:
             print(f"  WARNING: 방향 집행 후 가드레일 위반 {len(after)}건 — 재클램프")
             entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
@@ -4960,10 +5027,13 @@ def main():
     # 4-3b. G4 한쪽 편 소멸 확인 — 개별 기업 재료가 그 편의 전부였던 경우.
     # 코드가 정직하게 만들 수 없는 판정이다. 틀린 카드보다 낡은 카드가 낫다(52항).
     if entry.pop('_g4_side_emptied', None):
-        print("::warning::[G4] 한쪽 편이 개별 기업 재료뿐 — 이번 사이클 게시 포기")
-        record_hold(data, kst_now, 'company_only')    # 75항: 화면에 '갱신 보류'로 알린다
-        print("=== 중단 (카드 미생성) ===")
-        sys.exit(0)
+        _es = g4_one_sided(entry)
+        if not (_es and publish_one_sided(entry, _es, 'company_only')):
+            print("::warning::[G4] 한쪽 편이 개별 기업 재료뿐이고 반대편에도 남는 재료가 없다 — 이번 사이클 게시 포기")
+            record_hold(data, kst_now, 'company_only')    # 75항: 화면에 '갱신 보류'로 알린다
+            print("=== 중단 (카드 미생성) ===")
+            sys.exit(0)
+        print(f"::warning::[한쪽 편 게시] {_es} 가 개별 기업 재료뿐 — 그 편을 비우고 남은 편만으로 낸다")
 
     # 4-3c. 수준 높은 금리의 상승을 혼조에서 부정으로 (83항, 성동님 재지적)
     # 재판정(체크 20)으로도 안 옮겼으면 코드가 옮긴다. 총점이 움직이므로
@@ -4972,7 +5042,9 @@ def main():
     if _hy_moved:
         for _why in _hy_moved:
             print(f"  [83·84항] 혼조→부정 이동: {_why}")
-        _after_hy = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+        if entry.get('one_sided') and entry.get('positive_factors') and entry.get('negative_factors'):
+            entry.pop('one_sided', None)      # 혼조에서 올라온 재료로 빈 편이 채워졌다 - 한쪽 편 게시가 아니다
+        _after_hy = [] if entry.get('one_sided') else guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
         if _after_hy:
             print(f"  WARNING: 금리 승격 후 가드레일 위반 {len(_after_hy)}건 — 재클램프")
             entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
@@ -5030,7 +5102,11 @@ def main():
     # 삭제가 아니라 이동이다(64항). 남은 재료에 점수를 재배분해 총점은 그대로 둔다.
     for _nm in demote_event_waits(entry):
         print(f"::warning::[72항] 대기 재료 혼조 강등: '{_nm}'")
-    if entry.pop('_wait_side_emptied', None):
+    _wse = entry.pop('_wait_side_emptied', None)
+    if _wse and publish_one_sided(entry, _wse, 'event_wait'):
+        print(f"::warning::[한쪽 편 게시] {_wse} 가 대기 재료뿐 — 그 편을 비우고 남은 편만으로 낸다")
+        _wse = None
+    if _wse:
         # 한쪽 편이 통째로 '기다림'뿐이었다. 그 편에는 판정을 지탱할 근거가 없다.
         # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다(52항).
         print("::warning::[72항] 한쪽 편이 대기 재료뿐 — 이번 사이클 게시 포기")

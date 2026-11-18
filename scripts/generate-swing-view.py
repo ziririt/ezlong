@@ -105,6 +105,20 @@ def _nz(v, default):
     return default if v is None else v
 
 
+def _josa(word, pair):
+    """받침에 맞는 조사. pair 는 '이가'·'은는'·'을를'처럼 (받침 있을 때, 없을 때) 두 글자.
+    2026-11-18: 규칙 논평이 '충격 지속가', '반도체이'라고 썼다 - 낱말이 바뀌는 자리에 조사를 박아 둔 탓이다."""
+    w = (word or '').rstrip(' )"\'')
+    if not w:
+        return pair[0]
+    ch = w[-1]
+    if '가' <= ch <= '힣':
+        return pair[0] if (ord(ch) - 0xAC00) % 28 else pair[1]
+    if ch.isdigit():
+        return pair[0] if ch in '013678' else pair[1]
+    return pair[1]
+
+
 def comp_scores(syms):
     # 2026-11-17: S&P500 대표를 SPY 로(오너 결정). 수집에 SPY 가 아직 없는 옛 파일이면 VOO 로 받는다 - 같은 지수라 점수는 사실상 같다.
     # 2026-11-17 실사고: SPY 를 수집에 넣은 첫 실행에서 SPY 만 마지막 거래일 봉이 빠져 왔다
@@ -591,7 +605,7 @@ def market_context(state, syms, advanced):
             lke = (low.get('key_event') or {}).get('name', '')
             neg_names = [f.get('name') for f in (low.get('negative_factors') or [])][:2]
             neg_txt = '·'.join(n for n in neg_names if n)
-            parts.append(f"직전까지 {neg_txt or lke}가 누르던 분위기(긍정 {low['positive_total']} 대 "
+            parts.append(f"직전까지 {neg_txt or lke}{_josa(neg_txt or lke, '이가')} 누르던 분위기(긍정 {low['positive_total']} 대 "
                          f"부정 {100 - low['positive_total']})가 {ke} 등으로 단시간에 반전. "
                          f'현재 재료 균형은 긍정 {pos} 대 부정 {neg}.')
         elif pos is not None:
@@ -2112,7 +2126,7 @@ def main():
                         '판정 미적용. 마켓사이클 파이프라인 점검 필요.')
     elif ll and ll['count'] >= 2:
         broken = '·'.join(n for n, b in ll['detail'] if b)
-        ll_paras.append(f'생명선 절단. {broken}이 주봉 기준 30주선 아래에서 마감. '
+        ll_paras.append(f'생명선 절단. {broken}{_josa(broken, "이가")} 주봉 기준 30주선 아래에서 마감. '
                         f'이 선 아래에서 강세장을 논하지 않는 것이 이 분석의 대원칙. '
                         f'{STATS["lifeline"]}. 규칙에 따라 노출 상한 '
                         f'{"0%" if ll["count"] >= 3 else "20%"}로 하향.')

@@ -3609,13 +3609,13 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     const soxxBigDrop = typeof soxxToday === 'number' && soxxToday <= -4;
 
     if (qqqConsecDown) {
-      lines.push(`QQQ down two days in a row (yesterday ${qqqYest > 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → today ${qqqToday?.toFixed(2)}%): short-term downward pressure continuing`);
+      lines.push(`QQQ down two sessions in a row (prior session ${qqqYest > 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → last session ${qqqToday?.toFixed(2)}%): short-term downward pressure continuing`);
     } else if (qqqBigDrop) {
-      lines.push(`QQQ dropped ${qqqToday?.toFixed(2)}% today: short-term volatility rising`);
+      lines.push(`QQQ dropped ${qqqToday?.toFixed(2)}% in the last session: short-term volatility rising`);
     }
 
     if (soxxBigDrop) {
-      lines.push(`SOXX (semiconductors) dropped ${soxxToday?.toFixed(2)}% today: watch for sector volatility`);
+      lines.push(`SOXX (semiconductors) dropped ${soxxToday?.toFixed(2)}% in the last session: watch for sector volatility`);
     }
 
     if (lines.length === 0) return '';
@@ -4791,20 +4791,20 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const nvdaBigMove = typeof nvdaToday === 'number' && Math.abs(nvdaToday) >= 3;
 
     if (qqqConsecDown) {
-      lines.push(`QQQ down two days in a row (yesterday ${qqqYest >= 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → today ${qqqToday?.toFixed(2)}%): short-term downward pressure continuing`);
+      lines.push(`QQQ down two sessions in a row (prior session ${qqqYest >= 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → last session ${qqqToday?.toFixed(2)}%): short-term downward pressure continuing`);
     } else if (qqqBigDrop) {
-      lines.push(`QQQ dropped ${qqqToday?.toFixed(2)}% today: short-term volatility rising`);
+      lines.push(`QQQ dropped ${qqqToday?.toFixed(2)}% in the last session: short-term volatility rising`);
     }
     if (soxxBigDrop) {
-      lines.push(`SOXX (semiconductors) dropped ${soxxToday?.toFixed(2)}% today: sector-wide selling intensifying`);
+      lines.push(`SOXX (semiconductors) dropped ${soxxToday?.toFixed(2)}% in the last session: sector-wide selling intensifying`);
     }
     if (tslaBigMove) {
       const dir = tslaToday > 0 ? 'surged' : 'dropped';
-      lines.push(`TSLA ${dir} ${tslaToday >= 0 ? '+' : ''}${tslaToday?.toFixed(2)}% today`);
+      lines.push(`TSLA ${dir} ${tslaToday >= 0 ? '+' : ''}${tslaToday?.toFixed(2)}% in the last session`);
     }
     if (nvdaBigMove) {
       const dir = nvdaToday > 0 ? 'surged' : 'dropped';
-      lines.push(`NVDA ${dir} ${nvdaToday >= 0 ? '+' : ''}${nvdaToday?.toFixed(2)}% today`);
+      lines.push(`NVDA ${dir} ${nvdaToday >= 0 ? '+' : ''}${nvdaToday?.toFixed(2)}% in the last session`);
     }
 
     if (lines.length === 0) return '';
@@ -5537,13 +5537,16 @@ function _deepAnalysisCardHtml(d, _ai) {
       // 오늘 큰 움직임(±3% 이상)
       const _bigMove    = typeof _r0 === 'number' && Math.abs(_r0) >= 3;
 
+      // 2026-11-18: 'Today / Yesterday' read on the visitor's own calendar, which is often a different day from the New York session. Name the session instead.
+      const _MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const _sess0 = d.barDate ? `Last session (${_MON[Number(d.barDate.slice(5,7)) - 1]} ${Number(d.barDate.slice(8,10))})` : 'Last session';
       let _summary = '';
       if (_consecDown) {
-        _summary = `Down two days in a row: short-term downward pressure continuing. Avoid chasing an entry here`;
+        _summary = `Down two sessions in a row: short-term downward pressure continuing. Avoid chasing an entry here`;
       } else if (_bigMove && _r0 < 0) {
-        _summary = `Sharp drop today: volatility rising. Sticking to a staged (small first tranche) entry matters even more`;
+        _summary = `Sharp drop in the last session: volatility rising. Sticking to a staged (small first tranche) entry matters even more`;
       } else if (_bigMove && _r0 > 0) {
-        _summary = `Sharp gain today: check RSI for short-term overheating before considering an entry`;
+        _summary = `Sharp gain in the last session: check RSI for short-term overheating before considering an entry`;
       }
 
       const _hasSummary = _summary.length > 0;
@@ -5553,15 +5556,15 @@ function _deepAnalysisCardHtml(d, _ai) {
         <div style="font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:${_bColor};opacity:.85;margin-bottom:6px;">${d.symbol} Recent Price Trend</div>
         <div style="display:flex;gap:18px;margin-bottom:${_hasSummary ? '8' : '0'}px;">
           <div style="text-align:center;">
-            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">Today</div>
+            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">${_sess0}</div>
             <div style="font-size:16px;font-weight:800;color:${_clr(_r0)};">${_fmt(_r0)}</div>
           </div>
           <div style="text-align:center;">
-            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">Yesterday</div>
+            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">Prior session</div>
             <div style="font-size:16px;font-weight:800;color:${_clr(_r1)};">${_fmt(_r1)}</div>
           </div>
           ${typeof _r2 === 'number' ? `<div style="text-align:center;">
-            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">2 Days Ago</div>
+            <div style="font-size:16px;font-weight:600;color:var(--t3);margin-bottom:2px;">2 sessions back</div>
             <div style="font-size:16px;font-weight:800;color:${_clr(_r2)};">${_fmt(_r2)}</div>
           </div>` : ''}
         </div>

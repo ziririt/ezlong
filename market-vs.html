@@ -782,6 +782,9 @@ function renderEntry(e, isLatest) {
       '</div>';
   }
 
+  // 2026-11-18: 한쪽 편에 시장 재료가 없는 회차는 그 편을 비우고 낸다. 빈 칸 대신 까닭을 적는다.
+  if (!pf.length) posFactors = '<div class="mv-factor-item"><div class="mv-factor-desc">' + escHtml((e.one_sided && e.one_sided.note) || '긍정 재료 없음') + '</div></div>';
+
   // 부정 요인
   var negFactors = '';
   var nf = e.negative_factors || [];
@@ -794,6 +797,8 @@ function renderEntry(e, isLatest) {
         '<div class="mv-factor-desc">' + escHtml(nf[j].desc) + '</div>' +
       '</div>';
   }
+
+  if (!nf.length) negFactors = '<div class="mv-factor-item"><div class="mv-factor-desc">' + escHtml((e.one_sided && e.one_sided.note) || '부정 재료 없음') + '</div></div>';
 
   // 혼조·양면 재료 (2026-07-03 신설): 없으면 섹션 자체를 렌더링하지 않음
   var mixedHtml = '';

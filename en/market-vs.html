@@ -546,6 +546,10 @@ function renderEntry(e, isLatest) {
       '</div>';
   }
 
+  // 2026-11-18: a round with no market-wide drivers on one side is published with that side empty. Say why instead of leaving a blank.
+  if (!pf.length) posFactors = '<div class="mv-factor-item"><div class="mv-factor-desc">' + escHtml((e.one_sided && e.one_sided.note_en) || 'No positive drivers this round') + '</div></div>';
+  if (!nf.length) negFactors = '<div class="mv-factor-item"><div class="mv-factor-desc">' + escHtml((e.one_sided && e.one_sided.note_en) || 'No negative drivers this round') + '</div></div>';
+
   var mixedHtml = '';
   var mf = e.mixed_factors || [];
   if (mf.length) {
