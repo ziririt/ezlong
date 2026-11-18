@@ -3,56 +3,56 @@
   "name": "다우존스 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-11-18T15:21:24.579Z",
-  "analysisAt": "2026-11-18T15:21:24.579Z",
+  "updatedAt": "2026-11-18T16:21:00.078Z",
+  "analysisAt": "2026-11-18T16:21:00.078Z",
   "analysisPreserved": false,
   "price": {
-    "current": 502.97,
-    "change": -4.34,
-    "changePct": -0.86,
+    "current": 500.118,
+    "change": -7.192,
+    "changePct": -1.42,
     "high52": 546.75,
     "low52": 450.44,
-    "pos52": 54.5,
+    "pos52": 51.6,
     "marketState": "REGULAR",
-    "quoteTime": 1795015276,
+    "quoteTime": 1795018848,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 519.8565,
-    "sma50": 517.852,
-    "sma100": 522.6603,
-    "sma200": 505.3763,
-    "rsi": 37.23,
+    "sma20": 519.7139,
+    "sma50": 517.7949,
+    "sma100": 522.6318,
+    "sma200": 505.3621,
+    "rsi": 35.66,
     "macd": {
-      "macd": -2.038955,
-      "signal": -0.206119,
-      "histogram": -1.832837
+      "macd": -2.266474,
+      "signal": -0.251622,
+      "histogram": -2.014852
     },
     "bb": {
-      "upper": 533.3823,
-      "middle": 519.8565,
-      "lower": 506.3307,
-      "bandwidth": 0.052
+      "upper": 533.9883,
+      "middle": 519.7139,
+      "lower": 505.4395,
+      "bandwidth": 0.0549
     },
     "adx": {
-      "plusDI": 24.06,
-      "minusDI": 37.45,
-      "adx": 13.56,
+      "plusDI": 23.6,
+      "minusDI": 38.64,
+      "adx": 13.73,
       "status": "무추세(충격 가능)"
     },
-    "atr": 7.0695
+    "atr": 7.2073
   },
   "levels": {
     "swingResistance": 505.3,
     "swingSupport": 500.1,
     "pivot": {
-      "pp": 513.84,
-      "r1": 525.73,
-      "r2": 548.48,
-      "s1": 491.09,
-      "s2": 479.2
+      "pp": 512.25,
+      "r1": 524.47,
+      "r2": 548.82,
+      "s1": 487.9,
+      "s2": 475.68
     }
   },
   "analysis": {
@@ -67,44 +67,44 @@
     "action": "매수",
     "buyScore": 6,
     "scoreReason": "RSI 과매도 탈출 + CCI 극단 반등",
-    "scoreReasonEn": "RSI exiting oversold + CCI rebound from extreme",
-    "rsiTrajectory": "53.3 → 37.2 (과매도 진입 중)",
-    "rsiTrajectoryEn": "53.3 → 37.2 (entering oversold)",
-    "macdTrajectory": "히스토 0.0645 → -1.8328 (악화 지속)",
-    "macdTrajectoryEn": "histo 0.0645 → -1.8328 (worsening)",
-    "pricePattern": "Higher Low 미확인, 횡보 구간",
-    "pricePatternEn": "Higher Low unconfirmed, sideways range",
-    "volComment": "거래량비 0.41 (위축)",
+    "scoreReasonEn": "Exiting oversold RSI + extreme CCI rebound",
+    "rsiTrajectory": "37.2 → 35.7 (과매도 지속 중)",
+    "rsiTrajectoryEn": "37.2 → 35.7 (staying oversold)",
+    "macdTrajectory": "히스토 -2.7561 → -2.0149 (개선 중)",
+    "macdTrajectoryEn": "histo -2.7561 → -2.0149 (improving)",
+    "pricePattern": "Higher Low 형성 시도, 5일 저가 $500.03 vs 20일 저가 $500.03",
+    "pricePatternEn": "Attempting Higher Low, 5-day low $500.03 vs 20-day low $500.03",
+    "volComment": "거래량비 0.60 (위축)",
     "bbPosition": "하단근처",
-    "reason": "RSI 37.2로 과매도 구간 진입, CCI -250.7로 극단 하락 후 반등 시작. 5일 연속 음봉 마감 후 기술적 반등 기대. SMA200 하회하나 지지선 $500.10 근접.",
-    "reasonEn": "RSI at 37.2 entering oversold territory, CCI rebounding from -250.7 extreme. Expecting technical bounce after 5 consecutive down days. Below SMA200 but nearing support at $500.10.",
-    "entry": 502.97,
-    "stop": 495.86,
-    "target": 515.25,
-    "invalidation": 505.3,
-    "weeklyConflict": "주봉 RSI 44.1로 약세이나, 일봉 과매도 진입으로 단기 반등 우선",
-    "weeklyConflictEn": "Weekly RSI at 44.1 shows weakness, but daily oversold takes precedence for short-term bounce.",
-    "profitTarget1": 515.25,
-    "profitTarget2": 524.46,
-    "stopLoss": 495.86,
-    "narrative": "[추세 위치]\n· 현재가($502.97) vs SMA5($514.32)/SMA20($519.86)/SMA50($517.85): 단기·중기 추세 하회\n· SMA100($522.66)/SMA200($505.38) 대비 위치: 중장기 추세 약세\n· 52주 위치(54.5%) + 현 가격대 역사적 중립 구간\n[모멘텀 지표]\n· RSI 궤적 (53.3→37.2): 과매도 진입 중\n· MACD 히스토그램 궤적 (0.0645→-1.8328): 악화 지속\n· 볼린저밴드 현재가 위치 (하단 $506.33 근처) + 밴드폭 5.20% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($500.10) + 근거 (피벗/스윙저점 기반)\n· 스윙 저항선 ($505.30) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴: 횡보 구간\n[거래량·결론]\n· 거래량 비율 (0.41배): 움직임의 위축\n· 현 구간 진단: 하락추세 속 기술적 반등 구간",
-    "narrativeEn": "[Trend Position]\n· Current Price($502.97) vs SMA5($514.32)/SMA20($519.86)/SMA50($517.85): below short/mid-term trends\n· Position vs SMA100($522.66)/SMA200($505.38): weak long-term trend\n· 52-week Position (54.5%) + current price historically neutral zone\n[Momentum Indicators]\n· RSI Trajectory (53.3→37.2): entering oversold\n· MACD Histogram Trajectory (0.0645→-1.8328): worsening trend\n· Bollinger Band Current Price Position (near lower band $506.33) + 5.20% band width\n[Support & Resistance Structure]\n· Swing Support ($500.10) + basis (pivot/swing low)\n· Swing Resistance ($505.30) + potential for short-term bounce on breakout\n· 5-day/20-day High/Low Pattern: sideways range\n[Volume & Conclusion]\n· Volume Ratio (0.41x): subdued movement\n· Current Zone Diagnosis: technical bounce within downtrend",
-    "patternNote": "5일 저가 $501.96, 20일 저가 $501.96으로 동일. 5일 고가 $527.05, 20일 고가 $536.60으로 Lower High 패턴 형성 중.",
-    "patternNoteEn": "5-day low $501.96, 20-day low $501.96 identical. 5-day high $527.05, 20-day high $536.60 forming a Lower High pattern.",
+    "reason": "직전 매수 판정(RSI 과매도 탈출 + CCI 극단 반등) 이후 2거래일 연속 하락했으나, 현재가 $500.12는 20일 저가 $500.03과 거의 동일한 수준으로 지지선 $500.10에 근접. MACD 히스토그램은 여전히 음수이나 개선 추세 유지 중. RSI는 과매도 구간 35.7에서 횡보하며 반등 시점 모색 중. 거래량은 5일 평균 대비 0.60으로 위축되어 있어 추가 하락 시 신뢰도는 낮음. 시장 전체 하락 추세와는 별개로, 이 종목은 기술적 반등 가능 구간 진입.",
+    "reasonEn": "Despite two consecutive down days after the previous buy signal (RSI exiting oversold + extreme CCI rebound), the current price of $500.12 is nearly identical to the 20-day low of $500.03, approaching the support level at $500.10. The MACD histogram remains negative but continues to improve. RSI is hovering at 35.7 in oversold territory, seeking a rebound point. Volume is subdued at 0.60 of the 5-day average, indicating low conviction for further downside. Separate from the overall market downtrend, this ETF is entering a technically viable rebound zone.",
+    "entry": 500.12,
+    "stop": 487.9,
+    "target": 524.55,
+    "invalidation": 487.9,
+    "weeklyConflict": "주봉 SMA20($521.52) 하회하나, 일봉 지지선 $500.10 근접",
+    "weeklyConflictEn": "Below weekly SMA20 ($521.52), but approaching daily support at $500.10",
+    "profitTarget1": 524.55,
+    "profitTarget2": 542.87,
+    "stopLoss": 487.9,
+    "narrative": "[추세 위치]\n· 현재가($500.12) vs SMA5($513.75)/SMA20($519.71)/SMA50($517.79): 단기·중기 추세 하회, 약세\n· SMA100($522.63)/SMA200($505.36) 대비 위치: 중장기 추세 하회, 약세\n· 52주 위치(51.6%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (37.2→35.7): 과매도 지속 중, 반등 시도\n· MACD 히스토그램 궤적 (-2.7561→-2.0149): 개선 중, 약세 수렴\n· 볼린저밴드 현재가 위치 (하단 $505.44 근처): 하단 접근, 밴드폭 5.49%\n[지지·저항 구조]\n· 스윙 지지선 ($500.10): 20일 저가 근접, 피벗 S1($487.90)보다 상단\n· 스윙 저항선 ($505.30): SMA200 대비 위치, 피벗 R1($524.47)보다 하단\n· 5일/20일 고가·저가 패턴 (Higher Low 시도): 지지 확인 필요\n[거래량·결론]\n· 거래량 비율 (0.60): 움직임의 신뢰도 위축\n· 현 구간 진단 (축적 구간 진입 가능성): 지지 확인 후 매수 진입 조건",
+    "narrativeEn": "[Trend Position]\n· Current price ($500.12) vs SMA5 ($513.75)/SMA20 ($519.71)/SMA50 ($517.79): Below short/mid-term trends, bearish.\n· Position relative to SMA100 ($522.63)/SMA200 ($505.36): Below long-term trends, bearish.\n· 52-week position (51.6%) + historically mid-range price level.\n[Momentum Indicators]\n· RSI trajectory (37.2→35.7): Staying oversold, attempting rebound.\n· MACD histogram trajectory (-2.7561→-2.0149): Improving, bearish convergence.\n· Bollinger Band current price position (near lower band $505.44): Approaching lower band, 5.49% band width.\n[Support & Resistance Structure]\n· Swing support ($500.10): Near 20-day low, above Pivot S1 ($487.90).\n· Swing resistance ($505.30): Below SMA200, below Pivot R1 ($524.47).\n· 5-day/20-day high/low pattern (Attempting Higher Low): Requires support confirmation.\n[Volume & Conclusion]\n· Volume ratio (0.60): Low conviction in price movement.\n· Current phase diagnosis (Potential accumulation phase): Entry condition after support confirmation.",
+    "patternNote": "5일 저가와 20일 저가가 동일한 $500.03으로, 지지선 $500.10에 근접하며 Higher Low 형성 시도 중. 거래량 위축으로 신뢰도는 낮으나, 과매도 구간 진입 후 반등 가능성 탐색.",
+    "patternNoteEn": "The 5-day and 20-day lows are identical at $500.03, attempting to form a Higher Low near the support level of $500.10. Low volume reduces conviction, but a rebound is possible after entering oversold territory.",
     "keyPoints": [
-      "RSI 37.2로 과매도 구간 진입, 5일 전 53.3 대비 하락세 뚜렷",
-      "CCI -250.7로 극단 하락 후 반등 시작, 기술적 반등 가능성 시사",
-      "SMA200 하회하나 지지선 $500.10 근접, 반발 매수 구간 진입 가능성"
+      "현재가 $500.12는 스윙 지지선 $500.10 및 20일 저가 $500.03에 근접, 기술적 반등 구간 진입.",
+      "MACD 히스토그램 개선 추세 지속, RSI는 과매도 구간에서 횡보하며 반등 모색.",
+      "거래량 0.60으로 위축, 반등 신뢰도 낮음. 지지 확인 후 진입 필요."
     ],
     "keyPointsEn": [
-      "RSI at 37.2 entering oversold, clear downtrend from 53.3 five days ago",
-      "CCI at -250.7 extreme rebound suggests technical bounce potential",
-      "Below SMA200 but near support at $500.10, potential for buying zone"
+      "Current price $500.12 is near swing support $500.10 and 20-day low $500.03, entering a technical rebound zone.",
+      "MACD histogram continues to improve, RSI hovers in oversold territory seeking a rebound.",
+      "Volume at 0.60 is subdued, limiting rebound conviction. Entry requires support confirmation."
     ],
-    "riskNote": "ADX 13.6으로 추세 미형성, 충격성 변동 가능성 상존.",
-    "riskNoteEn": "ADX at 13.6 indicates no established trend, risk of shock-like volatility remains.",
-    "continuity": "직전 매도 판정(RSI 39.9)에서 오늘 매수 전환, RSI 37.2로 과매도 진입 및 CCI 극단 반등이 근거.",
-    "continuityEn": "Shift from previous sell decision (RSI 39.9) to buy today, based on RSI entering oversold at 37.2 and extreme CCI rebound.",
+    "riskNote": "ADX 13.7로 추세 미형성 구간, -DI(38.6)가 +DI(23.6)보다 우위에 있어 하락 압력 우세하나 거래량 부재로 추세적 붕괴 신뢰도 낮음.",
+    "riskNoteEn": "ADX at 13.7 indicates a non-trending phase; -DI (38.6) is stronger than +DI (23.6), suggesting downside pressure, but low volume limits conviction in a trend breakdown.",
+    "continuity": "직전 매수 판정(RSI 과매도 탈출 + CCI 극단 반등) 이후 2거래일 연속 하락하며 관망으로 전환되었으나, 금일 지표는 다시 매수 구간 진입 가능성을 시사. RSI 37.2→35.7 유지, MACD 히스토그램 -2.7561→-2.0149 개선.",
+    "continuityEn": "After the previous buy signal (RSI exiting oversold + extreme CCI rebound), two consecutive down days led to a shift to 'watchful waiting'. Today's indicators suggest a potential return to buy territory: RSI maintained at 37.2→35.7, MACD histogram improved from -2.7561→-2.0149.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -113,6 +113,8 @@
       "oversoldExtremeOrigin": true,
       "score": "2/5",
       "verdict": "초기 단계: 확인 관문 남음"
-    }
+    },
+    "levelsAdjusted": true,
+    "levelsAdjustedReason": "손절폭 ATR 0.31배 < 1"
   }
 }
