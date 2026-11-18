@@ -1363,6 +1363,16 @@ def record_hold(data, kst_now, kind):
         'reason':    ko,
         'reason_en': en,
     }
+    # 2026-11-18: 보류로 직전 카드가 그대로 남는데, 그 카드가 '이미 끝난 실적'을 아직 '대기·기대감'으로
+    # 말하고 있으면 낱말만 사실로 고친다. 판정·점수는 건드리지 않는다 - 새 판정을 내는 것이 아니라
+    # 남겨 두는 카드가 거짓말을 하지 않게 하는 것이다(엔비디아 실적 뒤 네 시간 '발표 대기'가 걸린 실사고).
+    try:
+        _ents = data.get('entries') or []
+        if _ents and isinstance(_ents[0], dict):
+            for _nm in enforce_released_earnings(_ents[0]):
+                print(f"::warning::[끝난 실적] 남겨 두는 직전 카드의 대기 표현 교정: {_nm}")
+    except Exception as e:
+        print(f"::warning::직전 카드 교정 실패(무시): {type(e).__name__}: {e}")
     try:
         save_data(data)
         print(f"  갱신 보류 기록: {kind} ({count}회 연속) — 직전 카드 유지")
