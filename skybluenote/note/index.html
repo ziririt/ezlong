@@ -25,15 +25,11 @@
 <link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
 <link rel="apple-touch-icon" href="/icons/pwa-180.png?v=20260809">
 <!--
-  Skyblue Note '링크로 공유' 보기 페이지 (2026-11-18 성동님 — "URL 공유해서 뷰잉만
-  되게. 퍼블릭 공개 기능을 줘." 주소 규칙 ezlong.com/skybluenote/note/<번호>).
-
-  노트는 파이어베이스 저장소 skyblue/notes/<번호>/note.json 에 있고, 앱이 올리고
-  고치고 지운다(simpletext_app lib/share_service.dart). 이 페이지는 읽기만 한다.
-
-  보안 — 누구나 익명 계정으로 아무 노트나 올릴 수 있다. 그래서 이 페이지는
-  노트의 글을 **절대 HTML 로 꽂지 않는다**(innerHTML 금지). 글자는 전부
-  textContent 로, 링크는 http(s) 만, 그림은 같은 번호 아래 저장소 주소만 쓴다.
+  Skyblue Note '링크로 공유' 보기 페이지. 주소는 /skybluenote/note/<번호>.
+  노트는 저장소 skyblue/notes/<번호>/note.json 에 있고 이 페이지는 읽기만 한다.
+  보안: 누구나 노트를 올릴 수 있으므로 노트의 글은 HTML 로 꽂지 않는다
+  (innerHTML 금지). 글자는 textContent, 링크는 http(s) 만, 그림은 같은 번호
+  아래 저장소 주소만 쓴다.
 -->
 <style>
 :root{
@@ -110,8 +106,7 @@ h1.title{font-size:26px;line-height:1.35;margin:0 0 6px;letter-spacing:-.01em}
   var sid = m ? m[1] : null;
   var card = document.getElementById('card');
 
-  // 보는 사람의 브라우저 말로 — 앱과 같은 아홉 말(2026-11-18 성동님 —
-  // "'보기 전용' '고침' 등은 주요 언어 번역은 잘 되겠지?").
+  // 보는 사람의 브라우저 말로 — 앱과 같은 아홉 말.
   var T = {
     ko: { badge:'보기 전용', loading:'노트를 불러오는 중입니다…', edited:'고침', untitled:'제목 없는 노트',
           foot:'Skyblue Note에서 공유한 노트입니다. 보기만 할 수 있습니다.', more:'Skyblue Note 알아보기',
@@ -377,8 +372,7 @@ h1.title{font-size:26px;line-height:1.35;margin:0 0 6px;letter-spacing:-.01em}
       var title = String(n.title || '').trim() || t.untitled;
       document.title = title + ' — Skyblue Note';
       card.appendChild(el('h1', 'title', title));
-      // 고친 시각은 보이지 않는다(19:01 성동님 — "공개 문서에 고침 시각 노출 금지.
-      // 일종의 보안에 필요한 정보"). 앱도 이제 시각을 싣지 않는다.
+      // 고친 시각은 싣지도 보이지도 않는다.
       var body = el('div', 'body');
       render(n.body, n.images || {}, body);
       card.appendChild(body);
