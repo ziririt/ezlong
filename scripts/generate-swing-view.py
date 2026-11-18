@@ -52,7 +52,10 @@ VIEW = os.path.join(HERE, '..', 'data', 'swing-view.json')
 
 # v4 파라미터 (백테스트 확정값 — 변경 시 재검증 필수)
 CFG = dict(
-    base_g3=1.00, base_g2=0.60, base_g1=0.00,
+    # 2026-11-19 오너 결정: 하락 추세(200일선 아래)의 목표 비중 0.00 -> 0.20.
+    # 화면 전략 카드('보유량 20% 이하 축소')와 맞춘다. 0.00 은 연속 급락 손절(stopped)에만 남는다.
+    # 주의: 아래 STATS 의 백테스트 수치는 0.00 기준으로 잰 것이다 - 0.20 기준 재검증은 아직 안 했다.
+    base_g3=1.00, base_g2=0.60, base_g1=0.20,
     g1_dip=0.20, dip_level=70,
     warn_sell=60, warn_cap_g3=0.60, warn2_sell=75, warn2_cap=0.35,
     hard_stop_dev=-5.0, hard_consec=2, reenter_dev=-2.0,
@@ -313,6 +316,9 @@ def stance_of(state, action, buy, sell, gear):
     if action == 'ADD':
         return 'accumulate', '분할 매수 유리 구간'
     if action == 'TRIM':
+        # 2026-11-19: 떨어져서 줄이는 것은 '익절'이 아니다. 하락 추세·30주선 규칙으로 줄일 때는 이름을 가른다.
+        if (gear is not None and gear <= 1) or state.get('targetWhy') in ('lifeline', 'g1', 'g1dip'):
+            return 'trim', '비중 축소 권고 구간'
         return 'trim', '부분 익절·축소 권고 구간'
     expo, target = state.get('exposure', 0), state.get('target', 0)
     if target > expo + 0.05:
@@ -2090,12 +2096,25 @@ def main():
     # 88항 단일 진실값: 15개 창으로 세면 31거래일째가 '15일째'로 찍힌다(2026-09-07 실사고).
     # 현재 런의 길이는 stanceStreak 하나만 쓰고, 창은 등락 계산용으로만 넓게 잡는다.
     _hist = [h for h in comp.get('history', [])[-60:] if h.get('st')]
-    runs = []            # [스탠스, 일수, 시작 인덱스]
+    runs = []            # [스탠스, 일수, 시작 인덱스, 그 구간의 마지막 날 기록]
     for i, h in enumerate(_hist):
         if runs and runs[-1][0] == h['st']:
             runs[-1][1] += 1
+            runs[-1][3] = h
         else:
-            runs.append([h['st'], 1, i])
+            runs.append([h['st'], 1, i, h])
+
+    # 2026-11-19: 지나간 wait 구간도 그날 간판이 부르던 이름으로 부른다.
+    # 어제 "'매수 중단' 판단 2일째"라고 한 이틀을 오늘 "관망 2일"이라 부르면 다른 판단처럼 읽힌다.
+    def _past_word(s, h):
+        if s != 'wait':
+            return SHORT[s]
+        g = h.get('gear')
+        if g is not None and g <= 1:
+            return '매수 중단'
+        if h.get('target') is not None and h['target'] <= 0.2 and (h.get('expo') or 0) <= 0.2:
+            return '낮은 비중 유지'
+        return '관망'
 
     # 연속 판단이 이어지는 동안 시장이 어디로 갔는지 — 이 숫자가 없으면
     # "'보유' 판단 오늘로 4일째"는 자랑도 반성도 아닌 무의미한 카운터다.
@@ -2114,15 +2133,16 @@ def main():
         return None
 
     if len(runs) >= 2:
-        prev_s, prev_n, _ = runs[-2]
-        cur_s, cur_n, cur_i = runs[-1]
+        prev_s, prev_n, _, prev_h = runs[-2]
+        cur_s, cur_n, cur_i, _ = runs[-1]
+        prev_w = _past_word(prev_s, prev_h)
         if cur_n == 1:
-            flow = f"오늘 판단 전환 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
+            flow = f"오늘 판단 전환 — {prev_w} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
         else:
             flow = _streak_line(SHORT[cur_s], cur_s, max(cur_n, streak), _run_chg(cur_i)) + \
-                   f" (직전: {SHORT[prev_s]} {prev_n}일)"
+                   f" (직전: {prev_w} {prev_n}일)"
     elif runs and max(runs[-1][1], streak) >= 3:
-        cur_s, cur_n, cur_i = runs[-1]
+        cur_s, cur_n, cur_i, _ = runs[-1]
         flow = _streak_line(SHORT[cur_s], cur_s, max(cur_n, streak), _run_chg(cur_i))
 
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)

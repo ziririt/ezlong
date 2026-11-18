@@ -1,9 +1,9 @@
 {
  "comp": {
   "stopCount": 0,
-  "exposure": 0.0,
+  "exposure": 0.2,
   "initDay": "2026-07-30",
-  "target": 0.0,
+  "target": 0.2,
   "targetWhy": "g1",
   "lastDay": "2026-11-18",
   "history": [
@@ -710,7 +710,7 @@
     "sell": 5,
     "gear": 1,
     "dev": -2.89,
-    "target": 0.0,
+    "target": 0.2,
     "expo": 0.2,
     "act": "WAIT",
     "st": "wait"
@@ -722,24 +722,30 @@
     "sell": 0,
     "gear": 1,
     "dev": -3.27,
-    "target": 0.0,
-    "expo": 0.0,
-    "act": "TRIM",
-    "st": "trim"
+    "target": 0.2,
+    "expo": 0.2,
+    "act": "WAIT",
+    "st": "wait"
    }
   ],
   "reboundWatch": null,
-  "stanceStreak": 1,
-  "lastStance": "trim",
-  "changedDay": "2026-11-18",
-  "daysSince": 0,
+  "stanceStreak": 3,
+  "lastStance": "wait",
+  "changedDay": "2026-11-16",
+  "daysSince": 3,
   "lastAction": {
-   "day": "2026-11-18",
+   "day": "2026-11-13",
    "type": "TRIM",
-   "price": 659.51,
-   "frm": 0.2,
-   "to": 0.0
-  }
+   "price": 686.91,
+   "frm": 0.4,
+   "to": 0.2
+  },
+  "ruleNotes": [
+   {
+    "day": "2026-11-19",
+    "note": "하락 추세 목표 비중 0.00 -> 0.20 (오너 결정). 11-18 의 0.2 -> 0.0 축소 기록을 새 규칙에 맞춰 0.2 유지로 정정."
+   }
+  ]
  },
  "llmCalls": {
   "date": "2026-11-19",

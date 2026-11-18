@@ -246,6 +246,14 @@ def session_tag_for_ts(ts):
 MIN_GAP_MINUTES = 75
 
 
+POST_CLOSE_SLOT = (6 * 60 + 55, 7 * 60 + 30)     # KST 06:55 ~ 07:29
+
+
+def _in_post_close_slot(dt):
+    m = dt.hour * 60 + dt.minute
+    return POST_CLOSE_SLOT[0] <= m < POST_CLOSE_SLOT[1]
+
+
 def recent_entry_exists(kst_now):
     if os.environ.get('FORCE_SCORECARD') == '1':
         return False
@@ -255,7 +263,15 @@ def recent_entry_exists(kst_now):
         if not entries:
             return False
         last = datetime.strptime(entries[0].get('id', ''), '%Y-%m-%d-%H:%M')
-        diff_min = (kst_now.replace(tzinfo=None) - last).total_seconds() / 60
+        _now = kst_now.replace(tzinfo=None)
+        # 2026-11-19 오너 결정: 07:00 KST 회차(미국 장 마감 1시간 뒤, 실적·어닝콜의 시간외 반응까지
+        # 본 카드)는 이 지면의 기준 회차다. 앞선 예약(05:00·06:30)이 깃허브 지연으로 늦게 돌아
+        # 75분 안에 카드를 냈더라도 이 회차는 거르지 않는다(11-19 실사고: 05:50 카드 때문에 07:00 생략).
+        # 같은 날 이 시간대에 이미 카드가 나왔으면 예전대로 거른다(트리거 폭주 방지는 유지).
+        if _in_post_close_slot(_now) and not (last.date() == _now.date() and _in_post_close_slot(last)):
+            print('  마감 1시간 뒤 기준 회차 - 75분 간격 규칙 면제')
+            return False
+        diff_min = (_now - last).total_seconds() / 60
         return 0 <= diff_min < MIN_GAP_MINUTES
     except Exception:
         return False
@@ -1595,8 +1611,16 @@ _ONE_SIDED_NOTE = {
 }
 
 
+# 2026-11-19 오너 결정: 한쪽 편이 비어도 100 : 0 으로 적지 않는다. 최대 85 : 15.
+# 최근 여섯 장 중 넉 장이 0 : 100 이었다 - 재료를 못 찾은 것과 재료가 없는 것은 다르고,
+# 100 은 '반대 가능성 없음'으로 읽힌다. 빈 편에는 재료 없이 기본 15점만 둔다.
+ONE_SIDED_CAP = 85
+_ONE_SIDED_FLOOR_NOTE = (' 재료가 없는 편에도 기본 15점을 둡니다.',
+                         ' A side with no drivers still keeps a base 15 points.')
+
+
 def publish_one_sided(entry, empty_side, why):
-    """empty_side 를 비우고 반대편만으로 100 을 채운다. 반대편에 점수 재료가 없으면 False."""
+    """empty_side 를 비우고 반대편에 85 를 준다(빈 편은 기본 15). 반대편에 점수 재료가 없으면 False."""
     if empty_side not in _ONE_SIDED_NOTE:
         return False
     other = 'negative_factors' if empty_side == 'positive_factors' else 'positive_factors'
@@ -1604,11 +1628,13 @@ def publish_one_sided(entry, empty_side, why):
     if not keep:
         return False
     entry[empty_side] = []
-    entry[empty_side.replace('_factors', '_total')] = 0
-    entry[other.replace('_factors', '_total')] = 100
-    entry[other] = _redistribute(keep, 100)
+    entry[empty_side.replace('_factors', '_total')] = 100 - ONE_SIDED_CAP
+    entry[other.replace('_factors', '_total')] = ONE_SIDED_CAP
+    entry[other] = _redistribute(keep, ONE_SIDED_CAP)
     ko, en = _ONE_SIDED_NOTE[empty_side]
-    entry['one_sided'] = {'empty': empty_side.replace('_factors', ''), 'why': why, 'note': ko, 'note_en': en}
+    ko, en = ko + _ONE_SIDED_FLOOR_NOTE[0], en + _ONE_SIDED_FLOOR_NOTE[1]
+    entry['one_sided'] = {'empty': empty_side.replace('_factors', ''), 'why': why, 'note': ko, 'note_en': en,
+                          'floor': 100 - ONE_SIDED_CAP}
     return True
 
 
