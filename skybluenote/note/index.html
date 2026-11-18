@@ -162,9 +162,38 @@ h1.title{font-size:26px;line-height:1.35;margin:0 0 6px;letter-spacing:-.01em}
     return st;
   }
   var INLINE = /(`[^`\n]+`)|(\*\*[^*\n]+?\*\*)|(\[([^\]\n]+)\]\{([^}\n]+)\})|(\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\))|(https?:\/\/[^\s<>()]+[^\s<>().,!?'"])|(\*[^*\s][^*\n]*?\*)/;
+  // 색 묶음 `[글자]{.이름}` 은 안에 또 색 묶음이 들어갈 수 있다(글자색 위에
+  // 바탕색). 그래서 정규식이 아니라 괄호 짝을 세어 찾는다.
+  function findColor(text){
+    for (var i = text.indexOf('['); i >= 0; i = text.indexOf('[', i + 1)){
+      var depth = 0, j = i;
+      for (; j < text.length; j++){
+        var ch = text.charAt(j);
+        if (ch === '\n') break;
+        if (ch === '[') depth++;
+        else if (ch === ']') { depth--; if (depth === 0) break; }
+      }
+      if (depth !== 0 || j >= text.length || text.charAt(j + 1) !== '{') continue;
+      var k = text.indexOf('}', j + 2);
+      if (k < 0) continue;
+      var cls = text.slice(j + 2, k);
+      if (/\n/.test(cls) || !colorStyle(cls)) continue;
+      return { index: i, end: k + 1, inner: text.slice(i + 1, j), cls: cls };
+    }
+    return null;
+  }
   function inline(parent, text){
     while (text.length){
+      var c = findColor(text);
       var m = INLINE.exec(text);
+      if (c && (!m || c.index <= m.index)){
+        if (c.index > 0) inline(parent, text.slice(0, c.index));
+        var st0 = colorStyle(c.cls), sp0 = el('span');
+        for (var k0 in st0) sp0.style[k0] = st0[k0];
+        inline(sp0, c.inner); parent.appendChild(sp0);
+        text = text.slice(c.end);
+        continue;
+      }
       if (!m){ parent.appendChild(document.createTextNode(text)); return; }
       if (m.index > 0) parent.appendChild(document.createTextNode(text.slice(0, m.index)));
       var t = m[0];
