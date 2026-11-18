@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 공유 노트는 링크를 받은 사람만 본다. 검색엔진에는 싣지 않는다. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Skyblue Note — 공유 노트</title>
+<meta property="og:type" content="article">
+<meta property="og:title" content="Skyblue Note 공유 노트">
+<meta property="og:description" content="Skyblue Note에서 공유한 노트입니다. 눌러서 읽어 보세요.">
+<meta property="og:image" content="https://ezlong.com/og/og-skybluenote-1200x630.png?v=20260911">
+<meta property="og:site_name" content="EZLONG">
+<meta name="theme-color" content="#F4F8FF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
+<link rel="apple-touch-icon" href="/icons/pwa-180.png?v=20260809">
+<!--
+  Skyblue Note '링크로 공유' 보기 페이지 (2026-11-18 성동님 — "URL 공유해서 뷰잉만
+  되게. 퍼블릭 공개 기능을 줘." 주소 규칙 ezlong.com/skybluenote/note/<번호>).
+
+  노트는 파이어베이스 저장소 skyblue/notes/<번호>/note.json 에 있고, 앱이 올리고
+  고치고 지운다(simpletext_app lib/share_service.dart). 이 페이지는 읽기만 한다.
+
+  보안 — 누구나 익명 계정으로 아무 노트나 올릴 수 있다. 그래서 이 페이지는
+  노트의 글을 **절대 HTML 로 꽂지 않는다**(innerHTML 금지). 글자는 전부
+  textContent 로, 링크는 http(s) 만, 그림은 같은 번호 아래 저장소 주소만 쓴다.
+-->
+<style>
+:root{
+  --bg:#F4F8FF; --card:#FFFFFF; --ink:#16202C; --sub:#5B6776; --line:#DCE5F2;
+  --accent:#0A5CF5; --code:#EEF3FB; --quote:#E7EFFC;
+  --fg-vivid-red:#FF1744; --fg-vivid-pink:#F50093; --fg-vivid-orange:#FF6D00; --fg-vivid-yellow:#E6B800;
+  --fg-vivid-green:#00C853; --fg-vivid-teal:#00B8D4; --fg-vivid-blue:#2962FF; --fg-vivid-purple:#AA00FF;
+  --fg-red:#D93025; --fg-orange:#C25E00; --fg-green:#188038; --fg-blue:#1967D2; --fg-purple:#8E44AD; --fg-gray:#6B6B6B;
+  --bg-neon-yellow:#FFF200; --bg-neon-green:#8CFF3F; --bg-neon-pink:#FF7AD9; --bg-neon-blue:#5CE1FF; --bg-neon-orange:#FFB13B;
+  --bg-yellow:#FFF176; --bg-green:#C5EFC0; --bg-blue:#CFE5FF; --bg-pink:#FFD0E1; --bg-purple:#E4D7FF; --bg-orange:#FFDDB5;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E1116; --card:#161B22; --ink:#E6EDF3; --sub:#9AA6B2; --line:#2A313B;
+    --accent:#6AA8FF; --code:#1F2630; --quote:#1B2433;
+    --fg-vivid-red:#FF5252; --fg-vivid-pink:#FF4FB8; --fg-vivid-orange:#FF9100; --fg-vivid-yellow:#FFEA00;
+    --fg-vivid-green:#00E676; --fg-vivid-teal:#18FFFF; --fg-vivid-blue:#448AFF; --fg-vivid-purple:#E040FB;
+    --fg-red:#FF7B72; --fg-orange:#FFA657; --fg-green:#56D364; --fg-blue:#79B8FF; --fg-purple:#D2A8FF; --fg-gray:#A8A8A8;
+    --bg-yellow:#6B5D00; --bg-green:#1E4D2B; --bg-blue:#173A5E; --bg-pink:#5E2342; --bg-purple:#3E2C66; --bg-orange:#5E3A10;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  font-size:17px;line-height:1.75;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 4px 14px}
+.brand{display:flex;align-items:center;gap:8px;color:var(--accent);font-weight:800;text-decoration:none;font-size:15px}
+.brand img{width:22px;height:22px;border-radius:6px}
+.badge{font-size:12.5px;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 22px 30px;box-shadow:0 6px 24px rgba(10,92,245,.06)}
+h1.title{font-size:26px;line-height:1.35;margin:0 0 6px;letter-spacing:-.01em}
+.meta{color:var(--sub);font-size:13.5px;margin-bottom:22px}
+.body h1,.body h2,.body h3,.body h4,.body h5,.body h6{line-height:1.4;margin:1.4em 0 .5em}
+.body h1{font-size:23px}.body h2{font-size:21px}.body h3{font-size:19px}.body h4,.body h5,.body h6{font-size:17px}
+.body p{margin:0 0 1em}
+.body ul,.body ol{margin:0 0 1em;padding-left:1.4em}
+.body li{margin:.2em 0}
+.body hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+.body blockquote{margin:0 0 1em;padding:.6em 1em;background:var(--quote);border-left:4px solid var(--accent);border-radius:8px}
+.body pre{background:var(--code);border-radius:10px;padding:12px 14px;overflow:auto;font-size:14.5px;line-height:1.55}
+.body code{background:var(--code);border-radius:5px;padding:.1em .35em;font-size:.92em;font-family:"D2Coding",ui-monospace,Menlo,monospace}
+.body pre code{background:none;padding:0}
+.body a{color:var(--accent)}
+.body figure{margin:1em 0}
+.body figure img{display:block;width:100%;height:auto;border-radius:10px;background:var(--code)}
+.body .tbl{overflow-x:auto;margin:0 0 1em}
+.body table{border-collapse:collapse;min-width:100%;font-size:15px;line-height:1.5}
+.body th,.body td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.body th{background:var(--code);font-weight:700}
+.miss{color:var(--sub);font-size:14px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+.state{text-align:center;color:var(--sub);padding:60px 10px;font-size:16px}
+.state b{display:block;color:var(--ink);font-size:19px;margin-bottom:8px}
+.foot{margin-top:22px;text-align:center;color:var(--sub);font-size:13.5px;line-height:1.6}
+.foot a{color:var(--accent);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="/skybluenote/"><img src="/icons/pwa-180.png?v=20260809" alt="">Skyblue Note</a>
+    <span class="badge">보기 전용</span>
+  </div>
+  <div class="card" id="card"><div class="state" id="state">노트를 불러오는 중입니다…</div></div>
+  <div class="foot">Skyblue Note에서 공유한 노트입니다. 보기만 할 수 있습니다.<br>
+    <a href="/skybluenote/">Skyblue Note 알아보기</a></div>
+</div>
+<script>
+(function(){
+  'use strict';
+  var BUCKET = 'ezlong-541a8.firebasestorage.app';
+  var m = location.pathname.match(/\/skybluenote\/note\/([A-Za-z0-9]{12})\/?$/)
+       || (location.search.match(/[?&]n=([A-Za-z0-9]{12})/));
+  var sid = m ? m[1] : null;
+  var card = document.getElementById('card');
+
+  function obj(name){
+    return 'https://firebasestorage.googleapis.com/v0/b/' + BUCKET + '/o/' +
+      encodeURIComponent('skyblue/notes/' + sid + '/' + name) + '?alt=media';
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function state(title, sub){
+    card.textContent = '';
+    var s = el('div', 'state');
+    s.appendChild(el('b', null, title));
+    if (sub) s.appendChild(document.createTextNode(sub));
+    card.appendChild(s);
+  }
+  function safeUrl(u){
+    try { var x = new URL(u); return (x.protocol === 'https:' || x.protocol === 'http:') ? x.href : null; }
+    catch(e){ return null; }
+  }
+
+  // ── 글자 안쪽(굵게·기울임·코드·색·링크) ─────────────────────────────
+  var FG = ['vivid-red','vivid-pink','vivid-orange','vivid-yellow','vivid-green','vivid-teal','vivid-blue','vivid-purple','red','orange','green','blue','purple','gray'];
+  var BG = ['neon-yellow','neon-green','neon-pink','neon-blue','neon-orange','yellow','green','blue','pink','purple','orange'];
+  function colorStyle(classes){
+    var st = {}, ok = true;
+    classes.trim().split(/\s+/).forEach(function(t){
+      if (t.charAt(0) !== '.') { ok = false; return; }
+      var n = t.slice(1), bg = false;
+      if (n.indexOf('bg-') === 0) { bg = true; n = n.slice(3); }
+      var v = null;
+      if (/^c-[0-9a-f]{6}$/.test(n)) v = '#' + n.slice(2);
+      else if (bg ? BG.indexOf(n) >= 0 : FG.indexOf(n) >= 0) v = 'var(--' + (bg ? 'bg-' : 'fg-') + n + ')';
+      if (!v) { ok = false; return; }
+      if (bg) { st.background = v; st.borderRadius = '3px'; st.padding = '0 .12em'; st._bg = n; } else st.color = v;
+    });
+    if (!ok) return null;
+    // 바탕만 칠했으면 글자색을 바탕에 맞춘다(앱 color_spans.dart 와 같은 뜻 —
+    // 어두운 화면에서 형광 바탕 위 흰 글자는 안 읽힌다).
+    if (st._bg && !st.color) {
+      var hex = /^c-[0-9a-f]{6}$/.test(st._bg) ? st._bg.slice(2) : null;
+      if (st._bg.indexOf('neon-') === 0) st.color = '#111111';
+      else if (hex) {
+        var ch = function(i){ var c = parseInt(hex.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+        st.color = (0.2126 * ch(0) + 0.7152 * ch(2) + 0.0722 * ch(4)) > 0.4 ? '#111111' : '#FFFFFF';
+      }
+    }
+    delete st._bg;
+    return st;
+  }
+  var INLINE = /(`[^`\n]+`)|(\*\*[^*\n]+?\*\*)|(\[([^\]\n]+)\]\{([^}\n]+)\})|(\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\))|(https?:\/\/[^\s<>()]+[^\s<>().,!?'"])|(\*[^*\s][^*\n]*?\*)/;
+  function inline(parent, text){
+    while (text.length){
+      var m = INLINE.exec(text);
+      if (!m){ parent.appendChild(document.createTextNode(text)); return; }
+      if (m.index > 0) parent.appendChild(document.createTextNode(text.slice(0, m.index)));
+      var t = m[0];
+      if (m[1]) parent.appendChild(el('code', null, t.slice(1, -1)));
+      else if (m[2]) { var b = el('strong'); inline(b, t.slice(2, -2)); parent.appendChild(b); }
+      else if (m[3]) {
+        var st = colorStyle(m[5]);
+        if (st) { var sp = el('span'); for (var k in st) sp.style[k] = st[k]; inline(sp, m[4]); parent.appendChild(sp); }
+        else parent.appendChild(document.createTextNode(t));
+      }
+      else if (m[6]) {
+        var u = safeUrl(m[8]);
+        if (u) { var a = el('a'); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow ugc'; inline(a, m[7]); parent.appendChild(a); }
+        else parent.appendChild(document.createTextNode(t));
+      }
+      else if (m[9]) {
+        var u2 = safeUrl(t);
+        if (u2) { var a2 = el('a', null, t); a2.href = u2; a2.target = '_blank'; a2.rel = 'noopener noreferrer nofollow ugc'; parent.appendChild(a2); }
+        else parent.appendChild(document.createTextNode(t));
+      }
+      else if (m[10]) { var i = el('em'); inline(i, t.slice(1, -1)); parent.appendChild(i); }
+      text = text.slice(m.index + t.length);
+    }
+  }
+
+  // ── 줄 단위(제목·목록·표·인용·코드·그림) ───────────────────────────
+  var IMG = /^!\[([^\]]*)\]\(attach:([A-Za-z0-9_.-]{1,80})(?:#(\d+)x(\d+))?\)\s*$/;
+  function cells(line){
+    var s = line.trim();
+    if (s.charAt(0) === '|') s = s.slice(1);
+    if (s.charAt(s.length - 1) === '|') s = s.slice(0, -1);
+    return s.split('|').map(function(c){ return c.trim(); });
+  }
+  function render(body, images, root){
+    var lines = String(body || '').replace(/\r\n?/g, '\n').split('\n');
+    var i = 0, para = null, list = null, listOrdered = false;
+    function endPara(){ para = null; }
+    function endList(){ list = null; }
+    while (i < lines.length){
+      var line = lines[i];
+      var mi = line.match(IMG);
+      if (mi){
+        endPara(); endList();
+        var info = images && Object.prototype.hasOwnProperty.call(images, mi[2]) ? images[mi[2]] : null;
+        var fig = el('figure');
+        if (info){
+          var img = el('img'); img.loading = 'lazy'; img.alt = mi[1] || '';
+          img.src = obj(mi[2]);
+          if (mi[3] && mi[4]) { img.width = +mi[3]; img.height = +mi[4]; }
+          var link = info.link ? safeUrl(info.link) : null;
+          if (link){ var a = el('a'); a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow ugc'; a.appendChild(img); fig.appendChild(a); }
+          else fig.appendChild(img);
+        } else fig.appendChild(el('div', 'miss', '그림을 아직 올리지 못했습니다'));
+        root.appendChild(fig); i++; continue;
+      }
+      if (/^\s*```/.test(line)){
+        endPara(); endList();
+        var buf = []; i++;
+        while (i < lines.length && !/^\s*```/.test(lines[i])) { buf.push(lines[i]); i++; }
+        i++;
+        var pre = el('pre'); pre.appendChild(el('code', null, buf.join('\n'))); root.appendChild(pre); continue;
+      }
+      if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(lines[i + 1])){
+        endPara(); endList();
+        var wrap = el('div', 'tbl'), table = el('table'), thead = el('thead'), tr = el('tr');
+        cells(line).forEach(function(c){ var th = el('th'); inline(th, c); tr.appendChild(th); });
+        thead.appendChild(tr); table.appendChild(thead);
+        var tbody = el('tbody'); i += 2;
+        while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])){
+          var r = el('tr');
+          cells(lines[i]).forEach(function(c){ var td = el('td'); inline(td, c); r.appendChild(td); });
+          tbody.appendChild(r); i++;
+        }
+        table.appendChild(tbody); wrap.appendChild(table); root.appendChild(wrap); continue;
+      }
+      var h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h){ endPara(); endList(); var hh = el('h' + h[1].length); inline(hh, h[2]); root.appendChild(hh); i++; continue; }
+      if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)){ endPara(); endList(); root.appendChild(el('hr')); i++; continue; }
+      var q = line.match(/^\s*>\s?(.*)$/);
+      if (q){
+        endPara(); endList();
+        var bq = el('blockquote'), first = true;
+        while (i < lines.length && (q = lines[i].match(/^\s*>\s?(.*)$/))){
+          if (!first) bq.appendChild(el('br'));
+          inline(bq, q[1]); first = false; i++;
+        }
+        root.appendChild(bq); continue;
+      }
+      var li = line.match(/^(\s*)([-*+•]|\d+[.)])\s+(.*)$/);
+      if (li){
+        endPara();
+        var ordered = /\d/.test(li[2]);
+        if (!list || listOrdered !== ordered){ list = el(ordered ? 'ol' : 'ul'); listOrdered = ordered; root.appendChild(list);
+          if (ordered) { var start = parseInt(li[2], 10); if (start > 1) list.start = start; } }
+        var item = el('li'); var depth = Math.floor(li[1].replace(/\t/g, '    ').length / 2);
+        if (depth) item.style.marginLeft = (depth * 1.2) + 'em';
+        inline(item, li[3]); list.appendChild(item); i++; continue;
+      }
+      if (!line.trim()){ endPara(); endList(); i++; continue; }
+      endList();
+      if (!para){ para = el('p'); root.appendChild(para); }
+      else para.appendChild(el('br'));
+      inline(para, line); i++;
+    }
+  }
+
+  function fmt(ms){
+    if (!ms) return '';
+    var d = new Date(ms), p = function(n){ return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  if (!sid){ state('주소가 올바르지 않습니다', '받은 링크를 다시 확인해 주세요.'); return; }
+  fetch(obj('note.json'), { cache: 'no-store' })
+    .then(function(r){ if (r.status === 404 || r.status === 403) throw 'gone'; if (!r.ok) throw 'net'; return r.json(); })
+    .then(function(n){
+      if (!n || typeof n !== 'object' || n.v !== 1) throw 'gone';
+      card.textContent = '';
+      var title = String(n.title || '').trim() || '제목 없는 노트';
+      document.title = title + ' — Skyblue Note';
+      card.appendChild(el('h1', 'title', title));
+      var when = fmt(n.updatedAt);
+      if (when) card.appendChild(el('div', 'meta', '고침 ' + when));
+      var body = el('div', 'body');
+      render(n.body, n.images || {}, body);
+      card.appendChild(body);
+    })
+    .catch(function(e){
+      if (e === 'gone') state('볼 수 없는 노트입니다', '공유가 꺼졌거나 없는 주소입니다.');
+      else state('노트를 불러오지 못했습니다', '인터넷 연결을 확인한 뒤 새로고침해 주세요.');
+    });
+})();
+</script>
+</body>
+</html>

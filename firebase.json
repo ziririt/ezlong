@@ -20,6 +20,13 @@
         ]
       },
       {
+        "source": "/skybluenote/note/**",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+          { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+        ]
+      },
+      {
         "source": "**/*.html",
         "headers": [
           {
@@ -129,6 +136,9 @@
       "data/market-regime.json",
       "data/market-regime-history.json",
       "data/.cache/**"
+    ],
+    "rewrites": [
+      { "source": "/skybluenote/note/**", "destination": "/skybluenote/note/index.html" }
     ],
     "redirects": [
       { "source": "/app/readtrans", "destination": "https://readtrans.ezlong.com/", "type": 301 },
