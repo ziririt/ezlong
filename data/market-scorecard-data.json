@@ -1,6 +1,55 @@
 {
   "entries": [
     {
+      "id": "2026-11-19-02:52",
+      "timestamp_kst": "2026-11-19(목) 02:52 KST",
+      "key_event": {
+        "name": "엔비디아 실적 후폭풍 지속",
+        "name_en": "Nvidia Earnings Aftermath Continues",
+        "time": "2026-11-18 정규장",
+        "why": "AI 섹터 투자 심리 위축, 반도체 밸류에이션 영향",
+        "why_en": "Weakening AI sector sentiment, semiconductor valuation pressure"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "엔비디아 실적 후 기술주 하락 전환, 매크로 지표 부담 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists with tech downturn post-Nvidia earnings and ongoing macro pressures.",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 60,
+          "name": "엔비디아 실적 후 AI 투자 심리 위축",
+          "name_en": "AI Investment Sentiment Weakens Post-Nvidia Earnings",
+          "desc": "NVDA 주가 5.86% 하락: 예상치 하회하는 가이던스로 AI 및 반도체 섹터 전반에 부정적 영향",
+          "desc_en": "NVDA stock fell 5.86% due to lower-than-expected guidance, negatively impacting the broader AI and semiconductor sectors.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 40,
+          "name": "Fed 매파적 발언 지속",
+          "name_en": "Continued Hawkish Fed Remarks",
+          "desc": "Fed Waller 50bp 금리 인상 가능성 언급: 추가 긴축 우려로 시장 경계심 확대",
+          "desc_en": "Fed's Waller mentioned a potential 50bp rate hike, increasing market caution over further tightening.",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "기술 아웃티지 발생",
+          "name_en": "Tech Outages Occur",
+          "desc": "주요 기술 기업 아웃티지 발생: 사이버 보안 우려 확대와 일시적 기술주 투자 심리 위축",
+          "desc_en": "Major tech outages raise cybersecurity concerns and temporarily dampen tech stock investor sentiment.",
+          "category": "other"
+        }
+      ],
+      "one_sided": {
+        "empty": "positive",
+        "why": "direction",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted."
+      }
+    },
+    {
       "id": "2026-11-19-00:53",
       "timestamp_kst": "2026-11-19(목) 00:53 KST",
       "key_event": {
@@ -518,60 +567,8 @@
         "watch": "- 엔비디아 실적 발표: 엔비디아의 실적 발표(11월 17일(화) 장 마감 후 ET)가 약 3시간 뒤로 예정되어 있으며, 이는 AI 섹터 전반의 투자 심리와 반도체 밸류에이션에 대한 핵심적인 시험대가 될 전망. 실적 결과 및 가이던스에 따라 시장의 방향성이 크게 결정될 것으로 예상.\n- 달러인덱스 및 국채금리 추이: 달러인덱스 DXY와 미10년 국채금리의 추가적인 변동 추이 확인. 달러 약세 및 국채금리 하락세 지속 여부가 시장의 긍정적 흐름 유지에 중요."
       },
       "report_at": "2026-11-18(수) 03:16 KST"
-    },
-    {
-      "id": "2026-11-18-01:20",
-      "timestamp_kst": "2026-11-18(수) 01:20 KST",
-      "key_event": {
-        "name": "엔비디아 실적 발표 대기",
-        "name_en": "Anticipation for Nvidia Earnings",
-        "time": "11월 17일(화) 장 마감 후 ET",
-        "why": "AI 섹터 투자 심리 핵심, 반도체 밸류에이션 영향 (11월 17일(화) 장 마감 후 ET)",
-        "why_en": "Key for AI sector sentiment, impacts semiconductor valuations (Nov 17 (Tue) after the close ET)"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "엔비디아 CEO 사임 충격 지속 및 AI 섹터 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to ongoing Nvidia CEO resignation impact and weakened AI sector investment confidence",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "마이크로소프트 실적 호조",
-          "name_en": "Microsoft's Strong Earnings",
-          "desc": "견조한 회계연도 말 실적 및 전망: 주요 기술 기업 실적 기대감 유지",
-          "desc_en": "Robust fiscal year-end results and outlook: Maintains optimism for major tech earnings",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 70,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Continues",
-          "desc": "반도체 섹터 투자 심리 위축: AI 밸류에이션 재조정 압력",
-          "desc_en": "Weakened semiconductor sector sentiment: Pressure for AI valuation reassessment",
-          "category": "company_specific"
-        },
-        {
-          "name": "높은 국채금리 수준 지속",
-          "name_en": "Elevated Treasury Yields Persist",
-          "desc": "미10년 국채금리 5.12%(-0.08%) 수준 유지: Fed 추가 금리 인상 가능성 및 높은 할인율 부담",
-          "desc_en": "US 10-year Treasury yield remains at 5.12%: Fed rate hike possibility and high discount rate burden",
-          "category": "rates_treasury",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 11월17일(화, 뉴욕) 장 전망: 엔비디아 CEO 사임 충격과 AI 섹터 투자 심리 위축으로 부정적 우위 지속 전망.\n- 주요 하방 압력: 엔비디아 CEO 사임 소식에 따른 반도체 섹터 전반의 투자 심리 위축과 AI 관련 기업들의 밸류에이션 재조정 압력 잔존.\n- 추가 하방 압력: 미국 10년물 국채금리가 5.12%(-0.08%) 수준을 유지하며 높은 할인율 부담과 연방준비제도(Fed)의 추가 금리 인상 가능성 지속.\n- 지지 요인: 마이크로소프트의 견조한 회계연도 말 실적 및 긍정적인 전망이 주요 기술 기업 실적에 대한 기대감을 유지.",
-        "positive": "- 마이크로소프트 실적 호조: 마이크로소프트(MSFT)가 견조한 회계연도 말 실적을 발표하고 긍정적인 전망을 제시하며, 전반적인 기술 기업 실적에 대한 기대감을 유지. 이는 주요 기술 기업들의 실적 발표를 앞두고 시장에 긍정적인 신호로 작용.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 엔비디아 CEO의 사임 소식이 반도체 섹터 전반의 투자 심리를 위축시키고 AI 관련 기업들의 밸류에이션 재조정 압력으로 작용. 이는 엔비디아 실적 발표를 앞두고 시장의 불확실성을 증폭시키는 요인.\n- 높은 국채금리 수준 지속: 미 10년물 국채금리가 5.12%(-0.08%) 수준을 유지하며 높은 할인율 부담을 지속. 이는 연방준비제도(Fed)의 추가 금리 인상 가능성을 시사하며 주식 시장에 하방 압력으로 작용.",
-        "mixed": "",
-        "watch": "- 엔비디아 실적 발표: 엔비디아(NVDA)의 3분기 실적 발표(11월 17일(화) 장 마감 후 ET)가 AI 섹터 투자 심리의 핵심이자 반도체 밸류에이션에 중대한 영향을 미칠 예정. 실적 결과와 가이던스에 따라 시장의 방향성이 결정될 것.\n- 국채금리 추이: 미 10년물 국채금리(현재 5.12%(-0.08%))의 추가적인 상승 또는 하락 여부가 시장의 할인율 부담과 연방준비제도(Fed)의 통화정책 기대감에 영향을 미칠 것."
-      },
-      "report_at": "2026-11-18(수) 01:20 KST"
     }
   ],
-  "updated_at": "2026-11-18T15:54:09Z",
+  "updated_at": "2026-11-18T17:53:08Z",
   "max_entries": 10
 }
