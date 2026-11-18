@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-11-19-00:53",
+      "timestamp_kst": "2026-11-19(목) 00:53 KST",
+      "key_event": {
+        "name": "엔비디아 실적 후폭풍 지속",
+        "name_en": "Nvidia Earnings Aftermath Continues",
+        "time": "2026-11-18 정규장 진행 중",
+        "why": "AI 섹터 투자 심리 위축, 반도체 밸류에이션 영향",
+        "why_en": "Weakened AI sector sentiment, semiconductor valuation impact"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "엔비디아 실적 후 기술주 하락 전환, 매크로 지표 부담 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to post-Nvidia earnings tech sell-off and ongoing macro data concerns",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decrease",
+          "desc": "WTI 원유 83.04달러(-2.01%) 하락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil fell to $83.04 (-2.01%), easing inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "엔비디아 실적 후폭풍",
+          "name_en": "Nvidia Earnings Aftermath",
+          "desc": "NVDA 주가 152.79달러(-5.37%) 하락: AI 및 반도체 섹터 전반 투자 심리 위축",
+          "desc_en": "NVDA stock fell to $152.79 (-5.37%), dampening overall AI and semiconductor sector sentiment",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 35,
+          "name": "Fed 매파적 발언",
+          "name_en": "Hawkish Fed Remarks",
+          "desc": "Fed Waller, 인플레이션 악화 경고 및 50bp 금리 인상 가능성 언급",
+          "desc_en": "Fed's Waller warned of worsening inflation and hinted at a 50bp rate hike possibility",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "달러 인덱스 소폭 상승",
+          "name_en": "Dollar Index Modest Rise",
+          "desc": "달러인덱스 DXY 103.83(+0.21%) 상승: 안전자산 선호와 수출주 부담 혼재",
+          "desc_en": "DXY rose to 103.83 (+0.21%), reflecting mixed signals of safe-haven demand and export stock pressure",
+          "category": "dollar_fx"
+        },
+        {
+          "name": "미 국채 금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 5.07%(-0.61%) 하락: 성장주 투자 매력 개선",
+          "desc_en": "US 10-year Treasury yield fell to 5.07% (-0.61%), improving growth stock appeal",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 11월18일(수, 뉴욕) 장 종합: 엔비디아 실적 발표 이후 기술주 전반의 하락 전환과 매크로 지표 부담 지속으로 시장은 부정적 우위 유지.\n- 주요 원인: 엔비디아 실적 후폭풍으로 인한 AI 및 반도체 섹터 투자 심리 위축과 연방준비제도(Fed) 위원의 매파적 발언이 시장에 하방 압력 가중.\n- 시장 심리: 펀드 매니저들이 2006년 이후 가장 빠른 속도로 기술주 비중을 축소하는 등 전반적인 투자 심리 악화.\n- 하단 지지: WTI 원유 가격 하락으로 인플레이션 압력 완화 기대감이 일부 시장 하단을 지지.",
+        "positive": "- WTI 원유 가격 하락: WTI 원유가 83.04달러로 2.01% 하락하며 인플레이션 압력 완화에 대한 기대감 증대, 이는 연방준비제도(Fed)의 금리 인상 속도 조절 가능성에 대한 기대로 이어져 시장에 긍정적 영향.",
+        "negative": "- 엔비디아 실적 후폭풍: 엔비디아(NVDA) 주가가 5.37% 하락한 152.79달러를 기록하며 AI 및 반도체 섹터 전반의 투자 심리 위축, 이는 인덱스 펀드 내 엔비디아 비중이 숨겨진 위험으로 작용할 수 있다는 우려를 확산.\n- Fed 매파적 발언: 연방준비제도(Fed) 월러 이사가 인플레이션 악화를 경고하고 50bp 금리 인상 가능성을 언급하며 시장의 긴축 우려를 고조, 2026년 9월 근원 PCE 물가상승률이 3.12%로 전월 대비 0.09%p 상승하고 PCE 물가상승률이 3.65%로 0.20%p 상승한 것이 이러한 매파적 발언의 배경으로 작용.",
+        "mixed": "- 달러 인덱스 소폭 상승: 달러인덱스(DXY)가 0.21% 상승한 103.83을 기록하며 안전자산 선호 심리를 반영, 이는 동시에 미국 수출 기업들의 가격 경쟁력에 부담으로 작용하여 혼조세 연출.\n- 미 국채 금리 하락: 미국 10년물 국채 금리가 5.07%(-0.61%)로 0.61% 하락하며 성장주 투자 매력을 개선, 이는 고금리 환경에서 자금 조달 비용 부담을 완화할 수 있으나, 경기 둔화 우려를 반영하는 측면도 있어 시장에 혼재된 시그널 제공.",
+        "watch": "- 미 국채 금리 추이: 미국 10년물 국채 금리의 추가 하락 여부 확인, 이는 성장주 투자 심리 개선 및 시장 전반의 금리 부담 완화에 긍정적 신호.\n- 달러 인덱스 추이: 달러 인덱스(DXY)의 추가 상승 여부 확인, 이는 안전자산 선호 심리 지속 및 수출주 부담 가중 여부를 판단하는 지표.\n- WTI 원유 가격 추이: WTI 원유 가격의 추가 하락 여부 확인, 이는 인플레이션 압력 완화 기대감 지속 여부에 중요한 영향."
+      },
+      "report_at": "2026-11-19(목) 00:53 KST"
+    },
+    {
       "id": "2026-11-18-23:20",
       "timestamp_kst": "2026-11-18(수) 23:20 KST",
       "key_event": {
@@ -503,75 +570,8 @@
         "watch": "- 엔비디아 실적 발표: 엔비디아(NVDA)의 3분기 실적 발표(11월 17일(화) 장 마감 후 ET)가 AI 섹터 투자 심리의 핵심이자 반도체 밸류에이션에 중대한 영향을 미칠 예정. 실적 결과와 가이던스에 따라 시장의 방향성이 결정될 것.\n- 국채금리 추이: 미 10년물 국채금리(현재 5.12%(-0.08%))의 추가적인 상승 또는 하락 여부가 시장의 할인율 부담과 연방준비제도(Fed)의 통화정책 기대감에 영향을 미칠 것."
       },
       "report_at": "2026-11-18(수) 01:20 KST"
-    },
-    {
-      "id": "2026-11-17-16:47",
-      "timestamp_kst": "2026-11-17(화) 16:47 KST",
-      "key_event": {
-        "name": "엔비디아 CEO 사임 충격 지속",
-        "name_en": "Nvidia CEO Resignation Impact Continues",
-        "time": "직전 정규장 및 다음 정규장",
-        "why": "반도체 섹터 투자 심리 위축, AI 밸류에이션 재조정 압력",
-        "why_en": "Semiconductor sector sentiment weak, AI valuation pressure"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "엔비디아 CEO 사임 충격 지속 및 AI 섹터 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to ongoing Nvidia CEO resignation impact and weakened AI sector investor confidence.",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Lingers",
-          "desc": "에버코어 목표가 60% 하향 조정, 반도체 섹터 전반 투자 심리 위축 지속",
-          "desc_en": "Evercore slashes NVDA price target by 60%, semiconductor sector sentiment remains weak.",
-          "category": "company_specific"
-        },
-        {
-          "score": 25,
-          "name": "AI 섹터 밸류에이션 재조정 압력",
-          "name_en": "AI Sector Valuation Readjustment Pressure",
-          "desc": "직전 정규장 SOXX 4.19% 하락, 주요 기술주 전반 약세 심화",
-          "desc_en": "SOXX fell 4.19% in the last trading session, deepening weakness across major tech stocks.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "매크로 지표 부담 지속",
-          "name_en": "Persistent Macro Data Burden",
-          "desc": "근원 PCE 3.12%, PCE 3.65%로 인플레이션 압력 유지, Fed 기준금리 3.88%",
-          "desc_en": "Core PCE at 3.12% and PCE at 3.65% indicate persistent inflation, Fed rate at 3.88%.",
-          "category": "macro_data"
-        },
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yield Levels",
-          "desc": "미10년 국채금리 5.12%(-0.64%)로 소폭 하락했으나 여전히 높은 수준 유지, 성장주 할인율 압박 상존",
-          "desc_en": "US 10-year Treasury yield slightly fell to 5.12% but remains high, maintaining pressure on growth stock valuations.",
-          "category": "rates_treasury",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "NVDA 실적 발표 대기",
-          "name_en": "Awaiting NVDA Earnings Release",
-          "desc": "11월 17일(화) 장 마감 후 ET 발표 예정, 시장의 기대와 우려 교차",
-          "desc_en": "Scheduled for release after market close ET on Tuesday, November 17th, market expectations and concerns are mixed.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: 엔비디아 CEO 사임 충격과 AI 섹터 투자 심리 위축이 지속되며 부정적인 시장 분위기 우위 지속.\n- 핵심 원인: 엔비디아 CEO 사임 소식에 따른 반도체 섹터 전반의 투자 심리 악화와 AI 관련 기업들의 밸류에이션 재조정 압력 가중.\n- 거시 경제 환경: 근원 PCE 및 PCE 물가 상승률이 인플레이션 압력을 유지하고, 연준 기준금리 또한 높은 수준을 지속하며 시장에 부담으로 작용.\n- 국채금리 영향: 미 10년물 국채금리가 소폭 하락했음에도 불구하고 여전히 높은 수준을 유지, 성장주 할인율에 대한 압박이 상존하는 상황.",
-        "positive": "- 해당 사항 없음: 현재 시장에 긍정적인 영향을 미칠 만한 재료는 부재한 상황.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 에버코어(Evercore)가 엔비디아 목표가를 60% 하향 조정하며 반도체 섹터 전반의 투자 심리 위축이 지속. 이는 주요 기술주 전반의 약세 심화를 초래하며 직전 정규장 SOXX 지수가 4.19% 하락하는 결과로 이어짐.\n- AI 섹터 밸류에이션 재조정 압력: 엔비디아 CEO 사임 소식 이후 AI 관련 기업들의 고평가 논란이 재점화되며 밸류에이션 재조정 압력이 가중.\n- 매크로 지표 부담 지속: 2026년 9월 근원 PCE 물가상승률이 3.12%, PCE 물가상승률이 3.65%를 기록하며 인플레이션 압력이 여전히 높은 수준을 유지. 연준 기준금리 또한 2026년 10월 3.88%로 높은 수준을 지속하며 시장에 부담으로 작용.\n- 미 국채금리 수준: 미 10년물 국채금리가 5.10%(-0.35%)로 소폭 하락(-0.64%p)했음에도 불구하고 여전히 높은 수준을 유지. 이는 성장주에 대한 할인율 압박으로 작용하며 기술주 전반의 약세에 기여.",
-        "mixed": "- NVDA 실적 발표 대기: 11월 17일(화) 장 마감 후 ET로 예정된 엔비디아 실적 발표를 앞두고 시장의 기대와 우려가 교차. 일부에서는 엔비디아의 강력한 판매 전망을 기대하는 반면, CEO 사임 충격과 스파이 스캔들 루머로 인한 불확실성으로 투자 심리가 위축된 상황.",
-        "watch": "- 미 국채금리 추이: 미 10년물 국채금리가 현재 5.10%(-0.35%) 수준에서 추가적인 하락 또는 상승 여부 확인. 금리 변동은 성장주 밸류에이션에 직접적인 영향을 미치므로 중요.\n- 주요 지수 선물 흐름: S&P 500, 다우, 나스닥 선물 지수의 개장 전 움직임 확인. 이는 시장 전반의 투자 심리 변화를 가늠하는 지표.\n- 유가 변동성: 유가가 현재 하락세를 보이는 가운데, 공급 위험 완화 또는 재부상 여부 확인. 유가 변동은 인플레이션 압력에 영향을 미쳐 시장 전반에 파급 효과."
-      },
-      "report_at": "2026-11-18(수) 16:51 KST"
     }
   ],
-  "updated_at": "2026-11-18T14:21:37Z",
+  "updated_at": "2026-11-18T15:54:09Z",
   "max_entries": 10
 }
