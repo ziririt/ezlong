@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-11-19-07:32",
+      "timestamp_kst": "2026-11-19(목) 07:32 KST",
+      "key_event": {
+        "name": "엔비디아 실적 후폭풍 지속",
+        "name_en": "Nvidia Earnings Aftermath Continues",
+        "time": "2026-11-18 포스트마켓",
+        "why": "AI 섹터 투자 심리 위축, 반도체 밸류에이션 영향",
+        "why_en": "Weakened AI sector sentiment, impact on semiconductor valuations"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "엔비디아 실적 후 기술주 하락 전환, 매크로 지표 부담 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to Nvidia earnings fallout and ongoing macro pressures, leading to tech sector decline",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "WTI 유가 하락",
+          "name_en": "WTI Oil Price Decline",
+          "desc": "WTI 원유 81.89 USD(-3.36%) 하락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil fell to $81.89 (-3.36%), easing inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "엔비디아 실적 후폭풍",
+          "name_en": "Nvidia Earnings Aftermath",
+          "desc": "NVDA 6.81% 하락: AI 섹터 투자 심리 위축 및 반도체 밸류에이션 압박 지속",
+          "desc_en": "NVDA fell 6.81%, continuing to weigh on AI sector sentiment and semiconductor valuations",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 30,
+          "name": "Fed 추가 금리 인상 시사",
+          "name_en": "Fed Hints at Further Rate Hikes",
+          "desc": "Fed Waller 발언 및 Fed Minutes: 12월 추가 금리 인상 가능성 제기, 매파적 기조 유지",
+          "desc_en": "Fed Waller's remarks and Fed Minutes suggest potential for further rate hikes in December, maintaining hawkish stance",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "메모리 공급 제약 우려",
+          "name_en": "Memory Supply Constraints Concern",
+          "desc": "Micron CTO 발언: 2027년 메모리 공급 제약 심화 전망, 반도체 섹터 부담",
+          "desc_en": "Micron CTO's comments on tighter memory supply in 2027, pressuring the semiconductor sector",
+          "category": "supply_chain"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채 금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 5.07%(-0.73%) 하락: 성장주 투자 매력 소폭 개선",
+          "desc_en": "US 10-year Treasury yield fell to 5.07% (-0.73%), slightly improving growth stock appeal",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 판 결론: 미국 주식 시장은 엔비디아 실적 발표 이후 기술주 전반의 하락 전환과 매크로 지표 부담 지속으로 부정적 우위 유지.\n- 주요 원인: 엔비디아 실적 후 AI 섹터 투자 심리 위축 및 반도체 밸류에이션 압박, 연방준비제도(Fed)의 추가 금리 인상 시사 발언으로 인한 매파적 기조 강화.\n- 하방 압력: 마이크론(Micron) CTO의 2027년 메모리 공급 제약 심화 전망으로 반도체 섹터 전반에 부담 가중.\n- 상방 제한: 유가 하락으로 인플레이션 압력 완화 기대가 존재하나, 전반적인 시장 심리를 반전시키기에는 역부족.",
+        "positive": "- WTI 유가 하락: WTI 원유 가격이 81.89달러로 3.36% 하락하며 인플레이션 압력 완화에 대한 기대감 형성, 이는 연방준비제도(Fed)의 긴축 강도 완화 가능성을 시사.",
+        "negative": "- 엔비디아 실적 후폭풍: 엔비디아(NVDA) 주가가 6.81% 하락하며 AI 섹터 전반의 투자 심리 위축을 야기, 반도체 기업들의 밸류에이션에 대한 압박 지속. 블룸버그와 로이터 등 다수 매체에서 엔비디아 실적 발표 후 시장 하락 전환을 보도.\n- Fed 추가 금리 인상 시사: 연방준비제도(Fed)의 크리스토퍼 월러(Christopher Waller) 이사 발언 및 연방공개시장위원회(FOMC) 의사록을 통해 12월 추가 금리 인상 가능성이 제기되며 매파적 기조 유지, 이는 시장의 긴축 장기화 우려를 증폭. 월러 이사는 금리 인상 가능성을 높이는 발언을 한 것으로 보도.\n- 메모리 공급 제약 우려: 마이크론(Micron) CTO의 2027년 메모리 공급 제약이 더욱 심화될 것이라는 전망으로 반도체 섹터 전반에 대한 부담 가중. 이는 데이터 센터 병목 현상과 관련한 우려와 맞물려 반도체 산업의 장기적인 공급 안정성에 대한 의문을 제기.",
+        "mixed": "- 미 국채 금리 하락: 미국 10년물 국채 금리가 5.07%(-0.73%)로 0.73% 하락하며 성장주 투자 매력을 소폭 개선, 이는 채권 시장의 안정화 신호로 해석될 수 있으나, 동시에 경기 둔화에 대한 우려를 반영하는 측면도 존재.",
+        "watch": "- 미 국채 금리 추이: 미국 10년물 국채 금리 및 2년물 국채 금리의 추가적인 하락 여부 확인, 이는 시장의 위험 선호 심리 변화와 연방준비제도(Fed)의 통화 정책 기대에 대한 중요한 지표.\n- 유가 변동성: WTI 유가의 추가 하락 또는 반등 여부 확인, 이는 인플레이션 압력 완화 기대감 지속 여부 및 에너지 섹터 투자 심리에 영향."
+      },
+      "report_at": "2026-11-19(목) 07:32 KST"
+    },
+    {
       "id": "2026-11-19-05:50",
       "timestamp_kst": "2026-11-19(목) 05:50 KST",
       "key_event": {
@@ -519,60 +587,8 @@
         "note": "부정 재료 없음: 이번 회차에는 시장 전체를 움직인 부정 재료가 확인되지 않았습니다. 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
         "note_en": "No negative drivers this round: nothing market-wide on the downside passed our checks. Single-company news and price moves by themselves are not counted."
       }
-    },
-    {
-      "id": "2026-11-18-07:00",
-      "timestamp_kst": "2026-11-18(수) 07:00 KST",
-      "key_event": {
-        "name": "엔비디아 실적 발표 직후",
-        "name_en": "Nvidia earnings just released",
-        "time": "11월 17일(화) 장 마감 후 ET 발표 완료",
-        "why": "AI 섹터 투자 심리 핵심, 반도체 밸류에이션 영향 (11월 17일(화) 장 마감 후 ET)",
-        "why_en": "Key to AI sector sentiment, semiconductor valuation impact (Nov 17 (Tue) after the close ET)"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "엔비디아 CEO 사임 충격 지속 및 AI 섹터 투자 심리 위축으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to ongoing Nvidia CEO resignation impact and weakened AI sector investment psychology",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "엔비디아 실적 발표 직후",
-          "name_en": "Nvidia earnings just released",
-          "desc": "포스트마켓 NVDA +1.15% 상승: AI 수요 지속 및 긍정적 전망 반영",
-          "desc_en": "NVDA up +1.15% in post-market: Reflects sustained AI demand and positive outlook",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 60,
-          "name": "엔비디아 CEO 사임 충격 지속",
-          "name_en": "Nvidia CEO Resignation Impact Continues",
-          "desc": "AI 섹터 전반 투자 심리 위축 지속, 불확실성 증폭",
-          "desc_en": "Continued weakening of overall AI sector investment sentiment, heightened uncertainty",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yields",
-          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월17일(화, 뉴욕) 미10년 5.10%(-0.35%) · 미30년 5.46%(-0.16%). 움직임이 작아 방향 판단은 유보",
-          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 5.10%(-0.35%) · 미30년 5.46%(-0.16%). Move too small to call: on hold",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총점: 긍정 40점 대 부정 60점으로 부정 우위 지속되는 상황.\n- 주요 원인: 엔비디아 CEO 사임 충격이 AI 섹터 전반의 투자 심리 위축을 지속시키며 부정적 영향.\n- 핵심 이슈: 엔비디아 실적 발표(11월 17일(화) 장 마감 후 ET) 대기 중으로, AI 섹터 투자 심리와 반도체 밸류에이션에 결정적 영향 예상.\n- 하방 지지: 미 국채금리 소폭 하락에도 불구하고, 엔비디아 실적 발표에 대한 기대감이 일부 매수세를 유입하며 지수 하락폭을 제한하는 모습.",
-        "positive": "- 엔비디아 실적 기대감: 엔비디아 주가가 포스트마켓에서 1.15% 상승하며 AI 수요 지속 및 긍정적 실적 전망을 반영. 월스트리트 전문가들은 엔비디아의 3분기 실적이 AI 붐의 핵심 동력임을 강조하며, 모든 투자자들의 시선이 엔비디아의 미래 및 향후 전망에 집중되는 상황.",
-        "negative": "- 엔비디아 CEO 사임 충격 지속: 엔비디아 CEO의 사임 소식이 AI 섹터 전반의 투자 심리를 위축시키고 불확실성을 증폭. 이로 인해 다우존스 849포인트 하락, 나스닥 181포인트 하락, S&P 500 76포인트 하락 등 주요 지수가 하락 마감. 특히 S&P500과 나스닥 지수는 기술주 매도세로 인해 200일 이동평균선이 주목받는 상황.",
-        "mixed": "- 미 국채금리 수준: 미 국채 10년물 금리가 5.10%(-0.35%)로 0.35%p 하락하고, 30년물 금리도 5.46%로 0.16%p 하락. 국채금리는 성장주 할인율을 좌우하는 핵심 변수이나, 금리 움직임이 상대적으로 작아 시장 방향 판단에 대한 영향은 유보적인 상황. 연준의 기준금리는 3.88%로 전월 대비 0.13%p 상승했으며, 10년 기대인플레이션은 2.20%로 전월 대비 0.04%p 하락.",
-        "watch": "- 엔비디아 실적 발표 결과: 엔비디아 실적 발표(11월 17일(화) 장 마감 후 ET)가 AI 섹터 전반의 투자 심리 및 반도체 밸류에이션에 미칠 영향을 확인. 실적 발표 내용과 컨퍼런스 콜에서의 경영진 코멘트가 향후 시장 방향성을 결정할 주요 변수.\n- 미 국채금리 추이: 미 국채 10년물 및 30년물 금리의 추가적인 움직임을 확인. 금리 변동이 성장주 전반의 투자 심리에 미칠 영향을 주시."
-      },
-      "report_at": "2026-11-18(수) 07:00 KST"
     }
   ],
-  "updated_at": "2026-11-18T20:51:28Z",
+  "updated_at": "2026-11-18T22:33:03Z",
   "max_entries": 10
 }
