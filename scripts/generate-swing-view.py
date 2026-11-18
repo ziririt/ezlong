@@ -1794,6 +1794,11 @@ sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 /
                      'content-type': 'application/json'})
         r = json.load(urllib.request.urlopen(req, timeout=240))
         txt = ''.join(b.get('text', '') for b in r.get('content', []) if b.get('type') == 'text')
+        if '{' not in txt or '}' not in txt:
+            # 2026-11-18: 'substring not found' 한 줄로는 까닭을 알 수 없었다. 무엇이 돌아왔는지 남긴다.
+            print('::warning::[데스크] JSON 없는 응답 - stop_reason=%s · 블록=%s · 사용량=%s · 앞부분=%r' % (
+                r.get('stop_reason'), [b.get('type') for b in r.get('content', [])], r.get('usage'), txt[:200]))
+            return None
         d = json.loads(txt[txt.index('{'): txt.rindex('}') + 1])
         secs = d.get('sections') or []
         if not d.get('headline') or not secs:
