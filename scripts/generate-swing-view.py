@@ -1787,7 +1787,9 @@ def desk_with_fable(view, sc_entry, ca):
 {{"headline": "…", "core": ["…", "…", "…"], "sections": [{{"title": "…", "bullets": ["…"]}}]}}
 sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 / 교차검증·리스크 등."""
     try:
-        body = json.dumps({'model': DESK_MODEL, 'max_tokens': 6000,
+        # 2026-11-18 실사고: 상한 6000 중 5647 을 생각에 쓰고 답(JSON)이 중간에 잘렸다(stop_reason=max_tokens).
+        # 지시문에 규칙이 늘면 생각도 길어진다. 답이 잘리지 않게 상한을 넉넉히 둔다.
+        body = json.dumps({'model': DESK_MODEL, 'max_tokens': 16000,
                            'messages': [{'role': 'user', 'content': prompt}]}).encode()
         req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body,
             headers={'x-api-key': key, 'anthropic-version': '2023-06-01',
