@@ -1,6 +1,92 @@
 {
   "entries": [
     {
+      "id": "2026-11-19-11:50",
+      "timestamp_kst": "2026-11-19(목) 11:50 KST",
+      "key_event": {
+        "name": "Fed 매파적 기조 유지",
+        "name_en": "Fed Maintains Hawkish Stance",
+        "time": "11월 18일(수) 정규장 마감 후",
+        "why": "Fed 의사록, 인플레이션 우려 지속 및 추가 금리 인상 가능성 시사",
+        "why_en": "Fed minutes indicate ongoing inflation concerns and potential for further rate hikes"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "Fed 매파적 기조 유지로 부정 우위",
+      "summary_en": "Negative bias on Fed Maintains Hawkish Stance",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "Fed 매파적 기조 유지",
+          "name_en": "Fed Maintains Hawkish Stance",
+          "desc": "Fed 의사록, 인플레이션 우려 지속 및 추가 금리 인상 가능성 시사",
+          "desc_en": "Fed minutes indicate ongoing inflation concerns and potential for further rate hikes",
+          "category": "fed_policy"
+        },
+        {
+          "score": 30,
+          "name": "높은 국채금리 수준",
+          "name_en": "High Treasury Yields",
+          "desc": "미10년 국채금리 5.07%(-0.73%), 미30년 국채금리 5.41%(-0.84%)로 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield at 5.07% and 30-year at 5.41%, maintaining discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "지수는 상승: 재료 판정과 반대",
+          "name_en": "Indexes rose, against the read of the drivers",
+          "desc": "QQQ 정규장 +0.39%·시간외 +1.39%, SPY 정규장 -0.31%·시간외 +0.74%. 재료는 부정 쪽이 많지만 지수는 반대로 움직였고, 뚜렷한 원인은 확인되지 않음",
+          "desc_en": "QQQ regular session +0.39%, after hours +1.39%; SPY regular session -0.31%, after hours +0.74%. The drivers lean bearish, but the indexes moved the other way and no clear cause was identified",
+          "category": "other"
+        },
+        {
+          "name": "유가 하락",
+          "name_en": "Oil Prices Decline",
+          "desc": "WTI 원유 -4.33% 하락: 인플레이션 완화 기대와 경기 둔화 우려 상존",
+          "desc_en": "WTI crude oil falls by -4.33%: fueling both inflation easing hopes and persistent economic slowdown concerns",
+          "category": "oil_energy"
+        },
+        {
+          "name": "달러 강세 지속",
+          "name_en": "Dollar Strength Continues",
+          "desc": "달러인덱스 DXY +0.35% 상승: 안전자산 선호와 수출 기업 실적 부담 해석 엇갈림",
+          "desc_en": "DXY rises by +0.35%: mixed interpretations regarding safe-haven demand and pressure on export company earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "one_sided": {
+        "empty": "positive",
+        "why": "direction",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
+        "floor": 15
+      },
+      "price_check": {
+        "note": "시세 대조: 재료는 부정 쪽이 우세하지만 지수는 반대로 움직였습니다(QQQ 정규장 +0.39%·시간외 +1.39%, SPY 정규장 -0.31%·시간외 +0.74%). 그래서 점수 차를 60 대 40으로 좁혔습니다.",
+        "note_en": "Price check: the drivers lean bearish, but the indexes moved the other way (QQQ regular session +0.39%, after hours +1.39%; SPY regular session -0.31%, after hours +0.74%), so the gap was narrowed to 60:40."
+      },
+      "shift": {
+        "kind": "flip",
+        "from_id": "2026-11-18-19:59",
+        "since_id": "2026-11-19-09:42",
+        "to": "neg",
+        "head": "11월 18일 19:59 카드는 긍정 80 대 부정 20. 11월 19일 09:42 카드부터 부정 우위로 전환(지금 긍정 40 대 부정 60).",
+        "head_en": "The Nov 18 19:59 KST card read 80 bullish to 20 bearish. From the Nov 19 9:42 KST card the balance turned bearish (now 40 to 60).",
+        "lines": [
+          "11월 18일 19:59 카드는 긍정 80 대 부정 20. 11월 19일 09:42 카드부터 부정 우위로 전환(지금 긍정 40 대 부정 60).",
+          "새로 올라온 부정 재료: Fed 매파적 기조 유지(30), 높은 국채금리 수준(30).",
+          "빠진 긍정 재료: 엔비디아 실적 호조(55), AI 섹터 투자 심리 개선(25)."
+        ],
+        "lines_en": [
+          "The Nov 18 19:59 KST card read 80 bullish to 20 bearish. From the Nov 19 9:42 KST card the balance turned bearish (now 40 to 60).",
+          "New bearish drivers: Fed Maintains Hawkish Stance (30), High Treasury Yields (30).",
+          "Bullish drivers no longer counted: Nvidia's Strong Earnings (55), Improved AI Sector Sentiment (25)."
+        ]
+      }
+    },
+    {
       "id": "2026-11-19-09:42",
       "timestamp_kst": "2026-11-19(목) 09:42 KST",
       "key_event": {
@@ -522,75 +608,8 @@
         "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted."
       },
       "tainted": true
-    },
-    {
-      "id": "2026-11-18-19:59",
-      "timestamp_kst": "2026-11-18(수) 19:59 KST",
-      "key_event": {
-        "name": "엔비디아 실적 서프라이즈",
-        "name_en": "Nvidia Earnings Surprise",
-        "time": "11월 17일 장 마감 후",
-        "why": "AI 칩 수요 확인, 반도체 섹터 투자 심리",
-        "why_en": "AI Chip Demand Confirmation, Semiconductor Sector Sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "엔비디아 실적 호조에 따른 AI 섹터 투자 심리 개선으로 긍정 우위 지속",
-      "summary_en": "Positive sentiment continues due to improved AI sector investment sentiment following Nvidia's strong earnings.",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "엔비디아 실적 호조",
-          "name_en": "Nvidia's Strong Earnings",
-          "desc": "AI 칩 수요 확인, 매출/이익 예상치 상회",
-          "desc_en": "AI chip demand confirmed, revenue/profit beat estimates",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "AI 섹터 투자 심리 개선",
-          "name_en": "Improved AI Sector Sentiment",
-          "desc": "엔비디아 실적 기반 AI 인프라 투자 지속 기대",
-          "desc_en": "Expectation of continued AI infrastructure investment based on Nvidia's results",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "달러 강세 지속",
-          "name_en": "Continued Dollar Strength",
-          "desc": "달러인덱스 103.76(+0.13%), 수출주 부담 및 신흥국 자금 유출 우려",
-          "desc_en": "DXY at 103.76 (+0.13%), burden on exporters and EM capital outflow concerns",
-          "category": "dollar_fx"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 하락세",
-          "name_en": "Falling Oil Prices",
-          "desc": "WTI 83.28(-1.72%), 인플레이션 완화 기대 vs. 수요 둔화 우려",
-          "desc_en": "WTI at 83.28 (-1.72%), inflation easing expectations vs. demand slowdown concerns",
-          "category": "oil_energy"
-        },
-        {
-          "name": "미 국채 금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 5.10%(-0.35%), 금리 인하 기대감 일부 반영",
-          "desc_en": "10-year Treasury at 5.10% (-0.35%), reflecting some rate cut expectations",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 총평: 엔비디아 실적 호조에 힘입어 AI 섹터 전반에 대한 투자 심리 개선이 지속되며 시장 전반의 긍정적 분위기 우위 유지.\n- 핵심 동력: 엔비디아의 예상을 뛰어넘는 실적 발표로 AI 칩 수요가 강력하게 확인되며 반도체 섹터에 대한 투자 심리 급등.\n- 시장 반응: 다우, S&P 500, 나스닥 선물 모두 상승세를 보이며 엔비디아 실적 발표가 시장의 주요 장애물을 제거한 것으로 해석.\n- 하방 지지: AI 인프라 투자 지속 기대감이 시장의 하방을 지지하며, 단기적인 외부 변수에도 불구하고 강한 매수세 유지.",
-        "positive": "- 엔비디아 실적 호조: 엔비디아의 매출 및 이익이 시장 예상치를 크게 상회하며 AI 칩에 대한 강력한 수요를 재확인. 이는 AI 기술 발전의 핵심 동력인 반도체 섹터 전반에 긍정적인 투자 심리 확산으로 이어짐.\n- AI 섹터 투자 심리 개선: Anthropic의 IPO 준비 소식 등 AI 관련 기업들의 시장 진출 소식도 투자 심리 개선에 기여.",
-        "negative": "- 달러 강세 지속: 달러인덱스가 103.76(+0.13%)을 기록하며 강세를 이어가는 상황. 이는 미국 수출 기업들의 가격 경쟁력 약화와 신흥국으로부터의 자금 유출 우려를 야기하며, 글로벌 경제 전반에 부담으로 작용.",
-        "mixed": "- 유가 하락세: WTI 유가가 83.28(-1.72%)로 하락하며 인플레이션 완화에 대한 기대를 높이는 긍정적 측면과, 글로벌 경기 둔화에 따른 수요 감소 우려를 동시에 제기. 유가 하락이 경기 둔화의 신호일 수 있다는 해석으로 혼조세.\n- 미 국채 금리 하락: 미 10년물 국채 금리가 5.10%(-0.35%)로 하락하며 연방준비제도(Fed)의 금리 인하 기대감을 일부 반영하는 긍정적 측면과, 경기 둔화에 대한 우려가 안전 자산 선호 심리를 자극하는 부정적 측면이 혼재.",
-        "watch": "- 주요 지수 선물 추이: 다우, S&P 500, 나스닥 선물 지수의 개장 전 움직임을 통해 시장의 전반적인 투자 심리 변화 확인.\n- 달러인덱스 변동성: 달러인덱스의 추가적인 강세 또는 약세 전환 여부를 주시하며 수출주 및 신흥국 시장에 미칠 영향 점검.\n- 유가 및 국채 금리 추이: WTI 유가와 미 10년물 국채 금리의 추가적인 변동을 통해 인플레이션 및 경기 둔화 우려의 방향성 확인."
-      },
-      "report_at": "2026-11-18(수) 19:59 KST"
     }
   ],
-  "updated_at": "2026-11-19T00:43:34Z",
+  "updated_at": "2026-11-19T02:52:15Z",
   "max_entries": 10
 }
