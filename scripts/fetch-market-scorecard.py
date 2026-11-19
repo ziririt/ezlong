@@ -3283,6 +3283,7 @@ def fetch_bellwether_earnings():
 # 문장은 모델이 아니라 코드가 두 카드의 재료를 맞대어 쓴다(지어낼 여지를 없앤다).
 # 뒤집힌 뒤 24시간 동안은 이어지는 카드에도 같은 해명을 싣는다 - 독자가 언제 들어올지 모른다.
 SHIFT_KEEP_HOURS = 24
+SHIFT_BIG_MOVE = 30        # 우위가 그대로여도 직전 카드에서 이만큼 움직이면 해명한다
 _SHIFT_STOP = set('실적 호조 후폭풍 지속 우려 기대 기대감 개선 하락 상승 강세 약세 발표 전환 확대 완화 부담 압력 시사 '
                   '가능성 및 추가 투자 심리 섹터 급등 급락 둔화 서프라이즈 대기 직후 the of and in on to'.split())
 
@@ -3323,13 +3324,30 @@ def attach_shift(entry, older):
             continue
         frm = o
         break
-    if not frm:
-        return None
+    kind = 'flip'
     try:
-        if (now - datetime.strptime(first['id'], '%Y-%m-%d-%H:%M')).total_seconds() > SHIFT_KEEP_HOURS * 3600:
-            return None
+        if frm and (now - datetime.strptime(first['id'], '%Y-%m-%d-%H:%M')).total_seconds() > SHIFT_KEEP_HOURS * 3600:
+            frm = None
     except Exception:
-        return None
+        frm = None
+    if not frm:
+        # 우위는 그대로인데 직전 카드에서 크게 움직인 경우(오너 결정 2026-11-19: 뒤집히거나 크게 바뀐 때만)
+        prev = older[0] if older else None
+        if not prev or _lead(prev) == 'even':
+            return None
+        d = int(entry.get('positive_total', 0) or 0) - int(prev.get('positive_total', 0) or 0)
+        if abs(d) < SHIFT_BIG_MOVE:
+            return None
+        frm, first, kind = prev, entry, 'swing'
+    if kind == 'swing':
+        up = int(entry.get('positive_total', 0) or 0) > int(frm.get('positive_total', 0) or 0)
+        ko = [f"{_shift_when(frm['id'])} 카드는 긍정 {frm.get('positive_total')} 대 부정 {frm.get('negative_total')}. "
+              f"이번 카드는 긍정 {entry.get('positive_total')} 대 부정 {entry.get('negative_total')}로 {'긍정' if up else '부정'} 쪽으로 크게 이동."]
+        en = [f"The {_shift_when(frm['id'], True)} card read {frm.get('positive_total')} bullish to {frm.get('negative_total')} bearish. "
+              f"This card reads {entry.get('positive_total')} to {entry.get('negative_total')}, a large move toward the {'bullish' if up else 'bearish'} side."]
+        entry['shift'] = {'kind': kind, 'from_id': frm['id'], 'since_id': entry['id'], 'to': cur,
+                          'head': ko[0], 'head_en': en[0], 'lines': ko, 'lines_en': en}
+        return entry['shift']
     side_new = 'negative_factors' if cur == 'neg' else 'positive_factors'
     side_old = 'positive_factors' if cur == 'neg' else 'negative_factors'
     ko_new, ko_old = ('부정', '긍정') if cur == 'neg' else ('긍정', '부정')
@@ -3363,8 +3381,107 @@ def attach_shift(entry, older):
     if gone:
         ko.append(f"빠진 {ko_old} 재료: " + ', '.join(f"{a.get('name')}({a.get('score')})" for a in gone) + '.')
         en.append(f"{en_old.capitalize()} drivers no longer counted: " + ', '.join(f"{a.get('name_en') or a.get('name')} ({a.get('score')})" for a in gone) + '.')
-    entry['shift'] = {'from_id': frm['id'], 'since_id': first['id'], 'to': cur, 'lines': ko, 'lines_en': en}
+    entry['shift'] = {'kind': kind, 'from_id': frm['id'], 'since_id': first['id'], 'to': cur,
+                      'head': ko[0], 'head_en': en[0], 'lines': ko, 'lines_en': en}
+    # 같은 전환을 이미 해설한 카드가 있으면 그 해설을 이어 쓴다(카드마다 말이 달라지지 않게).
+    for o in older:
+        osh = o.get('shift') or {}
+        if osh.get('from_id') == frm['id'] and osh.get('why'):
+            set_shift_why(entry, osh['why'], osh.get('why_en') or '')
+            break
     return entry['shift']
+
+
+def set_shift_why(entry, why, why_en=''):
+    sh = entry.get('shift')
+    if not sh or not why:
+        return
+    sh['why'], sh['why_en'] = why, why_en
+    sh['lines'] = [sh['head'], why]
+    sh['lines_en'] = [sh['head_en'], why_en] if why_en else sh['lines_en']
+
+
+def _shift_card_text(e):
+    out = [f"총점 긍정 {e.get('positive_total')} 대 부정 {e.get('negative_total')}", f"요약: {e.get('summary')}",
+           f"핵심 이슈: {(e.get('key_event') or {}).get('name')} - {(e.get('key_event') or {}).get('why')}"]
+    for side, ko in (('positive_factors', '긍정'), ('negative_factors', '부정'), ('mixed_factors', '혼조')):
+        for f in e.get(side) or []:
+            out.append(f"[{ko} {f.get('score', '')}] {f.get('name')}: {f.get('desc')}")
+    return '\n'.join(out)
+
+
+def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
+    """판정이 왜 바뀌었는지의 해설(2026-11-19 오너 요구).
+
+    무엇이 바뀌었는지의 나열은 독자가 카드에서 이미 본 것이라 동어반복이다. 필요한 것은 '왜'다:
+    앞 판정이 본 사실 가운데 여전히 맞는 것, 그런데도 시장이 다르게 받아들인 까닭, 지금 더 크게 작용하는 것.
+    자료에 없는 숫자가 나오면 통째로 버린다. 실패하면 None(화면은 코드가 쓴 변화 목록으로 남는다)."""
+    key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    news = '\n'.join(f'- {h}' for h in (list(headlines or []) + list(rss_headlines or []))[:30])
+    av = '\n'.join(f'- {h}' for h in (av_items or [])[:14])
+    src = '\n'.join([_shift_card_text(frm), _shift_card_text(entry), news, av])
+    prompt = f"""당신은 미국 주식 시황 데스크다. 이 지면의 '긍정 대 부정' 판정이 앞 카드와 크게 달라졌다.
+독자는 "어제는 호재라더니 왜 지금은 악재인가"를 묻는다. 그 물음에 답하는 해설을 쓴다.
+
+[앞 카드: {_shift_when(frm['id'])} KST]
+{_shift_card_text(frm)}
+
+[지금 카드: {_shift_when(entry['id'])} KST]
+{_shift_card_text(entry)}
+
+[뉴스 헤드라인]
+{news or '- 없음'}
+
+[전문 금융뉴스]
+{av or '- 없음'}
+
+[쓰는 법 - 전부 필수]
+- 3~4문장의 줄글. "~습니다"체. 280~420자.
+- 흐름: (1) 앞 판정이 본 사실 중 지금도 맞는 것을 먼저 인정한다. (2) 그런데도 시장이 다르게 받아들인 '까닭'을 밝힌다.
+  까닭은 사건·발언·결정·수치 같은 원인이어야 한다. (3) 그래서 지금 무엇이 더 크게 작용하는지로 맺는다.
+- 무엇이 빠지고 무엇이 들어왔는지 나열하지 마라. 독자는 카드에서 이미 봤다. '왜'만 쓴다.
+- "주가가 하락해서 부정으로 바뀌었다" 같은 결과의 되풀이는 해설이 아니다. 왜 하락했는지를 위 자료에서 찾아 써라.
+- 위 자료에 있는 사실만 쓴다. 자료에 없는 사건·인물·숫자·일정을 지어내지 마라. 숫자는 자료에 적힌 그대로만.
+- 자료에서 까닭을 찾을 수 없으면 지어내지 말고 why 를 빈 문자열로 내라.
+- '오늘·어제·내일' 같은 상대 날짜 금지. 필요하면 "11월 18일(뉴욕)"처럼 쓴다.
+- 독자의 계좌 상태를 단정하지 마라. 사라·팔아라 식의 권유 금지. 전문 용어 대신 누구나 아는 말.
+- 기사 제목을 옮겨 적지 마라. 내용만 우리말로 쓴다.
+- why_en 은 같은 내용을 미국 개인 투자자가 읽는 뉴스레터 말투의 영어로 쓴다(판단·까닭·숫자 동일).
+
+[출력 - 이 JSON만]
+{{"why": "…", "why_en": "…"}}"""
+    res = None
+    try:
+        if key:
+            body = json.dumps({'model': DESK_LLM_MODEL, 'max_tokens': 3000,
+                               'messages': [{'role': 'user', 'content': prompt}]}).encode()
+            req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body,
+                headers={'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json'})
+            r = json.loads(urllib.request.urlopen(req, timeout=120).read().decode())
+            txt = ''.join(b.get('text', '') for b in r.get('content', []) if b.get('type') == 'text')
+            res = json.loads(txt[txt.index('{'): txt.rindex('}') + 1])
+    except Exception as e:
+        print(f"::warning::[판정 변화 해설] 1차 모델 실패: {type(e).__name__}: {e}")
+    if not res:
+        try:
+            res = call_gemini(prompt)
+        except Exception as e:
+            print(f"::warning::[판정 변화 해설] 2차 모델 실패: {type(e).__name__}: {e}")
+    if not isinstance(res, dict):
+        return None
+    why, why_en = (res.get('why') or '').strip(), (res.get('why_en') or '').strip()
+    if not (120 <= len(why) <= 520):
+        print(f"::warning::[판정 변화 해설] 길이 {len(why)}자 - 버림")
+        return None
+    nums_src = set(re.findall(r'\d+(?:\.\d+)?', src))
+    bad = [n for n in re.findall(r'\d+(?:\.\d+)?', why) if n not in nums_src]
+    if bad:
+        print(f"::warning::[판정 변화 해설] 자료에 없는 숫자 {bad} - 버림")
+        return None
+    if re.search(r'오늘|어제|내일|그저께|모레', why):
+        print("::warning::[판정 변화 해설] 상대 날짜 - 버림")
+        return None
+    return why, why_en
 
 
 def past_bellwether_earnings(now_utc=None, hours=72):
@@ -5344,9 +5461,16 @@ def main():
 
     # 4-10. 판정 변화 해명 (2026-11-19) - 우위가 최근 24시간 안에 뒤집혔으면 무엇이 바뀌었는지 싣는다.
     try:
-        _sh = attach_shift(entry, [e for e in entries if e.get("id") != entry["id"]])
+        _older = [e for e in entries if e.get("id") != entry["id"]]
+        _sh = attach_shift(entry, _older)
         if _sh:
-            print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']})")
+            print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']}, {_sh.get('kind')})")
+            if not _sh.get('why'):
+                _frm = next((e for e in _older if e.get('id') == _sh['from_id']), None)
+                _w = desk_shift_why(entry, _frm, headlines, rss_headlines, av_items) if _frm else None
+                if _w:
+                    set_shift_why(entry, _w[0], _w[1])
+                    print(f"  판정 변화 해설: {_w[0][:80]}…")
     except Exception as _se:
         print(f"::warning::판정 변화 해명 실패(무시): {type(_se).__name__}: {_se}")
 
