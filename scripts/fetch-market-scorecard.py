@@ -3368,6 +3368,10 @@ def fetch_bellwether_earnings():
 # 독자는 어제 호재라던 것이 왜 오늘 악재인지 알 수 없다. 우위가 뒤집히면 무엇이 바뀌었는지 카드가 스스로 밝힌다.
 # 문장은 모델이 아니라 코드가 두 카드의 재료를 맞대어 쓴다(지어낼 여지를 없앤다).
 # 뒤집힌 뒤 24시간 동안은 이어지는 카드에도 같은 해명을 싣는다 - 독자가 언제 들어올지 모른다.
+# 2026-11-20: 화면 표시 중지. 이틀 사이 이 칸에서 틀린 문장이 네 번 나갔다(틀린 등락률, 지어낸 까닭, 며칠 전 사건을
+# 새 일처럼, 첫 거래 종가 +17% 를 '27% 급등'으로). 숫자 검문은 '자료 어딘가에 그 숫자가 있는가'만 봐서 못 막는다.
+# 해설은 계속 만들어 실행 기록에만 남긴다(사람이 원자료와 대조해 보려고). 카드에는 싣지 않는다.
+SHIFT_PUBLIC = False
 SHIFT_KEEP_HOURS = 24
 SHIFT_WHY_VERSION = 3       # 해설 규칙을 고치면 올린다 - 옛 규칙으로 쓴 해설은 이어 쓰지 않고 다시 쓴다
 SHIFT_BIG_MOVE = 30        # 우위가 그대로여도 직전 카드에서 이만큼 움직이면 해명한다
@@ -5744,6 +5748,10 @@ def main():
                     print(f"  판정 변화 해설: {_w[0][:80]}…")
     except Exception as _se:
         print(f"::warning::판정 변화 해명 실패(무시): {type(_se).__name__}: {_se}")
+    if not SHIFT_PUBLIC:
+        _hid = entry.pop('shift', None)
+        if _hid:
+            print(f"  [판정 변화 칸 비공개] 기록만 남김: {_hid.get('head')} / {_hid.get('why')}")
 
     # 같은 id가 있으면 덮어씀 (중복 방지)
     entries = [e for e in entries if e.get("id") != entry["id"]]
