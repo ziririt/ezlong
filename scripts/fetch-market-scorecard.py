@@ -3473,10 +3473,10 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
     if not (120 <= len(why) <= 520):
         print(f"::warning::[판정 변화 해설] 길이 {len(why)}자 - 버림")
         return None
-    nums_src = set(re.findall(r'\d+(?:\.\d+)?', src))
+    nums_src = set(re.findall(r'\d+(?:\.\d+)?', src + ' ' + _shift_when(frm['id']) + ' ' + _shift_when(entry['id'])))
     bad = [n for n in re.findall(r'\d+(?:\.\d+)?', why) if n not in nums_src]
     if bad:
-        print(f"::warning::[판정 변화 해설] 자료에 없는 숫자 {bad} - 버림")
+        print(f"::warning::[판정 변화 해설] 자료에 없는 숫자 {bad} - 버림: {why[:300]}")
         return None
     if re.search(r'오늘|어제|내일|그저께|모레', why):
         print("::warning::[판정 변화 해설] 상대 날짜 - 버림")
