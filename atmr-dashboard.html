@@ -2393,7 +2393,7 @@ li.gear-other-sep { display: none !important; }
             <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">신호는 레벨이 아니라 사건: 기준선에 "머무는 것"이 아니라 "돌파하는 순간"만 신호로 인정</li>
             <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">주식 비중 조절은 계단식: 한 번의 판단 변경은 최대 20%p, 조건이 충족된 날에만 이동. 과열 경고(매도압력 60 이상) 시 자동 감축</li>
             <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">급반등 확인 조건: 급반등일 종가를 2거래일 안에 재돌파하는지로 진짜/가짜 반등 판정. 11년 실측: 통과 시 이후 20거래일 승률 63%, 실패 시 38%</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">30주 이동평균선 규칙: S&amp;P500·나스닥100·반도체 3개 지수 중 2개가 주봉 30주 이동평균선 아래에서 마감하면 주식 비중 상한 20%로 강제 축소. 2022년 1월 28일 실제 발동해 이후 추가 하락을 회피한 규칙</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">30주 이동평균선 규칙: S&amp;P500·나스닥100·반도체 3개 지수 중 2개가 주봉 30주 이동평균선 아래에서 마감하면 주식 비중 상한 20%로 강제 축소. 2022년 1월 28일 실제 발동해 이후 하락 구간을 낮은 비중으로 지나간 규칙</li>
           </ul>
 
           <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">검증과 정직: 이 분석의 원칙</div>
@@ -4510,6 +4510,7 @@ function buildTrendLineHtml() {
                 : _useAhead ? '새 주 전망' : '직전 장 마감 시그널';
     const _flowLine = (window._swingView.flow && !_useAhead)
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>`
+        + (window._swingView.flowWhy ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flowWhy}</div>` : '')
         + ((_gatedTop && /'관망'/.test(window._swingView.flow)) ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 이 지면의 예시 포트폴리오가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 하락 추세): 신규 매수 중단이 먼저.</div>` : '')
       : '';
     const _dk = _useAhead ? _wa : window._swingView.desked;

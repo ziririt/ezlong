@@ -17,6 +17,9 @@ G = importlib.util.module_from_spec(sp); sp.loader.exec_module(G)
 rows = list(csv.DictReader(open(os.path.join(HERE, '..', 'backtest', 'scores', 'COMP_weekly.csv'))))
 
 
+LIFELINE, CAP3 = True, 0.0
+
+
 def run(base_g1, stop_floor, start=None, end=None):
     G.CFG['base_g1'], G.CFG['stop_floor'] = base_g1, stop_floor
     st, eq, peak, mdd, days, prev_close, expo = {}, 1.0, 1.0, 0.0, 0, None, 0.0
@@ -29,7 +32,7 @@ def run(base_g1, stop_floor, start=None, end=None):
             peak = max(peak, eq); mdd = min(mdd, eq / peak - 1); days += 1
             first = first or d; last = d
         bc = float(r['below_cnt'] or 0)
-        cap = 0.0 if bc >= 3 else (0.2 if bc >= 2 else None)
+        cap = None if not LIFELINE else ((CAP3 if bc >= 3 else 0.2) if bc >= 2 else None)
         G.advance(st, d, close, int(float(r['buy'])), int(float(r['sell'])), int(float(r['gear'])),
                   float(r['dev200']) if r['dev200'] else None, cap=cap)
         expo, prev_close = st['exposure'], close
@@ -56,3 +59,10 @@ for name, s, e in (('전체 2015-06~2026-07', None, None), ('2021-01~2026-07', '
                         ('새 규칙  (하락 20% · 손절 20%)', 0.2, 0.2)):
         c, m, q, _, _ = run(g1, sf, s, e)
         print(f'  {lab}  연 {c:+.1f}%  최대낙폭 {m:.1f}%  {q:.2f}배')
+    CAP3 = 0.2
+    c, m, q, _, _ = run(0.2, 0.2, s, e)
+    print(f'  지금 규칙 (전부 20% 바닥)           연 {c:+.1f}%  최대낙폭 {m:.1f}%  {q:.2f}배')
+    LIFELINE = False
+    c, m, q, _, _ = run(0.2, 0.2, s, e)
+    print(f'  지금 규칙에서 30주선 규칙만 뺌      연 {c:+.1f}%  최대낙폭 {m:.1f}%  {q:.2f}배')
+    LIFELINE, CAP3 = True, 0.0

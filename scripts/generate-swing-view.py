@@ -54,12 +54,12 @@ VIEW = os.path.join(HERE, '..', 'data', 'swing-view.json')
 CFG = dict(
     # 2026-11-19 오너 결정: 하락 추세(200일선 아래)의 목표 비중 0.00 -> 0.20.
     # 화면 전략 카드('보유량 20% 이하 축소')와 맞춘다. 같은 날 연속 급락 손절(stopped)의 바닥도 0.20 으로 맞췄다(stop_floor).
-    # 0.00 이 남는 곳: 30주선 규칙에서 세 지수가 모두 이탈했을 때의 상한(lifeline_status).
+    # 30주선 규칙의 상한도 세 지수 모두 이탈 시 0.00 -> 0.20 (lifeline_cap). 이제 0.00 은 없다.
     # 주의: 아래 STATS 의 백테스트 수치는 0.00 기준으로 잰 것이다 - 0.20 기준 재검증은 아직 안 했다.
     base_g3=1.00, base_g2=0.60, base_g1=0.20,
     g1_dip=0.20, dip_level=70,
     warn_sell=60, warn_cap_g3=0.60, warn2_sell=75, warn2_cap=0.35,
-    hard_stop_dev=-5.0, hard_consec=2, reenter_dev=-2.0, stop_floor=0.20,
+    hard_stop_dev=-5.0, hard_consec=2, reenter_dev=-2.0, stop_floor=0.20, lifeline_cap=0.20,
     step=0.20, min_gap=0.10, cooldown=2,
 )
 
@@ -73,7 +73,9 @@ STATS = dict(
     nvda_trend='NVDA는 200일선 위(기어3) 20거래일 승률 69%, 아래 56%로 분기 — 추세 유지가 판단의 중심',
     rebound='약세 구간(RSI 45 미만)의 하루 +2.5% 이상 급반등은 지난 11년 49차례, 반등 자체만으로는 이후 5거래일 승률 52%로 동전던지기 수준',
     follow='진위는 이틀 안에 판명 — 2거래일 내 반등일 종가 위 재마감 시 이후 20거래일 평균 +3.2%·승률 63%, 실패 시 −1.1%·승률 38%',
-    lifeline='이 생명선은 백테스트에서 2022년 1월 28일 QQQ 352에 발동, 바닥(254)까지의 추가 하락을 통째로 회피. 2021~2026 구간 최대낙폭을 −20.7%에서 −16.0%로 축소. 대신 2020·2023·2025년의 휩쏘로 연 1.4%p가량을 보험료로 지출 — 더 비싸게 다시 사는 비용까지가 이 규칙의 가격',
+    # 2026-11-19: 하락 추세·급락 손절·30주선 상한을 모두 20% 바닥으로 바꾼 뒤 간이 백테스트(scripts/backtest-swing-simple.py)로 다시 쟀다.
+    # 그 전 문구(−20.7% → −16.0%, 연 1.4%p, '통째로 회피')는 0% 까지 내리던 옛 규칙의 수치였다.
+    lifeline='이 생명선은 백테스트에서 2022년 1월 28일 QQQ 352에 발동, 바닥(254)까지의 하락 구간을 비중 20%로 낮춘 채 통과. 간이 재검증 기준 2021~2026 구간 최대낙폭을 −21.0%에서 −18.4%로 축소. 대신 휩쏘로 연 1.1%p가량을 보험료로 지출 — 더 비싸게 다시 사는 비용까지가 이 규칙의 가격',
 )
 
 KST = timezone(timedelta(hours=9))
@@ -200,7 +202,7 @@ def advance(state, day, price, buy, sell, gear, dev200, cap=None):
     hist.append(dict(d=day, price=price, buy=buy, sell=sell, gear=gear,
                      dev=round(dev200, 2) if dev200 is not None else None,
                      target=round(target, 2), expo=state['exposure'],
-                     act=action or 'WAIT'))
+                     act=action or 'WAIT', why=why))
     del hist[:-60]
     return action
 
@@ -2035,10 +2037,9 @@ def main():
     ll = lifeline_status()
     ll_cap = None
     if ll and not ll.get('stale'):
-        if ll['count'] >= 3:
-            ll_cap = 0.0
-        elif ll['count'] >= 2:
-            ll_cap = 0.2
+        # 2026-11-19 오너 결정: 세 지수가 모두 이탈해도 상한은 0.2 (0% 는 어디에도 두지 않는다)
+        if ll['count'] >= 2:
+            ll_cap = CFG['lifeline_cap']
 
     # ── 판정 진행 시점 (2026-11-18 오너 결정) ─────────────────────────────────
     # 그 전에는 그날 첫 실행(개장 15분 뒤)에서 하루치 판정을 진행했다. 그때 숫자는 사실상
@@ -2146,6 +2147,45 @@ def main():
         cur_s, cur_n, cur_i, _ = runs[-1]
         flow = _streak_line(SHORT[cur_s], cur_s, max(cur_n, streak), _run_chg(cur_i))
 
+    # ── 판단이 바뀐 까닭 (2026-11-19 오너 결정) ──────────────────────────────
+    # 판단이 바뀐 날과 그 뒤 이틀(거래일)은, 어느 규칙이 어떤 숫자 때문에 움직였는지 밝힌다.
+    # 이 판정은 규칙으로 정해지므로 까닭도 코드가 정확히 쓸 수 있다(모델이 쓰지 않는다).
+    flow_why = None
+    try:
+        if len(runs) >= 2 and runs[-1][1] <= 3:
+            prev_s, prev_n, _, ph = runs[-2]
+            cur_s, cur_n, cur_i, _ = runs[-1]
+            fh = _hist[cur_i]
+            _gw = {3: '상승 추세', 2: '횡보', 1: '하락 추세'}
+            _dd = lambda d: f"{int(d[5:7])}월 {int(d[8:10])}일(뉴욕)"
+            _pc = lambda v: f"{round((v or 0) * 100)}%"
+            parts = []
+            if ph.get('gear') != fh.get('gear') and fh.get('gear') in _gw and ph.get('gear') in _gw:
+                _dv = fh.get('dev')
+                parts.append(f"추세가 {_gw[ph['gear']]}에서 {_gw[fh['gear']]}로 바뀜"
+                             + (f"(나스닥100이 200일선 {'위' if _dv >= 0 else '아래'} {abs(_dv):.1f}%)" if _dv is not None else ''))
+            if ph.get('target') != fh.get('target'):
+                _ww = dict(stop='200일선 아래 5% 넘는 이탈이 이틀 이어진 급락 손절', lifeline='30주 이동평균선 규칙의 상한',
+                           g1='하락 추세의 기본 비중', g1dip='하락 추세 속 매수 점수 70 이상', g2='횡보의 기본 비중',
+                           g3='상승 추세의 기본 비중', warn='매도 압력 경고', warn2='매도 압력 강한 경고').get(fh.get('why'))
+                parts.append(f"규칙이 정한 목표 비중이 {_pc(ph.get('target'))}에서 {_pc(fh.get('target'))}로 바뀜"
+                             + (f"(근거: {_ww})" if _ww else ''))
+                if ph.get('expo') == fh.get('expo') and abs((fh.get('expo') or 0) - (fh.get('target') or 0)) < 0.05:
+                    parts.append(f"예시 포트폴리오 비중({_pc(fh.get('expo'))})이 목표와 같아져 더 조정할 단계가 없어짐")
+            if ph.get('expo') != fh.get('expo'):
+                parts.append(f"예시 포트폴리오 비중을 {_pc(ph.get('expo'))}에서 {_pc(fh.get('expo'))}로 조정")
+            if not parts:
+                if abs((fh.get('expo') or 0) - (fh.get('target') or 0)) < 0.05:
+                    parts.append(f"예시 포트폴리오 비중({_pc(fh.get('expo'))})이 목표({_pc(fh.get('target'))})에 닿아 더 조정할 단계가 없어짐")
+                else:
+                    parts.append(f"매수 점수 {ph.get('buy')}에서 {fh.get('buy')}, 매도 압력 {ph.get('sell')}에서 {fh.get('sell')}로 움직여 규칙의 구간이 바뀜")
+            elif abs((ph.get('buy') or 0) - (fh.get('buy') or 0)) >= 10 or abs((ph.get('sell') or 0) - (fh.get('sell') or 0)) >= 10:
+                parts.append(f"매수 점수 {ph.get('buy')}에서 {fh.get('buy')}, 매도 압력 {ph.get('sell')}에서 {fh.get('sell')}")
+            flow_why = (f"판단이 바뀐 까닭: {_dd(fh['d'])}에 '{_past_word(prev_s, ph)}'에서 '{SHORT[cur_s]}' 판단으로 바뀜. "
+                        + '. '.join(parts) + '.')
+    except Exception as _fe:
+        print(f'::warning::판단 변화 해명 실패(무시): {type(_fe).__name__}: {_fe}')
+
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
     grade = None
     hist = comp.get('history', [])
@@ -2206,6 +2246,7 @@ def main():
         lifeline=(dict(count=ll['count'], broken=[n for n, b in ll['detail'] if b]) if ll else None),
         stanceStreak=streak,
         flow=flow,
+        flowWhy=flow_why,
         stale=stale,
         comp=dict(stance=st, stanceLabel=label, commentary=commentary,
                   confidence=('상' if gear >= 3 and sell < CFG['warn_sell'] else
