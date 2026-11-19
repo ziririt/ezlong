@@ -801,6 +801,11 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 직전 카드에서 언급된 핵심 이슈가 아직 해소되지 않은 이벤트라면, 이번 카드에도 반드시 포함해야 함
   예: 직전 카드에 "내일 도하 협상"이 핵심이라면, 협상이 끝나기 전까지 모든 카드에 불확실성 포함
 - 핵심 이슈가 바뀐 경우, 반드시 새로운 중대 뉴스 이벤트가 발생했기 때문이어야 함
+- [일어난 일과 예정된 일, 2026-11-19 실사고] 기업공개(IPO)는 '공모가 확정'과 '상장 첫 거래'가 다른 날이다.
+  공모가만 정해지고 아직 거래가 시작되지 않았으면 '데뷔', '상장 성공', '성공적으로 마무리'라고 쓰지 마라 -
+  '공모가 83달러 확정, 첫 거래는 11월 19일(뉴욕) 예정'처럼 끝난 일과 남은 일을 나눠 적는다.
+  실사고: 첫 거래가 한국 시각 그날 밤인데 아침 카드가 '성공적 데뷔'라고 적었다. 실적·지표·회의도 같다 -
+  헤드라인의 'scheduled to', 'expected to', 'will begin', '예정'은 아직 일어나지 않은 일이다.
 - [판정 변화 해명, 2026-11-19] 직전 카드와 우위(긍정/부정)가 뒤집히거나 같은 재료(예: 같은 기업 실적)의 편이
   바뀌면, summary 에 '무엇이 바뀌어서'를 측정된 사실로 밝혀라. 예: "엔비디아 실적 호조에도 정규장 6.8% 하락,
   기대 선반영 해석으로 부정 우위 전환". 어제의 호재가 왜 오늘 악재인지 말하지 않는 요약은 금지.
@@ -3589,6 +3594,44 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items, equity_rows=N
     return why, why_en
 
 
+_IPO_PENDING_RE = re.compile(r'(?:scheduled|expected|set|slated|due)\s+to\s+(?:begin|start|debut|list)|will\s+(?:begin|start)\s+trading|'
+                             r'(?:begin|start)s?\s+trading\s+(?:on\s+)?(?:thursday|friday|monday|tuesday|wednesday|tomorrow)|상장\s*예정|거래\s*(?:시작\s*)?예정', re.I)
+_IPO_DONE_FIX = [(r'성공적(?:인|으로)?\s*(?:IPO\s*)?데뷔', '공모가 확정(첫 거래 전)'), (r'성공적으로\s*마무리(?:하며|했|하고)?', '공모가를 확정하며'),
+                 (r'IPO\s*성공(?!적)', 'IPO 공모가 확정'), (r'데뷔(?!\s*예정)', '상장 예정')]
+
+
+def fix_premature_ipo(entry, headlines):
+    """공모가만 정해지고 첫 거래 전인 IPO 를 '데뷔·성공'이라 쓴 재료·보고서를 고친다(2026-11-19 실사고).
+    뉴스에 '거래 시작 예정'이 있을 때만 움직인다. 고친 자리 이름을 돌려준다."""
+    if not any(re.search(r'IPO|기업공개|상장', h or '', re.I) and _IPO_PENDING_RE.search(h or '') for h in (headlines or [])):
+        return []
+    fixed = []
+    def fx(t):
+        if not t or not re.search(r'IPO|기업공개', t, re.I):
+            return t
+        for pat, rep in _IPO_DONE_FIX:
+            t = re.sub(pat, rep, t)
+        return t
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in entry.get(k) or []:
+            for fld in ('name', 'desc'):
+                n = fx(f.get(fld))
+                if n != f.get(fld):
+                    f[fld] = n; fixed.append(f.get('name'))
+    for fld in ('summary',):
+        n = fx(entry.get(fld))
+        if n != entry.get(fld):
+            entry[fld] = n; fixed.append(fld)
+    rep = entry.get('report')
+    if isinstance(rep, dict):
+        for k, v in list(rep.items()):
+            if isinstance(v, str):
+                n = '\n'.join(fx(ln) for ln in v.split('\n'))
+                if n != v:
+                    rep[k] = n; fixed.append('report.' + k)
+    return fixed
+
+
 def past_bellwether_earnings(now_utc=None, hours=72):
     """최근 N시간 안에 발표가 끝난 벨웨더 실적 {기업 그룹: 발표 UTC datetime}."""
     now = now_utc or datetime.now(timezone.utc)
@@ -5669,6 +5712,13 @@ def main():
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
+
+    # 4-9a. 상장 전 IPO 를 '데뷔·성공'이라 쓴 표현 교정 (2026-11-19)
+    try:
+        for _nm in fix_premature_ipo(entry, list(headlines or []) + list(rss_headlines or []) + list(av_items or [])):
+            print(f"::warning::[상장 전 IPO] 표현 교정: {_nm}")
+    except Exception as _ie:
+        print(f"::warning::IPO 표현 교정 실패(무시): {type(_ie).__name__}: {_ie}")
 
     # 4-9b. 시세 정합 (2026-11-19) - 판정·요약이 실제 지수와 어긋나면 좁히고, 고치고, 혼조에 남긴다.
     try:
