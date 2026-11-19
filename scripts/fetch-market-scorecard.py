@@ -5401,7 +5401,7 @@ def main():
     prev_entries = data.get("entries", [])[:2]  # 최근 2개 → 일관성 맥락용
     # (가) 2026-11-19: 직전 카드가 '정정' 표시가 붙은 카드(틀린 시세로 만든 판정)면 그 판정에 묶이지 않는다.
     # 일관성 맥락·판단 이력·변화 상한(G2)을 이번 회차에 쓰지 않는다. 정정 없는 새 카드가 나가면 저절로 원래대로 돌아온다.
-    _baseline_reset = bool(prev_entries and prev_entries[0].get('correction'))
+    _baseline_reset = bool(prev_entries and (prev_entries[0].get('tainted') or prev_entries[0].get('correction')))
     if _baseline_reset:
         print("  [기준 새로 잡기] 직전 카드가 정정 대상 - 일관성 맥락·판단 이력·변화 상한을 이번 회차에 쓰지 않는다")
         prev_entries = []
@@ -5682,7 +5682,7 @@ def main():
     # 4-10. 판정 변화 해명 (2026-11-19) - 우위가 최근 24시간 안에 뒤집혔으면 무엇이 바뀌었는지 싣는다.
     try:
         # 정정 표시가 붙은 카드는 비교 상대로 삼지 않는다(틀린 시세로 만든 판정과의 차이는 '변화'가 아니다).
-        _older = [e for e in entries if e.get("id") != entry["id"] and not e.get("correction")]
+        _older = [e for e in entries if e.get("id") != entry["id"] and not (e.get("tainted") or e.get("correction"))]
         _sh = attach_shift(entry, _older)
         if _sh:
             print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']}, {_sh.get('kind')})")
