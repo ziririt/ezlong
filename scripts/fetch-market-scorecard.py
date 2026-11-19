@@ -1032,7 +1032,17 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 개별 기업 간 시가총액 순위 다툼 (예: "애플·엔비디아 시총 1위 경쟁") → 시장 전체에
   영향 없는 단순 트리비아, 어느 항목에도 넣지 말 것 (2026-07-18 추가)
 
+[원칙, 2026-11-19 오너 확정] 주식 시장 전체에 영향을 줄 정도의 개별 기업 뉴스를 제외하고는,
+일반적인 개별 기업 뉴스는 재료로 세지 않는다. 아래가 그 '시장급' 예외다.
+
 [예외 — 개별 기업이지만 시장 전체 재료로 인정 가능한 케이스]
+- 시총 최상위 벨웨더(NVDA, AAPL, MSFT, GOOGL, AMZN, META, TSLA, AVGO)의 경영권·존속에 관한 중대 사건
+  → 최고경영자 사임·해임·교체, 임시 체제, 창업자 퇴진, 승계 분쟁, 회계 부정, 기업 분할 명령 같은 사건.
+  지수 비중이 큰 회사의 방향이 흔들리면 섹터와 지수 전체의 심리가 흔들린다. 인정.
+  category 는 company_marketwide 로 달고, desc 에 (가) 무슨 일이 언제 있었는지 (나) 어디로 번졌는지
+  (섹터·지수의 실측 등락 등)를 적어라. 실사고(2026-11): 엔비디아 창업자 겸 최고경영자의 퇴진과 임시 체제가
+  여러 날 시장의 중심 화두였는데, '개별 기업 뉴스'라는 이유로 카드에서 통째로 빠졌다.
+  단, 임원 한 명의 이동·경영진의 발언·소소한 인사는 여기 해당하지 않는다.
 - S&P500 시총 상위 5개(AAPL, MSFT, NVDA, AMZN, GOOGL) 기습 가격 인상
   → 인플레이션 신호·소비자 지출 영향으로 시장 전체에 파급. 인정.
 - 나스닥 가중치 5% 이상 종목의 어닝 서프라이즈/쇼크 (실적 발표)
@@ -1076,7 +1086,8 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   루머 등)는 미국 증시 전체를 움직이지 못하면 노이즈다 — 혼조에도 싣지 않는다.
   실사고: '테슬라 사이버트럭 가격 인상 논란'이 혼조로 나갔다. 테슬라 주가조차 못
   움직일 이슈다. 이 코너의 취지는 시장에 영향을 줄 정보를 가려내는 것이다.
-  개별 기업 이슈가 시장급이 되는 예외는 벨웨더 실적 이벤트(earnings_bellwether)뿐이다.
+  개별 기업 이슈가 시장급이 되는 예외는 벨웨더 실적 이벤트(earnings_bellwether)와
+  벨웨더의 경영권·존속에 관한 중대 사건(company_marketwide)이다.
 - 같은 주제는 판정 하나만 갖는다. 한 주제를 긍정 칸과 혼조 칸에 쪼개 넣지 마라
   (실사고: 'AI 투자 심리 유지'가 긍정 35점, 'Nvidia 실적 발표 대기'가 혼조 — 같은
   이야기다). 판단이 서면 점수 칸에, 양면이면 혼조 칸에 — 한 곳에만.
@@ -1101,7 +1112,8 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   한 화면에서 두 이야기를 한 것이다 — 독자는 어느 쪽을 믿어야 할지 모른다.
 - **개별 기업 뉴스에 점수를 싣지 마라 — 카테고리 라벨로 피해 갈 수 없다.** 한 기업의
   투자·소송·제품·인사 뉴스는 시장 카테고리(ai_tech_valuation 등)를 붙여도 개별 기업
-  뉴스다. 코드는 라벨이 아니라 재료 이름의 글자를 본다. 예외는 벨웨더 실적 이벤트뿐이며,
+  뉴스다. 코드는 라벨이 아니라 재료 이름의 글자를 본다. 예외는 벨웨더 실적 이벤트와
+  벨웨더의 최고경영자 교체 같은 경영권·존속 사건(company_marketwide)이며,
   그 뉴스가 시장에 옮겨붙은 것을 말하려면 **파급 대상을 이름이나 설명에 명시하라** —
   '기술주 전반', '반도체 섹터', '빅테크', '밸류체인'처럼 번져 나간 대상을 적는다.
   좋은 예: name '구글 광고 사업 분할 기각', desc '주요 기술 기업 규제 리스크 완화'
@@ -1295,8 +1307,10 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 === 개별 기업 재료의 점수 배분 금지 (2026-08-12 강화) ===
 - 한 기업의 지역 판매량·애널리스트 등급 조정·개별 계약 같은 뉴스는 그 기업의 재료이지
   미국 시장 전체의 재료가 아니다 — positive_factors/negative_factors에 점수를 배분하지 마라.
-- 유일한 예외: 시장 전체를 실제로 움직인 실적 이벤트(예: 지수 급변을 동반한 대형주 실적) —
-  이때만 category를 earnings_bellwether로 달고 점수를 배분한다.
+- 예외 하나: 시장 전체를 실제로 움직인 실적 이벤트(예: 지수 급변을 동반한 대형주 실적) —
+  category를 earnings_bellwether로 달고 점수를 배분한다.
+- 예외 둘(2026-11-19): 시총 최상위 벨웨더의 경영권·존속에 관한 중대 사건(최고경영자 사임·해임·교체, 임시 체제,
+  창업자 퇴진, 회계 부정, 기업 분할 명령) — category를 company_marketwide로 달고 점수를 배분한다.
 - 그 외 개별 기업 소식이 정말 중요하면 mixed_factors(무점수)로만 다뤄라.
 - 수치를 인용할 때는 제공된 헤드라인·데이터에 실제로 있는 수치만 쓴다. 헤드라인에 없는
   수치를 만들어 내지 마라.
@@ -1575,6 +1589,7 @@ FACTOR_CATEGORIES = [
     'ai_tech_valuation',    # AI·반도체 밸류에이션 재평가
     'supply_chain',         # 공급망·반도체 공급·항구파업
     'company_specific',     # 개별 기업 이슈(프롬프트 예외 규정에 따라 인정된 경우)
+    'company_marketwide',   # 벨웨더의 경영권·존속에 관한 중대 사건(시장 전체에 영향, 2026-11-19)
     'other',                # 위 어디에도 안 맞는 경우 — 남용 금지, 최소화
 ]
 
@@ -1708,11 +1723,11 @@ def _apportion(weights, units):
 # 남은 편에도 살아남은 재료가 없으면 예전대로 보류한다.
 _ONE_SIDED_NOTE = {
     'negative_factors': ('부정 재료 없음: 이번 회차에는 시장 전체를 움직인 부정 재료가 확인되지 않았습니다. '
-                         '개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
+                         '시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
                          'No negative drivers this round: nothing market-wide on the downside passed our checks. '
                          'Single-company news and price moves by themselves are not counted.'),
     'positive_factors': ('긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. '
-                         '개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
+                         '시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.',
                          'No positive drivers this round: nothing market-wide on the upside passed our checks. '
                          'Single-company news and price moves by themselves are not counted.'),
 }
@@ -2893,6 +2908,20 @@ _G4_SPILLOVER   = (r'섹터|업종|전반|반도체|기술주|성장주|가치�
                    r'관련주|테마주|나스닥|다우|러셀|S&P|증시|밸류체인|공급망|산업\s*전반')
 
 
+# 2026-11-19 오너 확정: "주식 시장 전체에 영향을 줄 정도의 개별 기업 뉴스를 제외하고는 일반적인 개별 기업 뉴스는
+# 재료로 세지 않는다." 실적 말고도 시장급 사건이 있다 - 벨웨더의 최고경영자 교체 같은 경영권·존속 사건.
+# 판별은 라벨이 아니라 글자로 한다: (가) 벨웨더 회사 이름이 있고 (나) 경영권·존속 사건의 낱말이 있어야 한다.
+_G4_MAJOR_EVENT = (r'최고경영자|CEO|경영진\s*교체|경영권|사임|퇴진|해임|물러|임시\s*(?:CEO|체제|대표|최고)|리더십|승계|'
+                   r'창업자|회계\s*부정|분식|파산|상장\s*폐지|기업\s*분할|거래\s*정지')
+
+
+def _marketwide_company_event(f):
+    text = (f.get('name', '') or '') + ' ' + (f.get('desc', '') or '')
+    if not re.search(_G4_MAJOR_EVENT, text, re.I):
+        return False
+    return bool(_rpt_groups_in(text) & set(_BELLWETHER_TICKERS))
+
+
 def _company_only_factor(f):
     """개별 기업 재료인가 — 모델이 붙인 category 라벨을 믿지 않는다.
 
@@ -2908,6 +2937,8 @@ def _company_only_factor(f):
     # 본다"이므로 방향도 양쪽이어야 한다 — 라벨이 시장 카테고리여도 내용이 개별
     # 기업이면 잡고, 라벨이 company_specific이어도 내용이 시장급이면 통과시킨다.
     if re.search(_G4_SPILLOVER, name + ' ' + (f.get('desc', '') or '')):
+        return False
+    if _marketwide_company_event(f):
         return False
     if re.search(_G4_EARNINGS, name) or re.search(_G4_MARKET_SUBJ, name):
         return False
@@ -3333,6 +3364,7 @@ def fetch_bellwether_earnings():
 # 문장은 모델이 아니라 코드가 두 카드의 재료를 맞대어 쓴다(지어낼 여지를 없앤다).
 # 뒤집힌 뒤 24시간 동안은 이어지는 카드에도 같은 해명을 싣는다 - 독자가 언제 들어올지 모른다.
 SHIFT_KEEP_HOURS = 24
+SHIFT_WHY_VERSION = 3       # 해설 규칙을 고치면 올린다 - 옛 규칙으로 쓴 해설은 이어 쓰지 않고 다시 쓴다
 SHIFT_BIG_MOVE = 30        # 우위가 그대로여도 직전 카드에서 이만큼 움직이면 해명한다
 _SHIFT_STOP = set('실적 호조 후폭풍 지속 우려 기대 기대감 개선 하락 상승 강세 약세 발표 전환 확대 완화 부담 압력 시사 '
                   '가능성 및 추가 투자 심리 섹터 급등 급락 둔화 서프라이즈 대기 직후 the of and in on to'.split())
@@ -3436,7 +3468,7 @@ def attach_shift(entry, older):
     # 같은 전환을 이미 해설한 카드가 있으면 그 해설을 이어 쓴다(카드마다 말이 달라지지 않게).
     for o in older:
         osh = o.get('shift') or {}
-        if osh.get('from_id') == frm['id'] and osh.get('why'):
+        if osh.get('from_id') == frm['id'] and osh.get('why') and osh.get('v') == SHIFT_WHY_VERSION:
             set_shift_why(entry, osh['why'], osh.get('why_en') or '')
             break
     return entry['shift']
@@ -3446,7 +3478,7 @@ def set_shift_why(entry, why, why_en=''):
     sh = entry.get('shift')
     if not sh or not why:
         return
-    sh['why'], sh['why_en'] = why, why_en
+    sh['why'], sh['why_en'], sh['v'] = why, why_en, SHIFT_WHY_VERSION
     sh['lines'] = [sh['head'], why]
     sh['lines_en'] = [sh['head_en'], why_en] if why_en else sh['lines_en']
 
@@ -3506,6 +3538,10 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items, equity_rows=N
   '기대가 이미 주가에 반영돼서', '차익실현 때문에', '재료 소멸', '뉴스에 팔아라' 같은 증시 상투어를 까닭으로 쓰지 마라 -
   뉴스가 그렇게 말하지 않는 한 그것은 지어낸 설명이다. 실제로 발표 전 주가가 내리던 종목에 '기대 선반영'이라고 써서 오보를 냈다.
   [실측 가격 경과]를 보고, 네가 쓰려는 설명이 발표 전후의 실제 주가 흐름과 맞는지 먼저 확인하라.
+- [선후 관계, 2026-11-19] 까닭으로 드는 사건마다 언제 일인지 밝혀라(자료에 날짜가 있으면 "11월 12일"처럼).
+  '앞 카드 이전부터 알려져 있던 일'과 '앞 카드 이후 새로 나온 일'을 구분해서 쓴다. 며칠 전 사건을 방금 생긴 일처럼
+  쓰지 마라. 전부터 있던 일이 이번에 다시 부각된 것이면 "…은 ○일에 이미 알려진 일이지만, 이번에 …로 다시 부각됐다"처럼
+  무엇이 새 계기였는지를 적는다. 새 계기를 자료에서 찾을 수 없으면 그렇다고 쓴다.
 - 자료가 주가 반응의 까닭을 말해 주지 않으면 솔직하게 써라: 확인되는 사실(무엇이 발표됐고 주가가 어떻게 움직였나)을 적고,
   "주가가 그렇게 반응한 까닭은 지금 자료만으로는 단정하기 어렵습니다"라고 밝힌다. 그럴듯한 추측으로 메우지 마라.
 - 자료에서 까닭을 찾을 수 없으면 지어내지 말고 why 를 빈 문자열로 내라.

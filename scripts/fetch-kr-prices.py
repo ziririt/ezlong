@@ -48,14 +48,27 @@ def get_krx_session():
 
 # ─── 단일 티커 가격 수집 ──────────────────────────────────────────────────────
 def fetch_price(symbol: str) -> dict | None:
-    """yfinance fast_info로 현재가 + 전일종가 수집"""
+    """현재가는 fast_info, 전일 종가는 일봉(수정 전 종가)에서"""
     try:
         ticker = yf.Ticker(symbol)
         fi = ticker.fast_info
 
         # fast_info 가 None / 속성 없는 경우 대비
         current   = getattr(fi, "last_price",      None)
-        prev_close = getattr(fi, "previous_close", None)
+        # 2026-11-19: fast_info.previous_close 는 실제 전일 종가와 달랐다(삼성전자 194,700 을 193,600 으로 줌.
+        # 같은 오류로 미국 쪽 몇대몇이 엔비디아 -2.89% 를 -6% 로 적었다). 일봉의 원시 종가에서 직접 꺼낸다.
+        prev_close = None
+        try:
+            h = ticker.history(period="7d", interval="1d", auto_adjust=False)
+            closes = [float(v) for v in h["Close"].tolist() if v == v and v and v > 0]
+            if len(closes) >= 2:
+                prev_close = closes[-2]
+                if current is None:
+                    current = closes[-1]
+        except Exception:
+            pass
+        if not prev_close:
+            prev_close = getattr(fi, "regular_market_previous_close", None)
 
         if current is None or prev_close is None or prev_close == 0:
             return None
