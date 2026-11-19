@@ -351,51 +351,98 @@ def safe_pct(val):
 
 # ─── 시장 데이터 수집 ─────────────────────────────────────────────────────────
 
+# ─── 등락률 기준 가격 (2026-11-19 실사고) ────────────────────────────────────
+# 그 전에는 등락률을 yfinance fast_info.previous_close 로 쟀다. 이 값이 실제 직전 종가와 달랐다:
+# 11-18 NVDA 직전 종가는 155.46 인데 161.46 을 돌려줘, 정규장 -2.89% 를 -6.81% 로,
+# 시간외 +0.79% 를 '포스트마켓 -5.95%' 로 카드에 적었다. QQQ 는 +0.39% 오른 날을 -0.95% 로 봤다.
+# 이제 일봉(수정 전 종가)에서 '끝난 정규장 종가'와 '그 전 종가'를 직접 꺼낸다.
+# 정규장 밖에서는 정규장 등락과 시간외 등락을 따로 적는다 - 둘을 섞어 한 숫자로 만들지 않는다.
+_PRICE_PATH = []          # 판정 변화 해설에 건네는 최근 종가 경과(실측)
+
+
+def _daily_closes(t, days='8d'):
+    h = t.history(period=days, interval='1d', auto_adjust=False)
+    out = []
+    for idx, c in h['Close'].items():
+        try:
+            c = float(c)
+        except Exception:
+            continue
+        if c == c and c > 0:
+            out.append((idx.date(), c))
+    return out
+
+
+def _md(d):
+    return f"{d.month}월 {d.day}일"
+
+
 def fetch_equity_data():
-    """주요 지수·종목 현재가 + 등락률 (프리마켓/시간외 포함)"""
+    """주요 지수·종목 등락률. 첫 괄호는 늘 '정규장 등락(직전 종가 대비)'. 시간외는 뒤에 따로 붙인다."""
     rows = []
+    del _PRICE_PATH[:]
+    now_et = datetime.now(ET_TZ) if ET_TZ else None
     for sym in EQUITY_TICKERS:
         try:
             t = yf.Ticker(sym)
-            info = t.fast_info
-            prev = getattr(info, 'previous_close', None)
-
-            # 프리마켓/포스트마켓 포함 최신 가격 시도
-            price = None
-            session_tag = ''
+            dc = _daily_closes(t)
+            if len(dc) < 2:
+                rows.append(f'{sym}: 데이터 없음 (일봉 부족)')
+                continue
+            price, ts = None, None
             try:
                 hist = t.history(period='1d', prepost=True, interval='1m')
                 if not hist.empty:
-                    price = float(hist['Close'].iloc[-1])
+                    price = float(hist['Close'].dropna().iloc[-1])
                     ts = hist.index[-1]
-                    # 2026-07-03: DST 무시 근사 폐기 → zoneinfo 기반 정확 세션 태깅
-                    session_tag = session_tag_for_ts(ts)
             except Exception:
                 pass
-
-            # 폴백: fast_info 기본값
-            if not price:
-                price = getattr(info, 'last_price', None)
-
-            if price and prev:
-                pct = (price - prev) / prev * 100
-                rows.append(f'{sym}: ${price:,.2f} ({safe_pct(pct)}){session_tag}')
-            elif price:
-                rows.append(f'{sym}: ${price:,.2f}{session_tag}')
+            tag = session_tag_for_ts(ts) if ts is not None else ''
+            last_d, last_c = dc[-1]
+            in_regular = bool(now_et and tag.strip() == '[정규장]' and last_d == now_et.date())
+            if in_regular:
+                prev_c = dc[-2][1]
+                px = price or last_c
+                rows.append(f'{sym}: ${px:,.2f} ({safe_pct((px - prev_c) / prev_c * 100)}) [정규장]')
+            else:
+                # 일봉 마지막 칸이 오늘 날짜인데 아직 개장 전이면(드묾) 그 칸은 버린다
+                if now_et and last_d == now_et.date() and (now_et.hour + now_et.minute / 60) < 9.5:
+                    dc = dc[:-1]
+                    last_d, last_c = dc[-1]
+                prev_c = dc[-2][1]
+                row = f'{sym}: ${last_c:,.2f} ({safe_pct((last_c - prev_c) / prev_c * 100)}) [{_md(last_d)} 정규장 종가]'
+                ext_tags = ('[프리마켓 실시간]', '[포스트마켓 실시간]', '[야간/시간외]')
+                if price and tag.strip() in ext_tags and abs(price - last_c) / last_c > 0.0005:
+                    row += f' | 시간외 ${price:,.2f} (정규장 종가 대비 {safe_pct((price - last_c) / last_c * 100)}) {tag.strip()}'
+                rows.append(row)
+            if sym in ('QQQ', 'SPY', 'SOXX', 'NVDA', 'TSLA'):
+                seq = [f"{_md(d)} {c:,.2f}({safe_pct((c - dc[k - 1][1]) / dc[k - 1][1] * 100)})"
+                       for k, (d, c) in enumerate(dc) if k >= 1][-6:]
+                _PRICE_PATH.append(f"{sym} 정규장 종가: " + ', '.join(seq))
         except Exception as ex:
             rows.append(f'{sym}: 데이터 없음 ({ex})')
     return rows
 
 
 def fetch_macro_data():
-    """VIX, 금리, 원유, 달러, 금"""
+    """VIX, 금리, 원유, 달러, 금. 등락률은 일봉의 직전 종가 대비."""
     rows = []
     for sym, (key, label) in MACRO_TICKERS.items():
         try:
             t = yf.Ticker(sym)
             info = t.fast_info
             price = getattr(info, 'last_price', None)
-            prev  = getattr(info, 'previous_close', None)
+            prev = None
+            try:
+                dc = _daily_closes(t)
+                if len(dc) >= 2:
+                    prev = dc[-2][1]
+                    if not price:
+                        price = dc[-1][1]
+            except Exception:
+                pass
+            if not prev:
+                prev = getattr(info, 'regular_market_previous_close', None)
             if price:
                 if prev:
                     pct = (price - prev) / prev * 100
@@ -798,6 +845,9 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} / 뉴욕(ET): {_et_now}
 {session_block}{fred_block}{av_block}{event_block}{tv_inbox_section}
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
+- [등락률 읽는 법, 2026-11-19] 종목 줄의 첫 괄호는 '정규장 등락(직전 정규장 종가 대비)'이다. '| 시간외 …(정규장 종가 대비 …)'가 붙어 있으면
+  그것은 정규장이 끝난 뒤의 추가 움직임이다. 두 숫자를 더하거나 바꿔 쓰지 마라. 정규장 등락을 '포스트마켓 하락'이라고 쓰면 오보다.
+  재료 설명에 등락률을 적을 때는 '정규장 -2.89%' '시간외 +0.79%'처럼 어느 구간인지 반드시 붙여라.
 - 가격 데이터의 세션 태그를 그대로 신뢰하라: [프리마켓 실시간] [정규장] [포스트마켓 실시간] [야간/시간외] [직전 거래일 종가]
 - 태그 없는 항목은 직전 미국 정규장 종가 기준
 - 뉴스 헤드라인은 최근 6시간 이내 발행된 기사만 포함 (각 기사에 경과 시간 표시)
@@ -3410,7 +3460,7 @@ def _shift_card_text(e):
     return '\n'.join(out)
 
 
-def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
+def desk_shift_why(entry, frm, headlines, rss_headlines, av_items, equity_rows=None):
     """판정이 왜 바뀌었는지의 해설(2026-11-19 오너 요구).
 
     무엇이 바뀌었는지의 나열은 독자가 카드에서 이미 본 것이라 동어반복이다. 필요한 것은 '왜'다:
@@ -3419,7 +3469,9 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
     key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
     news = '\n'.join(f'- {h}' for h in (list(headlines or []) + list(rss_headlines or []))[:30])
     av = '\n'.join(f'- {h}' for h in (av_items or [])[:14])
-    src = '\n'.join([_shift_card_text(frm), _shift_card_text(entry), news, av])
+    # 숫자 검문의 자료에서 카드 재료 설명은 뺀다 - 카드에 적힌 등락률 자체가 틀렸던 사고가 있었다.
+    src = '\n'.join([f"긍정 {frm.get('positive_total')} 부정 {frm.get('negative_total')} 긍정 {entry.get('positive_total')} 부정 {entry.get('negative_total')}",
+                     news, av, '\n'.join(_PRICE_PATH), '\n'.join(equity_rows or [])])
     prompt = f"""당신은 미국 주식 시황 데스크다. 이 지면의 '긍정 대 부정' 판정이 앞 카드와 크게 달라졌다.
 독자는 "어제는 호재라더니 왜 지금은 악재인가"를 묻는다. 그 물음에 답하는 해설을 쓴다.
 
@@ -3428,6 +3480,12 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
 
 [지금 카드: {_shift_when(entry['id'])} KST]
 {_shift_card_text(entry)}
+
+[실측 가격 경과 - 정규장 종가와 전일 대비. 이 숫자와 어긋나는 말을 쓰지 마라]
+{chr(10).join('- ' + x for x in _PRICE_PATH) or '- 없음'}
+
+[지금 시세 줄 - 첫 괄호는 정규장 등락, '시간외'는 정규장 종가 대비]
+{chr(10).join('- ' + x for x in (equity_rows or [])) or '- 없음'}
 
 [뉴스 헤드라인]
 {news or '- 없음'}
@@ -3442,6 +3500,14 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
 - 무엇이 빠지고 무엇이 들어왔는지 나열하지 마라. 독자는 카드에서 이미 봤다. '왜'만 쓴다.
 - "주가가 하락해서 부정으로 바뀌었다" 같은 결과의 되풀이는 해설이 아니다. 왜 하락했는지를 위 자료에서 찾아 써라.
 - 위 자료에 있는 사실만 쓴다. 자료에 없는 사건·인물·숫자·일정을 지어내지 마라. 숫자는 자료에 적힌 그대로만.
+- 등락률은 [실측 가격 경과]와 [지금 시세 줄]의 숫자만 쓰고, '정규장'인지 '시간외'인지 반드시 붙인다. 카드 재료 설명에 적힌 등락률은
+  틀렸을 수 있으니 옮기지 마라.
+- [까닭의 출처, 2026-11-19 실사고] 까닭은 위 뉴스 헤드라인·금융뉴스에 실제로 적힌 사건·발언·결정이어야 한다.
+  '기대가 이미 주가에 반영돼서', '차익실현 때문에', '재료 소멸', '뉴스에 팔아라' 같은 증시 상투어를 까닭으로 쓰지 마라 -
+  뉴스가 그렇게 말하지 않는 한 그것은 지어낸 설명이다. 실제로 발표 전 주가가 내리던 종목에 '기대 선반영'이라고 써서 오보를 냈다.
+  [실측 가격 경과]를 보고, 네가 쓰려는 설명이 발표 전후의 실제 주가 흐름과 맞는지 먼저 확인하라.
+- 자료가 주가 반응의 까닭을 말해 주지 않으면 솔직하게 써라: 확인되는 사실(무엇이 발표됐고 주가가 어떻게 움직였나)을 적고,
+  "주가가 그렇게 반응한 까닭은 지금 자료만으로는 단정하기 어렵습니다"라고 밝힌다. 그럴듯한 추측으로 메우지 마라.
 - 자료에서 까닭을 찾을 수 없으면 지어내지 말고 why 를 빈 문자열로 내라.
 - '오늘·어제·내일' 같은 상대 날짜 금지. 필요하면 "11월 18일(뉴욕)"처럼 쓴다.
 - 독자의 계좌 상태를 단정하지 마라. 사라·팔아라 식의 권유 금지. 전문 용어 대신 누구나 아는 말.
@@ -3475,10 +3541,13 @@ def desk_shift_why(entry, frm, headlines, rss_headlines, av_items):
         return None
     nums_src = set(re.findall(r'\d+(?:\.\d+)?', src + ' ' + _shift_when(frm['id']) + ' ' + _shift_when(entry['id'])))
     bad = [n for n in re.findall(r'\d+(?:\.\d+)?', why) if n not in nums_src]
+    if re.search(r'선반영|이미\s*(?:주가에\s*)?반영|차익\s*실현|재료\s*소멸', why) and not re.search(r'선반영|priced in|차익\s*실현|profit[- ]taking|sell the news', news + av, re.I):
+        print(f"::warning::[판정 변화 해설] 뉴스에 없는 상투적 까닭 - 버림: {why[:300]}")
+        return None
     if bad:
         print(f"::warning::[판정 변화 해설] 자료에 없는 숫자 {bad} - 버림: {why[:300]}")
         return None
-    if re.search(r'오늘|어제|내일|그저께|모레', why):
+    if re.search(r'오늘|어제|내일|그저께|모레|전날|이날|다음\s*날', why):
         print("::warning::[판정 변화 해설] 상대 날짜 - 버림")
         return None
     return why, why_en
@@ -5467,7 +5536,7 @@ def main():
             print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']}, {_sh.get('kind')})")
             if not _sh.get('why'):
                 _frm = next((e for e in _older if e.get('id') == _sh['from_id']), None)
-                _w = desk_shift_why(entry, _frm, headlines, rss_headlines, av_items) if _frm else None
+                _w = desk_shift_why(entry, _frm, headlines, rss_headlines, av_items, equity_rows) if _frm else None
                 if _w:
                     set_shift_why(entry, _w[0], _w[1])
                     print(f"  판정 변화 해설: {_w[0][:80]}…")

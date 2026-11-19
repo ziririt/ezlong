@@ -874,6 +874,7 @@ function renderEntry(e, isLatest) {
           '<div class="mv-bar-neg" style="width:' + neg + '%">' + neg + '</div>' +
         '</div>' +
         '<div class="mv-summary">' + escHtml(e.summary || '') + '</div>' +
+        (e.correction ? '<div class="mv-shift-line" style="margin-top:10px;color:#B91C1C;font-weight:700;">' + escHtml(e.correction) + '</div>' : '') +
       '</div>' +
 
       shiftHtml +
