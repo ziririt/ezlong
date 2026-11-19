@@ -1,6 +1,75 @@
 {
   "entries": [
     {
+      "id": "2026-11-20-07:01",
+      "timestamp_kst": "2026-11-20(금) 07:01 KST",
+      "key_event": {
+        "name": "Anthropic IPO 기대감 약화",
+        "name_en": "Anthropic IPO Enthusiasm Wanes",
+        "time": "2026-11-19 정규장 마감",
+        "why": "AI 섹터 투자 심리 위축, 기술주 전반 하락",
+        "why_en": "Weakened AI sector sentiment, broad tech stock decline"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "Anthropic IPO 기대감 약화 및 매크로 지표 부담 지속으로 부정 우위 전환",
+      "summary_en": "Negative sentiment prevails as Anthropic IPO enthusiasm fades and macro pressures persist",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 55,
+          "name": "Anthropic IPO 기대감 약화",
+          "name_en": "Anthropic IPO Enthusiasm Weakens",
+          "desc": "Anthropic IPO 첫 거래에도 불구하고 AI 섹터 전반의 투자 심리 개선 실패: 기술주 하락 주도",
+          "desc_en": "Despite Anthropic's IPO debut, AI sector investment sentiment failed to improve, leading to tech stock declines",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "엔비디아 관련 부정적 전망",
+          "name_en": "Negative Outlook for Nvidia",
+          "desc": "Jensen Huang의 엔비디아 컴백에 대한 회의론 및 5년 후 리더십 상실 가능성 제기: 반도체 섹터 투자 심리 위축",
+          "desc_en": "Skepticism regarding Jensen Huang's Nvidia comeback and predictions of losing leadership in 5 years, dampening semiconductor sector sentiment",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "높은 Fed 기준금리 수준 유지",
+          "name_en": "High Fed Policy Rate Sustained",
+          "desc": "Fed 기준금리 3.88%로 높은 수준 유지: 인플레이션 둔화에도 불구하고 긴축 기조 지속 우려",
+          "desc_en": "Fed policy rate remains high at 3.88%, raising concerns about continued tight monetary policy despite easing inflation",
+          "category": "fed_policy"
+        }
+      ],
+      "one_sided": {
+        "empty": "positive",
+        "why": "direction",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다. 재료가 없는 편에도 기본 15점을 둡니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted. A side with no drivers still keeps a base 15 points.",
+        "floor": 15
+      },
+      "shift": {
+        "kind": "flip",
+        "from_id": "2026-11-19-23:20",
+        "since_id": "2026-11-20-07:01",
+        "to": "neg",
+        "head": "11월 19일 23:20 카드는 긍정 85 대 부정 15. 11월 20일 07:01 카드부터 부정 우위로 전환.",
+        "head_en": "The Nov 19 23:20 KST card read 85 bullish to 15 bearish. From the Nov 20 7:01 KST card the balance turned bearish.",
+        "lines": [
+          "11월 19일 23:20 카드는 긍정 85 대 부정 15. 11월 20일 07:01 카드부터 부정 우위로 전환.",
+          "Anthropic IPO는 실제로 11월19일(뉴욕) 거래를 시작해 공모가 대비 27% 급등하며 흥행 자체는 앞 카드의 기대대로 맞아떨어졌습니다. 다만 Reuters와 NYT 보도처럼 이 흥행이 AI 섹터 전반의 투자심리 회복으로는 이어지지 못했고, 여기에 Jensen Huang의 엔비디아 컴백 회의론과 5년 후 리더십 상실 가능성을 제기한 새 기사가 나오며 반도체 섹터 심리를 더 짓눌렀습니다. 그 결과 11월19일 정규장에서 NVDA -3.30%, SOXX -2.75%, QQQ -2.19%로 기술주 전반이 밀렸습니다. 즉 지금은 Anthropic IPO 재료보다 엔비디아발 반도체 리더십 우려가 시장 심리를 더 크게 끌어내리는 요인으로 작용하고 있습니다."
+        ],
+        "lines_en": [
+          "The Nov 19 23:20 KST card read 85 bullish to 15 bearish. From the Nov 20 7:01 KST card the balance turned bearish.",
+          "Anthropic's IPO did open for trading in New York on Nov. 19 and jumped 27% from its offering price, so the debut itself lived up to the prior card's expectation. But as Reuters and the NYT noted, that strong debut failed to revive broader AI sector sentiment, and fresh reports questioning Jensen Huang's Nvidia comeback and whether Nvidia will even lead the chip space five years from now piled more pressure on semiconductors. As a result, Nov. 19 regular-session closes showed NVDA down 3.30%, SOXX down 2.75%, and QQQ down 2.19%. Right now, it's the Nvidia leadership doubts weighing on chips: not the Anthropic IPO story: that's driving sentiment lower."
+        ],
+        "why": "Anthropic IPO는 실제로 11월19일(뉴욕) 거래를 시작해 공모가 대비 27% 급등하며 흥행 자체는 앞 카드의 기대대로 맞아떨어졌습니다. 다만 Reuters와 NYT 보도처럼 이 흥행이 AI 섹터 전반의 투자심리 회복으로는 이어지지 못했고, 여기에 Jensen Huang의 엔비디아 컴백 회의론과 5년 후 리더십 상실 가능성을 제기한 새 기사가 나오며 반도체 섹터 심리를 더 짓눌렀습니다. 그 결과 11월19일 정규장에서 NVDA -3.30%, SOXX -2.75%, QQQ -2.19%로 기술주 전반이 밀렸습니다. 즉 지금은 Anthropic IPO 재료보다 엔비디아발 반도체 리더십 우려가 시장 심리를 더 크게 끌어내리는 요인으로 작용하고 있습니다.",
+        "why_en": "Anthropic's IPO did open for trading in New York on Nov. 19 and jumped 27% from its offering price, so the debut itself lived up to the prior card's expectation. But as Reuters and the NYT noted, that strong debut failed to revive broader AI sector sentiment, and fresh reports questioning Jensen Huang's Nvidia comeback and whether Nvidia will even lead the chip space five years from now piled more pressure on semiconductors. As a result, Nov. 19 regular-session closes showed NVDA down 3.30%, SOXX down 2.75%, and QQQ down 2.19%. Right now, it's the Nvidia leadership doubts weighing on chips: not the Anthropic IPO story: that's driving sentiment lower.",
+        "v": 3
+      }
+    },
+    {
       "id": "2026-11-19-23:20",
       "timestamp_kst": "2026-11-19(목) 23:20 KST",
       "key_event": {
@@ -567,58 +636,8 @@
         "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted."
       },
       "tainted": true
-    },
-    {
-      "id": "2026-11-19-02:52",
-      "timestamp_kst": "2026-11-19(목) 02:52 KST",
-      "key_event": {
-        "name": "엔비디아 실적 후폭풍 지속",
-        "name_en": "Nvidia Earnings Aftermath Continues",
-        "time": "2026-11-18 정규장",
-        "why": "AI 섹터 투자 심리 위축, 반도체 밸류에이션 영향",
-        "why_en": "Weakening AI sector sentiment, semiconductor valuation pressure"
-      },
-      "positive_total": 0,
-      "negative_total": 100,
-      "summary": "엔비디아 실적 후 기술주 하락 전환, 매크로 지표 부담 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists with tech downturn post-Nvidia earnings and ongoing macro pressures.",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 60,
-          "name": "엔비디아 실적 후 AI 투자 심리 위축",
-          "name_en": "AI Investment Sentiment Weakens Post-Nvidia Earnings",
-          "desc": "NVDA 주가 5.86% 하락: 예상치 하회하는 가이던스로 AI 및 반도체 섹터 전반에 부정적 영향",
-          "desc_en": "NVDA stock fell 5.86% due to lower-than-expected guidance, negatively impacting the broader AI and semiconductor sectors.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 40,
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed Waller 50bp 금리 인상 가능성 언급: 추가 긴축 우려로 시장 경계심 확대",
-          "desc_en": "Fed's Waller mentioned a potential 50bp rate hike, increasing market caution over further tightening.",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "기술 아웃티지 발생",
-          "name_en": "Tech Outages Occur",
-          "desc": "주요 기술 기업 아웃티지 발생: 사이버 보안 우려 확대와 일시적 기술주 투자 심리 위축",
-          "desc_en": "Major tech outages raise cybersecurity concerns and temporarily dampen tech stock investor sentiment.",
-          "category": "other"
-        }
-      ],
-      "one_sided": {
-        "empty": "positive",
-        "why": "direction",
-        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
-        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted."
-      },
-      "tainted": true
     }
   ],
-  "updated_at": "2026-11-19T14:21:38Z",
+  "updated_at": "2026-11-19T22:02:12Z",
   "max_entries": 10
 }
