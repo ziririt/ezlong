@@ -4234,11 +4234,104 @@ def _gr_level(rows, prefix):
     m = _GR_LEVEL_RE.search(r)
     return float(m.group(1).replace(',', '')) if m else None
 
+_GR_EXT_RE = re.compile(r'시간외[^()]*\(정규장 종가 대비 ([+\-−]?\d+(?:\.\d+)?)%\)')
+
+
+def _gr_ext(rows, prefix):
+    r = _gr_row(rows, prefix)
+    m = _GR_EXT_RE.search(r) if r else None
+    return float(m.group(1).replace('−', '-')) if m else None
+
+
+# ─── 시세 정합 검사 (2026-11-19 오너 결정 네 가지) ───────────────────────────
+# 실사고: 11-19 09:42 카드는 긍정 15 대 부정 85, 요약은 '기술주 하락 전환'이었다. 그때 실제 시세는
+# QQQ 정규장 +0.39%·시간외 +1.22% 였다. 판정이 지수와 정반대로 서 있는데 아무 검사도 걸리지 않았다.
+#  (나) 한쪽이 70 이상인데 QQQ·SPY 가 (정규장+시간외 합산으로) 둘 다 반대로 움직였으면 다시 판정시키고,
+#       그래도 남으면 60 대 40 으로 좁히고 까닭을 적는다.
+#  (다) 요약이 주식·지수의 하락(상승)을 말하는데 지수는 올랐으면(내렸으면) 요약을 재료에서 다시 쓴다.
+#  (라) 원인을 못 찾은 지수 움직임은 지우지 않고 혼조 칸에 점수 없이 남긴다.
+PRICE_CHECK_SIDE, PRICE_CHECK_MIXED_SIDE, PRICE_CHECK_MOVE, PRICE_CHECK_CAP = 70, 60, 0.5, 60
+
+
+def _tape(snap):
+    """QQQ·SPY 의 직전 종가 대비 지금까지의 움직임(정규장과 시간외 합산, %)과 표기 문자열."""
+    out, txt, txt_en = {}, [], []
+    for key, sym in (('qqq', 'QQQ'), ('spy', 'SPY')):
+        reg, ext = (snap or {}).get(key + '_pct'), (snap or {}).get(key + '_ext')
+        if reg is None:
+            return None
+        out[key] = ((1 + reg / 100) * (1 + (ext or 0) / 100) - 1) * 100
+        txt.append(f"{sym} 정규장 {safe_pct(reg)}" + (f"·시간외 {safe_pct(ext)}" if ext is not None else ''))
+        txt_en.append(f"{sym} regular session {safe_pct(reg)}" + (f", after hours {safe_pct(ext)}" if ext is not None else ''))
+    out['text'], out['text_en'] = ', '.join(txt), '; '.join(txt_en)
+    return out
+
+
+def price_mismatch(entry, snap, side_min=PRICE_CHECK_SIDE):
+    """우세한 편이 side_min 이상인데 지수 둘이 모두 반대로 움직였는가. 그렇다면 (우세 편, 시세)."""
+    tp = _tape(snap)
+    if not tp:
+        return None
+    pos, neg = int(entry.get('positive_total', 0) or 0), int(entry.get('negative_total', 0) or 0)
+    q, sp = tp['qqq'], tp['spy']
+    if neg >= side_min and q > 0 and sp > 0 and max(q, sp) >= PRICE_CHECK_MOVE:
+        return 'neg', tp
+    if pos >= side_min and q < 0 and sp < 0 and min(q, sp) <= -PRICE_CHECK_MOVE:
+        return 'pos', tp
+    return None
+
+
+def enforce_price_consistency(entry, snap):
+    """(나)(다)(라)의 집행. 바꾼 것을 사람이 읽을 말로 돌려준다."""
+    done = []
+    mm = price_mismatch(entry, snap, PRICE_CHECK_MIXED_SIDE)
+    if mm:
+        side, tp = mm
+        up = side == 'neg'            # 판정은 부정인데 지수는 올랐다
+        mixed = entry.setdefault('mixed_factors', [])
+        if not any(f.get('_tape') or '지수' in (f.get('name') or '') for f in mixed):
+            mixed.insert(0, {
+                'name': f"지수는 {'상승' if up else '하락'}: 재료 판정과 반대",
+                'name_en': f"Indexes {'rose' if up else 'fell'}, against the read of the drivers",
+                'desc': f"{tp['text']}. 재료는 {'부정' if up else '긍정'} 쪽이 많지만 지수는 반대로 움직였고, 뚜렷한 원인은 확인되지 않음",
+                'desc_en': f"{tp['text_en']}. The drivers lean {'bearish' if up else 'bullish'}, but the indexes moved the other way and no clear cause was identified",
+                'category': 'other', '_tape': True})
+            done.append('혼조에 지수 움직임 표시')
+    mm = price_mismatch(entry, snap, PRICE_CHECK_SIDE)
+    if mm:
+        side, tp = mm
+        win, lose = ('negative', 'positive') if side == 'neg' else ('positive', 'negative')
+        entry[win + '_total'], entry[lose + '_total'] = PRICE_CHECK_CAP, 100 - PRICE_CHECK_CAP
+        for sd in (win, lose):
+            fs = [f for f in (entry.get(sd + '_factors') or []) if int(f.get('score', 0) or 0) > 0]
+            if fs:
+                entry[sd + '_factors'] = _redistribute(fs, entry[sd + '_total'])
+        ko_w = '부정' if side == 'neg' else '긍정'
+        entry['price_check'] = {
+            'note': f"시세 대조: 재료는 {ko_w} 쪽이 우세하지만 지수는 반대로 움직였습니다({tp['text']}). 그래서 점수 차를 60 대 40으로 좁혔습니다.",
+            'note_en': f"Price check: the drivers lean {'bearish' if side == 'neg' else 'bullish'}, but the indexes moved the other way ({tp['text_en']}), so the gap was narrowed to 60:40."}
+        osd = entry.get('one_sided')
+        if osd:
+            osd['note'] = (osd.get('note') or '').replace(_ONE_SIDED_FLOOR_NOTE[0], '')
+            osd['note_en'] = (osd.get('note_en') or '').replace(_ONE_SIDED_FLOOR_NOTE[1], '')
+        done.append(f"점수 차 60 대 40 ({tp['text']})")
+    # (다) 요약의 방향어와 실제 지수
+    tp = _tape(snap)
+    lean = _lean(entry.get('summary') or '')
+    if tp and lean and ((lean == 'down' and tp['qqq'] > 0 and tp['spy'] > 0) or (lean == 'up' and tp['qqq'] < 0 and tp['spy'] < 0)):
+        old = entry.get('summary')
+        if rebuild_card_head(entry):
+            done.append(f"요약 교정: '{old}' -> '{entry.get('summary')}'")
+    return done
+
+
 def market_snapshot(equity_rows, macro_rows):
     """프롬프트에 이미 넣는 수집 문자열에서 가드레일용 실측치를 다시 꺼낸다.
     파싱 실패 항목은 None — 해당 검사만 조용히 건너뛴다(검사 불가 ≠ 위반)."""
     return {
         'qqq_pct': _gr_pct(equity_rows, 'QQQ:'),
+        'qqq_ext': _gr_ext(equity_rows, 'QQQ:'),
+        'spy_ext': _gr_ext(equity_rows, 'SPY:'),
         'spy_pct': _gr_pct(equity_rows, 'SPY:'),
         # 62항 — 섹터 학살은 지수에 안 보인다. 2026-08-19 장중 QQQ -1.59%인 날
         # SOXX 는 -6.03%였다(MU -7.5%, SK하이닉스 -8.7%). 지수만 보면 '조용한 날'이다.
@@ -5153,6 +5246,13 @@ def guardrail_violations(entry, snap, prev_entry, spy_off_high):
                               f"이벤트(earnings_bellwether)만 점수 허용, 그 외 개별 기업 뉴스는 "
                               f"제외하거나 혼조(무점수)로. 카테고리 라벨이 아니라 재료의 내용으로 "
                               f"판단한다")
+    # G7 — 시세 정합 (2026-11-19): 한쪽 70 이상인데 지수 둘이 모두 반대로 움직였다
+    _pm = price_mismatch(entry, snap)
+    if _pm:
+        _ko = '부정' if _pm[0] == 'neg' else '긍정'
+        errors.append(f"시세 정합 실패: {_ko} 우위 70 이상인데 지수는 반대로 움직였다({_pm[1]['text']}). "
+                      f"지수를 그쪽으로 움직인 원인 재료를 찾아 반대편에 싣거나, 근거가 약한 {_ko} 재료의 점수를 낮춰 다시 판정하라. "
+                      f"요약에 지수 방향과 어긋나는 말(하락 전환 등)을 쓰지 마라")
     # G3 — 극단값 앵커
     neg = int(entry.get('negative_total', 50) or 50)
     pos = int(entry.get('positive_total', 50) or 50)
@@ -5299,12 +5399,18 @@ def main():
     # 2. 기존 데이터 로드 (직전 카드 맥락을 프롬프트에 넣기 위해 먼저 로드)
     data = load_existing()
     prev_entries = data.get("entries", [])[:2]  # 최근 2개 → 일관성 맥락용
+    # (가) 2026-11-19: 직전 카드가 '정정' 표시가 붙은 카드(틀린 시세로 만든 판정)면 그 판정에 묶이지 않는다.
+    # 일관성 맥락·판단 이력·변화 상한(G2)을 이번 회차에 쓰지 않는다. 정정 없는 새 카드가 나가면 저절로 원래대로 돌아온다.
+    _baseline_reset = bool(prev_entries and prev_entries[0].get('correction'))
+    if _baseline_reset:
+        print("  [기준 새로 잡기] 직전 카드가 정정 대상 - 일관성 맥락·판단 이력·변화 상한을 이번 회차에 쓰지 않는다")
+        prev_entries = []
     if prev_entries:
         print(f"  직전 카드 참고: {[e['id'] for e in prev_entries]}")
 
     # 2-1. 판단 원장 로드 — 직전 3영업일 판단 흐름 (2026-07-03)
     ledger = load_ledger()
-    history_block = ledger_context_block(ledger)
+    history_block = '' if _baseline_reset else ledger_context_block(ledger)
     if history_block:
         print(f"  판단 원장 참고: {len(ledger)}개 기록")
 
@@ -5341,7 +5447,7 @@ def main():
 
     # 4-1. 내용 모순 + 가드레일 검증 — 발견 시 1회 재시도 (2026-06-29 추가,
     # 2026-07-03 세션 검증 확장, 2026-08-11 가드레일 3종 + 재시도에 위반 사유 피드백)
-    prev_entry_for_guard = (data.get("entries") or [None])[0]
+    prev_entry_for_guard = None if _baseline_reset else (data.get("entries") or [None])[0]
     prev_entries_for_guard = (data.get("entries") or [])[:3]
 
     def _all_violations(e):
@@ -5564,9 +5670,19 @@ def main():
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
 
+    # 4-9b. 시세 정합 (2026-11-19) - 판정·요약이 실제 지수와 어긋나면 좁히고, 고치고, 혼조에 남긴다.
+    try:
+        for _pc in enforce_price_consistency(entry, snap):
+            print(f"::warning::[시세 정합] {_pc}")
+        for _f in entry.get('mixed_factors') or []:
+            _f.pop('_tape', None)
+    except Exception as _pe:
+        print(f"::warning::시세 정합 검사 실패(무시): {type(_pe).__name__}: {_pe}")
+
     # 4-10. 판정 변화 해명 (2026-11-19) - 우위가 최근 24시간 안에 뒤집혔으면 무엇이 바뀌었는지 싣는다.
     try:
-        _older = [e for e in entries if e.get("id") != entry["id"]]
+        # 정정 표시가 붙은 카드는 비교 상대로 삼지 않는다(틀린 시세로 만든 판정과의 차이는 '변화'가 아니다).
+        _older = [e for e in entries if e.get("id") != entry["id"] and not e.get("correction")]
         _sh = attach_shift(entry, _older)
         if _sh:
             print(f"  판정 변화 해명: {_sh['from_id']} -> {_sh['since_id']} ({_sh['to']}, {_sh.get('kind')})")
