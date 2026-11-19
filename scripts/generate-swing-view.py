@@ -1191,6 +1191,7 @@ LABEL_EN = {
     '오르막 유지 — 들고 가는 구간': 'Uptrend intact — a zone to keep holding',
     '갈림길 — 200일선 공방 중': 'At a crossroads — battling the 200-day line',
     '오르막 꺾임 — 줄이기 검토 구간': 'Trend broken — worth considering a trim',
+    '하락 추세 — 줄이기 검토 구간': 'Downtrend — worth considering a trim',
 }
 
 
@@ -1586,7 +1587,9 @@ def nvda_view(s):
                    f'broken, so holding stands — but a clear close below the 200-day line makes trimming '
                    f'the call. Neither selling early nor holding blindly.')
     else:
-        st, label = 'trim', '오르막 꺾임 — 줄이기 검토 구간'
+        # 2026-11-20: '오르막 꺾임'은 꺾인 그날에나 맞는 말이다. 200일선 아래에서 12거래일째 -28% 인 날에도
+        # 같은 간판이 걸려 '최근 오르막인 적이 없는데'라는 지적을 받았다. 상태를 그대로 부른다.
+        st, label = 'trim', '하락 추세 — 줄이기 검토 구간'
         body = (f'NVDA의 판단 기준은 하나, 추세. {STATS["nvda_trend"]}. 200일선 아래로 추세가 '
                 f'무너진 현 구간에서는 노출 축소 검토가 데이터의 방향. '
                 f'추세 복귀 확인 시 재편입이 원칙.')

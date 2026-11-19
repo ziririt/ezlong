@@ -2870,7 +2870,6 @@ function _v2ChiefCardHtml() {
     : (_cm1 || []).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
       <span style="font-weight:800;color:var(--t1);font-size:17px;">${ezGateLabel(c.stance, c.stanceLabel, window.EZ_TRUTH?.comp?.gear)}</span>
       <span style="color:var(--t2);font-size:14px;">확신도 ${c.confidence ?? ': '}</span>
       <span style="margin-left:auto;flex-shrink:0;white-space:nowrap;color:var(--t3);font-size:14px;font-weight:600;">${sv.generatedAtKST}</span>
@@ -2889,7 +2888,6 @@ function _v2KingCardHtml(sym) {
   const kf = ezSymFacts(sym);
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${ezGuard(k.stanceLabel, kf, _safeStanceLabel(kf))}</span>
     </div>
     ${_blocksHtml(k.blocks, k.commentary, kf)}
@@ -4594,7 +4592,7 @@ function buildTrendLineHtml() {
       {text: `확신도 ${_c.confidence ?? ': '}`, tone: 'positive'},
     ];
     if (window._swingView.stanceChangedToday && _wkPhase === 'session' && !_isHoliday) {
-      pills.unshift({text: '이번 거래일 판단 변경', tone: 'positive'});
+      pills.unshift({text: '판단 변경', tone: 'positive'});
     } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
       pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
     }
@@ -7136,7 +7134,6 @@ function _megaStanceCardHtml(sym) {
   const mf = ezSymFacts(sym === 'GOOG' ? 'GOOGL' : sym);
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${ezGuard(m.stanceLabel, mf, _safeStanceLabel(mf))}</span>
     </div>
     ${_blocksHtml(m.blocks, m.commentary, mf)}
