@@ -6781,11 +6781,13 @@ const musicVizRibbonUnlockKey = "ezlong:vizRibbonUnlocked";
 function musicVizRibbonUnlocked() {
   try { return localStorage.getItem(musicVizRibbonUnlockKey) === "1"; } catch (e) { return false; }
 }
-const MUSIC_VIZ_RIBBON_AVAILABLE = (nativePlatformKey === "ios" && musicVizRibbonUnlocked())
+// 2026-11-22 00:06 운영자 — "샤오미폰에도". 안드로이드 앱도 같은 방식(그 기기에서 켜 둔 경우만)으로 연다.
+const musicVizRibbonPlatformOk = nativePlatformKey === "ios" || nativePlatformKey === "android";
+const MUSIC_VIZ_RIBBON_AVAILABLE = (musicVizRibbonPlatformOk && musicVizRibbonUnlocked())
   || new URLSearchParams(window.location.search).get("vizribbon") === "1";
 (function wireRibbonUnlock() {
   const badge = document.getElementById("settingsVersion");
-  if (!badge || nativePlatformKey !== "ios") return;
+  if (!badge || !musicVizRibbonPlatformOk) return;
   badge.style.webkitUserSelect = "none";
   badge.style.userSelect = "none";
   badge.style.webkitTouchCallout = "none";
