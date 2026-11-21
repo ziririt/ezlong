@@ -3879,9 +3879,9 @@ function buildTrendLineHtml() {
     // GEX / gamma flip
     if (op.spyPrice !== null && op.gammaFlip !== null) {
       if (op.aboveGammaFlip && op.netGEX > 0) {
-        signals.push({ icon: '▲', text: `Options flow: SPY $${op.spyPrice}: above the gamma flip ($${op.gammaFlip}). Market makers are hedged to the upside. Sharp drop risk is low short-term.`, color: 'var(--gr)' });
+        signals.push({ icon: '▲', text: `Options market: SPY $${op.spyPrice} is above the calm-down price ($${op.gammaFlip}). Swings tend to ease here: sharp-drop risk is relatively low short-term.`, color: 'var(--gr)' });
       } else if (!op.aboveGammaFlip && op.netGEX < 0) {
-        signals.push({ icon: '▼', text: `Options flow: SPY $${op.spyPrice}: below the gamma flip ($${op.gammaFlip}). Structure favors downside acceleration. Watch for rising volatility.`, color: 'var(--rd)' });
+        signals.push({ icon: '▼', text: `Options market: SPY $${op.spyPrice} is below the calm-down price ($${op.gammaFlip}). Swings tend to grow here: drops can run deeper.`, color: 'var(--rd)' });
       }
     }
 
@@ -3901,7 +3901,7 @@ function buildTrendLineHtml() {
     if (op.callWall !== null && op.spyPrice !== null) {
       const distPct = Math.abs(op.spyPrice - op.callWall) / op.spyPrice * 100;
       if (distPct <= 1.5) {
-        signals.push({ icon: '▲', text: `Near the call wall $${op.callWall} (within ${distPct.toFixed(1)}%): a strong short-term resistance zone. A break decides the next direction.`, color: 'var(--or)' });
+        signals.push({ icon: '▲', text: `Near $${op.callWall}, the price likely to cap rallies (within ${distPct.toFixed(1)}%): whether it breaks through decides the next direction.`, color: 'var(--or)' });
       }
     }
 
@@ -4260,11 +4260,11 @@ function renderVIX(vixData) {
   const vix = vixData.price;
   let cls, interpretation, hint;
   if (vix > 35) {
-    cls = 'panic'; interpretation = 'Extreme Fear: Watch for Panic-Buying Opportunity';
-    hint = 'Historically, VIX 35+ has been a strong contrarian buy zone. Consider staged buying under the 30/30/40 three-step rule.';
+    cls = 'panic'; interpretation = 'Extreme Fear: Volatility at a Peak';
+    hint = 'VIX above 35 has often come near medium-term lows. Whether to buy still follows the trend call at the top of this page: in a downtrend, a confirmed rebound comes first.';
   } else if (vix > 28) {
-    cls = 'fear'; interpretation = 'High Fear: Favorable for Staged Buying';
-    hint = 'Market anxiety is elevated. Rather than joining the panic selling, staged buying to lower your average cost is a valid strategy here.';
+    cls = 'fear'; interpretation = 'High Fear: Volatility Rising';
+    hint = 'Market anxiety is elevated. Avoid selling in a panic, but whether to add new money follows the trend call at the top of this page.';
   } else if (vix > 22) {
     cls = 'warn'; interpretation = 'Rising Uncertainty: Favor the Sidelines';
     hint = 'Volatility is above normal. Focus on managing existing positions rather than new leveraged entries.';
@@ -4323,53 +4323,65 @@ function renderOptionsMarket(opts) {
     fetchAgo = ageH < 24 ? `fetched ${ageH}h ago` : `fetched ${Math.round(ageH / 24)}d ago`;
   }
 
-  // ── GEX signal interpretation ─────────────────────────────────
-  let gexSignal = '', gexColor = 'var(--t2)', gexBg = 'transparent';
-  if (o.netGEX !== null && o.netGEX !== undefined && o.gammaFlip !== null) {
-    const aboveFlip = o.spyPrice > o.gammaFlip;
+  // ── How choppy is the tape (rewritten 2026-11-21, mirrors the Korean page) ──
+  // The card should tell a reader two things in plain words: (1) are daily swings likely to be bigger or smaller,
+  // (2) where price tends to stall above and below, and how far that is from here.
+  // The options snapshot sometimes arrives without an SPY price, so fall back to the page's own SPY quote.
+  const spyNow = (o.spyPrice !== null && o.spyPrice !== undefined) ? o.spyPrice
+               : ((window._renderData && window._renderData.SPY && window._renderData.SPY.price) || null);
+  const pctFrom = v => (spyNow && v) ? ((v / spyNow - 1) * 100) : null;
+  const pctTxt = v => { const p = pctFrom(v); return p === null ? '' : ` (${p >= 0 ? '+' : ''}${p.toFixed(1)}% from here)`; };
+  let gexSignal = '', gexWhy = '', gexColor = 'var(--t2)', gexBg = 'transparent';
+  if (o.netGEX !== null && o.netGEX !== undefined && o.gammaFlip !== null && spyNow) {
+    const aboveFlip = spyNow > o.gammaFlip;
     const posGEX    = o.netGEX > 0;
     if (aboveFlip && posGEX) {
-      gexSignal = 'Calmer zone: options dealers sell into rallies and buy dips, which dampens moves';
+      gexSignal = 'Likely calmer: daily moves tend to be smaller than usual. Sharp swings are relatively less likely';
+      gexWhy    = 'Why: institutions that sold a lot of options hedge by selling as prices rise and buying as they fall, which dampens moves';
       gexColor  = 'var(--gr)'; gexBg = 'var(--gr-s)';
     } else if (!aboveFlip && !posGEX) {
-      gexSignal = 'Choppier zone: options dealers sell into drops and buy into rallies, which amplifies moves. Declines can run further';
+      gexSignal = 'Likely choppier: daily moves can be bigger than usual. Drops can run deeper, and rebounds can be sharp too';
+      gexWhy    = 'Why: institutions that sold a lot of options hedge by selling as prices fall and buying as they rise, which amplifies moves';
       gexColor  = 'var(--rd)'; gexBg = 'var(--rd-s)';
     } else {
-      gexSignal = 'Mixed readings: hard to gauge how large swings will be';
+      gexSignal = 'Hard to call: the readings disagree';
       gexColor  = 'var(--or)'; gexBg = 'var(--yl-s)';
     }
   }
+  const flipLine = (o.gammaFlip !== null && o.gammaFlip !== undefined && spyNow)
+    ? `Price above which swings tend to calm down: SPY $${o.gammaFlip.toFixed(0)}${pctTxt(o.gammaFlip)}. ${spyNow > o.gammaFlip ? 'SPY is above it now' : 'SPY needs to get back above it for swings to ease'}`
+    : '';
 
   // ── VIX Term Structure interpretation ───────────────────────
   let termSignal = '', termColor = 'var(--t2)';
   const termDir = vol.termStructure || 'unknown';
   if (termDir === 'contango') {
-    termSignal = 'Contango (short-term VIX < long-term VIX): market structure is stable';
+    termSignal = 'Near-term fear is lower than longer-term: the usual picture';
     termColor  = 'var(--gr)';
   } else if (termDir === 'backwardation') {
-    termSignal = 'Backwardation (short-term VIX > long-term VIX): fear structure, short-term caution';
+    termSignal = 'Near-term fear is higher than longer-term: anxiety is acute right now';
     termColor  = 'var(--rd)';
   } else if (termDir === 'flat') {
-    termSignal = 'Flat (short-term ≈ long-term): direction undecided';
+    termSignal = 'Near-term and longer-term fear are about equal: direction undecided';
     termColor  = 'var(--or)';
   }
 
   // ── SKEW interpretation ─────────────────────────────────
   let skewSignal = '', skewColor = 'var(--t2)';
   if (vol.skew !== null && vol.skew !== undefined) {
-    if (vol.skew > 145)       { skewSignal = `${vol.skew.toFixed(1)}: tail-risk hedging surging (extreme downside fear)`;  skewColor = 'var(--rd)'; }
-    else if (vol.skew > 135)  { skewSignal = `${vol.skew.toFixed(1)}: tail-risk hedging rising (caution zone)`;     skewColor = 'var(--or)'; }
+    if (vol.skew > 145)       { skewSignal = `${vol.skew.toFixed(1)}: very high: demand for crash protection is piling up`;  skewColor = 'var(--rd)'; }
+    else if (vol.skew > 135)  { skewSignal = `${vol.skew.toFixed(1)}: high: demand for crash protection is rising`;     skewColor = 'var(--or)'; }
     else if (vol.skew > 120)  { skewSignal = `${vol.skew.toFixed(1)}: normal level`;                              skewColor = 'var(--t2)'; }
-    else                       { skewSignal = `${vol.skew.toFixed(1)}: downside fear is low`;                        skewColor = 'var(--gr)'; }
+    else                       { skewSignal = `${vol.skew.toFixed(1)}: low`;                        skewColor = 'var(--gr)'; }
   }
 
   // ── VVIX interpretation ─────────────────────────────────
   let vvixSignal = '', vvixColor = 'var(--t2)';
   if (vol.vvix !== null && vol.vvix !== undefined) {
-    if (vol.vvix > 120)       { vvixSignal = `${vol.vvix.toFixed(1)}: volatility-of-volatility extreme, warns of a VIX spike`;  vvixColor = 'var(--rd)'; }
-    else if (vol.vvix > 100)  { vvixSignal = `${vol.vvix.toFixed(1)}: rising volatility, caution`;                  vvixColor = 'var(--or)'; }
+    if (vol.vvix > 120)       { vvixSignal = `${vol.vvix.toFixed(1)}: very large: fear can jump suddenly`;  vvixColor = 'var(--rd)'; }
+    else if (vol.vvix > 100)  { vvixSignal = `${vol.vvix.toFixed(1)}: large`;                  vvixColor = 'var(--or)'; }
     else if (vol.vvix > 80)   { vvixSignal = `${vol.vvix.toFixed(1)}: normal level`;                         vvixColor = 'var(--t2)'; }
-    else                       { vvixSignal = `${vol.vvix.toFixed(1)}: stable volatility`;                    vvixColor = 'var(--gr)'; }
+    else                       { vvixSignal = `${vol.vvix.toFixed(1)}: small`;                    vvixColor = 'var(--gr)'; }
   }
 
   // ── Overlay-applied badge ──────────────────────
@@ -4380,7 +4392,7 @@ function renderOptionsMarket(opts) {
     ? `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:rgba(10,132,255,0.12);color:var(--ac);font-weight:700;margin-left:8px;">
         Buy score ${overlayBuySign}${ov.buyAdj ?? 0}pt · Sell score ${overlaySellSign}${ov.sellAdj ?? 0}pt applied
        </span>`
-    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">No adjustment to buy/sell scores</span>`;
+    : '';
 
   // ── 항목별 행 렌더러 ─────────────────────────────
   const row = (label, value, color) => value
@@ -4396,29 +4408,30 @@ function renderOptionsMarket(opts) {
     <div class="vix-card" style="margin-top:12px;">
       <div style="padding:16px 20px 4px;">
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
-          <span style="font-size:16px;font-weight:700;color:var(--t1);">Options Market Flow Structure</span>
+          <span style="font-size:16px;font-weight:700;color:var(--t1);">Price Levels the Options Market Is Watching</span>
           <span style="font-size:16px;color:var(--t3);">Based on SPY</span>
           ${overlayBadge}
         </div>
 
         ${gexSignal ? `
         <div style="padding:10px 14px;border-radius:10px;background:${gexBg};margin-bottom:10px;">
-          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Dealer Hedging Direction (Gamma Exposure)</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">How choppy the market is likely to be</div>
           <div style="font-size:16px;font-weight:600;color:${gexColor};">${gexSignal}</div>
-          ${o.spyPrice !== null ? `<div style="font-size:16px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · Gamma Flip ${numFmt(o.gammaFlip)} · Net GEX ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
+          ${gexWhy ? `<div style="font-size:16px;color:var(--t2);margin-top:6px;line-height:1.5;">${gexWhy}</div>` : ''}
+          ${flipLine ? `<div style="font-size:16px;color:var(--t2);margin-top:6px;line-height:1.5;">${flipLine}</div>` : ''}
         </div>` : ''}
 
         <div style="padding:0 4px;">
-          ${row('VIX Term Structure', termSignal || null, termColor)}
-          ${vol.vix1m !== null && vol.vix3m !== null ? row('VIX 1M / 3M', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
-          ${row('SKEW', skewSignal || null, skewColor)}
-          ${row('VVIX', vvixSignal || null, vvixColor)}
-          ${o.callWall !== null ? row('Ceiling Above (Call Wall)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
-          ${o.putWall  !== null ? row('Floor Below (Put Wall)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
-          ${oi.pcRatio !== null ? row('P/C Ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(contrarian buy signal)' : oi.pcRatio < 0.7 ? '(call overheating warning)' : '(normal)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
+          ${row('Near-term vs longer-term fear', termSignal || null, termColor)}
+          ${vol.vix1m !== null && vol.vix3m !== null ? row('Volatility index, 1-month / 3-month', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
+          ${row('Demand for crash protection', skewSignal || null, skewColor)}
+          ${row('How jumpy the fear gauge is', vvixSignal || null, vvixColor)}
+          ${o.callWall !== null ? row('Price likely to cap rallies', `$${numFmt(o.callWall)}${pctTxt(o.callWall)}`, 'var(--rd)') : ''}
+          ${o.putWall  !== null ? row('Price likely to cushion drops', `$${numFmt(o.putWall)}${(spyNow && spyNow < o.putWall) ? ' (already below it: the cushion has given way)' : pctTxt(o.putWall)}`,  'var(--gr)') : ''}
+          ${oi.pcRatio !== null ? row('Put/call ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(more bets on a decline)' : oi.pcRatio < 0.7 ? '(more bets on a rise)' : '(normal)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
         </div>
 
-        ${''}
+        ${(o.callWall !== null || o.putWall !== null) ? `<div style="font-size:16px;color:var(--t3);padding:10px 4px 0;line-height:1.5;">These are the prices where the most options contracts are concentrated. Price often stalls near them, but they are not guaranteed to hold.</div>` : ''}
 
         <div style="padding-bottom:12px;"></div>
       </div>
@@ -4958,22 +4971,22 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
     if (_op.spyPrice !== null && _op.gammaFlip !== null) {
       if (_op.aboveGammaFlip && _op.netGEX > 0) {
-        _notes.push(`Options market: SPY $${_op.spyPrice} above the gamma flip $${_op.gammaFlip}: a stable market-maker zone, sharp-drop risk is low short-term`);
+        _notes.push(`Options market: SPY $${_op.spyPrice} is above the calm-down price $${_op.gammaFlip}: swings tend to ease here`);
       } else if (!_op.aboveGammaFlip && _op.netGEX < 0) {
-        _notes.push(`Options market: SPY $${_op.spyPrice} below the gamma flip $${_op.gammaFlip}: watch for downside acceleration`);
+        _notes.push(`Options market: SPY $${_op.spyPrice} is below the calm-down price $${_op.gammaFlip}: swings tend to grow here, drops can run deeper`);
       }
     }
     if (_vol.termStructure === 'backwardation') {
-      _notes.push(`VIX in backwardation (1M ${_vol.vix1m?.toFixed(1)} > 3M ${_vol.vix3m?.toFixed(1)}): a fear structure is forming`);
+      _notes.push(`Near-term fear is higher than longer-term (1-month ${_vol.vix1m?.toFixed(1)} > 3-month ${_vol.vix3m?.toFixed(1)}): anxiety is acute right now`);
     } else if (_vol.termStructure === 'contango') {
-      _notes.push(`VIX in contango (1M ${_vol.vix1m?.toFixed(1)} < 3M ${_vol.vix3m?.toFixed(1)}): options market is calm`);
+      _notes.push(`Near-term fear is lower than longer-term (1-month ${_vol.vix1m?.toFixed(1)} < 3-month ${_vol.vix3m?.toFixed(1)}): the usual picture`);
     }
     if (_vol.skew > 145) {
-      _notes.push(`SKEW ${_vol.skew.toFixed(0)}: alert: institutional downside hedging is surging`);
+      _notes.push(`Demand for crash protection is surging (SKEW ${_vol.skew.toFixed(0)})`);
     }
     if (_op.callWall !== null && _op.spyPrice !== null) {
       const _dist = Math.abs(_op.spyPrice - _op.callWall) / _op.spyPrice * 100;
-      if (_dist <= 1.5) _notes.push(`Near the call wall $${_op.callWall}: a short-term resistance zone`);
+      if (_dist <= 1.5) _notes.push(`Near $${_op.callWall}, the price likely to cap rallies`);
     }
     if (_notes.length > 0) {
       const _scoreNote = (_ov.buyAdj || _ov.sellAdj)
