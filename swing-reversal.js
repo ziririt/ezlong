@@ -201,11 +201,13 @@
     };
     const UP = { key:'resistance', label:'돌파선' }, DN = { key:'support', label:'이탈선' };
     const S = {
-      '하방 이탈 · 반락 경계': { tone:'down', badge:'반락 경계',
+      '하방 이탈 · 반락 경계': { tone:'down', badge:'하락 이어짐',
+        /* 2026-11-21 오너 지적: '반락 경계'는 반등을 기대한다는 말인지 더 떨어진다는 말인지 읽히지 않았다.
+           이 상태의 뜻은 하나다 - 최근 20거래일의 가장 낮은 가격을 깨고 내려왔다. 그대로 적는다. */
         head:`${group(p=>p.breakdown)} 20일 최저가 아래로`,
-        line:'하락 흐름 진행 중: 반등 확인 전 구간',
+        line:'최근 20거래일 중 가장 낮았던 가격을 깨고 내려온 상태. 하락이 이어지는 중이고, 반등은 아직 확인되지 않음',
         lvl:{ key:'support', label:'회복선' },
-        next:`${A}곳 이상이 회복선 위로 돌아오면 이탈 해제` },
+        next:`${A}곳 이상이 회복선(깨고 내려온 그 가격) 위로 다시 올라서면 하락 이탈에서 벗어난 것으로 봄` },
       '상방 돌파 · 지지 확인 대기': { tone:'up', badge:'돌파',
         head:`${group(p=>p.breakout)} 20일 최고가 위로`,
         line:'상승 흐름 확인: 돌파한 가격을 지키는지 확인 구간',
@@ -220,7 +222,7 @@
         head:'200일선 아래에서 반등 시도',
         line:'단기 모멘텀 개선, 큰 추세는 아직 하락 구간',
         lvl:UP, next:`${A}곳 이상이 돌파선을 넘으면 상승 전환 확인` },
-      '상승 추세 속 반락 경계': { tone:'mixed', badge:'눌림',
+      '상승 추세 속 반락 경계': { tone:'mixed', badge:'단기 밀림',
         head:'200일선 위, 단기 평균 아래로 밀림',
         line:'큰 추세는 상승, 단기 흐름은 약화 구간',
         lvl:DN, next:`${A}곳 이상이 이탈선 아래로 마감하면 하방 이탈` },
@@ -251,8 +253,11 @@
     const chips = live.map(m => {
       const lv = h.lvl ? [{ label:h.lvl.label, value:m[h.lvl.key] }]
                        : [{ label:'돌파선', value:m.resistance }, { label:'이탈선', value:m.support }];
+      /* 2026-11-21 오너 지적: '회복선 $647.05 +6.3%'는 무엇이 6.3% 인지 읽히지 않았다. 거리를 말로 푼다. */
+      const say = (lvv, px) => { const v = (lvv / px - 1) * 100; const a = Math.abs(v).toFixed(1);
+        return v > 0 ? `지금보다 ${a}% 더 올라야 닿음` : v < 0 ? `지금보다 ${a}% 더 내리면 닿음` : '지금 가격과 같음'; };
       return { name:m.name, etf:m.etf, price:m.price, word:m.word,
-               levels: lv.map(x => ({ ...x, dist: pct(x.value, m.price) })) };
+               levels: lv.map(x => ({ ...x, dist: pct(x.value, m.price), distText: say(x.value, m.price) })) };
     });
     return { tone:h.tone, badge:h.badge, head:h.head, line:h.line, next:h.next, chips };
   }
@@ -297,7 +302,7 @@
     result.innerHTML =
       `<div class="rv-top"><span class="rv-badge">${escape(hv.badge)}</span><h2 class="rv-headline">${escape(hv.head)}</h2></div>`
       + `<p class="rv-line">${escape(hv.line)}</p>`
-      + `<div class="rv-members">${hv.chips.map(c => `<div class="rv-member"><span class="rv-m-name">${escape(c.name)} <b>${escape(c.etf)}</b></span><span class="rv-m-price">${escape(price(c.price))}</span><span class="rv-m-word">${escape(c.word)}</span>${c.levels.map(l => `<span class="rv-m-level">${escape(l.label)} ${escape(price(l.value))} <em>${escape(l.dist)}</em></span>`).join('')}</div>`).join('')}</div>`
+      + `<div class="rv-members">${hv.chips.map(c => `<div class="rv-member"><span class="rv-m-name">${escape(c.name)} <b>${escape(c.etf)}</b></span><span class="rv-m-price">${escape(price(c.price))}</span><span class="rv-m-word">${escape(c.word)}</span>${c.levels.map(l => `<span class="rv-m-level">${escape(l.label)} ${escape(price(l.value))} <em>${escape(l.distText || l.dist)}</em></span>`).join('')}</div>`).join('')}</div>`
       + `<p class="rv-next"><b>다음 신호</b> ${escape(hv.next)}</p>`
       + (r.lead ? `<p class="rv-lead">${escape(r.lead)}</p>` : '');
     plan.innerHTML =
