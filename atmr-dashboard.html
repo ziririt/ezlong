@@ -4446,9 +4446,9 @@ function buildTrendLineHtml() {
     // GEX / 감마 플립
     if (op.spyPrice !== null && op.gammaFlip !== null) {
       if (op.aboveGammaFlip && op.netGEX > 0) {
-        signals.push({ icon: '▲', text: `옵션 수급: SPY $${op.spyPrice}: 감마 플립($${op.gammaFlip}) 위. 시장 조성자 상방 헤지 중. 단기 급락 가능성 낮음.`, color: 'var(--gr)' });
+        signals.push({ icon: '▲', text: `옵션 시장: SPY $${op.spyPrice}가 출렁임 기준 가격($${op.gammaFlip}) 위. 등락이 잦아들기 쉬운 구간: 단기 급락 가능성은 상대적으로 낮음.`, color: 'var(--gr)' });
       } else if (!op.aboveGammaFlip && op.netGEX < 0) {
-        signals.push({ icon: '▼', text: `옵션 수급: SPY $${op.spyPrice}: 경계 가격($${op.gammaFlip}) 아래. 출렁임이 커지는 구간: 하락 때 낙폭 확대 주의.`, color: 'var(--rd)' });
+        signals.push({ icon: '▼', text: `옵션 시장: SPY $${op.spyPrice}가 출렁임 기준 가격($${op.gammaFlip}) 아래. 등락이 커지기 쉬운 구간: 내릴 때 낙폭 확대 주의.`, color: 'var(--rd)' });
       }
     }
 
@@ -4468,7 +4468,7 @@ function buildTrendLineHtml() {
     if (op.callWall !== null && op.spyPrice !== null) {
       const distPct = Math.abs(op.spyPrice - op.callWall) / op.spyPrice * 100;
       if (distPct <= 1.5) {
-        signals.push({ icon: '▲', text: `콜 월 $${op.callWall} 근접(${distPct.toFixed(1)}% 이내): 단기 강한 저항 구간. 돌파 여부가 다음 방향 결정.`, color: 'var(--or)' });
+        signals.push({ icon: '▲', text: `위쪽에서 막히기 쉬운 가격 $${op.callWall} 근접(${distPct.toFixed(1)}% 이내): 넘어서는지가 다음 방향을 가름.`, color: 'var(--or)' });
       }
     }
 
@@ -5002,53 +5002,66 @@ function renderOptionsMarket(opts) {
     fetchAgo = ageH < 24 ? `${ageH}시간 전 수집` : `${Math.round(ageH / 24)}일 전 수집`;
   }
 
-  // ── GEX 신호 해석 ─────────────────────────────────
-  let gexSignal = '', gexColor = 'var(--t2)', gexBg = 'transparent';
-  if (o.netGEX !== null && o.netGEX !== undefined && o.gammaFlip !== null) {
-    const aboveFlip = o.spyPrice > o.gammaFlip;
+  // ── 출렁임 해석 (2026-11-21 고쳐 씀) ─────────────────
+  // 오너 지적: "큰손의 헤지 방향(감마 노출)"은 일반 투자자가 읽고 얻을 것이 없다.
+  // 이 카드가 독자에게 줄 수 있는 것은 둘이다: (1) 지금 하루 등락폭이 커지기 쉬운가 잦아들기 쉬운가,
+  // (2) 위아래로 주가가 멈칫하기 쉬운 가격이 어디이고 지금 가격에서 얼마나 떨어져 있는가. 그것만 쉬운 말로 적는다.
+  // 옵션 수집본에 SPY 가격이 비어 오는 날이 있어(그러면 '기준 가격 아래'로 잘못 읽힌다) 화면의 SPY 시세로 메운다.
+  const spyNow = (o.spyPrice !== null && o.spyPrice !== undefined) ? o.spyPrice
+               : ((window._renderData && window._renderData.SPY && window._renderData.SPY.price) || null);
+  const pctFrom = v => (spyNow && v) ? ((v / spyNow - 1) * 100) : null;
+  const pctTxt = v => { const p = pctFrom(v); return p === null ? '' : ` (지금보다 ${p >= 0 ? '+' : ''}${p.toFixed(1)}%)`; };
+  let gexSignal = '', gexWhy = '', gexColor = 'var(--t2)', gexBg = 'transparent';
+  if (o.netGEX !== null && o.netGEX !== undefined && o.gammaFlip !== null && spyNow) {
+    const aboveFlip = spyNow > o.gammaFlip;
     const posGEX    = o.netGEX > 0;
     if (aboveFlip && posGEX) {
-      gexSignal = '출렁임이 줄어드는 구간: 옵션을 판 큰손이 오르면 팔고 내리면 사서 움직임을 눌러 줌';
+      gexSignal = '잦아들기 쉬운 구간: 하루 등락폭이 평소보다 작게 잡히기 쉬움. 급등락 가능성은 상대적으로 낮음';
+      gexWhy    = '까닭: 옵션을 많이 판 기관이 손실을 막으려고 오르면 팔고 내리면 사는 구간이라, 그 매매가 움직임을 눌러 줌';
       gexColor  = 'var(--gr)'; gexBg = 'var(--gr-s)';
     } else if (!aboveFlip && !posGEX) {
-      gexSignal = '출렁임이 커지는 구간: 옵션을 판 큰손이 내리면 따라 팔고 오르면 따라 사서 움직임을 키움. 하락 때 낙폭이 커질 수 있음';
+      gexSignal = '커지기 쉬운 구간: 하루 등락폭이 평소보다 클 수 있음. 내릴 때 더 깊이 빠지고, 반등도 크게 튈 수 있음';
+      gexWhy    = '까닭: 옵션을 많이 판 기관이 손실을 막으려고 내리면 따라 팔고 오르면 따라 사는 구간이라, 그 매매가 움직임을 키움';
       gexColor  = 'var(--rd)'; gexBg = 'var(--rd-s)';
     } else {
-      gexSignal = '신호가 서로 달라 출렁임의 크기를 가늠하기 어려운 구간';
+      gexSignal = '가늠하기 어려운 구간: 신호가 서로 엇갈림';
       gexColor  = 'var(--or)'; gexBg = 'var(--yl-s)';
     }
   }
+  const flipLine = (o.gammaFlip !== null && o.gammaFlip !== undefined && spyNow)
+    ? `출렁임이 잦아드는 기준 가격: SPY $${o.gammaFlip.toFixed(0)}${pctTxt(o.gammaFlip)}. ${spyNow > o.gammaFlip ? '지금은 그 위에 있음' : '이 위로 올라서야 등락이 줄어들기 쉬움'}`
+    : '';
 
   // ── VIX Term Structure 해석 ───────────────────────
   let termSignal = '', termColor = 'var(--t2)';
   const termDir = vol.termStructure || 'unknown';
   if (termDir === 'contango') {
-    termSignal = '콘탱고 (단기 VIX < 장기 VIX): 시장 구조 안정적';
+    termSignal = '단기 공포가 장기보다 낮음: 평상시 모습';
     termColor  = 'var(--gr)';
   } else if (termDir === 'backwardation') {
-    termSignal = '백워데이션 (단기 VIX > 장기 VIX): 공포 구조, 단기 경계';
+    termSignal = '단기 공포가 장기보다 높음: 당장의 불안이 큰 상태';
     termColor  = 'var(--rd)';
   } else if (termDir === 'flat') {
-    termSignal = '플랫 (단기 ≈ 장기): 방향 탐색 중';
+    termSignal = '단기와 장기 공포가 비슷함: 방향을 살피는 중';
     termColor  = 'var(--or)';
   }
 
   // ── SKEW 해석 ─────────────────────────────────────
   let skewSignal = '', skewColor = 'var(--t2)';
   if (vol.skew !== null && vol.skew !== undefined) {
-    if (vol.skew > 145)       { skewSignal = `${vol.skew.toFixed(1)}: 꼬리 리스크 헤지 급증 (하방 공포 극단)`;  skewColor = 'var(--rd)'; }
-    else if (vol.skew > 135)  { skewSignal = `${vol.skew.toFixed(1)}: 꼬리 리스크 헤지 확대 (경계 구간)`;     skewColor = 'var(--or)'; }
+    if (vol.skew > 145)       { skewSignal = `${vol.skew.toFixed(1)}: 매우 많음: 급락에 대비하는 수요가 몰림`;  skewColor = 'var(--rd)'; }
+    else if (vol.skew > 135)  { skewSignal = `${vol.skew.toFixed(1)}: 많음: 급락 대비 수요가 늘어남`;     skewColor = 'var(--or)'; }
     else if (vol.skew > 120)  { skewSignal = `${vol.skew.toFixed(1)}: 보통 수준`;                              skewColor = 'var(--t2)'; }
-    else                       { skewSignal = `${vol.skew.toFixed(1)}: 하방 공포 낮음`;                        skewColor = 'var(--gr)'; }
+    else                       { skewSignal = `${vol.skew.toFixed(1)}: 적음`;                        skewColor = 'var(--gr)'; }
   }
 
   // ── VVIX 해석 ─────────────────────────────────────
   let vvixSignal = '', vvixColor = 'var(--t2)';
   if (vol.vvix !== null && vol.vvix !== undefined) {
-    if (vol.vvix > 120)       { vvixSignal = `${vol.vvix.toFixed(1)}: 변동성 변동성 극단, VIX 급등 경고`;  vvixColor = 'var(--rd)'; }
-    else if (vol.vvix > 100)  { vvixSignal = `${vol.vvix.toFixed(1)}: 변동성 상승 경계`;                  vvixColor = 'var(--or)'; }
+    if (vol.vvix > 120)       { vvixSignal = `${vol.vvix.toFixed(1)}: 매우 큼: 공포가 갑자기 커질 수 있음`;  vvixColor = 'var(--rd)'; }
+    else if (vol.vvix > 100)  { vvixSignal = `${vol.vvix.toFixed(1)}: 큼`;                  vvixColor = 'var(--or)'; }
     else if (vol.vvix > 80)   { vvixSignal = `${vol.vvix.toFixed(1)}: 보통 수준`;                         vvixColor = 'var(--t2)'; }
-    else                       { vvixSignal = `${vol.vvix.toFixed(1)}: 안정적 변동성`;                    vvixColor = 'var(--gr)'; }
+    else                       { vvixSignal = `${vol.vvix.toFixed(1)}: 작음`;                    vvixColor = 'var(--gr)'; }
   }
 
   // ── 오버레이 적용 여부 배지 ──────────────────────
@@ -5057,9 +5070,9 @@ function renderOptionsMarket(opts) {
   const overlayApplied  = (ov.buyAdj !== 0 || ov.sellAdj !== 0);
   const overlayBadge = overlayApplied
     ? `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:rgba(10,132,255,0.12);color:var(--ac);font-weight:700;margin-left:8px;">
-        매수 스코어 ${overlayBuySign}${ov.buyAdj ?? 0}pt · 매도 스코어 ${overlaySellSign}${ov.sellAdj ?? 0}pt 반영됨
+        매수 점수 ${overlayBuySign}${ov.buyAdj ?? 0} · 매도 점수 ${overlaySellSign}${ov.sellAdj ?? 0} 반영
        </span>`
-    : `<span style="font-size:16px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--t3);font-weight:500;margin-left:8px;">매수·매도 점수 조정 없음</span>`;
+    : '';
 
   // ── 항목별 행 렌더러 ─────────────────────────────
   const row = (label, value, color) => value
@@ -5075,29 +5088,30 @@ function renderOptionsMarket(opts) {
     <div class="vix-card" style="margin-top:12px;">
       <div style="padding:16px 20px 4px;">
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
-          <span style="font-size:16px;font-weight:700;color:var(--t1);">옵션 시장 수급 구조</span>
-          <span style="font-size:16px;color:var(--t3);">SPY 기준</span>
+          <span style="font-size:16px;font-weight:700;color:var(--t1);">옵션 시장이 보는 가격대</span>
+          <span style="font-size:16px;color:var(--t3);">SPY 기준${fetchAgo ? ' · ' + fetchAgo : ''}</span>
           ${overlayBadge}
         </div>
 
         ${gexSignal ? `
         <div style="padding:10px 14px;border-radius:10px;background:${gexBg};margin-bottom:10px;">
-          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">큰손의 헤지 방향 (감마 노출)</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">지금 장의 출렁임</div>
           <div style="font-size:16px;font-weight:600;color:${gexColor};">${gexSignal}</div>
-          ${o.spyPrice !== null ? `<div style="font-size:16px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · 경계 가격(감마 플립) ${numFmt(o.gammaFlip)} · 순 감마 노출 ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
+          ${gexWhy ? `<div style="font-size:16px;color:var(--t2);margin-top:6px;line-height:1.5;">${gexWhy}</div>` : ''}
+          ${flipLine ? `<div style="font-size:16px;color:var(--t2);margin-top:6px;line-height:1.5;">${flipLine}</div>` : ''}
         </div>` : ''}
 
         <div style="padding:0 4px;">
-          ${row('VIX Term Structure', termSignal || null, termColor)}
-          ${vol.vix1m !== null && vol.vix3m !== null ? row('VIX 1M / 3M', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
-          ${row('SKEW', skewSignal || null, skewColor)}
-          ${row('VVIX', vvixSignal || null, vvixColor)}
-          ${o.callWall !== null ? row('위쪽 천장 (콜 월)', `$${numFmt(o.callWall)}`, 'var(--rd)') : ''}
-          ${o.putWall  !== null ? row('아래쪽 바닥 (풋 월)', `$${numFmt(o.putWall)}`,  'var(--gr)') : ''}
-          ${oi.pcRatio !== null ? row('P/C Ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(역발상 매수 신호)' : oi.pcRatio < 0.7 ? '(콜 과열 경고)' : '(보통)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
+          ${row('공포의 기간 구조', termSignal || null, termColor)}
+          ${vol.vix1m !== null && vol.vix3m !== null ? row('변동성 지수 1개월 / 3개월', `${numFmt(vol.vix1m)} / ${numFmt(vol.vix3m)}`, 'var(--t2)') : ''}
+          ${row('급락 대비 보험 수요', skewSignal || null, skewColor)}
+          ${row('변동성 지수의 흔들림', vvixSignal || null, vvixColor)}
+          ${o.callWall !== null ? row('위쪽에서 막히기 쉬운 가격', `$${numFmt(o.callWall)}${pctTxt(o.callWall)}`, 'var(--rd)') : ''}
+          ${o.putWall  !== null ? row('아래쪽에서 받치기 쉬운 가격', `$${numFmt(o.putWall)}${(spyNow && spyNow < o.putWall) ? ' (이미 그 아래: 받침이 깨진 상태)' : pctTxt(o.putWall)}`,  'var(--gr)') : ''}
+          ${oi.pcRatio !== null ? row('풋/콜 비율', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(하락에 건 쪽이 많음)' : oi.pcRatio < 0.7 ? '(상승에 건 쪽이 많음)' : '(보통)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
         </div>
 
-        ${''}
+        ${(o.callWall !== null || o.putWall !== null) ? `<div style="font-size:16px;color:var(--t3);padding:10px 4px 0;line-height:1.5;">위아래 가격은 옵션 계약이 가장 많이 몰린 자리. 주가가 그 근처에서 멈칫하는 일이 잦지만, 반드시 지켜지는 선은 아님.</div>` : ''}
 
         <div style="padding-bottom:12px;"></div>
       </div>
@@ -5732,22 +5746,22 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
     if (_op.spyPrice !== null && _op.gammaFlip !== null) {
       if (_op.aboveGammaFlip && _op.netGEX > 0) {
-        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 감마 플립 $${_op.gammaFlip} 위: 시장 조성자 안정 구간, 단기 급락 가능성 낮음`);
+        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 출렁임 기준 가격 $${_op.gammaFlip} 위: 등락이 잦아들기 쉬운 구간`);
       } else if (!_op.aboveGammaFlip && _op.netGEX < 0) {
-        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 경계 가격 $${_op.gammaFlip} 아래: 출렁임이 커지는 구간, 하락 때 낙폭 확대 주의`);
+        _notes.push(`옵션 시장: SPY $${_op.spyPrice}가 출렁임 기준 가격 $${_op.gammaFlip} 아래: 등락이 커지기 쉬운 구간, 내릴 때 낙폭 확대 주의`);
       }
     }
     if (_vol.termStructure === 'backwardation') {
-      _notes.push(`VIX 백워데이션(1M ${_vol.vix1m?.toFixed(1)} > 3M ${_vol.vix3m?.toFixed(1)}): 공포 구조 형성 중`);
+      _notes.push(`단기 공포가 장기보다 높음(1개월 ${_vol.vix1m?.toFixed(1)} > 3개월 ${_vol.vix3m?.toFixed(1)}): 당장의 불안이 큰 상태`);
     } else if (_vol.termStructure === 'contango') {
-      _notes.push(`VIX 콘탱고(1M ${_vol.vix1m?.toFixed(1)} < 3M ${_vol.vix3m?.toFixed(1)}): 옵션 시장 안정적`);
+      _notes.push(`단기 공포가 장기보다 낮음(1개월 ${_vol.vix1m?.toFixed(1)} < 3개월 ${_vol.vix3m?.toFixed(1)}): 평상시 모습`);
     }
     if (_vol.skew > 145) {
-      _notes.push(`SKEW ${_vol.skew.toFixed(0)}: 기관 하방 헤지 급증 경보`);
+      _notes.push(`급락 대비 보험 수요 급증(SKEW ${_vol.skew.toFixed(0)})`);
     }
     if (_op.callWall !== null && _op.spyPrice !== null) {
       const _dist = Math.abs(_op.spyPrice - _op.callWall) / _op.spyPrice * 100;
-      if (_dist <= 1.5) _notes.push(`콜 월 $${_op.callWall} 근접: 단기 저항 구간`);
+      if (_dist <= 1.5) _notes.push(`위쪽에서 막히기 쉬운 가격 $${_op.callWall} 근접`);
     }
     if (_notes.length > 0) {
       const _scoreNote = (_ov.buyAdj || _ov.sellAdj)
