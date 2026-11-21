@@ -7047,30 +7047,83 @@ function createRibbonRenderer(canvas, wrapEl) {
     S.beatTarget *= Math.exp(-dt / 0.32);
     S.beat += (S.beatTarget - S.beat) * (1 - Math.exp(-dt / 0.035));
   }
-  function mid(u, t, o) {
-    return o.cy + (Math.sin(u * Math.PI * 1.8 + t * 0.35 * o.speed + o.seed) * (0.5 + S.bass * 1.2)
-      + Math.sin(u * Math.PI * 3.8 - t * 0.5 * o.speed + o.seed * 1.7) * (0.2 + S.mid * 0.85)
-      + Math.sin(u * Math.PI * 8.6 + t * 0.9 * o.speed + o.seed * 2.3) * (0.05 + S.high * 0.5)) * o.h * 0.5;
+  // ── 2026-11-22 02:44 운영자 — "음악엔 잘 맞는데 파동의 우아하고 자연스러운 느낌이 없다. 로봇춤 같다." ──
+  //   로봇처럼 보인 이유: 음악 값이 바뀌는 순간 곡선 전체의 높이·굵기가 한꺼번에 같이 바뀌었다(모든 점이 같은
+  //   순간 같은 방향). 그리고 값을 향해 곧장 출발하는 추종이라 움직임의 시작이 꺾였다.
+  //   이제 음악은 모양을 직접 정하지 않는다. 음악은 물결에 '힘'만 싣고, 모양은 물리가 만든다.
+  //   ① 관성 — 음악 값은 용수철(임계 감쇠, 0.15~0.2초)로 받는다. 출발도 멈춤도 꺾이지 않고 휜다.
+  //   ② 튕김과 전파 — 박자는 그 소리의 음역 자리(저음 왼쪽·고음 오른쪽)를 줄처럼 튕기고, 흔들림은
+  //      1차원 파동 방정식으로 양옆으로 퍼지며 잦아든다. 위·아래는 번갈아 튕긴다.
+  //   ③ 너울 — 파장·속도가 다른 긴 물결 셋이 끊기지 않고 흐른다. 흐름의 빠르기만 소리 크기가 민다(용수철로).
+  //   ④ 끌림 — 실크처럼 가장자리 가닥이 중심보다 최대 0.1초 늦게 따라온다(지난 중심선을 기억해 쓴다).
+  const NS = 72;
+  const P = {
+    y: new Float32Array(NS), v: new Float32Array(NS),
+    hist1: [], hist2: [],
+    sp: { lvl: { x: 0, v: 0 }, bass: { x: 0, v: 0 }, mid: { x: 0, v: 0 }, high: { x: 0, v: 0 }, glow: { x: 0, v: 0 } },
+    band: new Float32Array(RIBBON_NB), bandV: new Float32Array(RIBBON_NB),
+    ph1: Math.random() * 6.28, ph2: Math.random() * 6.28, ph3: Math.random() * 6.28, tw: Math.random() * 6.28,
+    sign: 1, u0: 0.5,
+  };
+  for (let k = 0; k < 10; k++) { P.hist1.push(new Float32Array(RIBBON_PTS + 1)); P.hist2.push(new Float32Array(RIBBON_PTS + 1)); }
+  function spring(o, target, w, h) { const a = w * w * (target - o.x) - 2 * w * o.v; o.v += a * h; o.x += o.v * h; }
+  function physics(dt) {
+    const steps = Math.min(40, Math.max(1, Math.ceil(dt / 0.008))), h = dt / steps;
+    const c2 = Math.pow(1.15 * (NS - 1), 2), gam = 2.4, kap = 3.0;
+    const glowTarget = S.beatTarget * 0.9 + S.level * 0.5;
+    for (let st = 0; st < steps; st++) {
+      spring(P.sp.lvl, S.level, 10, h); spring(P.sp.bass, S.bass, 12, h); spring(P.sp.mid, S.mid, 11, h);
+      spring(P.sp.high, S.high, 13, h); spring(P.sp.glow, glowTarget, 15, h);
+      for (let i = 0; i < RIBBON_NB; i++) { const a = 196 * (S.bands[i] - P.band[i]) - 28 * P.bandV[i]; P.bandV[i] += a * h; P.band[i] += P.bandV[i] * h; }
+      for (let i = 1; i < NS - 1; i++) { const a = c2 * (P.y[i - 1] - 2 * P.y[i] + P.y[i + 1]) - gam * P.v[i] - kap * P.y[i]; P.v[i] += a * h; }
+      for (let i = 1; i < NS - 1; i++) P.y[i] += P.v[i] * h;
+    }
   }
-  function strands(t, o, W) {
+  function pluck(strength) {
+    // 지금 울리는 소리의 무게중심 자리(저음 왼쪽·고음 오른쪽)를 튕긴다.
+    let sw = 0, sx = 0;
+    for (let i = 0; i < RIBBON_NB; i++) { const w = S.inst[i] * S.inst[i]; sw += w; sx += w * i / (RIBBON_NB - 1); }
+    const u0 = Math.min(0.85, Math.max(0.15, (sw > 0 ? sx / sw : 0.5) + (Math.random() - 0.5) * 0.16));
+    P.u0 = u0; P.sign = -P.sign;
+    for (let i = 1; i < NS - 1; i++) { const d = (i / (NS - 1) - u0) / 0.07; P.v[i] += P.sign * strength * Math.exp(-d * d); }
+  }
+  function simAt(u) { const x = Math.min(1, Math.max(0, u)) * (NS - 1), i = Math.floor(x), f = x - i; return P.y[i] + (P.y[Math.min(NS - 1, i + 1)] - P.y[i]) * f; }
+  function bandAt(x) { x = Math.min(1, Math.max(0, x)) * (RIBBON_NB - 1); const i = Math.floor(x), f = x - i; return Math.max(0, P.band[i] + (P.band[Math.min(RIBBON_NB - 1, i + 1)] - P.band[i]) * f); }
+  function mid(u, o) {
+    const B = P.sp.bass.x, M = P.sp.mid.x, Hh = P.sp.high.x;
+    const s1 = Math.sin(u * 3.456 * o.k - P.ph1 + o.seed) * (0.34 + B * 1.25);
+    const s2 = Math.sin(u * 7.226 * o.k + P.ph2 + o.seed * 1.7) * (0.14 + M * 0.9);
+    const s3 = Math.sin(u * 14.45 - P.ph3 + o.seed * 2.3) * (0.04 + Hh * 0.45);
+    return o.cy + (s1 + s2 + s3 + simAt(u) * o.ripple) * o.h * 0.5;
+  }
+  function strands(o, W, hist) {
+    const L = Math.max(0, P.sp.lvl.x);
     for (let j = 0; j <= RIBBON_PTS; j++) {
       const u = j / RIBBON_PTS;
       ribbonX[j] = -W * 0.04 + u * W * 1.08;
-      ribbonM[j] = mid(u, t, o);
+      ribbonM[j] = mid(u, o);
       const env = Math.pow(Math.sin(Math.PI * Math.min(1, Math.max(0, u))), 0.6);
-      ribbonT[j] = (o.h * (0.16 + 0.62 * sample(Math.abs(u - 0.5) * 1.6) + 0.22 * S.level)) * env + 1;
-      ribbonTw[j] = 0.25 + 0.75 * Math.sin(u * Math.PI * 1.4 - t * 0.38 * o.speed + o.seed * 3);
+      ribbonT[j] = o.h * (0.12 + 0.74 * bandAt(Math.abs(u - 0.5) * 1.6) + 0.26 * L) * env * (1 + 0.12 * Math.sin(u * 8.17 - P.ph2 * 0.7)) + 1;
+      ribbonTw[j] = 0.25 + 0.75 * Math.sin(u * Math.PI * 1.4 - P.tw + o.seed * 3);
     }
+    // 끌림 — 지난 중심선을 한 칸씩 밀어 둔다(첫 장은 지금 모습으로 다 채운다).
+    const last = hist.pop(); last.set(ribbonM); hist.unshift(last);
+    if (!hist.filled) { for (let k = 1; k < hist.length; k++) hist[k].set(ribbonM); hist.filled = true; }
     c.strokeStyle = o.grad; c.lineWidth = o.lw;
     const count = Math.max(6, Math.round(o.strands));
-    for (let s = 0; s < count; s++) {
-      const v = -1 + 2 * s / (count - 1);
-      for (let j = 0; j <= RIBBON_PTS; j++) ribbonY[j] = ribbonSoftLimit(ribbonM[j] + v * ribbonT[j] * ribbonTw[j] + Math.sin(j * 0.24 + v * 2.2 + t * 0.6) * ribbonT[j] * 0.05);
+    const maxLag = hist.length - 1;
+    for (let sI = 0; sI < count; sI++) {
+      const v = -1 + 2 * sI / (count - 1);
+      const lagF = Math.abs(v) * maxLag * 0.6, l0 = Math.floor(lagF), lf = lagF - l0;
+      const hA = hist[l0], hB = hist[Math.min(maxLag, l0 + 1)];
+      for (let j = 0; j <= RIBBON_PTS; j++) {
+        const m = hA[j] + (hB[j] - hA[j]) * lf;
+        ribbonY[j] = ribbonSoftLimit(m + v * ribbonT[j] * ribbonTw[j] + Math.sin(j * 0.24 + v * 2.2 + P.ph2 * 0.8) * ribbonT[j] * 0.05);
+      }
       c.globalAlpha = o.alpha * (1 - 0.35 * v * v);
       c.beginPath(); ribbonSmoothPath(c, ribbonX, ribbonY, RIBBON_PTS + 1); c.stroke();
     }
-    // 2026-11-22 — 빛번짐. 예전엔 그림 전체를 작은 그림으로 복사해 번지게 했는데(bloom), 안드로이드에서
-    //   그 복사 한 번이 15ms 를 넘었다. 리본 중심선을 굵고 옅게 두 번 긋는 것으로 바꾼다. 세기는 음악을 따른다.
+    // 빛번짐 — 중심선을 굵고 옅게 두 번(캔버스 전체 복사는 안드로이드에서 느리다). 세기는 음악을 따른다.
     if (o.glow > 0) {
       let avgT = 0;
       for (let j = 0; j <= RIBBON_PTS; j++) { avgT += ribbonT[j]; ribbonY[j] = ribbonSoftLimit(ribbonM[j]); }
@@ -7127,9 +7180,13 @@ function createRibbonRenderer(canvas, wrapEl) {
     const tReal = nowMs / 1000;
     analyze(dt, tReal, live);
     const flowMul = ribbonFlowMul(), thick = ribbonThickness(), glowMul = ribbonGlowMul();
-    // 2026-11-22 — "음악과 따로 논다": 시간만으로 흐르던 것을, 소리가 클수록 빨리 흐르게(조용하면 거의 멈춘다).
-    S.time += dt * flowMul * (0.15 + S.level * 1.7 + S.beat * 1.1);
-    const t = S.time;
+    physics(dt);
+    const L = Math.max(0, P.sp.lvl.x), G = Math.max(0, P.sp.glow.x);
+    const isHearth = musicVizStyle === "hearth";
+    // 너울의 흐름 — 소리 크기가 민다. 크기는 용수철로 받으니 빨라지고 느려지는 것도 부드럽다.
+    const spd = flowMul * (0.18 + L * 1.1) * (isHearth ? 1.25 : 1);
+    P.ph1 += dt * 0.9 * spd; P.ph2 += dt * 1.3 * spd; P.ph3 += dt * 2.1 * spd; P.tw += dt * 0.35 * spd;
+    if (S.beatNow) pluck((isHearth ? 5.5 : 4.5) * (0.6 + L) * Math.min(1, ribbonPunchMul()));
 
     // 원래 막대 칸(wrapEl)이 캔버스 안에서 차지하는 자리 — 본화면 캔버스는 패널 안쪽 여백까지 넓다.
     const wrapH = wrapEl.clientHeight || H * 0.8;
@@ -7143,69 +7200,67 @@ function createRibbonRenderer(canvas, wrapEl) {
     c.clearRect(0, 0, W, H);
     const rc = rays.getContext("2d"), k = rays.width / W;
 
-    if (musicVizStyle === "aurora") {
+    if (!isHearth) {
       const pal = RIBBON_PALETTES[musicVizSettings.auroraColor] || RIBBON_PALETTES.aurora;
-      const o1 = { cy: cy, h: hh, strands: 28 * thick.strands, grad: grad("a1" + musicVizSettings.auroraColor, pal.a1, W), alpha: 0.10 * (0.55 + S.level * 1.1 + S.beat * 0.5), glow: glowMul * (0.7 + S.level * 0.9 + S.beat * 0.9), seed: 1.3, speed: 1, lw: 1.15 * thick.lw };
-      const o2 = { cy: cy + hh * 0.22, h: hh * 0.68, strands: 18 * thick.strands, grad: grad("a2" + musicVizSettings.auroraColor, pal.a2, W), alpha: 0.085 * (0.5 + S.mid * 1.3 + S.beat * 0.4), glow: glowMul * 0.6, seed: 4.1, speed: 0.8, lw: 1.05 * thick.lw };
+      const o1 = { cy: cy, h: hh * (0.8 + L * 0.45), k: 1, ripple: 1, strands: 28 * thick.strands, grad: grad("a1" + musicVizSettings.auroraColor, pal.a1, W), alpha: 0.10 * (0.55 + L * 1.1 + G * 0.45), glow: glowMul * (0.7 + L * 0.9 + G * 0.9), seed: 1.3, lw: 1.15 * thick.lw };
+      const o2 = { cy: cy + hh * 0.22, h: hh * 0.68, k: 0.82, ripple: 0.6, strands: 18 * thick.strands, grad: grad("a2" + musicVizSettings.auroraColor, pal.a2, W), alpha: 0.085 * (0.5 + Math.max(0, P.sp.mid.x) * 1.3 + G * 0.35), glow: glowMul * 0.6, seed: 4.1, lw: 1.05 * thick.lw };
       c.save(); c.globalCompositeOperation = "lighter";
       if (musicVizSettings.auroraRays !== "off") {
-        // 빛줄기 커튼 — 저해상도에 그려 키우면 저절로 부드럽게 번진다(줄무늬 방지).
+        // 빛줄기 커튼 — 위 가장자리를 이은 매끈한 덩어리를 저해상도에 그려 키운다(저절로 번진다).
         rc.setTransform(k, 0, 0, k, 0, 0); rc.clearRect(0, 0, W, H);
         const rg = rc.createLinearGradient(0, 0, 0, cy + hh * 0.2);
         rg.addColorStop(0, "rgba(" + pal.rays + ",0)"); rg.addColorStop(0.6, "rgba(" + pal.rays + ",0.10)"); rg.addColorStop(1, "rgba(" + pal.rays + ",0.2)");
         rc.fillStyle = rg;
-        // 2026-11-22 — 막대를 늘어세우면 키울 때 계단이 진다. 위 가장자리를 이은 매끈한 덩어리로 그린다.
         rc.beginPath();
-        for (let j = 0; j <= 48; j++) { const u = j / 48, y = ribbonSoftLimit(mid(u, t, o1)); if (j === 0) rc.moveTo(u * W, y); else rc.lineTo(u * W, y); }
+        for (let j = 0; j <= 48; j++) { const u = j / 48, y = ribbonSoftLimit(mid(u, o1)); if (j === 0) rc.moveTo(u * W, y); else rc.lineTo(u * W, y); }
         for (let j = 48; j >= 0; j--) {
-          const u = j / 48, m = mid(u, t, o1);
-          const it = sample(Math.abs(u - 0.5) * 1.6) * 0.9 + 0.12 + S.beat * 0.12;
-          const len = hh * (0.5 + 1.3 * it) * (0.75 + 0.25 * Math.sin(u * 7 + t * 0.35));
+          const u = j / 48, m = mid(u, o1);
+          const it = bandAt(Math.abs(u - 0.5) * 1.6) * 0.9 + 0.12 + G * 0.12;
+          const len = hh * (0.5 + 1.3 * it) * (0.75 + 0.25 * Math.sin(u * 7 + P.ph1 * 0.4));
           rc.lineTo(u * W, ribbonSoftLimit(m - len));
         }
         rc.closePath(); rc.fill();
         c.drawImage(rays, 0, 0, W, H);
       }
-      strands(t, o1, W); strands(t, o2, W);
+      strands(o1, W, P.hist1); strands(o2, W, P.hist2);
       c.restore();
       return;
     }
 
-    // 난롯불 — 시간이 아니라 음악이 흐름을 민다. 조용하면 거의 멈추고, 소리가 커지면 흐르고, 박자에 부푼다.
+    // 난롯불 — 같은 물리, 조금 더 빠른 너울과 더 센 튕김. 불꽃·불티는 튕긴 자리에서 오른다.
     const pal = RIBBON_PALETTES[musicVizSettings.hearthColor] || RIBBON_PALETTES.ember;
-    S.flow += dt * flowMul * (0.08 + S.level * 2.0 + S.beat * 0.9);
-    S.pulse += ((S.beat * 0.8 + S.bass * 0.6) - S.pulse) * (1 - Math.exp(-dt / 0.18));
-    const ht = S.flow;
-    const amp = 0.55 + S.level * 1.25 + S.pulse * 0.55, bright = 0.55 + S.level * 1.1 + S.pulse * 0.7;
-    const o1 = { cy: cy + 2, h: hh * amp, strands: 30 * thick.strands, grad: grad("h1" + musicVizSettings.hearthColor, pal.a1, W), alpha: 0.09 * bright, glow: glowMul * (0.6 + S.level * 0.8 + S.pulse * 0.9), seed: 2.2, speed: 0.85, lw: 1.2 * thick.lw };
-    const o2 = { cy: cy - hh * 0.2, h: hh * 0.62 * (0.6 + S.mid * 1.4), strands: 20 * thick.strands, grad: grad("h2" + musicVizSettings.hearthColor, pal.a2, W), alpha: 0.075 * (0.5 + S.mid * 1.6 + S.pulse * 0.5), glow: glowMul * 0.5, seed: 5.6, speed: 0.7, lw: 1.05 * thick.lw };
+    const M = Math.max(0, P.sp.mid.x);
+    const amp = 0.52 + L * 1.3 + G * 0.4, bright = 0.6 + L * 1.0 + G * 0.6;
+    const o1 = { cy: cy + 2, h: hh * amp, k: 1.1, ripple: 1.1, strands: 30 * thick.strands, grad: grad("h1" + musicVizSettings.hearthColor, pal.a1, W), alpha: 0.09 * bright, glow: glowMul * (0.6 + L * 0.8 + G * 0.9), seed: 2.2, lw: 1.2 * thick.lw };
+    const o2 = { cy: cy - hh * 0.2, h: hh * 0.62 * (0.6 + M * 1.4), k: 0.9, ripple: 0.7, strands: 20 * thick.strands, grad: grad("h2" + musicVizSettings.hearthColor, pal.a2, W), alpha: 0.075 * (0.5 + M * 1.6 + G * 0.5), glow: glowMul * 0.5, seed: 5.6, lw: 1.05 * thick.lw };
     c.save(); c.globalCompositeOperation = "lighter";
     const gr = c.createRadialGradient(W * 0.5, cy + hh * 0.2, 0, W * 0.5, cy + hh * 0.2, W * 0.55);
-    const ga = (0.03 + S.bass * 0.16 + S.pulse * 0.12) * glowMul;
+    const ga = (0.03 + Math.max(0, P.sp.bass.x) * 0.16 + G * 0.12) * glowMul;
     gr.addColorStop(0, "rgba(" + pal.glow + "," + ga + ")"); gr.addColorStop(0.5, "rgba(" + pal.glow + "," + (ga * 0.3) + ")"); gr.addColorStop(1, "rgba(" + pal.glow + ",0)");
     c.fillStyle = gr; c.fillRect(0, 0, W, H);
-    // 불꽃 혀 — 주파수마다 리본에서 위로 솟는 짧은 불길.
+    // 불꽃 혀 — 음역마다 리본에서 위로 솟는 짧은 불길(용수철로 받은 대역 값이라 부드럽게 오르내린다).
     rc.setTransform(k, 0, 0, k, 0, 0); rc.clearRect(0, 0, W, H);
     const fg = rc.createLinearGradient(0, cy - hh * 1.4, 0, cy + hh * 0.3);
     fg.addColorStop(0, "rgba(" + pal.flame[0] + ",0)"); fg.addColorStop(0.55, "rgba(" + pal.flame[1] + ",0.10)"); fg.addColorStop(1, "rgba(" + pal.flame[2] + ",0.22)");
     rc.fillStyle = fg;
     rc.beginPath();
-    for (let j = 0; j <= 48; j++) { const u = j / 48, y = ribbonSoftLimit(mid(u, ht, o1)); if (j === 0) rc.moveTo(u * W, y); else rc.lineTo(u * W, y); }
+    for (let j = 0; j <= 48; j++) { const u = j / 48, y = ribbonSoftLimit(mid(u, o1)); if (j === 0) rc.moveTo(u * W, y); else rc.lineTo(u * W, y); }
     for (let j = 48; j >= 0; j--) {
-      const u = j / 48, m = mid(u, ht, o1), b = sample(Math.abs(u - 0.5) * 1.7);
-      const len = hh * (0.06 + 1.1 * b * b + S.pulse * 0.28) * (0.85 + 0.15 * Math.sin(u * 11 + tReal * 2.2));
+      const u = j / 48, m = mid(u, o1), b = bandAt(Math.abs(u - 0.5) * 1.7);
+      const len = hh * (0.06 + 1.1 * b * b + G * 0.28) * (0.85 + 0.15 * Math.sin(u * 11 + P.ph3 * 1.1));
       rc.lineTo(u * W, ribbonSoftLimit(m - len));
     }
     rc.closePath(); rc.fill();
     c.drawImage(rays, 0, 0, W, H);
-    strands(ht, o1, W); strands(ht, o2, W);
-    // 불티 — 박자에 한꺼번에 튀고, 높은 음에 조금씩 오른다.
+    strands(o1, W, P.hist1); strands(o2, W, P.hist2);
+    // 불티 — 박자에 튕긴 자리에서 한꺼번에 오르고, 높은 음에 조금씩 오른다.
     const emberMul = ribbonEmberMul();
-    const burst = S.beatNow ? Math.round((5 + S.level * 14) * emberMul) : 0;
-    const count = burst + S.high * 1.2 * dt * 30 * emberMul;
+    const burst = S.beatNow ? Math.round((5 + L * 14) * emberMul) : 0;
+    const count = burst + Math.max(0, P.sp.high.x) * 1.2 * dt * 30 * emberMul;
     for (let e = 0; e < count; e++) {
-      const u = 0.06 + Math.random() * 0.88, b = sample(Math.abs(u - 0.5) * 1.7);
-      S.embers.push({ x: u * W, y: mid(u, ht, o1), vx: (Math.random() - 0.5) * 16, vy: -(14 + Math.random() * 26) * (1 + b * 1.5), life: 0, max: 0.9 + Math.random() * 1.1, r: 0.6 + Math.random() * 0.8 });
+      const u = e < burst ? Math.min(0.95, Math.max(0.05, P.u0 + (Math.random() - 0.5) * 0.28)) : 0.06 + Math.random() * 0.88;
+      const b = bandAt(Math.abs(u - 0.5) * 1.7);
+      S.embers.push({ x: u * W, y: mid(u, o1), vx: (Math.random() - 0.5) * 16, vy: -(14 + Math.random() * 26) * (1 + b * 1.5), life: 0, max: 0.9 + Math.random() * 1.1, r: 0.6 + Math.random() * 0.8 });
     }
     const cap = 90 * Math.max(1, emberMul);
     if (S.embers.length > cap) S.embers.splice(0, S.embers.length - cap);
