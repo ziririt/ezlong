@@ -6507,7 +6507,8 @@ const MUSIC_VIZ_SETTINGS_DEFAULT = {
   ribbonThickness: "normal", // thin | normal | rich — 실 가닥 수와 폭
   ribbonGlow: "normal",   // soft | normal | strong — 빛번짐
   auroraRays: "on",       // off | on — 오로라 빛줄기 커튼
-  hearthEmbers: "normal"  // off | normal | many — 난롯불 불티
+  hearthEmbers: "normal", // off | normal | many — 난롯불 불티
+  ribbonBackdrop: "soft"  // off | soft | strong — 리본 뒤 사진을 살짝 흐리고 어둡게(상자 없이)
 };
 const musicVizSettingsStorageKey = "ezlong:musicVizSettings";
 let musicVizSettings = { ...MUSIC_VIZ_SETTINGS_DEFAULT };
@@ -6773,8 +6774,35 @@ function buildVizBarsInto(wrap) {
 // 시안: https://claude.ai/artifact/6JaxK2zUDy7ovNabJ2HUCe (2026-11-21 운영자 채택)
 // ─────────────────────────────────────────────────────────────────────
 const MUSIC_VIZ_STYLES = ["bars", "aurora", "hearth"];
-const MUSIC_VIZ_RIBBON_AVAILABLE = nativePlatformKey === "ios"
+// 2026-11-21 21:16 운영자 — "아이폰 계정을 잃어 앱 업데이트가 불가능하니 **내 아이폰에서만**."
+//   아이폰 앱이라도 이 기기에서 켜 둔 경우에만 리본을 연다. 켜는 법: 설정의 판 번호(ver.…)를
+//   **2초 길게 누른다**(다섯 번 누르기는 광고 진단이 이미 쓴다). 다시 길게 누르면 끈다.
+const musicVizRibbonUnlockKey = "ezlong:vizRibbonUnlocked";
+function musicVizRibbonUnlocked() {
+  try { return localStorage.getItem(musicVizRibbonUnlockKey) === "1"; } catch (e) { return false; }
+}
+const MUSIC_VIZ_RIBBON_AVAILABLE = (nativePlatformKey === "ios" && musicVizRibbonUnlocked())
   || new URLSearchParams(window.location.search).get("vizribbon") === "1";
+(function wireRibbonUnlock() {
+  const badge = document.getElementById("settingsVersion");
+  if (!badge || nativePlatformKey !== "ios") return;
+  badge.style.webkitUserSelect = "none";
+  badge.style.userSelect = "none";
+  badge.style.webkitTouchCallout = "none";
+  let holdTimer = null;
+  function cancel() { if (holdTimer) { window.clearTimeout(holdTimer); holdTimer = null; } }
+  badge.addEventListener("pointerdown", function () {
+    cancel();
+    holdTimer = window.setTimeout(function () {
+      holdTimer = null;
+      const next = musicVizRibbonUnlocked() ? "0" : "1";
+      try { localStorage.setItem(musicVizRibbonUnlockKey, next); } catch (e) { /* 무시 */ }
+      badge.textContent = next === "1" ? "ribbon on" : "ribbon off";
+      window.setTimeout(function () { location.reload(); }, 700);
+    }, 2000);
+  });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(function (ev) { badge.addEventListener(ev, cancel); });
+})();
 const musicVizStyleStorageKey = "ezlong:musicVizStyle";
 function musicVizSeasonDefaultStyle() {
   const m = new Date().getMonth() + 1;
@@ -6801,6 +6829,7 @@ function applyMusicVizStyleClass() {
   if (musicInfoPanel) {
     musicInfoPanel.classList.toggle("viz-style-ribbon", isMusicVizRibbonStyle());
     musicInfoPanel.dataset.vizStyle = musicVizStyle;
+    musicInfoPanel.dataset.ribbonBackdrop = musicVizSettings.ribbonBackdrop || "soft";
   }
   if (musicVizPreviewWrap) musicVizPreviewWrap.classList.toggle("viz-style-ribbon", isMusicVizRibbonStyle());
   if (musicVizOptionsEl) {
@@ -6839,7 +6868,8 @@ function setMusicVizStyle(style, opts) {
 function cycleMusicVizStyle(dir) {
   const i = MUSIC_VIZ_STYLES.indexOf(musicVizStyle);
   const n = MUSIC_VIZ_STYLES.length;
-  setMusicVizStyle(MUSIC_VIZ_STYLES[((i + dir) % n + n) % n], { toast: true });
+  // 2026-11-21 21:16 운영자 — 바꿀 때 이름표는 띄우지 않는다("이름은 보여줄 필요 없다").
+  setMusicVizStyle(MUSIC_VIZ_STYLES[((i + dir) % n + n) % n], {});
 }
 
 // 비주얼라이저 위 가로 밀기. 화면 전체의 "가로 밀기 = 사진·문장 넘김"(skyRoom)이
@@ -9365,6 +9395,7 @@ function setMusicVizOption(group, value) {
   else if (group === "shape") applyMusicVizShapeClass();
   else if (group === "density") rebuildMusicVizBars();
   else if (group === "sensitivity") applyMusicVizSensitivityClass();
+  else if (group === "ribbonBackdrop") applyMusicVizStyleClass();
   renderMusicVizSettingsUI();
 }
 if (musicVizOptionsEl) {

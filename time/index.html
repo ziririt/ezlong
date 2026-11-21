@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20261121-winterviz2-v13">
+  <link rel="stylesheet" href="styles.css?v=20261121-winterviz4-v15">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -189,6 +189,7 @@
                    먼저(즉, 그 위에 겹쳐) 그려진다. -->
               <!-- 2026-11-21 — 리본 모양(오로라·난롯불)을 그리는 캔버스와, 가로로 밀어 모양을
                    바꿨을 때 잠깐 뜨는 이름표(app.js MUSIC_VIZ_STYLES 참조). -->
+              <div class="viz-ribbon-veil" aria-hidden="true"></div>
               <canvas class="music-ribbon-canvas" id="musicRibbonCanvas" aria-hidden="true"></canvas>
               <div class="music-leave-work" id="musicLeaveWork" aria-hidden="true">Clock out, live up.</div>
               <div class="viz-style-toast" id="vizStyleToast" aria-hidden="true"></div>
@@ -426,7 +427,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.115</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.117</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -723,6 +724,15 @@
                 <button type="button" class="viz-chip" data-viz-value="soft" data-i18n="settings.visualizer.ribbon.glows.soft">은은하게</button>
                 <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.ribbon.glows.default">기본</button>
                 <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.ribbon.glows.strong">강하게</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-ribbon">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.backdrop">배경 흐림</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.ribbon.backdropDesc">리본 뒤 사진을 살짝 흐리고 어둡게 해서 리본이 또렷해져요.</p>
+              <div class="viz-option-row" data-viz-group="ribbonBackdrop">
+                <button type="button" class="viz-chip" data-viz-value="off" data-i18n="settings.visualizer.ribbon.backdrops.off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="soft" data-i18n="settings.visualizer.ribbon.backdrops.soft">살짝</button>
+                <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.ribbon.backdrops.strong">진하게</button>
               </div>
             </div>
             <div class="viz-option-group viz-only-aurora">
@@ -1357,7 +1367,7 @@
   <script src="i18n/season.js?v=20260831-latesummer-v14"></script>
   <script src="i18n/region.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-source.js?v=20260809-amazonlink-v2"></script>
-  <script src="i18n/locale-bundle.js?v=20261121-winterviz2-v38"></script>
+  <script src="i18n/locale-bundle.js?v=20261121-winterviz4-v40"></script>
   <script src="i18n/index.js?v=20260728-i18n-v13"></script>
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
@@ -1403,7 +1413,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20261121-winterviz2-v74"></script>
+  <script src="app.js?v=20261121-winterviz4-v76"></script>
 
   </body>
 </html>

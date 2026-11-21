@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-11-21T11:16:46.701Z
+ * 생성 시각: 2026-11-21T12:00:51.240Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -114,6 +114,13 @@
           "glows": {
             "soft": "Soft",
             "default": "Default",
+            "strong": "Strong"
+          },
+          "backdrop": "Background blur",
+          "backdropDesc": "Softly blurs and dims the photo behind the ribbon so it stands out.",
+          "backdrops": {
+            "off": "Off",
+            "soft": "Light",
             "strong": "Strong"
           },
           "rays": "Light curtains",
@@ -695,6 +702,13 @@
             "default": "Normal",
             "strong": "Intenso"
           },
+          "backdrop": "Desenfoque de fondo",
+          "backdropDesc": "Difumina y oscurece un poco la foto detrás de la cinta para que destaque.",
+          "backdrops": {
+            "off": "Apagado",
+            "soft": "Suave",
+            "strong": "Fuerte"
+          },
           "rays": "Cortinas de luz",
           "raysDesc": "Rayos de aurora que suben sobre la cinta.",
           "embers": "Chispas",
@@ -1272,6 +1286,13 @@
           "glows": {
             "soft": "控えめ",
             "default": "標準",
+            "strong": "強め"
+          },
+          "backdrop": "背景ぼかし",
+          "backdropDesc": "リボンの後ろの写真を少しぼかして暗くし、リボンをくっきり見せます。",
+          "backdrops": {
+            "off": "オフ",
+            "soft": "軽め",
             "strong": "強め"
           },
           "rays": "光のカーテン",
@@ -1853,6 +1874,13 @@
             "default": "기본",
             "strong": "강하게"
           },
+          "backdrop": "배경 흐림",
+          "backdropDesc": "리본 뒤 사진을 살짝 흐리고 어둡게 해서 리본이 또렷해져요.",
+          "backdrops": {
+            "off": "끄기",
+            "soft": "살짝",
+            "strong": "진하게"
+          },
           "rays": "빛줄기 커튼",
           "raysDesc": "리본 위로 솟는 오로라 빛줄기예요.",
           "embers": "불티",
@@ -2430,6 +2458,13 @@
           "glows": {
             "soft": "Suave",
             "default": "Padrão",
+            "strong": "Forte"
+          },
+          "backdrop": "Desfoque de fundo",
+          "backdropDesc": "Desfoca e escurece um pouco a foto atrás da fita para ela se destacar.",
+          "backdrops": {
+            "off": "Desligado",
+            "soft": "Suave",
             "strong": "Forte"
           },
           "rays": "Cortinas de luz",
@@ -3010,6 +3045,13 @@
             "soft": "柔和",
             "default": "默认",
             "strong": "强烈"
+          },
+          "backdrop": "背景模糊",
+          "backdropDesc": "轻微模糊并压暗丝带后方的照片，让丝带更清晰。",
+          "backdrops": {
+            "off": "关闭",
+            "soft": "轻微",
+            "strong": "强"
           },
           "rays": "光帘",
           "raysDesc": "丝带上方升起的极光光柱。",
