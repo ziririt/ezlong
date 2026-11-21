@@ -6935,7 +6935,7 @@ function ribbonPunchMul() { return ribbonOpt("bassPunch", { off: 0, normal: 1, s
 function ribbonEmberMul() { return ribbonOpt("hearthEmbers", { off: 0, normal: 1, many: 2 }, 1); }
 
 // ── 리본 그리기 — 본화면 하나, 설정 미리보기 하나(각자 상태를 따로 갖는다) ──
-const RIBBON_NB = 34, RIBBON_PTS = 64;
+const RIBBON_NB = 34, RIBBON_PTS = 44;
 const ribbonX = new Float32Array(RIBBON_PTS + 1), ribbonM = new Float32Array(RIBBON_PTS + 1),
   ribbonT = new Float32Array(RIBBON_PTS + 1), ribbonTw = new Float32Array(RIBBON_PTS + 1), ribbonY = new Float32Array(RIBBON_PTS + 1);
 function makeRibbonCanvas(w, h) { const c = document.createElement("canvas"); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; }
@@ -6970,6 +6970,9 @@ function createRibbonRenderer(canvas, wrapEl) {
     bass: 0, mid: 0, high: 0, level: 0, beat: 0, beatTarget: 0, beatNow: false, lastBeat: 0, bassAvg: 0.1, fluxAvg: 0.02,
     lastTs: 0, time: 0, flow: 0, pulse: 0, embers: [], w: 0, h: 0, dpr: 1, grads: {}, noise: null,
     cy: 0, lim: 40,
+    // 2026-11-22 — 샤오미폰 실측 1초 8장(한 장 75ms, 화면 배율 3.25). 그리는 시간과 장 사이 간격을 재서
+    //   그림 해상도(q)를 스스로 낮추고 올린다. 안드로이드는 낮게 시작한다.
+    q: nativePlatformKey === "android" ? 0.6 : 1, costAvg: 0, gapAvg: 16, costN: 0, lastCall: 0,
   };
   // 2026-11-22 운영자 — "위아래가 강제로 잘린다". 출렁임이 커질수록 부드럽게 눌러 담는다(칼처럼 자르지 않는다).
   function ribbonSoftLimit(y) { return S.cy + S.lim * Math.tanh((y - S.cy) / S.lim); }
@@ -6984,7 +6987,7 @@ function createRibbonRenderer(canvas, wrapEl) {
   //   ③ 저·중·고 에너지는 0.25초로 한 번 더 고르고 ④ 박자는 '툭'이 아니라 0.1초에 부풀어 0.45초에 가라앉는 숨으로 쓴다.
   function analyze(dt, nowS, live) {
     const src = musicVizIntensity, n = src.length || 1;
-    const kA = 1 - Math.exp(-dt / 0.12), kR = 1 - Math.exp(-dt / 0.40);
+    const kA = 1 - Math.exp(-dt / 0.05), kR = 1 - Math.exp(-dt / 0.25);
     for (let i = 0; i < RIBBON_NB; i++) {
       const p = (i / (RIBBON_NB - 1)) * (n - 1), lo = Math.floor(p), hi = Math.min(n - 1, lo + 1), f = p - lo;
       const v = Math.min(1, ((src[lo] || 0) * (1 - f) + (src[hi] || 0) * f) * 1.05);
@@ -7000,7 +7003,7 @@ function createRibbonRenderer(canvas, wrapEl) {
     for (let i = 0; i < 7; i++) b += S.bands[i];
     for (let i = 7; i < 20; i++) m += S.bands[i];
     for (let i = 20; i < RIBBON_NB; i++) h += S.bands[i];
-    const kE = 1 - Math.exp(-dt / 0.25);
+    const kE = 1 - Math.exp(-dt / 0.08);
     S.bass += (b / 7 - S.bass) * kE; S.mid += (m / 13 - S.mid) * kE; S.high += (h / (RIBBON_NB - 20) - S.high) * kE;
     S.level += ((b + m + h) / RIBBON_NB - S.level) * kE;
     // 박자 잡기는 걸러지기 전 값으로(늦지 않게), 쓰는 것은 부드러운 숨으로.
@@ -7012,11 +7015,11 @@ function createRibbonRenderer(canvas, wrapEl) {
     S.fluxAvg += (flux - S.fluxAvg) * (1 - Math.exp(-dt / 0.35));
     S.beatNow = false;
     const punch = ribbonPunchMul();
-    if (live && punch > 0 && ((ib > S.bassAvg * 1.18 && ib > 0.12) || (flux > S.fluxAvg * 1.9 && flux > 0.008)) && nowS - S.lastBeat > 0.3) {
+    if (live && punch > 0 && ((ib > S.bassAvg * 1.18 && ib > 0.12) || (flux > S.fluxAvg * 1.9 && flux > 0.008)) && nowS - S.lastBeat > 0.22) {
       S.beatTarget = Math.min(1, punch); S.lastBeat = nowS; S.beatNow = true;
     }
-    S.beatTarget *= Math.exp(-dt / 0.45);
-    S.beat += (S.beatTarget - S.beat) * (1 - Math.exp(-dt / 0.10));
+    S.beatTarget *= Math.exp(-dt / 0.32);
+    S.beat += (S.beatTarget - S.beat) * (1 - Math.exp(-dt / 0.035));
   }
   function mid(u, t, o) {
     return o.cy + (Math.sin(u * Math.PI * 1.8 + t * 0.35 * o.speed + o.seed) * (0.5 + S.bass * 1.2)
@@ -7039,6 +7042,17 @@ function createRibbonRenderer(canvas, wrapEl) {
       for (let j = 0; j <= RIBBON_PTS; j++) ribbonY[j] = ribbonSoftLimit(ribbonM[j] + v * ribbonT[j] * ribbonTw[j] + Math.sin(j * 0.24 + v * 2.2 + t * 0.6) * ribbonT[j] * 0.05);
       c.globalAlpha = o.alpha * (1 - 0.35 * v * v);
       c.beginPath(); ribbonSmoothPath(c, ribbonX, ribbonY, RIBBON_PTS + 1); c.stroke();
+    }
+    // 2026-11-22 — 빛번짐. 예전엔 그림 전체를 작은 그림으로 복사해 번지게 했는데(bloom), 안드로이드에서
+    //   그 복사 한 번이 15ms 를 넘었다. 리본 중심선을 굵고 옅게 두 번 긋는 것으로 바꾼다. 세기는 음악을 따른다.
+    if (o.glow > 0) {
+      let avgT = 0;
+      for (let j = 0; j <= RIBBON_PTS; j++) { avgT += ribbonT[j]; ribbonY[j] = ribbonSoftLimit(ribbonM[j]); }
+      avgT /= (RIBBON_PTS + 1);
+      c.lineCap = "round"; c.lineJoin = "round";
+      c.beginPath(); ribbonSmoothPath(c, ribbonX, ribbonY, RIBBON_PTS + 1);
+      c.globalAlpha = Math.min(0.5, 0.05 * o.glow); c.lineWidth = Math.max(4, avgT * 2.0); c.stroke();
+      c.globalAlpha = Math.min(0.6, 0.08 * o.glow); c.lineWidth = Math.max(2, avgT * 0.9); c.stroke();
     }
     c.globalAlpha = 1;
   }
@@ -7067,11 +7081,11 @@ function createRibbonRenderer(canvas, wrapEl) {
     c.fillStyle = S.noise; c.fillRect(0, 0, W + 96, H + 96);
     c.restore();
   }
-  function draw(live) {
+  function drawInner(live) {
     const W = canvas.clientWidth, H = canvas.clientHeight;
     if (!W || !H) return;
     // 2026-11-22 — 2배로 묶어 두니 3배 화면(아이폰)에서 흐려 보였다(운영자 "iOS 가 해상도가 낮은 듯").
-    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const dpr = Math.max(1, Math.round(Math.min(window.devicePixelRatio || 1, 3) * S.q * 4) / 4);
     if (W !== S.w || H !== S.h || dpr !== S.dpr) {
       S.w = W; S.h = H; S.dpr = dpr;
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
@@ -7081,12 +7095,14 @@ function createRibbonRenderer(canvas, wrapEl) {
       S.grads = {}; S.noise = null;
     }
     const nowMs = performance.now();
-    const dt = S.lastTs ? Math.min(0.1, (nowMs - S.lastTs) / 1000) : 1 / 30;
+    // 늦은 장이 와도 움직임이 실제 시간을 따라가게(0.1초로 묶으면 느린 기기에서 슬로비디오가 된다).
+    const dt = S.lastTs ? Math.min(0.25, (nowMs - S.lastTs) / 1000) : 1 / 30;
     S.lastTs = nowMs;
     const tReal = nowMs / 1000;
     analyze(dt, tReal, live);
     const flowMul = ribbonFlowMul(), thick = ribbonThickness(), glowMul = ribbonGlowMul();
-    S.time += dt * flowMul;
+    // 2026-11-22 — "음악과 따로 논다": 시간만으로 흐르던 것을, 소리가 클수록 빨리 흐르게(조용하면 거의 멈춘다).
+    S.time += dt * flowMul * (0.15 + S.level * 1.7 + S.beat * 1.1);
     const t = S.time;
 
     // 원래 막대 칸(wrapEl)이 캔버스 안에서 차지하는 자리 — 본화면 캔버스는 패널 안쪽 여백까지 넓다.
@@ -7103,8 +7119,8 @@ function createRibbonRenderer(canvas, wrapEl) {
 
     if (musicVizStyle === "aurora") {
       const pal = RIBBON_PALETTES[musicVizSettings.auroraColor] || RIBBON_PALETTES.aurora;
-      const o1 = { cy: cy, h: hh, strands: 38 * thick.strands, grad: grad("a1" + musicVizSettings.auroraColor, pal.a1, W), alpha: 0.085, seed: 1.3, speed: 1, lw: 1 * thick.lw };
-      const o2 = { cy: cy + hh * 0.22, h: hh * 0.68, strands: 26 * thick.strands, grad: grad("a2" + musicVizSettings.auroraColor, pal.a2, W), alpha: 0.07, seed: 4.1, speed: 0.8, lw: 0.9 * thick.lw };
+      const o1 = { cy: cy, h: hh, strands: 28 * thick.strands, grad: grad("a1" + musicVizSettings.auroraColor, pal.a1, W), alpha: 0.10 * (0.55 + S.level * 1.1 + S.beat * 0.5), glow: glowMul * (0.7 + S.level * 0.9 + S.beat * 0.9), seed: 1.3, speed: 1, lw: 1.15 * thick.lw };
+      const o2 = { cy: cy + hh * 0.22, h: hh * 0.68, strands: 18 * thick.strands, grad: grad("a2" + musicVizSettings.auroraColor, pal.a2, W), alpha: 0.085 * (0.5 + S.mid * 1.3 + S.beat * 0.4), glow: glowMul * 0.6, seed: 4.1, speed: 0.8, lw: 1.05 * thick.lw };
       c.save(); c.globalCompositeOperation = "lighter";
       if (musicVizSettings.auroraRays !== "off") {
         // 빛줄기 커튼 — 저해상도에 그려 키우면 저절로 부드럽게 번진다(줄무늬 방지).
@@ -7126,8 +7142,6 @@ function createRibbonRenderer(canvas, wrapEl) {
       }
       strands(t, o1, W); strands(t, o2, W);
       c.restore();
-      grain(W, H, 0.14);
-      bloom(W, H, 0.55 * glowMul, 0.85 * glowMul);
       return;
     }
 
@@ -7137,8 +7151,8 @@ function createRibbonRenderer(canvas, wrapEl) {
     S.pulse += ((S.beat * 0.8 + S.bass * 0.6) - S.pulse) * (1 - Math.exp(-dt / 0.18));
     const ht = S.flow;
     const amp = 0.55 + S.level * 1.25 + S.pulse * 0.55, bright = 0.55 + S.level * 1.1 + S.pulse * 0.7;
-    const o1 = { cy: cy + 2, h: hh * amp, strands: 42 * thick.strands, grad: grad("h1" + musicVizSettings.hearthColor, pal.a1, W), alpha: 0.075 * bright, seed: 2.2, speed: 0.85, lw: 1.05 * thick.lw };
-    const o2 = { cy: cy - hh * 0.2, h: hh * 0.62 * (0.6 + S.mid * 1.4), strands: 28 * thick.strands, grad: grad("h2" + musicVizSettings.hearthColor, pal.a2, W), alpha: 0.06 * (0.5 + S.mid * 1.6 + S.pulse * 0.5), seed: 5.6, speed: 0.7, lw: 0.9 * thick.lw };
+    const o1 = { cy: cy + 2, h: hh * amp, strands: 30 * thick.strands, grad: grad("h1" + musicVizSettings.hearthColor, pal.a1, W), alpha: 0.09 * bright, glow: glowMul * (0.6 + S.level * 0.8 + S.pulse * 0.9), seed: 2.2, speed: 0.85, lw: 1.2 * thick.lw };
+    const o2 = { cy: cy - hh * 0.2, h: hh * 0.62 * (0.6 + S.mid * 1.4), strands: 20 * thick.strands, grad: grad("h2" + musicVizSettings.hearthColor, pal.a2, W), alpha: 0.075 * (0.5 + S.mid * 1.6 + S.pulse * 0.5), glow: glowMul * 0.5, seed: 5.6, speed: 0.7, lw: 1.05 * thick.lw };
     c.save(); c.globalCompositeOperation = "lighter";
     const gr = c.createRadialGradient(W * 0.5, cy + hh * 0.2, 0, W * 0.5, cy + hh * 0.2, W * 0.55);
     const ga = (0.03 + S.bass * 0.16 + S.pulse * 0.12) * glowMul;
@@ -7179,8 +7193,20 @@ function createRibbonRenderer(canvas, wrapEl) {
       const s2 = e.r * 3; c.drawImage(spark, e.x - s2, e.y - s2, s2 * 2, s2 * 2);
     }
     c.restore();
-    grain(W, H, 0.12);
-    bloom(W, H, 0.5 * glowMul, (0.6 + S.pulse * 0.5) * glowMul);
+  }
+  function draw(live) {
+    const a = performance.now();
+    const gap = S.lastCall ? a - S.lastCall : 16;
+    S.lastCall = a;
+    drawInner(live);
+    const cost = performance.now() - a;
+    S.costAvg = S.costAvg ? S.costAvg * 0.85 + cost * 0.15 : cost;
+    if (gap < 250) S.gapAvg = S.gapAvg * 0.85 + gap * 0.15;
+    if (++S.costN >= 24) {
+      S.costN = 0;
+      if ((S.costAvg > 8 || S.gapAvg > 24) && S.q > 0.35) S.q = Math.max(0.35, S.q * 0.8);
+      else if (S.costAvg < 3 && S.gapAvg < 18 && S.q < 1) S.q = Math.min(1, S.q * 1.12);
+    }
   }
   function reset() {
     S.embers.length = 0;
