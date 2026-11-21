@@ -6987,10 +6987,24 @@ function createRibbonRenderer(canvas, wrapEl) {
   //   ③ 저·중·고 에너지는 0.25초로 한 번 더 고르고 ④ 박자는 '툭'이 아니라 0.1초에 부풀어 0.45초에 가라앉는 숨으로 쓴다.
   function analyze(dt, nowS, live) {
     const src = musicVizIntensity, n = src.length || 1;
-    const kA = 1 - Math.exp(-dt / 0.05), kR = 1 - Math.exp(-dt / 0.25);
+    // 2026-11-22 01:02 운영자 — "iOS 난롯불만 음과 애니메이션이 따로 논다".
+    //   아이폰 앱은 소리를 저·중·고 세 값(15Hz)으로만 준다. 막대 경로는 그 세 값으로 34개를 '제각각 튀는 쇼'처럼
+    //   보이게 하려고 막대마다 고정 흔들림(jitter)·반짝임(shimmer)·국지 타격을 섞는다 — 리본이 그 값을 읽으면
+    //   음악과 상관없는 흔들림까지 따라간다. 그래서 아이폰에서는 세 값을 직접 부드럽게 펼쳐 쓴다.
+    //   세 값이 15번/초 계단으로 오므로 오름도 조금 느리게(0.09초) 받아 계단을 지운다.
+    const iosLevels = nativePlatformKey === "ios" && typeof nativeAudioLevelReceivedAt === "number"
+      && Date.now() - nativeAudioLevelReceivedAt < 1200;
+    const kA = 1 - Math.exp(-dt / (iosLevels ? 0.09 : 0.05)), kR = 1 - Math.exp(-dt / 0.25);
     for (let i = 0; i < RIBBON_NB; i++) {
-      const p = (i / (RIBBON_NB - 1)) * (n - 1), lo = Math.floor(p), hi = Math.min(n - 1, lo + 1), f = p - lo;
-      const v = Math.min(1, ((src[lo] || 0) * (1 - f) + (src[hi] || 0) * f) * 1.05);
+      let v;
+      if (iosLevels) {
+        const tt = i / (RIBBON_NB - 1);
+        const wB = Math.exp(-Math.pow((tt - 0.08) / 0.22, 2)), wM = Math.exp(-Math.pow((tt - 0.5) / 0.24, 2)), wT = Math.exp(-Math.pow((tt - 0.92) / 0.22, 2));
+        v = Math.min(1, Math.pow(Math.max(0, (wB * nativeAudioBass + wM * nativeAudioMid + wT * nativeAudioTreble) / (wB + wM + wT)), 0.8));
+      } else {
+        const p = (i / (RIBBON_NB - 1)) * (n - 1), lo = Math.floor(p), hi = Math.min(n - 1, lo + 1), f = p - lo;
+        v = Math.min(1, ((src[lo] || 0) * (1 - f) + (src[hi] || 0) * f) * 1.05);
+      }
       S.inst[i] = v;
       S.raw[i] += (v - S.raw[i]) * (v > S.raw[i] ? kA : kR);
     }
@@ -7015,8 +7029,20 @@ function createRibbonRenderer(canvas, wrapEl) {
     S.fluxAvg += (flux - S.fluxAvg) * (1 - Math.exp(-dt / 0.35));
     S.beatNow = false;
     const punch = ribbonPunchMul();
-    if (live && punch > 0 && ((ib > S.bassAvg * 1.18 && ib > 0.12) || (flux > S.fluxAvg * 1.9 && flux > 0.008)) && nowS - S.lastBeat > 0.22) {
+    // 아이폰: 세 값이 15번/초 계단으로 오므로 '갑자기 오른 정도'로 박자를 잡으면 계단마다 헛박자가 난다
+    //   (그게 난롯불 불티·부풂을 엉뚱한 때에 터뜨렸다). 막대 경로가 이미 잡은 박자(nativeVizBassHit2·MidHit2 —
+    //   운영자가 소리와 잘 맞는다고 본 그 신호)가 새로 켜지는 순간만 박자로 쓴다.
+    let hitNow = false;
+    if (iosLevels && typeof nativeVizBassHit2 === "number") {
+      const hb = nativeVizBassHit2 >= 0.999, hm = nativeVizMidHit2 >= 0.999;
+      hitNow = (hb && !S.prevHitB) || (hm && !S.prevHitM);
+      S.prevHitB = hb; S.prevHitM = hm;
+    } else {
+      hitNow = (ib > S.bassAvg * 1.18 && ib > 0.12) || (flux > S.fluxAvg * 1.9 && flux > 0.008);
+    }
+    if (live && punch > 0 && hitNow && nowS - S.lastBeat > 0.22) {
       S.beatTarget = Math.min(1, punch); S.lastBeat = nowS; S.beatNow = true;
+      if (window.__ribbonBeats && canvas.id === "musicRibbonCanvas") window.__ribbonBeats.push(performance.now()); // 진단용 — 박자 잡은 시각(평소엔 비어 있어 아무 일도 안 한다)
     }
     S.beatTarget *= Math.exp(-dt / 0.32);
     S.beat += (S.beatTarget - S.beat) * (1 - Math.exp(-dt / 0.035));
