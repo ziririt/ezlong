@@ -268,7 +268,7 @@ def plain_text(t):
     _K = {'는': '은', '가': '이', '를': '을', '와': '과', '로': '으로'}
     t = _re_plain.sub(r'스탠스(는|가|를|와|로)(?=[\s,.:])', lambda m: '판단' + _K[m.group(1)], t)
     t = t.replace('스탠스', '판단')
-    t = t.replace('리밸런싱', '비중 조정').replace('모형 주식 비중', '예시 포트폴리오의 주식 비중').replace('모형 비중', '예시 포트폴리오 비중').replace('모형 계좌', '예시 포트폴리오')
+    t = t.replace('리밸런싱', '비중 조정').replace('모형 주식 비중', '스윙용 포트폴리오의 주식 비중').replace('모형 비중', '스윙용 포트폴리오 비중').replace('모형 계좌', '스윙용 포트폴리오').replace('예시 포트폴리오', '스윙용 포트폴리오')
     t = _re_plain.sub(r'휩쏘(?!\()', '가짜 신호', t).replace('휩쏘(가짜 신호)', '가짜 신호')
     for w in ('상승 추세', '하락 추세', '횡보'):
         t = t.replace(f'{w} {w}', w).replace(f'{w}({w})', w)
@@ -315,7 +315,7 @@ def stance_of(state, action, buy, sell, gear):
             and state.get('exposure', 0) > state.get('target', 0):
         return 'risk_off', '생명선 발동 — 계획 축소 진행 구간'
     if action == 'STOP' or state.get('stopped'):
-        return 'risk_off', '위험 관리 구간 — 노출 축소'
+        return 'risk_off', '위험 관리 구간 — 주식 비중 20% 이하 유지 권고'
     if action == 'ADD':
         return 'accumulate', '분할 매수 유리 구간'
     if action == 'TRIM':
@@ -701,7 +701,7 @@ def comp_commentary(state, action, buy, sell, gear, dev200, price):
     if state.get('stopped') or action == 'STOP':
         p.append(f'수익을 좇을 자리가 아니라 계좌를 지킬 자리. 종가가 200일선 아래 '
                  f'{dev200:.1f}%까지 하락, 이 정도 이탈 이후 관성적으로 더 밀린 사례 다수 — '
-                 f'계획된 노출 축소를 진행하는 구간. 바닥을 맞히려 들지 않고 '
+                 f'스윙용 포트폴리오는 주식 비중 20% 유지 중이고, 비중이 그보다 높다면 하향 검토 필요. 바닥을 맞히려 들지 않고 '
                  f'200일선 부근 회복 시 재진입하는 것이 이 분석의 원칙.')
     elif action == 'ADD':
         p.append(f'오늘은 계획된 분할 매수를 한 단계 진행할 자리. 200일선 '
@@ -1075,11 +1075,11 @@ def tsla_view(s):
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
-        _blk('판단 근거', body.strip()),
+        _blk('판단 근거', (body + _oversold(gear, rsi)).strip()),
     ]
     st, label, _kb = _reconcile('TSLA', st, label, _kb, gear)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
-                commentary=_mv + body,
+                commentary=_mv + body + _oversold(gear, rsi),
                 commentaryEn=_move_prefix_en(s) + body_en,
                 blocks=_kb,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
@@ -1565,6 +1565,16 @@ def mega_view(sym, s):
                 audienceEn=_audience_en(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label_en))
 
 
+def _oversold(gear, rsi):
+    """하락 추세인데 과매도가 깊으면(RSI 30 미만) 그 사실을 한 줄 붙인다(2026-11-21 오너 결정)."""
+    try:
+        if gear is not None and gear <= 1 and rsi is not None and rsi < 30:
+            return f' 참고: RSI {rsi:.0f}로 과매도가 깊음. 이미 크게 빠진 자리.'
+    except Exception:
+        pass
+    return ''
+
+
 def nvda_view(s):
     buy, sell, gear = _nz(s.get('buyScore'), 50), _nz(s.get('sellScore'), 50), _nz(s.get('gear'), 2)
     rsi = s.get('rsi')
@@ -1602,11 +1612,11 @@ def nvda_view(s):
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
-        _blk('판단 근거', body.strip()),
+        _blk('판단 근거', (body + _oversold(gear, rsi)).strip()),
     ]
     st, label, _kb = _reconcile('NVDA', st, label, _kb, gear)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
-                commentary=_mv + body,
+                commentary=_mv + body + _oversold(gear, rsi),
                 commentaryEn=_move_prefix_en(s) + body_en,
                 blocks=_kb,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
@@ -1737,10 +1747,16 @@ def desk_with_fable(view, sc_entry, ca):
   현금만 든 사람, 가득 실은 사람, 레버리지를 쓰는 사람, 아직 사 본 적 없는 사람이 같은 문장을 본다.
   그래서 **독자의 계좌·보유 상태·손익·심정을 이미 그런 것처럼 쓰지 마라.** 비유의 주어는 시장·지수·종목이다.
   나쁨: "계좌가 두들겨 맞은 날이지만 안전벨트는 이미 채워진 상태" (독자가 손실을 봤고 이미 비중을 줄였다고 단정)
-  좋음: "나스닥이 크게 밀린 날: 이 지면의 예시 포트폴리오는 주식 비중을 이미 20%로 낮춰 둔 상태"
+  좋음: "나스닥이 크게 밀린 날: 이 지면의 스윙용 포트폴리오는 주식 비중을 이미 20%로 낮춰 둔 상태"
   금지 표현: "계좌가 …", "이미 줄여 둔", "이미 채운", "들고 있는 물량은", "버텨 온", "안전벨트" 처럼 독자의 포지션을 전제하는 말.
-  초안의 "목표 비중·현재 비중·1배수 칸" 숫자는 **이 지면이 공개 운용하는 예시 포트폴리오의 비중**이다('모형'이라는 말은 쓰지 않는다). 언급할 때는 반드시
-  "이 지면의 예시 포트폴리오는 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
+  초안의 "목표 비중·현재 비중·1배수 칸" 숫자는 **이 지면이 공개 운용하는 스윙용 포트폴리오의 비중**이다('모형'이라는 말은 쓰지 않는다). 언급할 때는 반드시
+  "이 지면의 스윙용 포트폴리오는 …"처럼 주어를 밝혀 독자 본인의 계좌 이야기로 읽히지 않게 하라.
+- [서술어를 분명히, 2026-11-21 오너 지적] 문장이 '일어난 일'인지 '권하는 일'인지 서술어로 밝혀라.
+  "주식 비중 상한 20%로 하향"처럼 명사로 끝내면 이미 내렸다는 것인지, 내리라는 것인지 알 수 없다.
+  일어난 일은 "~마감", "~한 상태", "~유지 중"으로, 권하는 일은 "~검토 필요", "~권고"로 끝낸다.
+  좋음: "QQQ -5.7% 급락 마감: 주식 비중 20% 이하로 하향 검토 필요" / "스윙용 포트폴리오는 주식 비중 20% 유지 중"
+  나쁨: "주식 비중 상한 20%로 하향", "신규 매수 중단", "비중 축소" (누가 무엇을 한다는 것인지 없음)
+  '예시 포트폴리오'라는 말은 쓰지 않는다. '스윙용 포트폴리오'라고 쓴다.
 - [누구나 아는 말로 쓴다 — 2026-11-17 운영 제보] 이 지면을 처음 보는 사람도 알아들어야 한다.
   이 지면 안에서만 통하는 낱말을 쓰지 마라. 왼쪽 말은 금지, 오른쪽 말로 쓴다:
   1배수 칸·1배수 → 일반 ETF(QQQ·SPY·SOXX, 레버리지가 아닌 ETF) / 2배수·3배수 → 2배·3배 레버리지 ETF /
@@ -2174,12 +2190,17 @@ def main():
                 parts.append(f"규칙이 정한 목표 비중이 {_pc(ph.get('target'))}에서 {_pc(fh.get('target'))}로 바뀜"
                              + (f"(근거: {_ww})" if _ww else ''))
                 if ph.get('expo') == fh.get('expo') and abs((fh.get('expo') or 0) - (fh.get('target') or 0)) < 0.05:
-                    parts.append(f"예시 포트폴리오 비중({_pc(fh.get('expo'))})이 목표와 같아져 더 조정할 단계가 없어짐")
+                    parts.append(f"스윙용 포트폴리오 비중({_pc(fh.get('expo'))})이 목표와 같아져 더 조정할 단계가 없어짐")
             if ph.get('expo') != fh.get('expo'):
-                parts.append(f"예시 포트폴리오 비중을 {_pc(ph.get('expo'))}에서 {_pc(fh.get('expo'))}로 조정")
+                parts.append(f"스윙용 포트폴리오 비중을 {_pc(ph.get('expo'))}에서 {_pc(fh.get('expo'))}로 조정")
+            _wn = dict(stop='200일선 아래 5% 넘는 이탈이 이틀 이어져 급락 손절 규칙이 발동', lifeline='30주 이동평균선 규칙이 발동')
+            if not parts and fh.get('why') in _wn and (cur_s == 'risk_off' or ph.get('why') != fh.get('why')):
+                _dv = fh.get('dev')
+                parts.append(_wn[fh['why']] + (f"(나스닥100이 200일선 아래 {abs(_dv):.1f}%)" if _dv is not None and _dv < 0 else ''))
+                parts.append(f"스윙용 포트폴리오 비중은 바닥인 {_pc(fh.get('expo'))} 유지 중")
             if not parts:
                 if abs((fh.get('expo') or 0) - (fh.get('target') or 0)) < 0.05:
-                    parts.append(f"예시 포트폴리오 비중({_pc(fh.get('expo'))})이 목표({_pc(fh.get('target'))})에 닿아 더 조정할 단계가 없어짐")
+                    parts.append(f"스윙용 포트폴리오 비중({_pc(fh.get('expo'))})이 목표({_pc(fh.get('target'))})에 닿아 더 조정할 단계가 없어짐")
                 else:
                     parts.append(f"매수 점수 {ph.get('buy')}에서 {fh.get('buy')}, 매도 압력 {ph.get('sell')}에서 {fh.get('sell')}로 움직여 규칙의 구간이 바뀜")
             elif abs((ph.get('buy') or 0) - (fh.get('buy') or 0)) >= 10 or abs((ph.get('sell') or 0) - (fh.get('sell') or 0)) >= 10:
@@ -2214,17 +2235,21 @@ def main():
         broken = '·'.join(n for n, b in ll['detail'] if b)
         ll_paras.append(f'생명선 절단. {broken}{_josa(broken, "이가")} 주봉 기준 30주선 아래에서 마감. '
                         f'이 선 아래에서 강세장을 논하지 않는 것이 이 분석의 대원칙. '
-                        f'{STATS["lifeline"]}. 규칙에 따라 노출 상한 '
-                        f'{"0%" if ll["count"] >= 3 else "20%"}로 하향.')
+                        f'{STATS["lifeline"]}. 규칙에 따라 스윙용 포트폴리오의 주식 비중 상한은 20%. '
+                        f'비중이 그보다 높다면 20% 이하로 하향 검토 필요.')
     elif ll and ll['count'] == 1:
         first = next(n for n, b in ll['detail'] if b)
         ll_paras.append(f'생명선 경계 — 3개 지수 중 {first}가 먼저 주봉 30주선 아래로 하락. '
                         f'단독 이탈은 발동 조건이 아니나, 두 번째 지수 붕괴 시 그날로 노출 상한 '
-                        f'20% 하향이 예약된 행동. 현재는 감시 단계.')
+                        f'20%로 낮추는 것이 정해진 규칙. 현재는 지켜보는 단계.')
     commentary = ctx_paras + ll_paras + commentary
     cross = chart_engine_crosscheck(st)
     if cross:
         commentary.append(cross)
+
+    _ov = _oversold(gear, qqq.get('rsi'))
+    if _ov:
+        commentary.append('나스닥100(QQQ) ' + _ov.strip().replace('참고: ', ''))
 
     if grade:
         commentary.append(f'성적 공개 — 최근 {grade["n"]}번의 방향 판단 중 '

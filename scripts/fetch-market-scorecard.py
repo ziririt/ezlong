@@ -652,7 +652,10 @@ def fetch_fred_macro():
         "PCEPILFE": ("pc1", "근원 PCE 물가상승률(전년동월비 %, 연준 기준 지표)"),
         "PCEPI":    ("pc1", "PCE 물가상승률(전년동월비 %)"),
         "CPIAUCSL": ("pc1", "CPI 소비자물가 상승률(전년동월비 %)"),
-        "FEDFUNDS":  (None, "Fed 기준금리(%)"),
+        # 2026-11-21: FEDFUNDS 는 '지난달 평균 실효금리'다. 이것을 '기준금리'라고 불러 10월 평균 3.88% 를
+        # 현재 기준금리처럼 카드에 적었다(그때 정책금리 목표 상단은 4.00%). 정책금리는 목표범위 상단을 쓴다.
+        "DFEDTARU":  (None, "Fed 정책금리 목표범위 상단(%)"),
+        "FEDFUNDS":  (None, "연방기금 실효금리(지난달 평균, %)"),
         "T10Y2Y":    (None, "10Y-2Y 스프레드(경기선행, %)"),
         "UNRATE":    (None, "실업률(%)"),
         "T10YIE":    (None, "10년 기대인플레이션(%)"),
@@ -1741,7 +1744,8 @@ _ONE_SIDED_NOTE = {
 # 2026-11-19 오너 결정: 한쪽 편이 비어도 100 : 0 으로 적지 않는다. 최대 85 : 15.
 # 최근 여섯 장 중 넉 장이 0 : 100 이었다 - 재료를 못 찾은 것과 재료가 없는 것은 다르고,
 # 100 은 '반대 가능성 없음'으로 읽힌다. 빈 편에는 재료 없이 기본 15점만 둔다.
-ONE_SIDED_CAP = 85
+# 2026-11-21 오너 재결정: 재료가 없으면 0 으로 둔다. 억지로 15 를 채우지 않는다(85 대 15 는 11-19~20 이틀만 썼다).
+ONE_SIDED_CAP = 100
 _ONE_SIDED_FLOOR_NOTE = (' 재료가 없는 편에도 기본 15점을 둡니다.',
                          ' A side with no drivers still keeps a base 15 points.')
 
@@ -1759,7 +1763,8 @@ def publish_one_sided(entry, empty_side, why):
     entry[other.replace('_factors', '_total')] = ONE_SIDED_CAP
     entry[other] = _redistribute(keep, ONE_SIDED_CAP)
     ko, en = _ONE_SIDED_NOTE[empty_side]
-    ko, en = ko + _ONE_SIDED_FLOOR_NOTE[0], en + _ONE_SIDED_FLOOR_NOTE[1]
+    if ONE_SIDED_CAP < 100:
+        ko, en = ko + _ONE_SIDED_FLOOR_NOTE[0], en + _ONE_SIDED_FLOOR_NOTE[1]
     entry['one_sided'] = {'empty': empty_side.replace('_factors', ''), 'why': why, 'note': ko, 'note_en': en,
                           'floor': 100 - ONE_SIDED_CAP}
     return True
@@ -4345,6 +4350,18 @@ def enforce_price_consistency(entry, snap):
                 'category': 'other', '_tape': True})
             done.append('혼조에 지수 움직임 표시')
     mm = price_mismatch(entry, snap, PRICE_CHECK_SIDE)
+    if mm:
+        side, tp = mm
+        win, lose = ('negative', 'positive') if side == 'neg' else ('positive', 'negative')
+        _lose_has = any(int(f.get('score', 0) or 0) > 0 for f in (entry.get(lose + '_factors') or []))
+        if not _lose_has:
+            # 2026-11-21: 진 편에 재료가 없으면 점수를 지어 넣지 않는다. 점수는 그대로 두고 시세가 반대라는 사실만 적는다.
+            _kw = '부정' if side == 'neg' else '긍정'
+            entry['price_check'] = {
+                'note': f"시세 대조: 확인된 재료는 {_kw} 쪽뿐이지만 지수는 반대로 움직였습니다({tp['text']}). 지수를 움직인 원인은 확인되지 않았습니다.",
+                'note_en': f"Price check: the only confirmed drivers are {'bearish' if side == 'neg' else 'bullish'}, but the indexes moved the other way ({tp['text_en']}). No cause for the index move was identified."}
+            done.append(f"시세 대조 문장만 표시 ({tp['text']})")
+            mm = None
     if mm:
         side, tp = mm
         win, lose = ('negative', 'positive') if side == 'neg' else ('positive', 'negative')

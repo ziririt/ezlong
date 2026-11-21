@@ -4509,7 +4509,7 @@ function buildTrendLineHtml() {
     const _flowLine = (window._swingView.flow && !_useAhead)
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>`
         + (window._swingView.flowWhy ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flowWhy}</div>` : '')
-        + ((_gatedTop && /'관망'/.test(window._swingView.flow)) ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 이 지면의 예시 포트폴리오가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 하락 추세): 신규 매수 중단이 먼저.</div>` : '')
+        + ((_gatedTop && /'관망'/.test(window._swingView.flow)) ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">위 문장의 '관망'은 이 지면의 스윙용 포트폴리오가 목표 비중${typeof _c.target === 'number' ? '(' + Math.round(_c.target * 100) + '%)' : ''}에 이미 맞춰져 이번 거래일에 더 조정할 것이 없다는 뜻. 시장 추세 판단은 하락(종합 하락 추세): 신규 매수 중단이 먼저.</div>` : '')
       : '';
     const _dk = _useAhead ? _wa : window._swingView.desked;
     /* 88항 원칙 5: 최상단 카드의 모델 문장도 숫자 검문을 거친다. 걸린 줄은 빠진다.
@@ -4939,11 +4939,11 @@ function renderVIX(vixData) {
   const vix = vixData.price;
   let cls, interpretation, hint;
   if (vix > 35) {
-    cls = 'panic'; interpretation = '극심한 공포: 패닉 바잉 기회 탐색';
-    hint = '역사적으로 VIX 35+ 구간은 강력한 역발상 매수 타이밍이었습니다. 3회 분할 매수(30·30·40%) 원칙에 따른 분할 매수 검토 가능.';
+    cls = 'panic'; interpretation = '극심한 공포: 변동성 최고조';
+    hint = '과거 VIX 35 이상은 중기 저점 근처였던 적이 많았습니다. 다만 살지 말지는 맨 위의 추세 판단을 따릅니다: 하락 추세에서는 반등 확인이 먼저입니다.';
   } else if (vix > 28) {
-    cls = 'fear'; interpretation = '높은 공포: 분할 매수 유리';
-    hint = '시장 불안이 높습니다. 패닉 셀링에 동참하기보다 분할 매수로 평단가를 낮추는 전략이 유효합니다.';
+    cls = 'fear'; interpretation = '높은 공포: 변동성 확대';
+    hint = '시장 불안이 높습니다. 공포에 휩쓸린 매도는 피하되, 새로 살지는 맨 위의 추세 판단을 따릅니다.';
   } else if (vix > 22) {
     cls = 'warn'; interpretation = '불확실성 확대: 관망 우선';
     hint = '변동성이 보통 수준 이상입니다. 신규 레버리지 진입보다 기존 포지션 관리 집중 권고.';
