@@ -39,7 +39,12 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           WEEK=$(date +%G-W%V)
           MONTH=$(date +%Y-%m)
-          if [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 12 ]; then SUFFIX="-am"; else SUFFIX=""; fi
+          # 2026-11-22: 회차는 "어느 예약이 불렀는가"로 가린다. 깃허브 예약이 몇 시간씩 늦게 돌아
+          # 시각만으로 가리면 아침 회차가 자정 회차로 잘못 불려 전체 사본을 한 번 더 올린다.
+          EV_SCHED="${{ github.event.schedule }}"
+          if [ "$EV_SCHED" = "0 0 * * *" ]; then SUFFIX="-am"
+          elif [ "$EV_SCHED" = "0 15 * * *" ]; then SUFFIX=""
+          elif [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 12 ]; then SUFFIX="-am"; else SUFFIX=""; fi
           echo "DATE=$DATE"   >> $GITHUB_ENV
           echo "WEEK=$WEEK"   >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
