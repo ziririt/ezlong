@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "2026-11-21-18:20",
+      "timestamp_kst": "2026-11-21(토) 18:20 KST",
+      "key_event": {
+        "name": "AI 섹터 투자 심리 위축 지속",
+        "name_en": "AI Sector Investor Sentiment Weakness Continues",
+        "time": "11월 20일 정규장 마감 기준",
+        "why": "Anthropic IPO 실망감, 기술주 전반 하락 압력 지속",
+        "why_en": "Anthropic IPO disappointment, continued downward pressure on tech stocks"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "AI 섹터 실망감 지속 및 매크로 지표 부담으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to ongoing AI sector disappointment and macro indicator burdens",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 65,
+          "name": "Anthropic IPO 실망감 지속",
+          "name_en": "Anthropic IPO Disappointment Persists",
+          "desc": "Anthropic IPO 데뷔 실패로 AI 섹터 전반 투자 심리 위축 지속, 기술주 하락 압력",
+          "desc_en": "Anthropic IPO's disappointing debut continues to dampen overall AI sector investor sentiment, pressuring tech stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 35,
+          "name": "매파적 Fed 발언 지속",
+          "name_en": "Hawkish Fed Remarks Continue",
+          "desc": "Fed Governor Cook의 '추가 금리 인상 필요' 발언, 고금리 장기화 우려 증폭",
+          "desc_en": "Fed Governor Cook's remarks on 'further interest rate hikes necessary' amplify concerns about prolonged high interest rates",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [],
+      "one_sided": {
+        "empty": "positive",
+        "why": "direction",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
+        "floor": 0
+      }
+    },
+    {
       "id": "2026-11-21-11:50",
       "timestamp_kst": "2026-11-21(토) 11:50 KST",
       "key_event": {
@@ -420,68 +462,8 @@
         "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted. A side with no drivers still keeps a base 15 points.",
         "floor": 15
       }
-    },
-    {
-      "id": "2026-11-19-23:20",
-      "timestamp_kst": "2026-11-19(목) 23:20 KST",
-      "key_event": {
-        "name": "Anthropic IPO 기대감 지속",
-        "name_en": "Continued Anthropic IPO Optimism",
-        "time": "11월 19일(목) ET",
-        "why": "AI 섹터 투자 심리 개선, 기술주 전반 상승 견인",
-        "why_en": "Improved AI sector sentiment, driving broad tech stock gains"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "Anthropic IPO 기대감으로 긍정 우위 지속, 매크로 지표 부담은 잔존",
-      "summary_en": "Positive sentiment continues due to Anthropic IPO, though macro pressures persist",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "Anthropic IPO 상장 시작",
-          "name_en": "Anthropic IPO Trading Commences",
-          "desc": "Anthropic IPO 공모가 83달러 확정 후 11월18일(수, 뉴욕) 거래 시작, AI 섹터 투자 심리 개선 및 기술주 전반 상승 견인",
-          "desc_en": "Anthropic IPO priced at $83, trading begins today, boosting AI sector sentiment and broad tech stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 35,
-          "name": "AI 수요 급증 및 기업 실적 기대",
-          "name_en": "Surging AI Demand & Corporate Earnings Outlook",
-          "desc": "STMicroelectronics 데이터 센터 매출 2027년 두 배 이상 증가 전망, AI 수요 지속 확인",
-          "desc_en": "STMicroelectronics projects data center revenue to more than double by 2027, confirming sustained AI demand",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "Fed의 AI 버블 리스크 경고",
-          "name_en": "Fed Warns of AI Bubble Risk",
-          "desc": "Fed 의사록, 대부분의 연준 위원들이 AI 붐 실망 시 금융 시스템 리스크 논의, 과열 우려 잔존",
-          "desc_en": "Fed minutes show most officials discussed financial system risks if AI boom disappoints, indicating lingering overheating concerns",
-          "category": "fed_policy"
-        },
-        {
-          "score": 5,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.08%(+0.28%), 미30년 국채금리 5.42%(+0.11%) 상승, 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield rises to 5.08% (+0.28%) and 30-year to 5.42% (+0.11%), maintaining discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총점: Anthropic IPO 기대감에 힘입어 긍정 85 대 부정 15로 긍정 우위 지속.\n- 주요 원인: Anthropic IPO의 성공적인 상장 시작이 AI 섹터 전반의 투자 심리를 크게 개선하며 기술주 상승을 견인.\n- 하방 압력: 미 연준의 AI 버블 리스크 경고와 미 국채금리 상승이 성장주 할인율 부담으로 작용하며 시장에 부정적 영향 잔존.",
-        "positive": "- Anthropic IPO 상장 시작: Anthropic IPO 공모가 83달러 확정 후 11월 18일(수, 뉴욕) 거래 시작, AI 섹터 투자 심리 개선 및 기술주 전반 상승 견인. Anthropic IPO는 약 5천억 달러에 달하는 주문을 유치하며 시장의 뜨거운 관심을 확인.\n- AI 수요 급증 및 기업 실적 기대: STMicroelectronics는 2027년 데이터 센터 매출이 두 배 이상 증가할 것으로 전망하며 AI 수요 지속 확인. 이는 AI 기술에 대한 강력한 시장 수요가 기업 실적 개선으로 이어질 것이라는 기대감을 높이는 요인.",
-        "negative": "- Fed의 AI 버블 리스크 경고: 연준 의사록에 따르면, 대부분의 연준 위원들이 AI 붐이 실망으로 이어질 경우 금융 시스템에 리스크가 될 수 있음을 논의. 이는 AI 관련 자산의 과열 가능성에 대한 우려를 표명하며 시장에 경고 신호로 작용.\n- 미 국채금리 상승: 미 10년 국채금리 5.08%(+0.28%p), 미 30년 국채금리 5.42%(+0.11%p) 상승. 이는 성장주에 대한 할인율 부담을 가중시켜 기술주 전반에 부정적인 영향을 미치는 요인.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승 지속 시 성장주 할인율 부담 심화로 시장 하방 압력 가중.\n- AI 관련 기술주 움직임: Anthropic IPO 이후 Nvidia, AMD 등 주요 AI 관련 기술주들의 주가 흐름 지속 확인. AI 섹터 투자 심리 개선이 전반적인 기술주 상승으로 이어질지 주목."
-      },
-      "report_at": "2026-11-19(목) 23:20 KST"
     }
   ],
-  "updated_at": "2026-11-21T02:51:37Z",
+  "updated_at": "2026-11-21T09:21:40Z",
   "max_entries": 10
 }
