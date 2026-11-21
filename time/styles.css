@@ -6871,3 +6871,77 @@ body.is-premium .premium-perk-title::after {
   .calendar-panel { grid-row: 3; grid-column: 1; align-self: center; max-height: none; overflow-y: visible; }
   .scene-dots { grid-row: 4; grid-column: 1; }
 }
+
+/* 2026-11-21 — 비주얼라이저 모양 세 가지: 막대 · 오로라 리본 · 난롯불 리본(app.js MUSIC_VIZ_STYLES).
+   비주얼라이저 위를 가로로 밀면 바뀐다. 막대만 유리 상자 안에 있고, 리본 두 가지는 상자를 걷고
+   배경사진 위에 바로 뜬다(운영자 2026-11-21 지시). 캔버스는 패널 안쪽 여백(위 24px·좌우 10px)까지
+   넓혀 그린다 — 패널이 overflow:hidden 이라 그 밖으로는 못 나간다. 가장자리는 흐리게 사라진다. */
+.music-ribbon-canvas {
+  position: absolute;
+  left: -10px;
+  top: -24px;
+  width: calc(100% + 20px);
+  height: calc(100% + 24px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 22%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 22%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+}
+@media (max-height: 780px) {
+  .music-ribbon-canvas { top: -16px; height: calc(100% + 16px); }
+}
+.music-info-panel.viz-style-ribbon .music-ribbon-canvas { opacity: 1; }
+.music-info-panel.viz-style-ribbon .viz-bar { visibility: hidden; }
+.music-info-panel.viz-style-ribbon {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* 상자가 없으면 밝은 사진(해변 등) 위에서 곡 제목·단추가 묻힌다 — 그림자 한 겹으로 받친다. */
+.music-info-panel.viz-style-ribbon .music-track-row,
+.music-info-panel.viz-style-ribbon .music-progress-bar {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
+}
+.viz-style-toast {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.42);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.viz-style-toast.is-on { opacity: 1; }
+
+/* 2026-11-21 2차 — 설정 > 비주얼라이저: 고른 모양에 맞는 항목만 보인다. 리본은 아이폰 앱에서만
+   (app.js 가 #musicVizOptions 에 viz-ribbon-available 클래스와 data-viz-style 을 단다). */
+#musicVizOptions .viz-style-group,
+#musicVizOptions .viz-only-ribbon,
+#musicVizOptions .viz-only-aurora,
+#musicVizOptions .viz-only-hearth { display: none; }
+#musicVizOptions.viz-ribbon-available .viz-style-group { display: block; }
+#musicVizOptions[data-viz-style="aurora"] .viz-only-ribbon,
+#musicVizOptions[data-viz-style="hearth"] .viz-only-ribbon,
+#musicVizOptions[data-viz-style="aurora"] .viz-only-aurora,
+#musicVizOptions[data-viz-style="hearth"] .viz-only-hearth { display: block; }
+#musicVizOptions[data-viz-style="aurora"] .viz-only-bars,
+#musicVizOptions[data-viz-style="hearth"] .viz-only-bars { display: none; }
+/* 설정 미리보기도 리본이면 리본으로. 미리보기 칸은 상자 안이라 칸 크기 그대로 그린다. */
+.music-ribbon-canvas.music-ribbon-preview { left: 0; top: 0; width: 100%; height: 100%; }
+.music-viz-wrap.viz-preview.viz-style-ribbon .music-ribbon-preview { opacity: 1; }
+.music-viz-wrap.viz-preview.viz-style-ribbon .viz-bar { visibility: hidden; }

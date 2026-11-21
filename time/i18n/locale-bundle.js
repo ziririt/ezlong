@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-09-14T22:06:50.914Z
+ * 생성 시각: 2026-11-21T11:16:46.701Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -84,6 +84,53 @@
         "accentBars": "Accent bars",
         "accentDesc": "The two end bars sparkle on hi-hats and vocal highs.",
         "preview": "Preview",
+        "style": "Style",
+        "styleDesc": "Swipe across the visualizer to change it too.",
+        "ribbon": {
+          "auroraColor": "Aurora color",
+          "hearthColor": "Hearth color",
+          "colors": {
+            "aurora": "Aurora",
+            "violet": "Violet",
+            "ice": "Ice",
+            "ember": "Hearth",
+            "rose": "Sunset",
+            "candle": "Candle"
+          },
+          "flow": "Flow",
+          "flowDesc": "How fast the ribbon drifts.",
+          "flows": {
+            "slow": "Slow",
+            "default": "Default",
+            "fast": "Fast"
+          },
+          "thickness": "Thickness",
+          "thicknesses": {
+            "thin": "Thin",
+            "default": "Default",
+            "rich": "Rich"
+          },
+          "glow": "Glow",
+          "glows": {
+            "soft": "Soft",
+            "default": "Default",
+            "strong": "Strong"
+          },
+          "rays": "Light curtains",
+          "raysDesc": "Aurora rays rising above the ribbon.",
+          "embers": "Embers",
+          "embersDesc": "Sparks that leap on the beat.",
+          "emberLevels": {
+            "off": "Off",
+            "default": "Default",
+            "many": "Lots"
+          }
+        },
+        "styles": {
+          "bars": "Bars",
+          "aurora": "Aurora ribbon",
+          "hearth": "Hearth ribbon"
+        },
         "colors": {
           "rainbow": "Rainbow",
           "halfRainbow": "Half rainbow",
@@ -616,6 +663,53 @@
         "accentBars": "Barras de acento",
         "accentDesc": "Las dos barras de los extremos brillan con los hi-hats y las voces agudas.",
         "preview": "Vista previa",
+        "style": "Estilo",
+        "styleDesc": "Desliza sobre el visualizador para cambiarlo también.",
+        "ribbon": {
+          "auroraColor": "Color de aurora",
+          "hearthColor": "Color de chimenea",
+          "colors": {
+            "aurora": "Aurora",
+            "violet": "Violeta",
+            "ice": "Hielo",
+            "ember": "Chimenea",
+            "rose": "Atardecer",
+            "candle": "Vela"
+          },
+          "flow": "Flujo",
+          "flowDesc": "Qué tan rápido se mueve la cinta.",
+          "flows": {
+            "slow": "Lento",
+            "default": "Normal",
+            "fast": "Rápido"
+          },
+          "thickness": "Grosor",
+          "thicknesses": {
+            "thin": "Fino",
+            "default": "Normal",
+            "rich": "Abundante"
+          },
+          "glow": "Brillo",
+          "glows": {
+            "soft": "Suave",
+            "default": "Normal",
+            "strong": "Intenso"
+          },
+          "rays": "Cortinas de luz",
+          "raysDesc": "Rayos de aurora que suben sobre la cinta.",
+          "embers": "Chispas",
+          "embersDesc": "Chispas que saltan con el ritmo.",
+          "emberLevels": {
+            "off": "Apagado",
+            "default": "Normal",
+            "many": "Muchas"
+          }
+        },
+        "styles": {
+          "bars": "Barras",
+          "aurora": "Cinta de aurora",
+          "hearth": "Cinta de chimenea"
+        },
         "colors": {
           "rainbow": "Arcoíris",
           "halfRainbow": "Medio arcoíris",
@@ -1148,6 +1242,53 @@
         "accentBars": "アクセントバー",
         "accentDesc": "両端の2本がハイハットやボーカルの高音で光ります。",
         "preview": "プレビュー",
+        "style": "形",
+        "styleDesc": "ビジュアライザーを横にスワイプしても切り替わります。",
+        "ribbon": {
+          "auroraColor": "オーロラの色",
+          "hearthColor": "暖炉の色",
+          "colors": {
+            "aurora": "オーロラ",
+            "violet": "バイオレット",
+            "ice": "アイス",
+            "ember": "暖炉",
+            "rose": "夕焼け",
+            "candle": "キャンドル"
+          },
+          "flow": "流れ",
+          "flowDesc": "リボンが流れる速さです。",
+          "flows": {
+            "slow": "ゆっくり",
+            "default": "標準",
+            "fast": "速く"
+          },
+          "thickness": "太さ",
+          "thicknesses": {
+            "thin": "細め",
+            "default": "標準",
+            "rich": "たっぷり"
+          },
+          "glow": "光のにじみ",
+          "glows": {
+            "soft": "控えめ",
+            "default": "標準",
+            "strong": "強め"
+          },
+          "rays": "光のカーテン",
+          "raysDesc": "リボンの上に立ちのぼるオーロラの光です。",
+          "embers": "火の粉",
+          "embersDesc": "ビートに合わせて舞い上がる火の粉です。",
+          "emberLevels": {
+            "off": "オフ",
+            "default": "標準",
+            "many": "多め"
+          }
+        },
+        "styles": {
+          "bars": "バー",
+          "aurora": "オーロラリボン",
+          "hearth": "暖炉リボン"
+        },
         "colors": {
           "rainbow": "レインボー",
           "halfRainbow": "ハーフレインボー",
@@ -1680,6 +1821,53 @@
         "accentBars": "포인트 막대",
         "accentDesc": "맨 끝 막대 2개만 하이햇·보컬 고음 같은 순간에 유독 반짝여요.",
         "preview": "미리보기",
+        "style": "모양",
+        "styleDesc": "비주얼라이저 위를 옆으로 밀어도 바뀌어요.",
+        "ribbon": {
+          "auroraColor": "오로라 색",
+          "hearthColor": "난롯불 색",
+          "colors": {
+            "aurora": "오로라",
+            "violet": "보랏빛",
+            "ice": "얼음",
+            "ember": "난롯불",
+            "rose": "노을",
+            "candle": "촛불"
+          },
+          "flow": "흐름",
+          "flowDesc": "리본이 흘러가는 빠르기예요.",
+          "flows": {
+            "slow": "느리게",
+            "default": "기본",
+            "fast": "빠르게"
+          },
+          "thickness": "굵기",
+          "thicknesses": {
+            "thin": "가늘게",
+            "default": "기본",
+            "rich": "풍성하게"
+          },
+          "glow": "빛번짐",
+          "glows": {
+            "soft": "은은하게",
+            "default": "기본",
+            "strong": "강하게"
+          },
+          "rays": "빛줄기 커튼",
+          "raysDesc": "리본 위로 솟는 오로라 빛줄기예요.",
+          "embers": "불티",
+          "embersDesc": "박자마다 튀어 오르는 불씨예요.",
+          "emberLevels": {
+            "off": "끄기",
+            "default": "기본",
+            "many": "많이"
+          }
+        },
+        "styles": {
+          "bars": "막대",
+          "aurora": "오로라 리본",
+          "hearth": "난롯불 리본"
+        },
         "colors": {
           "rainbow": "무지개",
           "halfRainbow": "반무지개",
@@ -2212,6 +2400,53 @@
         "accentBars": "Barras de destaque",
         "accentDesc": "As duas barras das pontas brilham nos chimbais e nos vocais agudos.",
         "preview": "Prévia",
+        "style": "Estilo",
+        "styleDesc": "Deslize sobre o visualizador para trocar também.",
+        "ribbon": {
+          "auroraColor": "Cor da aurora",
+          "hearthColor": "Cor da lareira",
+          "colors": {
+            "aurora": "Aurora",
+            "violet": "Violeta",
+            "ice": "Gelo",
+            "ember": "Lareira",
+            "rose": "Pôr do sol",
+            "candle": "Vela"
+          },
+          "flow": "Fluxo",
+          "flowDesc": "A velocidade com que a fita flui.",
+          "flows": {
+            "slow": "Lento",
+            "default": "Padrão",
+            "fast": "Rápido"
+          },
+          "thickness": "Espessura",
+          "thicknesses": {
+            "thin": "Fina",
+            "default": "Padrão",
+            "rich": "Volumosa"
+          },
+          "glow": "Brilho",
+          "glows": {
+            "soft": "Suave",
+            "default": "Padrão",
+            "strong": "Forte"
+          },
+          "rays": "Cortinas de luz",
+          "raysDesc": "Raios de aurora que sobem acima da fita.",
+          "embers": "Faíscas",
+          "embersDesc": "Faíscas que saltam no ritmo.",
+          "emberLevels": {
+            "off": "Desligado",
+            "default": "Padrão",
+            "many": "Muitas"
+          }
+        },
+        "styles": {
+          "bars": "Barras",
+          "aurora": "Fita de aurora",
+          "hearth": "Fita de lareira"
+        },
         "colors": {
           "rainbow": "Arco-íris",
           "halfRainbow": "Meio arco-íris",
@@ -2744,6 +2979,53 @@
         "accentBars": "点缀柱",
         "accentDesc": "两端的两根会在踩镲和人声高音时闪动。",
         "preview": "预览",
+        "style": "样式",
+        "styleDesc": "在可视化效果上左右滑动也能切换。",
+        "ribbon": {
+          "auroraColor": "极光颜色",
+          "hearthColor": "炉火颜色",
+          "colors": {
+            "aurora": "极光",
+            "violet": "紫光",
+            "ice": "冰蓝",
+            "ember": "炉火",
+            "rose": "晚霞",
+            "candle": "烛光"
+          },
+          "flow": "流动",
+          "flowDesc": "丝带飘动的速度。",
+          "flows": {
+            "slow": "慢",
+            "default": "默认",
+            "fast": "快"
+          },
+          "thickness": "粗细",
+          "thicknesses": {
+            "thin": "细",
+            "default": "默认",
+            "rich": "丰盈"
+          },
+          "glow": "光晕",
+          "glows": {
+            "soft": "柔和",
+            "default": "默认",
+            "strong": "强烈"
+          },
+          "rays": "光帘",
+          "raysDesc": "丝带上方升起的极光光柱。",
+          "embers": "火星",
+          "embersDesc": "随节拍跃起的火星。",
+          "emberLevels": {
+            "off": "关闭",
+            "default": "默认",
+            "many": "多"
+          }
+        },
+        "styles": {
+          "bars": "柱状",
+          "aurora": "极光丝带",
+          "hearth": "炉火丝带"
+        },
         "colors": {
           "rainbow": "彩虹",
           "halfRainbow": "半彩虹",

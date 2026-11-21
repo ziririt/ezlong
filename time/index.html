@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260906-sleepwave-v11">
+  <link rel="stylesheet" href="styles.css?v=20261121-winterviz2-v13">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -187,7 +187,11 @@
                    appendChild로 26개 막대를 "추가"만 하지 innerHTML을 지우지
                    않으므로, 이 정적 엘리먼트는 지워지지 않고 항상 막대들보다
                    먼저(즉, 그 위에 겹쳐) 그려진다. -->
+              <!-- 2026-11-21 — 리본 모양(오로라·난롯불)을 그리는 캔버스와, 가로로 밀어 모양을
+                   바꿨을 때 잠깐 뜨는 이름표(app.js MUSIC_VIZ_STYLES 참조). -->
+              <canvas class="music-ribbon-canvas" id="musicRibbonCanvas" aria-hidden="true"></canvas>
               <div class="music-leave-work" id="musicLeaveWork" aria-hidden="true">Clock out, live up.</div>
+              <div class="viz-style-toast" id="vizStyleToast" aria-hidden="true"></div>
               <!-- 2026-08-05 운영 요청 — 음악이 멈춰 있을 때 비주얼라이저
                    한가운데에 뜨는 크고 투명한 재생 버튼. 재생이 시작되면
                    스스로 물러난다(app.js musicToggle의 is-playing 토글이
@@ -422,7 +426,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.113</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.115</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -635,7 +639,19 @@
           <h3 class="settings-subtitle" data-i18n="settings.visualizer.heading">비주얼라이저</h3>
           <p class="settings-desc settings-desc-muted" data-i18n="settings.visualizer.desc">색상과 반응 스타일을 취향대로 바꿔보세요.</p>
           <div id="musicVizOptions">
-            <div class="viz-option-group">
+            <!-- 2026-11-21 — 맨 위 "모양"과 리본 전용 항목은 아이폰 앱에서만 보인다(app.js
+                 MUSIC_VIZ_RIBBON_AVAILABLE). 고른 모양에 맞는 항목만 보인다 — 막대 전용은
+                 viz-only-bars, 리본 공통은 viz-only-ribbon, 각 리본 전용은 viz-only-aurora/hearth. -->
+            <div class="viz-option-group viz-style-group">
+              <p class="viz-option-label" data-i18n="settings.visualizer.style">모양</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.styleDesc">비주얼라이저 위를 옆으로 밀어도 바뀌어요.</p>
+              <div class="viz-option-row" data-viz-group="style">
+                <button type="button" class="viz-chip" data-viz-value="bars" data-i18n="settings.visualizer.styles.bars">막대</button>
+                <button type="button" class="viz-chip" data-viz-value="aurora" data-i18n="settings.visualizer.styles.aurora">오로라 리본</button>
+                <button type="button" class="viz-chip" data-viz-value="hearth" data-i18n="settings.visualizer.styles.hearth">난롯불 리본</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.color">색상</p>
               <div class="viz-option-row" data-viz-group="color">
                 <button type="button" class="viz-chip" data-viz-value="rainbow" data-i18n="settings.visualizer.colors.rainbow">무지개</button>
@@ -667,7 +683,66 @@
                 <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.kickLevels.strong">강하게</button>
               </div>
             </div>
-            <div class="viz-option-group">
+            <!-- 2026-11-21 — 리본 세부 설정 -->
+            <div class="viz-option-group viz-only-aurora">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.auroraColor">오로라 색</p>
+              <div class="viz-option-row" data-viz-group="auroraColor">
+                <button type="button" class="viz-chip" data-viz-value="aurora" data-i18n="settings.visualizer.ribbon.colors.aurora">오로라</button>
+                <button type="button" class="viz-chip" data-viz-value="violet" data-i18n="settings.visualizer.ribbon.colors.violet">보랏빛</button>
+                <button type="button" class="viz-chip" data-viz-value="ice" data-i18n="settings.visualizer.ribbon.colors.ice">얼음</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-hearth">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.hearthColor">난롯불 색</p>
+              <div class="viz-option-row" data-viz-group="hearthColor">
+                <button type="button" class="viz-chip" data-viz-value="ember" data-i18n="settings.visualizer.ribbon.colors.ember">난롯불</button>
+                <button type="button" class="viz-chip" data-viz-value="rose" data-i18n="settings.visualizer.ribbon.colors.rose">노을</button>
+                <button type="button" class="viz-chip" data-viz-value="candle" data-i18n="settings.visualizer.ribbon.colors.candle">촛불</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-ribbon">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.flow">흐름</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.ribbon.flowDesc">리본이 흘러가는 빠르기예요.</p>
+              <div class="viz-option-row" data-viz-group="ribbonFlow">
+                <button type="button" class="viz-chip" data-viz-value="slow" data-i18n="settings.visualizer.ribbon.flows.slow">느리게</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.ribbon.flows.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="fast" data-i18n="settings.visualizer.ribbon.flows.fast">빠르게</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-ribbon">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.thickness">굵기</p>
+              <div class="viz-option-row" data-viz-group="ribbonThickness">
+                <button type="button" class="viz-chip" data-viz-value="thin" data-i18n="settings.visualizer.ribbon.thicknesses.thin">가늘게</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.ribbon.thicknesses.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="rich" data-i18n="settings.visualizer.ribbon.thicknesses.rich">풍성하게</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-ribbon">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.glow">빛번짐</p>
+              <div class="viz-option-row" data-viz-group="ribbonGlow">
+                <button type="button" class="viz-chip" data-viz-value="soft" data-i18n="settings.visualizer.ribbon.glows.soft">은은하게</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.ribbon.glows.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.ribbon.glows.strong">강하게</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-aurora">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.rays">빛줄기 커튼</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.ribbon.raysDesc">리본 위로 솟는 오로라 빛줄기예요.</p>
+              <div class="viz-option-row" data-viz-group="auroraRays">
+                <button type="button" class="viz-chip" data-viz-value="off" data-i18n="settings.visualizer.toggle.off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="on" data-i18n="settings.visualizer.toggle.on">켜기</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-hearth">
+              <p class="viz-option-label" data-i18n="settings.visualizer.ribbon.embers">불티</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.ribbon.embersDesc">박자마다 튀어 오르는 불씨예요.</p>
+              <div class="viz-option-row" data-viz-group="hearthEmbers">
+                <button type="button" class="viz-chip" data-viz-value="off" data-i18n="settings.visualizer.ribbon.emberLevels.off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.ribbon.emberLevels.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="many" data-i18n="settings.visualizer.ribbon.emberLevels.many">많이</button>
+              </div>
+            </div>
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.barShape">막대 모양</p>
               <div class="viz-option-row" data-viz-group="shape">
                 <button type="button" class="viz-chip" data-viz-value="capsule" data-i18n="settings.visualizer.shapes.capsule">캡슐</button>
@@ -675,7 +750,7 @@
                 <button type="button" class="viz-chip" data-viz-value="line" data-i18n="settings.visualizer.shapes.line">라인</button>
               </div>
             </div>
-            <div class="viz-option-group">
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.density">밀도</p>
               <div class="viz-option-row" data-viz-group="density">
                 <button type="button" class="viz-chip" data-viz-value="dense" data-i18n="settings.visualizer.densities.tight">촘촘히</button>
@@ -683,7 +758,7 @@
                 <button type="button" class="viz-chip" data-viz-value="wide" data-i18n="settings.visualizer.densities.loose">넉넉히</button>
               </div>
             </div>
-            <div class="viz-option-group">
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.layout">좌우 배치</p>
               <div class="viz-option-row" data-viz-group="layout">
                 <button type="button" class="viz-chip" data-viz-value="sweep" data-i18n="settings.visualizer.layouts.sweep">스윕</button>
@@ -694,7 +769,7 @@
                  "특정 고음역에만 유독 예민한 막대 두어개". 감도(전체 크기)와는
                  별개 축이라 두 옵션 다 감도와 조합해서 쓸 수 있다(app.js
                  getVizContrastAmount/isVizPointBarsOn 참조). -->
-            <div class="viz-option-group">
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.contrast">대비</p>
               <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.contrastDesc">고음과 저음의 높낮이 차이를 더 크게 벌려요.</p>
               <div class="viz-option-row" data-viz-group="contrast">
@@ -703,7 +778,7 @@
                 <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.contrasts.strong">강하게</button>
               </div>
             </div>
-            <div class="viz-option-group">
+            <div class="viz-option-group viz-only-bars">
               <p class="viz-option-label" data-i18n="settings.visualizer.accentBars">포인트 막대</p>
               <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.accentDesc">맨 끝 막대 2개만 하이햇·보컬 고음 같은 순간에 유독 반짝여요.</p>
               <div class="viz-option-row" data-viz-group="pointBars">
@@ -725,7 +800,7 @@
                참조). 설정 시트가 열려있는 동안 애니메이션 루프가 돌아간다. -->
           <div class="viz-preview-block">
             <p class="viz-option-label" data-i18n="settings.visualizer.preview">미리보기</p>
-            <div class="music-viz-wrap viz-preview" id="musicVizPreviewWrap" aria-hidden="true"></div>
+            <div class="music-viz-wrap viz-preview" id="musicVizPreviewWrap" aria-hidden="true"><canvas class="music-ribbon-canvas music-ribbon-preview" id="musicRibbonPreviewCanvas" aria-hidden="true"></canvas></div>
           </div>
         </section>
 
@@ -1282,7 +1357,7 @@
   <script src="i18n/season.js?v=20260831-latesummer-v14"></script>
   <script src="i18n/region.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-source.js?v=20260809-amazonlink-v2"></script>
-  <script src="i18n/locale-bundle.js?v=20260912-alarmoff-v36"></script>
+  <script src="i18n/locale-bundle.js?v=20261121-winterviz2-v38"></script>
   <script src="i18n/index.js?v=20260728-i18n-v13"></script>
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
@@ -1328,7 +1403,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20261110-legacyios-v72"></script>
+  <script src="app.js?v=20261121-winterviz2-v74"></script>
 
   </body>
 </html>

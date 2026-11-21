@@ -6499,7 +6499,15 @@ const MUSIC_VIZ_SETTINGS_DEFAULT = {
   layout: "sweep",        // sweep | mirror
   idle: "breathe",        // breathe | sparkle | minimal
   contrast: "normal",     // normal | boost | strong — 고음/저음 차이 강조 정도
-  pointBars: "off"        // off | on — 맨 끝 2개 막대만 고음 트랜지언트에 유독 예민하게
+  pointBars: "off",       // off | on — 맨 끝 2개 막대만 고음 트랜지언트에 유독 예민하게
+  // 2026-11-21 — 리본(오로라·난롯불) 세부 설정. 아이폰 앱에서만 화면에 보인다.
+  auroraColor: "aurora",  // aurora | violet | ice
+  hearthColor: "ember",   // ember | rose | candle
+  ribbonFlow: "normal",   // slow | normal | fast — 흐르는 빠르기
+  ribbonThickness: "normal", // thin | normal | rich — 실 가닥 수와 폭
+  ribbonGlow: "normal",   // soft | normal | strong — 빛번짐
+  auroraRays: "on",       // off | on — 오로라 빛줄기 커튼
+  hearthEmbers: "normal"  // off | normal | many — 난롯불 불티
 };
 const musicVizSettingsStorageKey = "ezlong:musicVizSettings";
 let musicVizSettings = { ...MUSIC_VIZ_SETTINGS_DEFAULT };
@@ -6611,18 +6619,21 @@ function writeVizBarsToDom() {
   const nowTs = performance.now();
   if (nowTs - vizBarsLastWriteTs < VIZ_BAR_WRITE_MIN_INTERVAL_MS) return;
   vizBarsLastWriteTs = nowTs;
+  // 2026-11-21 — 리본 모양이면 본화면 막대 대신 리본을 그린다(설정 미리보기 막대는 그대로).
+  const ribbonOn = typeof isMusicVizRibbonStyle === "function" && isMusicVizRibbonStyle();
+  if (ribbonOn) drawMusicRibbonFrame();
   const n = MUSIC_VIZ_BAR_COUNT;
   for (let j = 0; j < n; j++) {
     const src = vizMirrorSourceIndex(j, n);
     const height = Math.round(musicVizBars[src]) + "px";
     const intensity = (musicVizIntensity[src] || 0).toFixed(3);
-    if (musicVizBarEls) {
+    if (musicVizBarEls && !ribbonOn) {
       musicVizBarEls[j].style.height = height;
       musicVizBarEls[j].style.setProperty("--bar-intensity", intensity);
     }
     // 2026-07-22 유저 요청 — 설정 페이지 미리보기 막대도 같은 값으로 동시에
     // 갱신한다(본화면과 완전히 동일한 오디오 반응, 별도 계산 없음).
-    if (musicVizPreviewBarEls) {
+    if (musicVizPreviewBarEls && !ribbonOn) {
       musicVizPreviewBarEls[j].style.height = height;
       musicVizPreviewBarEls[j].style.setProperty("--bar-intensity", intensity);
     }
@@ -6746,6 +6757,394 @@ function buildVizBarsInto(wrap) {
   wrap.appendChild(frag);
   return els;
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// 2026-11-21 운영 요청 — 비주얼라이저 모양 세 가지: 막대 · 오로라 리본 · 난롯불 리본.
+//   · 비주얼라이저 위를 **가로로 밀면** 세 모양이 돌아가며 바뀐다. 설정의 "모양"에서도 고른다.
+//   · 첫 실행 기본값은 계절로 정한다 — 3~9월은 막대, 10~2월은 오로라.
+//   · 음악을 틀어 실제로 쓴 모양(또는 설정에서 고른 모양)을 기억해 다음 실행의 기본으로 쓴다.
+//     재생 없이 밀어 보기만 한 것은 저장하지 않는다.
+//   · 막대만 유리 상자 안에 있고, 리본 두 가지는 상자 없이 배경사진 위에 바로 뜬다.
+//   · **일단 아이폰 앱에만**(운영자 2026-11-21 20:12). 안드로이드·일반 웹은 막대만 — 밀어도
+//     바뀌지 않고 설정에도 리본 항목이 안 보인다. 검사용으로만 ?vizribbon=1 이 웹에서 연다.
+// 소리는 새로 받지 않는다. 웹(AnalyserNode)·아이폰(3대역)·안드로이드(24대역) 세 경로가
+// 모두 마지막에 musicVizIntensity(0..1) 를 채우고 writeVizBarsToDom() 을 부르므로,
+// 리본은 그 배열만 읽는다 — 감도 설정도 그 값에 이미 들어 있다.
+// 시안: https://claude.ai/artifact/6JaxK2zUDy7ovNabJ2HUCe (2026-11-21 운영자 채택)
+// ─────────────────────────────────────────────────────────────────────
+const MUSIC_VIZ_STYLES = ["bars", "aurora", "hearth"];
+const MUSIC_VIZ_RIBBON_AVAILABLE = nativePlatformKey === "ios"
+  || new URLSearchParams(window.location.search).get("vizribbon") === "1";
+const musicVizStyleStorageKey = "ezlong:musicVizStyle";
+function musicVizSeasonDefaultStyle() {
+  const m = new Date().getMonth() + 1;
+  return (m >= 3 && m <= 9) ? "bars" : "aurora";
+}
+let musicVizStyleSaved = null;
+try {
+  const saved = localStorage.getItem(musicVizStyleStorageKey);
+  if (MUSIC_VIZ_STYLES.indexOf(saved) >= 0) musicVizStyleSaved = saved;
+} catch (e) { /* 저장소가 막힌 환경 — 계절 기본값으로 간다 */ }
+let musicVizStyle = MUSIC_VIZ_RIBBON_AVAILABLE ? (musicVizStyleSaved || musicVizSeasonDefaultStyle()) : "bars";
+
+// 음악이 실제로 재생되는 동안에만 부른다(drawMusicViz). 값이 바뀐 때만 쓴다.
+// 리본을 못 쓰는 환경(안드로이드·웹)에서는 아이폰에서 고른 값을 덮지 않도록 아무것도 안 한다.
+function noteMusicVizStyleInUse() {
+  if (!MUSIC_VIZ_RIBBON_AVAILABLE || musicVizStyleSaved === musicVizStyle) return;
+  musicVizStyleSaved = musicVizStyle;
+  try { localStorage.setItem(musicVizStyleStorageKey, musicVizStyle); } catch (e) { /* 무시 */ }
+}
+
+function isMusicVizRibbonStyle() { return musicVizStyle !== "bars"; }
+
+function applyMusicVizStyleClass() {
+  if (musicInfoPanel) {
+    musicInfoPanel.classList.toggle("viz-style-ribbon", isMusicVizRibbonStyle());
+    musicInfoPanel.dataset.vizStyle = musicVizStyle;
+  }
+  if (musicVizPreviewWrap) musicVizPreviewWrap.classList.toggle("viz-style-ribbon", isMusicVizRibbonStyle());
+  if (musicVizOptionsEl) {
+    musicVizOptionsEl.dataset.vizStyle = musicVizStyle;
+    musicVizOptionsEl.classList.toggle("viz-ribbon-available", MUSIC_VIZ_RIBBON_AVAILABLE);
+  }
+}
+
+const vizStyleToast = document.getElementById("vizStyleToast");
+let vizStyleToastTimer = null;
+function showVizStyleToast() {
+  if (!vizStyleToast) return;
+  vizStyleToast.textContent = t("settings.visualizer.styles." + musicVizStyle, null, musicVizStyle);
+  vizStyleToast.classList.remove("is-on");
+  void vizStyleToast.offsetWidth;
+  vizStyleToast.classList.add("is-on");
+  if (vizStyleToastTimer) window.clearTimeout(vizStyleToastTimer);
+  vizStyleToastTimer = window.setTimeout(function () { vizStyleToast.classList.remove("is-on"); }, 1400);
+}
+
+// opts.toast: 이름표 띄우기 · opts.save: 바로 기억(설정에서 직접 고른 경우)
+function setMusicVizStyle(style, opts) {
+  if (!MUSIC_VIZ_RIBBON_AVAILABLE || MUSIC_VIZ_STYLES.indexOf(style) < 0) return;
+  musicVizStyle = style;
+  ribbonRenderers.forEach(function (r) { r.reset(); });
+  applyMusicVizStyleClass();
+  if (opts && opts.toast) showVizStyleToast();
+  const playingNow = typeof musicPlaying !== "undefined" && musicPlaying;
+  if ((opts && opts.save) || playingNow) noteMusicVizStyleInUse();
+  if (typeof renderMusicVizSettingsUI === "function") renderMusicVizSettingsUI();
+  // 멈춰 있어 그리기 고리가 끝나 있으면 한 번 다시 돌려 새 모양을 그려 둔다.
+  vizBarsLastWriteTs = 0;
+  if (!musicVizAnimId && typeof drawMusicViz === "function" && isMusicVizActiveContext()) drawMusicViz();
+}
+
+function cycleMusicVizStyle(dir) {
+  const i = MUSIC_VIZ_STYLES.indexOf(musicVizStyle);
+  const n = MUSIC_VIZ_STYLES.length;
+  setMusicVizStyle(MUSIC_VIZ_STYLES[((i + dir) % n + n) % n], { toast: true });
+}
+
+// 비주얼라이저 위 가로 밀기. 화면 전체의 "가로 밀기 = 사진·문장 넘김"(skyRoom)이
+// 이 터치도 받으면 안 되므로, 달력과 같은 방식으로 **확실한 가로 밀기로 판정된
+// 순간에만** 위로 올라가는 것을 막는다. 짧은 탭(가운데 재생 단추)과 세로 밀기는 그대로 통과.
+// 리본을 못 쓰는 환경에서는 아예 걸지 않는다 — 예전처럼 사진·문장이 넘어간다.
+if (musicVizWrap && MUSIC_VIZ_RIBBON_AVAILABLE) {
+  let vizSwipeStart = null;
+  musicVizWrap.addEventListener("touchstart", function (event) {
+    const touch = event.touches[0];
+    vizSwipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+  musicVizWrap.addEventListener("touchcancel", function () { vizSwipeStart = null; }, { passive: true });
+  musicVizWrap.addEventListener("touchend", function (event) {
+    if (!vizSwipeStart) return;
+    const touch = event.changedTouches[0];
+    const start = vizSwipeStart;
+    vizSwipeStart = null;
+    if (!touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (!(Math.abs(dx) > Math.abs(dy) * 1.2 && Math.abs(dx) > 40)) return;
+    event.stopPropagation();
+    cycleMusicVizStyle(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  let vizMouseStart = null;
+  musicVizWrap.addEventListener("pointerdown", function (event) {
+    vizMouseStart = event.pointerType === "mouse" ? { x: event.clientX, y: event.clientY } : null;
+  });
+  musicVizWrap.addEventListener("pointerup", function (event) {
+    if (!vizMouseStart || event.pointerType !== "mouse") return;
+    const dx = event.clientX - vizMouseStart.x;
+    const dy = event.clientY - vizMouseStart.y;
+    vizMouseStart = null;
+    if (Math.abs(dx) > Math.abs(dy) * 1.2 && Math.abs(dx) > 40) cycleMusicVizStyle(dx < 0 ? 1 : -1);
+  });
+}
+
+// ── 리본 세부 설정(설정 > 비주얼라이저, musicVizSettings 에 함께 저장) ──
+const RIBBON_PALETTES = {
+  // 오로라
+  aurora: { a1: [[0, "#7a7dff"], [0.25, "#3fe0d2"], [0.5, "#46ffb0"], [0.75, "#3fd8ff"], [1, "#b78aff"]], a2: [[0, "#46ffb0"], [0.4, "#5fffd0"], [0.7, "#8a8cff"], [1, "#ff8ad0"]], rays: "70,255,190" },
+  violet: { a1: [[0, "#6a5cff"], [0.3, "#a07bff"], [0.55, "#e08aff"], [0.8, "#ff9ad8"], [1, "#8a7dff"]], a2: [[0, "#b18cff"], [0.5, "#ff9ad8"], [1, "#7a8cff"]], rays: "190,140,255" },
+  ice: { a1: [[0, "#a9c8ff"], [0.3, "#cfe9ff"], [0.55, "#ffffff"], [0.8, "#d6f0ff"], [1, "#a9c8ff"]], a2: [[0, "#ffffff"], [0.5, "#d6ecff"], [1, "#a9d0ff"]], rays: "200,230,255" },
+  // 난롯불
+  ember: { a1: [[0, "#ff7a5c"], [0.3, "#ffae55"], [0.55, "#ffd08a"], [0.8, "#ff9a6a"], [1, "#ff7f8a"]], a2: [[0, "#ffc070"], [0.5, "#ff8a5c"], [1, "#ffd9a8"]], glow: "255,140,80", flame: ["255,120,60", "255,150,80", "255,210,140"], spark: "255,196,120" },
+  rose: { a1: [[0, "#ff6f91"], [0.3, "#ff9a8b"], [0.55, "#ffc3a0"], [0.8, "#ff8fab"], [1, "#ff6f91"]], a2: [[0, "#ffb3c1"], [0.5, "#ff8fa3"], [1, "#ffd6c9"]], glow: "255,120,140", flame: ["255,100,130", "255,140,150", "255,200,190"], spark: "255,170,180" },
+  candle: { a1: [[0, "#ffc960"], [0.3, "#ffe2a0"], [0.55, "#fff3d6"], [0.8, "#ffe7a8"], [1, "#ffd27a"]], a2: [[0, "#fff0c2"], [0.5, "#ffd98a"], [1, "#fff7e0"]], glow: "255,210,140", flame: ["255,190,90", "255,215,140", "255,240,200"], spark: "255,226,160" },
+};
+function ribbonOpt(key, map, fallback) { const v = map[musicVizSettings[key]]; return typeof v === "number" ? v : fallback; }
+function ribbonFlowMul() { return ribbonOpt("ribbonFlow", { slow: 0.6, normal: 1, fast: 1.6 }, 1); }
+function ribbonThickness() {
+  const k = musicVizSettings.ribbonThickness;
+  if (k === "thin") return { strands: 0.65, h: 0.8, lw: 0.85 };
+  if (k === "rich") return { strands: 1.35, h: 1.2, lw: 1.1 };
+  return { strands: 1, h: 1, lw: 1 };
+}
+function ribbonGlowMul() { return ribbonOpt("ribbonGlow", { soft: 0.5, normal: 1, strong: 1.6 }, 1); }
+function ribbonPunchMul() { return ribbonOpt("bassPunch", { off: 0, normal: 1, strong: 1.7 }, 1); }
+function ribbonEmberMul() { return ribbonOpt("hearthEmbers", { off: 0, normal: 1, many: 2 }, 1); }
+
+// ── 리본 그리기 — 본화면 하나, 설정 미리보기 하나(각자 상태를 따로 갖는다) ──
+const RIBBON_NB = 34, RIBBON_PTS = 64;
+const ribbonX = new Float32Array(RIBBON_PTS + 1), ribbonM = new Float32Array(RIBBON_PTS + 1),
+  ribbonT = new Float32Array(RIBBON_PTS + 1), ribbonTw = new Float32Array(RIBBON_PTS + 1), ribbonY = new Float32Array(RIBBON_PTS + 1);
+function makeRibbonCanvas(w, h) { const c = document.createElement("canvas"); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; }
+const ribbonSparkCache = {};
+function ribbonSpark(rgb) {
+  if (ribbonSparkCache[rgb]) return ribbonSparkCache[rgb];
+  const c = makeRibbonCanvas(32, 32), x = c.getContext("2d"), g = x.createRadialGradient(16, 16, 0, 16, 16, 16);
+  g.addColorStop(0, "rgba(" + rgb + ",1)"); g.addColorStop(0.3, "rgba(" + rgb + ",0.7)");
+  g.addColorStop(0.65, "rgba(" + rgb + ",0.15)"); g.addColorStop(1, "rgba(" + rgb + ",0)");
+  x.fillStyle = g; x.fillRect(0, 0, 32, 32);
+  ribbonSparkCache[rgb] = c; return c;
+}
+const ribbonNoise = (function () {
+  const c = makeRibbonCanvas(96, 96), x = c.getContext("2d"), d = x.createImageData(96, 96);
+  for (let i = 0; i < d.data.length; i += 4) d.data[i + 3] = Math.random() < 0.5 ? Math.random() * 255 : 0;
+  x.putImageData(d, 0, 0); return c;
+})();
+function ribbonSmoothPath(c, xs, ys, n) {
+  c.moveTo(xs[0], ys[0]);
+  for (let i = 1; i < n - 1; i++) c.quadraticCurveTo(xs[i], ys[i], (xs[i] + xs[i + 1]) / 2, (ys[i] + ys[i + 1]) / 2);
+  c.lineTo(xs[n - 1], ys[n - 1]);
+}
+
+function createRibbonRenderer(canvas, wrapEl) {
+  if (!canvas || !wrapEl) return null;
+  const c = canvas.getContext("2d");
+  if (!c) return null;
+  const glow1 = makeRibbonCanvas(2, 2), glow2 = makeRibbonCanvas(2, 2), rays = makeRibbonCanvas(110, 36);
+  const S = {
+    bands: new Float32Array(RIBBON_NB), prev: new Float32Array(RIBBON_NB),
+    bass: 0, mid: 0, high: 0, level: 0, beat: 0, beatNow: false, lastBeat: 0, bassAvg: 0.1, fluxAvg: 0.02,
+    lastTs: 0, time: 0, flow: 0, pulse: 0, embers: [], w: 0, h: 0, dpr: 1, grads: {}, noise: null,
+  };
+  function sample(x) {
+    x = Math.min(1, Math.max(0, x)) * (RIBBON_NB - 1);
+    const i = Math.floor(x), f = x - i;
+    return S.bands[i] + (S.bands[Math.min(RIBBON_NB - 1, i + 1)] - S.bands[i]) * f;
+  }
+  function analyze(dt, nowS, live) {
+    const src = musicVizIntensity, n = src.length || 1;
+    for (let i = 0; i < RIBBON_NB; i++) {
+      const p = (i / (RIBBON_NB - 1)) * (n - 1), lo = Math.floor(p), hi = Math.min(n - 1, lo + 1), f = p - lo;
+      const v = Math.min(1, ((src[lo] || 0) * (1 - f) + (src[hi] || 0) * f) * 1.05);
+      S.bands[i] += (v - S.bands[i]) * (v > S.bands[i] ? 0.55 : 0.22);
+    }
+    let b = 0, m = 0, h = 0;
+    for (let i = 0; i < 7; i++) b += S.bands[i];
+    for (let i = 7; i < 20; i++) m += S.bands[i];
+    for (let i = 20; i < RIBBON_NB; i++) h += S.bands[i];
+    S.bass = b / 7; S.mid = m / 13; S.high = h / (RIBBON_NB - 20);
+    S.level = (b + m + h) / RIBBON_NB;
+    // 박자: 저음이 갑자기 오르거나, 새 음이 터지는 순간(피아노·첼로처럼 킥이 없는 곡도 잡힌다).
+    let flux = 0;
+    for (let i = 0; i < RIBBON_NB; i++) { const d = S.bands[i] - S.prev[i]; if (d > 0) flux += d; S.prev[i] = S.bands[i]; }
+    flux /= RIBBON_NB;
+    S.bassAvg += (S.bass - S.bassAvg) * (1 - Math.pow(0.96, dt * 60));
+    S.fluxAvg += (flux - S.fluxAvg) * (1 - Math.pow(0.95, dt * 60));
+    S.beatNow = false;
+    const punch = ribbonPunchMul();
+    if (live && punch > 0 && ((S.bass > S.bassAvg * 1.16 && S.bass > 0.1) || (flux > S.fluxAvg * 1.8 && flux > 0.006)) && nowS - S.lastBeat > 0.24) {
+      S.beat = Math.min(1, punch); S.lastBeat = nowS; S.beatNow = true;
+    }
+    S.beat *= Math.pow(0.03, dt);
+  }
+  function mid(u, t, o) {
+    return o.cy + (Math.sin(u * Math.PI * 1.8 + t * 0.35 * o.speed + o.seed) * (0.5 + S.bass * 1.2)
+      + Math.sin(u * Math.PI * 3.8 - t * 0.5 * o.speed + o.seed * 1.7) * (0.2 + S.mid * 0.85)
+      + Math.sin(u * Math.PI * 8.6 + t * 0.9 * o.speed + o.seed * 2.3) * (0.05 + S.high * 0.5)) * o.h * 0.5;
+  }
+  function strands(t, o, W) {
+    for (let j = 0; j <= RIBBON_PTS; j++) {
+      const u = j / RIBBON_PTS;
+      ribbonX[j] = -W * 0.04 + u * W * 1.08;
+      ribbonM[j] = mid(u, t, o);
+      const env = Math.pow(Math.sin(Math.PI * Math.min(1, Math.max(0, u))), 0.6);
+      ribbonT[j] = (o.h * (0.16 + 0.62 * sample(Math.abs(u - 0.5) * 1.6) + 0.22 * S.level)) * env + 1;
+      ribbonTw[j] = 0.25 + 0.75 * Math.sin(u * Math.PI * 1.4 - t * 0.38 * o.speed + o.seed * 3);
+    }
+    c.strokeStyle = o.grad; c.lineWidth = o.lw;
+    const count = Math.max(6, Math.round(o.strands));
+    for (let s = 0; s < count; s++) {
+      const v = -1 + 2 * s / (count - 1);
+      for (let j = 0; j <= RIBBON_PTS; j++) ribbonY[j] = ribbonM[j] + v * ribbonT[j] * ribbonTw[j] + Math.sin(j * 0.24 + v * 2.2 + t * 0.6) * ribbonT[j] * 0.05;
+      c.globalAlpha = o.alpha * (1 - 0.35 * v * v);
+      c.beginPath(); ribbonSmoothPath(c, ribbonX, ribbonY, RIBBON_PTS + 1); c.stroke();
+    }
+    c.globalAlpha = 1;
+  }
+  function grad(name, stops, W) {
+    const key = name + "@" + W;
+    if (!S.grads[key]) {
+      const g = c.createLinearGradient(0, 0, W, 0);
+      stops.forEach(function (s) { g.addColorStop(s[0], s[1]); });
+      S.grads[key] = g;
+    }
+    return S.grads[key];
+  }
+  function bloom(W, H, a1, a2) {
+    const x1 = glow1.getContext("2d"), x2 = glow2.getContext("2d");
+    x1.clearRect(0, 0, glow1.width, glow1.height); x1.drawImage(canvas, 0, 0, glow1.width, glow1.height);
+    x2.clearRect(0, 0, glow2.width, glow2.height); x2.drawImage(glow1, 0, 0, glow2.width, glow2.height);
+    c.save(); c.globalCompositeOperation = "lighter";
+    c.globalAlpha = Math.min(1, a1); c.drawImage(glow1, 0, 0, W, H);
+    c.globalAlpha = Math.min(1, a2); c.drawImage(glow2, 0, 0, W, H);
+    c.restore();
+  }
+  function grain(W, H, a) {
+    if (!S.noise) S.noise = c.createPattern(ribbonNoise, "repeat");
+    c.save(); c.globalCompositeOperation = "destination-out"; c.globalAlpha = a;
+    c.translate(-Math.random() * 96, -Math.random() * 96);
+    c.fillStyle = S.noise; c.fillRect(0, 0, W + 96, H + 96);
+    c.restore();
+  }
+  function draw(live) {
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    if (!W || !H) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (W !== S.w || H !== S.h || dpr !== S.dpr) {
+      S.w = W; S.h = H; S.dpr = dpr;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      glow1.width = Math.ceil(canvas.width / 4); glow1.height = Math.ceil(canvas.height / 4);
+      glow2.width = Math.ceil(canvas.width / 10); glow2.height = Math.ceil(canvas.height / 10);
+      rays.width = 110; rays.height = Math.max(8, Math.round(110 * H / W));
+      S.grads = {}; S.noise = null;
+    }
+    const nowMs = performance.now();
+    const dt = S.lastTs ? Math.min(0.1, (nowMs - S.lastTs) / 1000) : 1 / 30;
+    S.lastTs = nowMs;
+    const tReal = nowMs / 1000;
+    analyze(dt, tReal, live);
+    const flowMul = ribbonFlowMul(), thick = ribbonThickness(), glowMul = ribbonGlowMul();
+    S.time += dt * flowMul;
+    const t = S.time;
+
+    // 원래 막대 칸(wrapEl)이 캔버스 안에서 차지하는 자리 — 본화면 캔버스는 패널 안쪽 여백까지 넓다.
+    const wrapH = wrapEl.clientHeight || H * 0.8;
+    const top = H - wrapH;
+    const cy = top + wrapH * 0.44, hh = wrapH * 0.58 * thick.h;
+
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.globalCompositeOperation = "source-over"; c.globalAlpha = 1;
+    c.clearRect(0, 0, W, H);
+    const rc = rays.getContext("2d"), k = rays.width / W;
+
+    if (musicVizStyle === "aurora") {
+      const pal = RIBBON_PALETTES[musicVizSettings.auroraColor] || RIBBON_PALETTES.aurora;
+      const o1 = { cy: cy, h: hh, strands: 38 * thick.strands, grad: grad("a1" + musicVizSettings.auroraColor, pal.a1, W), alpha: 0.085, seed: 1.3, speed: 1, lw: 1 * thick.lw };
+      const o2 = { cy: cy + hh * 0.22, h: hh * 0.68, strands: 26 * thick.strands, grad: grad("a2" + musicVizSettings.auroraColor, pal.a2, W), alpha: 0.07, seed: 4.1, speed: 0.8, lw: 0.9 * thick.lw };
+      c.save(); c.globalCompositeOperation = "lighter";
+      if (musicVizSettings.auroraRays !== "off") {
+        // 빛줄기 커튼 — 저해상도에 그려 키우면 저절로 부드럽게 번진다(줄무늬 방지).
+        rc.setTransform(k, 0, 0, k, 0, 0); rc.clearRect(0, 0, W, H);
+        const rg = rc.createLinearGradient(0, 0, 0, cy + hh * 0.2);
+        rg.addColorStop(0, "rgba(" + pal.rays + ",0)"); rg.addColorStop(0.6, "rgba(" + pal.rays + ",0.10)"); rg.addColorStop(1, "rgba(" + pal.rays + ",0.2)");
+        rc.fillStyle = rg;
+        const sx = W / 70;
+        for (let x = 0; x < W; x += sx) {
+          const u = x / W, m = mid(u, t, o1);
+          const it = sample(Math.abs(u - 0.5) * 1.6) * 0.9 + 0.12 + S.beat * 0.12;
+          const len = hh * (0.5 + 1.3 * it) * (0.75 + 0.25 * Math.sin(u * 7 + t * 0.35));
+          rc.fillRect(x, m - len, sx * 1.05, len);
+        }
+        c.drawImage(rays, 0, 0, W, H);
+      }
+      strands(t, o1, W); strands(t, o2, W);
+      c.restore();
+      grain(W, H, 0.22);
+      bloom(W, H, 0.55 * glowMul, 0.85 * glowMul);
+      return;
+    }
+
+    // 난롯불 — 시간이 아니라 음악이 흐름을 민다. 조용하면 거의 멈추고, 소리가 커지면 흐르고, 박자에 부푼다.
+    const pal = RIBBON_PALETTES[musicVizSettings.hearthColor] || RIBBON_PALETTES.ember;
+    S.flow += dt * flowMul * (0.08 + S.level * 2.2 + S.beat * 1.6);
+    S.pulse += ((S.beat * 0.9 + S.bass * 0.6) - S.pulse) * (1 - Math.pow(0.8, dt * 60));
+    const ht = S.flow;
+    const amp = 0.55 + S.level * 1.25 + S.pulse * 0.55, bright = 0.55 + S.level * 1.1 + S.pulse * 0.7;
+    const o1 = { cy: cy + 2, h: hh * amp, strands: 42 * thick.strands, grad: grad("h1" + musicVizSettings.hearthColor, pal.a1, W), alpha: 0.075 * bright, seed: 2.2, speed: 0.85, lw: 1.05 * thick.lw };
+    const o2 = { cy: cy - hh * 0.2, h: hh * 0.62 * (0.6 + S.mid * 1.4), strands: 28 * thick.strands, grad: grad("h2" + musicVizSettings.hearthColor, pal.a2, W), alpha: 0.06 * (0.5 + S.mid * 1.6 + S.pulse * 0.5), seed: 5.6, speed: 0.7, lw: 0.9 * thick.lw };
+    c.save(); c.globalCompositeOperation = "lighter";
+    const gr = c.createRadialGradient(W * 0.5, cy + hh * 0.2, 0, W * 0.5, cy + hh * 0.2, W * 0.55);
+    const ga = (0.03 + S.bass * 0.16 + S.pulse * 0.12) * glowMul;
+    gr.addColorStop(0, "rgba(" + pal.glow + "," + ga + ")"); gr.addColorStop(0.5, "rgba(" + pal.glow + "," + (ga * 0.3) + ")"); gr.addColorStop(1, "rgba(" + pal.glow + ",0)");
+    c.fillStyle = gr; c.fillRect(0, 0, W, H);
+    // 불꽃 혀 — 주파수마다 리본에서 위로 솟는 짧은 불길.
+    rc.setTransform(k, 0, 0, k, 0, 0); rc.clearRect(0, 0, W, H);
+    const fg = rc.createLinearGradient(0, cy - hh * 1.4, 0, cy + hh * 0.3);
+    fg.addColorStop(0, "rgba(" + pal.flame[0] + ",0)"); fg.addColorStop(0.55, "rgba(" + pal.flame[1] + ",0.10)"); fg.addColorStop(1, "rgba(" + pal.flame[2] + ",0.22)");
+    rc.fillStyle = fg;
+    const fx = W / 64;
+    for (let x = 0; x < W; x += fx) {
+      const u = x / W, m = mid(u, ht, o1), b = sample(Math.abs(u - 0.5) * 1.7);
+      const len = hh * (0.06 + 1.1 * b * b + S.pulse * 0.28) * (0.8 + 0.2 * Math.sin(u * 31 + tReal * 9));
+      rc.fillRect(x, m - len, fx * 1.05, len);
+    }
+    c.drawImage(rays, 0, 0, W, H);
+    strands(ht, o1, W); strands(ht, o2, W);
+    // 불티 — 박자에 한꺼번에 튀고, 높은 음에 조금씩 오른다.
+    const emberMul = ribbonEmberMul();
+    const burst = S.beatNow ? Math.round((5 + S.level * 14) * emberMul) : 0;
+    const count = burst + S.high * 1.2 * dt * 30 * emberMul;
+    for (let e = 0; e < count; e++) {
+      const u = 0.06 + Math.random() * 0.88, b = sample(Math.abs(u - 0.5) * 1.7);
+      S.embers.push({ x: u * W, y: mid(u, ht, o1), vx: (Math.random() - 0.5) * 16, vy: -(14 + Math.random() * 26) * (1 + b * 1.5), life: 0, max: 0.9 + Math.random() * 1.1, r: 0.6 + Math.random() * 0.8 });
+    }
+    const cap = 90 * Math.max(1, emberMul);
+    if (S.embers.length > cap) S.embers.splice(0, S.embers.length - cap);
+    const spark = ribbonSpark(pal.spark);
+    for (let i = S.embers.length - 1; i >= 0; i--) {
+      const e = S.embers[i];
+      e.life += dt;
+      if (e.life > e.max || e.y < -30) { S.embers.splice(i, 1); continue; }
+      e.x += (e.vx + Math.sin(tReal * 2 + i) * 5) * dt; e.y += e.vy * dt; e.vy *= Math.pow(0.985, dt * 60);
+      c.globalAlpha = Math.sin(Math.PI * e.life / e.max) * 0.85;
+      const s2 = e.r * 3; c.drawImage(spark, e.x - s2, e.y - s2, s2 * 2, s2 * 2);
+    }
+    c.restore();
+    grain(W, H, 0.16);
+    bloom(W, H, 0.5 * glowMul, (0.6 + S.pulse * 0.5) * glowMul);
+  }
+  function reset() {
+    S.embers.length = 0;
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  return { draw: draw, reset: reset, canvas: canvas };
+}
+
+const musicRibbonMain = createRibbonRenderer(document.getElementById("musicRibbonCanvas"), musicVizWrap);
+const musicRibbonPreview = createRibbonRenderer(document.getElementById("musicRibbonPreviewCanvas"), musicVizPreviewWrap);
+const ribbonRenderers = [musicRibbonMain, musicRibbonPreview].filter(Boolean);
+
+// writeVizBarsToDom() 이 매 프레임(30fps 제한 안에서) 부른다.
+function drawMusicRibbonFrame() {
+  if (!isMusicVizRibbonStyle()) return;
+  const live = (typeof musicPlaying !== "undefined" && musicPlaying)
+    || Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
+  if (musicRibbonMain && musicInfoPanel && musicInfoPanel.classList.contains("is-open")) musicRibbonMain.draw(live);
+  if (musicRibbonPreview && settingsPanel && settingsPanel.classList.contains("is-open")) musicRibbonPreview.draw(live);
+}
+
+applyMusicVizStyleClass();
 
 function ensureMusicVizBarsBuilt() {
   if (musicVizWrap && !musicVizBarEls) musicVizBarEls = buildVizBarsInto(musicVizWrap);
@@ -7171,6 +7570,9 @@ function drawMusicViz() {
     }
     return;
   }
+
+  // 2026-11-21 — 음악이 실제로 흐르는 동안 쓰고 있는 모양을 다음 실행의 기본으로 기억한다.
+  noteMusicVizStyleInUse();
 
   if (isNativeWrapper) {
     drawMusicVizNative(h);
@@ -8935,7 +9337,7 @@ function renderMusicVizSettingsUI() {
   if (!musicVizOptionsEl) return;
   musicVizOptionsEl.querySelectorAll("[data-viz-group]").forEach((row) => {
     const group = row.dataset.vizGroup;
-    const current = musicVizSettings[group];
+    const current = group === "style" ? musicVizStyle : musicVizSettings[group];
     row.querySelectorAll(".viz-chip").forEach((chip) => {
       chip.classList.toggle("is-active", chip.dataset.vizValue === current);
     });
@@ -8950,6 +9352,11 @@ function renderMusicVizSettingsUI() {
 // 2026-07-22 추가 — 감도는 예외: "예민"일 때 박스 자체의 height를 키워야
 // 해서(아래 applyMusicVizSensitivityClass 참조) DOM 클래스 토글이 필요하다.
 function setMusicVizOption(group, value) {
+  // 2026-11-21 — "모양"은 설정값이 아니라 따로 기억한다(app.js MUSIC_VIZ_STYLES 블록).
+  if (group === "style") {
+    if (value !== musicVizStyle) { markSettingsDirty(); setMusicVizStyle(value, { save: true }); }
+    return;
+  }
   if (!(group in MUSIC_VIZ_SETTINGS_DEFAULT) || musicVizSettings[group] === value) return;
   musicVizSettings[group] = value;
   markSettingsDirty();
