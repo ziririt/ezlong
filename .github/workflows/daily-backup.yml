@@ -4,7 +4,7 @@ name: Daily Backup - 되감기 지점과 외부 사본
 # 1) 되감기 태그: 하루 두 번(KST 00:00, 09:00) backup/YYYY-MM-DD[-am] 태그를 찍는다.
 #    일간 10일, 주간 8주(backup/w-YYYY-Www), 월간 12개월(backup/m-YYYY-MM) 보존.
 #    stable-* 와 cp-* 태그는 이 워크플로가 절대 지우지 않는다.
-# 2) 전체 사본: git bundle(모든 브랜치·태그) + 핵심 파일을 Actions 아티팩트로 30일 보존.
+# 2) 전체 사본: git bundle(모든 브랜치·태그) + 핵심 파일을 Actions 아티팩트로 30일 보존. 하루 한 번(자정 회차).
 # 3) 외부 미러: 시크릿 MIRROR_GIT_URL 이 있으면 GitHub 밖 저장소로 --mirror push.
 #    GitHub 계정이 잠기거나 저장소가 사라져도 코드·이력·태그가 다른 곳에 남는다.
 #    시크릿이 없으면 이 단계는 조용히 건너뛴다(실패로 치지 않는다).
@@ -103,7 +103,10 @@ jobs:
           cp -r docs _backup_upload/files/ 2>/dev/null || true
           echo "HTML $(ls _backup_upload/files/*.html 2>/dev/null | wc -l)개"
 
+      # 2026-11-21 오너 결정: 전체 사본(약 900MB)은 하루 한 번, 자정 회차에만 올린다.
+      # 아침(-am) 회차는 되감기 태그와 외부 미러만 한다. 그 전에는 하루 두 번 올려 60개·약 50GB 가 쌓였다.
       - name: Upload artifact (30일 보존)
+        if: env.SUFFIX == ''
         uses: actions/upload-artifact@v4
         with:
           name: ezlong-backup-${{ env.DATE }}${{ env.SUFFIX }}
