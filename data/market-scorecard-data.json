@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "2026-11-23-07:01",
+      "timestamp_kst": "2026-11-23(월) 07:01 KST",
+      "key_event": {
+        "name": "AI 섹터 투자 심리 위축 지속",
+        "name_en": "Continued Weakness in AI Sector Sentiment",
+        "time": "2026-11-20 정규장 마감 기준",
+        "why": "Anthropic IPO 실망감, 매크로 지표 부담, 금리 수준",
+        "why_en": "Anthropic IPO disappointment, macro data burden, interest rate levels"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "AI 섹터 실망감 및 매크로 지표 부담 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to ongoing AI sector disappointment and macro data concerns",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "매크로 지표 부담 지속",
+          "name_en": "Persistent Macro Data Burden",
+          "desc": "근원 PCE 물가상승률 3.12%, PCE 물가상승률 3.65% 등 높은 인플레이션 수준 유지",
+          "desc_en": "High inflation levels persist with Core PCE at 3.12% and PCE at 3.65%",
+          "category": "macro_data"
+        },
+        {
+          "score": 50,
+          "name": "높은 금리 수준 유지",
+          "name_en": "Sustained High Interest Rates",
+          "desc": "연방기금 실효금리 3.88%, 미10년 국채금리 4.91%(-2.77%) 등 높은 금리 수준이 성장주 할인율에 압박",
+          "desc_en": "Effective Federal Funds Rate at 3.88% and US 10-year Treasury yield at 4.91% maintain pressure on growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "PCE 개인소비지출 발표 예정",
+          "name_en": "PCE Personal Consumption Expenditure Release Scheduled",
+          "desc": "11월 25일(수) 08:30 ET 10월분 PCE 개인소비지출 발표 예정: 향후 연준 통화정책 방향에 주요 변수",
+          "desc_en": "October PCE Personal Consumption Expenditure data scheduled for release on November 25 (Wed) 08:30 ET: A key variable for future Fed monetary policy direction",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-11-22-23:20",
       "timestamp_kst": "2026-11-22(일) 23:20 KST",
       "key_event": {
@@ -528,50 +571,8 @@
         "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
         "floor": 0
       }
-    },
-    {
-      "id": "2026-11-21-11:50",
-      "timestamp_kst": "2026-11-21(토) 11:50 KST",
-      "key_event": {
-        "name": "AI 섹터 투자 심리 위축 지속",
-        "name_en": "Continued Weakness in AI Sector Sentiment",
-        "time": "2026-11-20 정규장 마감 후",
-        "why": "Anthropic IPO 실망감, 기술주 전반 하락 압력 지속",
-        "why_en": "Anthropic IPO disappointment, sustained downward pressure on tech stocks"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "AI 섹터 실망감 지속 및 매크로 지표 부담으로 부정 우위 유지",
-      "summary_en": "Negative sentiment prevails due to ongoing AI sector disappointment and macro indicator concerns.",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "Anthropic IPO 실망감 지속",
-          "name_en": "Anthropic IPO Disappointment Continues",
-          "desc": "Anthropic IPO 이후 AI 섹터 투자 심리 위축 지속: Nasdaq 2026년 상승분 반납, NVDA 정규장 -14.01%",
-          "desc_en": "Continued weakness in AI sector sentiment after Anthropic IPO: Nasdaq erases 2026 gains, NVDA regular session -14.01%.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 40,
-          "name": "매크로 지표 부담 지속",
-          "name_en": "Persistent Macro Indicator Concerns",
-          "desc": "높은 근원 PCE 물가상승률(3.12%) 및 Fed 기준금리(3.88%) 지속, 인플레이션 및 긴축 우려 잔존",
-          "desc_en": "High core PCE inflation (3.12%) and Fed policy rate (3.88%) persist, maintaining inflation and tightening concerns.",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [],
-      "one_sided": {
-        "empty": "positive",
-        "why": "direction",
-        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다. 재료가 없는 편에도 기본 15점을 둡니다.",
-        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted. A side with no drivers still keeps a base 15 points.",
-        "floor": 15
-      }
     }
   ],
-  "updated_at": "2026-11-22T14:21:26Z",
+  "updated_at": "2026-11-22T22:02:00Z",
   "max_entries": 10
 }
