@@ -560,6 +560,7 @@
   var cur = 'ko';
   var baseCanon = null;
 
+  var SHOT_V = '20261123';
   function norm(s) { return s.replace(/\s+/g, ' ').trim(); }
   function has(code) { for (var i = 0; i < LANGS.length; i++) if (LANGS[i][0] === code) return true; return false; }
   function fromTag(t) {
@@ -630,6 +631,19 @@
     for (var a = 0; a < as.length; a++) {
       var els = document.querySelectorAll('[' + as[a] + ']');
       for (var j = 0; j < els.length; j++) if (!inSkip(els[j])) setAttr(els[j], as[a], lang);
+    }
+    /* 앱 그림: 한국어가 아니면 그 언어 그림, 없으면 영어 그림(data-shot, data-shot-langs). */
+    var shots = document.querySelectorAll('img[data-shot]');
+    for (var q = 0; q < shots.length; q++) {
+      var im = shots[q];
+      if (im.__src === undefined) im.__src = im.getAttribute('src');
+      var want = im.__src;
+      if (lang !== 'ko') {
+        var ls = (' ' + (im.getAttribute('data-shot-langs') || '') + ' ');
+        var l = ls.indexOf(' ' + lang + ' ') >= 0 ? lang : 'en';
+        want = 'shots/' + l + '/' + im.getAttribute('data-shot') + '.jpg?v=' + SHOT_V;
+      }
+      if (im.getAttribute('src') !== want) im.setAttribute('src', want);
     }
     var ms = document.querySelectorAll('meta[name="description"],meta[property="og:title"],meta[property="og:description"],meta[name="twitter:title"],meta[name="twitter:description"]');
     for (var m = 0; m < ms.length; m++) setAttr(ms[m], 'content', lang);
