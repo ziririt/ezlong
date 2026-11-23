@@ -155041,9 +155041,9 @@ gBf(){return"F\xfcge eine KI-Antwort ein. Symbole und Floskeln verschwinden, der
 gBo(){return"Tabellen bearbeiten"},
 gBg(){return"Schiefe Tabellen gerader\xfccken, dann sortieren, summieren und Zeilen hinzuf\xfcgen."},
 gBp(){return"Gleiche Notizen auf jedem Ger\xe4t"},
-gBh(){return"Synchronisiere \xfcber iCloud oder Google Drive und schreib \xfcberall weiter."},
+gBh(){return"Mit Google Drive synchronisieren und dieselben Notizen wie in der Handy-App weiterschreiben."},
+Bi(a){return""+a+" Tage ohne Einschr\xe4nkungen nutzen. Danach bleibt es kostenlos, und ein Premium-Abo aus der Handy-App gilt auch hier, sobald Sie mit demselben Google-Konto synchronisieren."},
 gBq(){return"Alles zum Ausprobieren"},
-Bi(a){return"Nutze "+a+" Tage lang alle Funktionen ohne Limit. Entscheiden kannst du sp\xe4ter."},
 gBm(){return"Weiter"},
 gBl(){return"Premium ansehen"},
 gC3(){return"Nichts, was den Bildschirm verdeckt, nichts zu z\xe4hlen. Einf\xfcgen, dr\xfccken, fertig."},
@@ -155722,9 +155722,9 @@ gBf(){return"Paste an AI answer. Markdown symbols and filler fall away, leaving 
 gBo(){return"Tables you can edit"},
 gBg(){return"Straighten broken tables, then sort, total and add rows with a tap."},
 gBp(){return"Same notes, every device"},
-gBh(){return"Sync with iCloud or Google Drive and pick up where you left off."},
+gBh(){return"Sync with Google Drive and keep writing the same notes as in the phone app."},
+Bi(a){return"Use everything without limits for "+a+" days. After that it stays free, and a Premium subscription from the phone app applies here once you sync with the same Google account."},
 gBq(){return"Everything, free to try"},
-Bi(a){return"Use every feature for "+a+" days. Decide later."},
 gBm(){return"Continue"},
 gBl(){return"See Premium"},
 gC3(){return"Nothing covering the screen, nothing to count. Paste, press, done."},
@@ -156402,9 +156402,9 @@ gBf(){return"Pega una respuesta de IA: los s\xedmbolos y saludos desaparecen y q
 gBo(){return"Tablas editables"},
 gBg(){return"Endereza tablas torcidas y luego ordena, suma y a\xf1ade filas con un toque."},
 gBp(){return"Las mismas notas en todos tus dispositivos"},
-gBh(){return"Sincroniza con iCloud o Google Drive y contin\xfaa donde lo dejaste."},
+gBh(){return"Sincroniza con Google Drive y sigue con las mismas notas que en la app del m\xf3vil."},
+Bi(a){return"\xdasalo sin l\xedmites durante "+a+" d\xedas. Despu\xe9s sigue siendo gratis, y una suscripci\xf3n Premium hecha en la app del m\xf3vil tambi\xe9n se aplica aqu\xed al sincronizar con la misma cuenta de Google."},
 gBq(){return"Todo, para probar"},
-Bi(a){return"Usa todas las funciones durante "+a+" d\xedas. Decide despu\xe9s."},
 gBm(){return"Continuar"},
 gBl(){return"Ver Premium"},
 gC3(){return"Nada que tape la pantalla, nada que contar. Pegas, pulsas y ya est\xe1."},
@@ -157082,9 +157082,9 @@ gBf(){return"Collez une r\xe9ponse d\u2019IA : symboles et formules de politesse
 gBo(){return"Des tableaux modifiables"},
 gBg(){return"Redressez les tableaux de travers, puis triez, totalisez et ajoutez des lignes d\u2019un geste."},
 gBp(){return"Les m\xeames notes partout"},
-gBh(){return"Synchronisez avec iCloud ou Google Drive et reprenez l\xe0 o\xf9 vous \xe9tiez."},
+gBh(){return"Synchronisez avec Google Drive et continuez les m\xeames notes que dans l\u2019app mobile."},
+Bi(a){return"Utilisez tout sans limite pendant "+a+" jours. Ensuite, l\u2019app reste gratuite, et un abonnement Premium pris dans l\u2019app mobile s\u2019applique aussi ici d\xe8s que vous synchronisez avec le m\xeame compte Google."},
 gBq(){return"Tout, \xe0 essayer"},
-Bi(a){return"Profitez de toutes les fonctions pendant "+a+" jours. Vous d\xe9ciderez ensuite."},
 gBm(){return"Continuer"},
 gBl(){return"Voir Premium"},
 gC3(){return"Rien qui couvre l\u2019\xe9cran, rien \xe0 compter. Vous collez, vous appuyez, c\u2019est fini."},
@@ -157762,9 +157762,9 @@ gBf(){return"AI\u306e\u56de\u7b54\u3092\u8cbc\u308a\u4ed8\u3051\u308b\u3068\u300
 gBo(){return"\u8868\u3082\u7de8\u96c6\u3067\u304d\u308b"},
 gBg(){return"\u305a\u308c\u305f\u8868\u3092\u6574\u3048\u3001\u4e26\u3079\u66ff\u3048\u30fb\u5408\u8a08\u30fb\u884c\u306e\u8ffd\u52a0\u3082\u30bf\u30c3\u30d7\u3067\u3002"},
 gBp(){return"\u3069\u306e\u30c7\u30d0\u30a4\u30b9\u3067\u3082\u540c\u3058\u30ce\u30fc\u30c8"},
-gBh(){return"iCloud\u307e\u305f\u306fGoogle Drive\u3067\u540c\u671f\u3057\u3066\u3001\u3069\u3053\u3067\u3082\u7d9a\u304d\u3092\u66f8\u3051\u307e\u3059\u3002"},
+gBh(){return"Google \u30c9\u30e9\u30a4\u30d6\u3067\u540c\u671f\u3057\u3066\u3001\u30b9\u30de\u30db\u30a2\u30d7\u30ea\u3068\u540c\u3058\u30ce\u30fc\u30c8\u3092\u7d9a\u3051\u3066\u66f8\u3051\u307e\u3059\u3002"},
+Bi(a){return""+a+"\u65e5\u9593\u3001\u5236\u9650\u306a\u3057\u3067\u304a\u8a66\u3057\u304f\u3060\u3055\u3044\u3002\u305d\u306e\u5f8c\u3082\u7121\u6599\u3067\u4f7f\u3048\u307e\u3059\u3002\u30b9\u30de\u30db\u30a2\u30d7\u30ea\u3067\u30d7\u30ec\u30df\u30a2\u30e0\u306b\u767b\u9332\u3057\u3001\u540c\u3058 Google \u30a2\u30ab\u30a6\u30f3\u30c8\u3067\u540c\u671f\u3059\u308b\u3068\u3001\u3053\u3053\u306b\u3082\u53cd\u6620\u3055\u308c\u307e\u3059\u3002"},
 gBq(){return"\u3059\u3079\u3066\u306e\u6a5f\u80fd\u3092\u304a\u8a66\u3057"},
-Bi(a){return""+a+"\u65e5\u9593\u3001\u5236\u9650\u306a\u304f\u304a\u4f7f\u3044\u3044\u305f\u3060\u3051\u307e\u3059\u3002\u8cfc\u5165\u306f\u305d\u306e\u5f8c\u3067\u6c7a\u3081\u3089\u308c\u307e\u3059\u3002"},
 gBm(){return"\u7d9a\u3051\u308b"},
 gBl(){return"\u30d7\u30ec\u30df\u30a2\u30e0\u3092\u898b\u308b"},
 gC3(){return"\u753b\u9762\u3092\u8986\u3046\u3082\u306e\u3082\u3001\u6570\u3048\u308b\u3082\u306e\u3082\u3042\u308a\u307e\u305b\u3093\u3002\u8cbc\u3063\u3066\u3001\u62bc\u305b\u3070\u3001\u305d\u308c\u3067\u7d42\u308f\u308a\u3067\u3059\u3002"},
@@ -158442,9 +158442,9 @@ gBf(){return"AI \ub2f5\ubcc0\uc744 \ubd99\uc5ec\ub123\uc73c\uba74 \uae30\ud638\u
 gBo(){return"\ud45c \ud3b8\uc9d1\uae4c\uc9c0"},
 gBg(){return"\uc5b4\uae0b\ub09c \ud45c\ub97c \ubc14\ub85c \uc138\uc6b0\uace0, \uc815\ub82c\xb7\ud569\uacc4\xb7\uc904 \ucd94\uac00\ub3c4 \uc190\uac00\ub77d\uc73c\ub85c \ud569\ub2c8\ub2e4."},
 gBp(){return"\ubaa8\ub4e0 \uae30\uae30\uc5d0\uc11c \uac19\uc740 \ub178\ud2b8"},
-gBh(){return"iCloud\ub098 Google Drive\ub85c \ub3d9\uae30\ud654\ud574 \uc5b4\ub514\uc11c\ub4e0 \uc774\uc5b4\uc11c \uc501\ub2c8\ub2e4."},
+gBh(){return"Google Drive\ub85c \ub3d9\uae30\ud654\ud574 \ud734\ub300\ud3f0 \uc571\uacfc \uac19\uc740 \ub178\ud2b8\ub97c \uc774\uc5b4\uc11c \uc501\ub2c8\ub2e4."},
+Bi(a){return""+a+"\uc77c \ub3d9\uc548 \uc81c\ud55c \uc5c6\uc774 \uc368 \ubcf4\uc138\uc694. \uadf8 \ub4a4\uc5d0\ub3c4 \ubb34\ub8cc\ub85c \uacc4\uc18d \uc4f8 \uc218 \uc788\uace0, \ud734\ub300\ud3f0 \uc571\uc5d0\uc11c \ud504\ub9ac\ubbf8\uc5c4\uc744 \uad6c\ub3c5\ud55c \ub4a4 \uac19\uc740 Google \uacc4\uc815\uc73c\ub85c \ub3d9\uae30\ud654\ud558\uba74 \uc774\uacf3\uc5d0\ub3c4 \uc801\uc6a9\ub429\ub2c8\ub2e4."},
 gBq(){return"\ubaa8\ub4e0 \uae30\ub2a5\uc744 \ubb34\ub8cc\ub85c"},
-Bi(a){return""+a+"\uc77c \ub3d9\uc548 \uc81c\ud55c \uc5c6\uc774 \uc368 \ubcf4\uc138\uc694. \uacb0\uc81c\ub294 \uadf8 \ub4a4\uc5d0 \uc815\ud574\ub3c4 \ub429\ub2c8\ub2e4."},
 gBm(){return"\uacc4\uc18d"},
 gBl(){return"\ud504\ub9ac\ubbf8\uc5c4 \uc0b4\ud3b4\ubcf4\uae30"},
 gC3(){return"\ud654\uba74\uc744 \uac00\ub9ac\ub294 \uac83\ub3c4, \uc138\uc5b4\uc57c \ud560 \uac83\ub3c4 \uc5c6\uc2b5\ub2c8\ub2e4. \ubd99\uc5ec\ub123\uace0 \ub204\ub974\uba74 \uadf8\uac78\ub85c \ub05d\uc785\ub2c8\ub2e4."},
@@ -159122,9 +159122,9 @@ gBf(){return"Cole uma resposta de IA: s\xedmbolos e sauda\xe7\xf5es somem e fica
 gBo(){return"Tabelas edit\xe1veis"},
 gBg(){return"Endireita tabelas tortas e depois ordena, soma e adiciona linhas com um toque."},
 gBp(){return"As mesmas notas em todos os aparelhos"},
-gBh(){return"Sincronize com o iCloud ou o Google Drive e continue de onde parou."},
+gBh(){return"Sincronize com o Google Drive e continue as mesmas notas do app no celular."},
+Bi(a){return"Use sem limites por "+a+" dias. Depois continua gr\xe1tis, e uma assinatura Premium feita no app do celular tamb\xe9m vale aqui ao sincronizar com a mesma conta Google."},
 gBq(){return"Tudo para experimentar"},
-Bi(a){return"Use todos os recursos por "+a+" dias. Decida depois."},
 gBm(){return"Continuar"},
 gBl(){return"Ver Premium"},
 gC3(){return"Nada cobrindo a tela, nada para contar. Cola, aperta e pronto."},
@@ -159803,9 +159803,9 @@ gBf(){return"\u7c98\u8d34 AI \u56de\u7b54\uff0c\u7b26\u53f7\u548c\u5ba2\u5957\u8
 gBo(){return"\u8868\u683c\u4e5f\u80fd\u7f16\u8f91"},
 gBg(){return"\u628a\u9519\u4f4d\u7684\u8868\u683c\u6446\u6b63\uff0c\u6392\u5e8f\u3001\u5408\u8ba1\u3001\u52a0\u884c\u4e00\u70b9\u5373\u53ef\u3002"},
 gBp(){return"\u6240\u6709\u8bbe\u5907\uff0c\u540c\u4e00\u4efd\u7b14\u8bb0"},
-gBh(){return"\u901a\u8fc7 iCloud \u6216 Google Drive \u540c\u6b65\uff0c\u968f\u65f6\u968f\u5730\u63a5\u7740\u5199\u3002"},
+gBh(){return"\u901a\u8fc7 Google \u4e91\u7aef\u786c\u76d8\u540c\u6b65\uff0c\u7ee7\u7eed\u7f16\u8f91\u4e0e\u624b\u673a\u5e94\u7528\u76f8\u540c\u7684\u7b14\u8bb0\u3002"},
+Bi(a){return""+a+" \u5929\u5185\u65e0\u9650\u5236\u4f7f\u7528\u3002\u4e4b\u540e\u4ecd\u53ef\u514d\u8d39\u4f7f\u7528\uff1b\u5728\u624b\u673a\u5e94\u7528\u4e2d\u8ba2\u9605\u9ad8\u7ea7\u7248\uff0c\u5e76\u7528\u540c\u4e00 Google \u8d26\u53f7\u540c\u6b65\u540e\uff0c\u8fd9\u91cc\u4e5f\u4f1a\u751f\u6548\u3002"},
 gBq(){return"\u5168\u90e8\u529f\u80fd\u514d\u8d39\u8bd5\u7528"},
-Bi(a){return""+a+" \u5929\u5185\u4e0d\u9650\u6b21\u6570\u4f7f\u7528\u5168\u90e8\u529f\u80fd\uff0c\u4e4b\u540e\u518d\u51b3\u5b9a\u662f\u5426\u8d2d\u4e70\u3002"},
 gBm(){return"\u7ee7\u7eed"},
 gBl(){return"\u67e5\u770b\u9ad8\u7ea7\u7248"},
 gC3(){return"\u6ca1\u6709\u906e\u6321\u5c4f\u5e55\u7684\u4e1c\u897f\uff0c\u4e5f\u6ca1\u6709\u8981\u6570\u7684\u6b21\u6570\u3002\u7c98\u8d34\uff0c\u6309\u4e00\u4e0b\uff0c\u5c31\u7ed3\u675f\u4e86\u3002"},
@@ -160483,9 +160483,9 @@ gBf(){return"\u8cbc\u4e0a AI \u56de\u7b54\uff0c\u7b26\u865f\u8207\u5ba2\u5957\u8
 gBo(){return"\u8868\u683c\u4e5f\u80fd\u7de8\u8f2f"},
 gBg(){return"\u628a\u932f\u4f4d\u7684\u8868\u683c\u64fa\u6b63\uff0c\u6392\u5e8f\u3001\u5408\u8a08\u3001\u52a0\u5217\u4e00\u9ede\u5373\u53ef\u3002"},
 gBp(){return"\u6240\u6709\u88dd\u7f6e\uff0c\u540c\u4e00\u4efd\u7b46\u8a18"},
-gBh(){return"\u900f\u904e iCloud \u6216 Google Drive \u540c\u6b65\uff0c\u96a8\u6642\u96a8\u5730\u63a5\u8457\u5beb\u3002"},
+gBh(){return"\u900f\u904e Google \u96f2\u7aef\u786c\u789f\u540c\u6b65\uff0c\u7e7c\u7e8c\u7de8\u8f2f\u8207\u624b\u6a5f App \u76f8\u540c\u7684\u7b46\u8a18\u3002"},
+Bi(a){return""+a+" \u5929\u5167\u7121\u9650\u5236\u4f7f\u7528\u3002\u4e4b\u5f8c\u4ecd\u53ef\u514d\u8cbb\u4f7f\u7528\uff1b\u5728\u624b\u6a5f App \u8a02\u95b1\u9032\u968e\u7248\uff0c\u4e26\u4ee5\u540c\u4e00 Google \u5e33\u865f\u540c\u6b65\u5f8c\uff0c\u9019\u88e1\u4e5f\u6703\u751f\u6548\u3002"},
 gBq(){return"\u5168\u90e8\u529f\u80fd\u514d\u8cbb\u8a66\u7528"},
-Bi(a){return""+a+" \u5929\u5167\u4e0d\u9650\u6b21\u6578\u4f7f\u7528\u5168\u90e8\u529f\u80fd\uff0c\u4e4b\u5f8c\u518d\u6c7a\u5b9a\u662f\u5426\u8cfc\u8cb7\u3002"},
 gBm(){return"\u7e7c\u7e8c"},
 gBl(){return"\u67e5\u770b\u9032\u968e\u7248"},
 gC3(){return"\u6c92\u6709\u906e\u64cb\u87a2\u5e55\u7684\u6771\u897f\uff0c\u4e5f\u6c92\u6709\u8981\u6578\u7684\u6b21\u6578\u3002\u8cbc\u4e0a\uff0c\u6309\u4e00\u4e0b\uff0c\u5c31\u7d50\u675f\u4e86\u3002"},
@@ -168881,57 +168881,59 @@ A.b42.prototype={
 $0(){},
 $S:0}
 A.b4t.prototype={
-$1(a4){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a=null,a0="preview",a1="wipe",a2="highlights",a3=A.ae(a4,B.P,t.X)
-if(a3==null){a3=$.Z().f.f
-a3=A.an(a3.length===0?B.L:B.e.gG(a3))}s=new A.b4B(a4)
-r=A.Y(a4).ok.y
-q=r==null?a:r.b
-if(q==null)q=A.V(a4).ay
-r=new A.b4z(a4)
-p=new A.b4E(q,s,a4)
+$1(a3){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b=null,a="preview",a0="wipe",a1="highlights",a2=A.ae(a3,B.P,t.X)
+if(a2==null){a2=$.Z().f.f
+a2=A.an(a2.length===0?B.L:B.e.gG(a2))}s=new A.b4B(a3)
+r=A.Y(a3).ok.y
+q=r==null?b:r.b
+if(q==null)q=A.V(a3).ay
+r=new A.b4z(a3)
+p=new A.b4E(q,s,a3)
 o=new A.b4C()
-n=new A.b4A(a4)
-m=new A.b4D(s,a4)
-l=a3.gAU()
+n=new A.b4A(a3)
+m=new A.b4D(s,a3)
+l=a2.gAU()
 k=this.a
 j=t.p
-i=A.b([o.$1(A.b([p.$3("preset",B.py,a3.gAY()),p.$4$tint("wizard",B.ps,a3.gEl(),A.V(a4).e),p.$4$tint("styles",B.Bp,a3.gqw(),A.V(a4).e),p.$4$on("history",B.anW,a3.gt1(),k.gaef())],j)),o.$1(A.b([p.$3("tables",B.Bc,a3.gB_()),p.$3("tabletools",B.Bh,a3.gtB()),p.$3("attach",B.JI,a3.gxa()),p.$3("append",B.anp,a3.gAT())],j))],j)
-if(!B.jp.n(0,a0)||!B.jp.n(0,a1)){h=A.b([],j)
-if(!B.jp.n(0,a0))h.push(p.$3(a0,B.anz,a3.gAZ()))
-if(!B.jp.n(0,a1))h.push(p.$3(a1,B.any,a3.gAX()))
+i=A.b([o.$1(A.b([p.$3("preset",B.py,a2.gAY()),p.$4$tint("wizard",B.ps,a2.gEl(),A.V(a3).e),p.$4$tint("styles",B.Bp,a2.gqw(),A.V(a3).e),p.$4$on("history",B.anW,a2.gt1(),k.gaef())],j)),o.$1(A.b([p.$3("tables",B.Bc,a2.gB_()),p.$3("tabletools",B.Bh,a2.gtB()),p.$3("attach",B.JI,a2.gxa()),p.$3("append",B.anp,a2.gAT())],j))],j)
+if(!B.jp.n(0,a)||!B.jp.n(0,a0)){h=A.b([],j)
+if(!B.jp.n(0,a))h.push(p.$3(a,B.anz,a2.gAZ()))
+if(!B.jp.n(0,a0))h.push(p.$3(a0,B.any,a2.gAX()))
 i.push(o.$1(h))}l=r.$2$cap(i,l)
-i=a3.gAW()
-h=A.b([p.$3("translate",B.ang,a3.gDl()),p.$3("dictate",B.anM,a3.gyC())],j)
+i=a2.gAW()
+h=A.b([p.$3("translate",B.ang,a2.gDl()),p.$3("dictate",B.anM,a2.gyC())],j)
 g=k.fx
-if(g==null)h.push(p.$3("markset",B.Bk,a3.gxB()))
-else h.push(p.$4$tint("markgo",B.Bf,a3.xA(g.ga9p()),A.V(a4).e))
+if(g==null)h.push(p.$3("markset",B.Bk,a2.gxB()))
+else h.push(p.$4$tint("markgo",B.Bf,a2.xA(g.ga9p()),A.V(a3).e))
 i=r.$2$cap(A.b([o.$1(h)],j),i)
-h=a3.gAV()
-g=o.$1(A.b([p.$3("copy",B.pw,a3.grD()),p.$3("export",B.anu,a3.gz2()),p.$3("pdf",B.Bs,a3.gz1()),p.$3("print",B.anG,a3.gCj())],j))
-f=a3.gqt()
+h=a2.gAV()
+g=o.$1(A.b([p.$3("copy",B.pw,a2.grD()),p.$3("export",B.anu,a2.gz2()),p.$3("pdf",B.Bs,a2.gz1()),p.$3("print",B.anG,a2.gCj())],j))
+f=A.b([],j)
 e=k.e
 e===$&&A.a()
-f=p.$4$tint("share",B.mq,f,e.at.length!==0?A.V(a4).e:a)
-d=p.$3("card",B.anQ,a3.grz())
+e=e.at
+if(e.length!==0){e=a2.gqt()
+f.push(p.$4$tint("share",B.mq,e,k.e.at.length!==0?A.V(a3).e:b))}f.push(p.$3("card",B.anQ,a2.grz()))
 e=k.e.fx
-c=e.length===0
-b=c?B.iQ:B.amw
-if(c)e=a3.gom()
-p=r.$2$cap(A.b([g,o.$1(A.b([f,d,p.$4$tint("folder",b,e,k.e.fx.length===0?a:A.V(a4).e)],j))],j),h)
+d=e.length===0
+c=d?B.iQ:B.amw
+if(d)e=a2.gom()
+f.push(p.$4$tint("folder",c,e,k.e.fx.length===0?b:A.V(a3).e))
+p=r.$2$cap(A.b([g,o.$1(f)],j),h)
 o=k.e.as?B.amN:B.mr
-h=a3.gtk()
-g=k.e.as?A.V(a4).e:a
-g=A.b([m.$5$tint$trailing("lock",o,h,g,new A.eo(!0,new A.aE(a,28,A.Dx(B.aJ,A.bwz(a,a,a,a,a,!1,B.ak,a,a,a,a,a,a,new A.b44(),a,a,a,a,a,a,a,a,k.e.as),B.lH),a),a))],j)
-if(k.fx!=null)B.e.M(g,A.b([n.$0(),m.$3("markclear",B.an4,a3.gxD())],j))
-if(!B.jp.n(0,"read"))B.e.M(g,A.b([n.$0(),m.$4$chev("read",B.JN,a3.gCo(),!0)],j))
-if(!B.jp.n(0,a2))B.e.M(g,A.b([n.$0(),m.$4$chev(a2,B.JK,a3.gzQ(),!0)],j))
+h=a2.gtk()
+g=k.e.as?A.V(a3).e:b
+g=A.b([m.$5$tint$trailing("lock",o,h,g,new A.eo(!0,new A.aE(b,28,A.Dx(B.aJ,A.bwz(b,b,b,b,b,!1,B.ak,b,b,b,b,b,b,new A.b44(),b,b,b,b,b,b,b,b,k.e.as),B.lH),b),b))],j)
+if(k.fx!=null)B.e.M(g,A.b([n.$0(),m.$3("markclear",B.an4,a2.gxD())],j))
+if(!B.jp.n(0,"read"))B.e.M(g,A.b([n.$0(),m.$4$chev("read",B.JN,a2.gCo(),!0)],j))
+if(!B.jp.n(0,a1))B.e.M(g,A.b([n.$0(),m.$4$chev(a1,B.JK,a2.gzQ(),!0)],j))
 g.push(n.$0())
-g.push(m.$4$chev("view",B.Jx,a3.gqb(),!0))
+g.push(m.$4$chev("view",B.Jx,a2.gqb(),!0))
 g.push(n.$0())
-g.push(m.$4$chev("rules",B.Jr,a3.gCz(),!0))
+g.push(m.$4$chev("rules",B.Jr,a2.gCz(),!0))
 g.push(n.$0())
-g.push(m.$4$chev("set:",B.Bq,a3.gpS(),!0))
-return A.b([A.bw1(new A.aa(B.akU,new A.UP(A.b([l,i,p,r.$1(g),A.d8(!1,A.aR(12),!0,new A.aE(a,40,A.cu(A.B(a3.gyl(),a,a,a,a,A.al(a,a,A.V(a4).ax,a,a,a,a,a,a,a,a,15,a,a,a,a,a,!0,a,a,a,a,a,a,a,a),a,a),a,a),a),a,!0,a,a,a,a,a,a,a,a,a,a,new A.b45(s),a,a,a,a,a,a,a)],j),a),a),!0,0,a,a,a,a,B.as,a,t.N)],t.Do)},
+g.push(m.$4$chev("set:",B.Bq,a2.gpS(),!0))
+return A.b([A.bw1(new A.aa(B.akU,new A.UP(A.b([l,i,p,r.$1(g),A.d8(!1,A.aR(12),!0,new A.aE(b,40,A.cu(A.B(a2.gyl(),b,b,b,b,A.al(b,b,A.V(a3).ax,b,b,b,b,b,b,b,b,15,b,b,b,b,b,!0,b,b,b,b,b,b,b,b),b,b),b,b),b),b,!0,b,b,b,b,b,b,b,b,b,b,new A.b45(s),b,b,b,b,b,b,b)],j),b),b),!0,0,b,b,b,b,B.as,b,t.N)],t.Do)},
 $S:190}
 A.b4B.prototype={
 $1(a){A.aw(this.a,!1).bm(a)
@@ -170652,7 +170654,7 @@ q=A.B(a3.gum(),a2,a2,a2,a2,a2,a2,a2)
 p=$.bPN().a
 p=p==null?"":" \xb7 p"+A.r(p)
 o=t.p
-q=A.id(A.b([new A.aa(B.aiF,A.cu(A.bwo("ver.4.0.2 (291)"+p+" \xb7 DEV",A.al(a2,a2,A.V(a4).d,a2,a2,a2,a2,a2,a2,a2,a2,15,a2,a2,a2,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2)),a2,a2),a2)],o),!0,a2,a2,!0,a2,a2,a2,a2,a2,a2,q)
+q=A.id(A.b([new A.aa(B.aiF,A.cu(A.bwo("ver.4.0.2 (292)"+p+" \xb7 DEV",A.al(a2,a2,A.V(a4).d,a2,a2,a2,a2,a2,a2,a2,a2,15,a2,a2,a2,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2)),a2,a2),a2)],o),!0,a2,a2,!0,a2,a2,a2,a2,a2,a2,q)
 p=A.Ay(a4)
 n=a1.e
 m=A.V(a4)
