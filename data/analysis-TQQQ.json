@@ -3,8 +3,8 @@
   "name": "나스닥 100 3X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-11-20T23:23:33.181Z",
-  "analysisAt": "2026-11-20T23:23:33.181Z",
+  "updatedAt": "2026-11-23T08:19:52.763Z",
+  "analysisAt": "2026-11-23T08:19:52.763Z",
   "analysisPreserved": false,
   "price": {
     "current": 41.2,
@@ -13,7 +13,7 @@
     "high52": 88.09,
     "low52": 37.32,
     "pos52": 7.6,
-    "marketState": "POST",
+    "marketState": "CLOSED",
     "quoteTime": 1795208401,
     "extPrice": null,
     "extChange": null,
@@ -42,7 +42,7 @@
       "adx": 33.83,
       "status": "뚜렷한 추세"
     },
-    "atr": 4.8084
+    "atr": 4.8081
   },
   "levels": {
     "swingResistance": 43.425,
@@ -50,14 +50,14 @@
     "pivot": {
       "pp": 51.28,
       "r1": 62.45,
-      "r2": 83.7,
-      "s1": 30.03,
+      "r2": 83.69,
+      "s1": 30.04,
       "s2": 18.87
     }
   },
   "analysis": {
     "trend": "약세",
-    "strength": 2,
+    "strength": 1,
     "support": 40.93,
     "resistance": 43.42,
     "rsiStatus": "과매도",
@@ -71,50 +71,50 @@
     "rsiTrajectory": "40.3 → 26.6 (과매도 구간 진입)",
     "rsiTrajectoryEn": "40.3 → 26.6 (entering oversold)",
     "macdTrajectory": "히스토 -0.1427 → -1.0571 (약세 지속)",
-    "macdTrajectoryEn": "histo -0.1427 → -1.0571 (weakness continues)",
-    "pricePattern": "5일 저가 $40.12, 20일 저가 $40.12 → 횡보",
-    "pricePatternEn": "5-day low $40.12, 20-day low $40.12 -> sideways",
+    "macdTrajectoryEn": "histo -0.1427 → -1.0571 (continuing weakness)",
+    "pricePattern": "5일 저가 $40.12, 20일 저가 $40.12로 동일: 지지 확인",
+    "pricePatternEn": "5-day low $40.12, 20-day low $40.12: support confirmed",
     "volComment": "거래량비 2.26 (급증)",
     "bbPosition": "하단근처",
-    "reason": "현재가 $41.20은 52주 저가 $37.32 대비 7.6% 상단 위치. RSI 26.6으로 과매도 구간 진입. MACD 히스토그램 -1.0571로 약세 지속. 주봉 ADX 17.8로 무추세 구간. 4일 연속 하락 추세로 매수 중단 구간 진입.",
-    "reasonEn": "Current price $41.20 is 7.6% above 52-week low $37.32. RSI at 26.6, entering oversold. MACD histogram at -1.0571, weakness continues. Weekly ADX at 17.8 indicates no trend. 4 consecutive days of decline, entering a buy halt zone.",
+    "reason": "최근 5거래일 -15.94% 급락, RSI 26.6으로 과매도 구간 진입. MACD 히스토그램 약세 지속 중. 5일 평균 대비 거래량 2.26배로 급증하며 하락 마감. 현재가 $41.20은 52주 저가 $37.32 대비 7.6% 상단에 위치. 스윙 지지선 $40.93 근접.",
+    "reasonEn": "Recent 5-day -15.94% sharp decline, RSI at 26.6 entering oversold. MACD histogram continues weakness. Volume ratio 2.26x 5-day average, closing lower on surge. Current price $41.20 is 7.6% above 52-week low $37.32. Approaching swing support at $40.93.",
     "entry": 41.2,
-    "stop": 30.03,
-    "target": 63.54,
-    "invalidation": 30.03,
-    "weeklyConflict": "주봉 ADX 17.8로 무추세이나 일봉 RSI 과매도 진입",
-    "weeklyConflictEn": "Weekly ADX at 17.8 shows no trend, but daily RSI enters oversold.",
-    "profitTarget1": 63.54,
-    "profitTarget2": 80.29,
-    "stopLoss": 30.03,
-    "narrative": "[추세 위치]\n· 현재가($41.20) vs SMA5/20/50($49.50/$58.39/$64.58): 단기·중기 추세 하회 확인\n· SMA100/200($69.84/$65.47) 대비 위치: 중장기 추세 약세 강도 확인\n· 52주 위치(7.6%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (40.3→26.6): 과매도 구간 진입 확인, 하락 모멘텀 지속\n· MACD 히스토그램 궤적 (-0.1427→-1.0571): 약세 지속, 데드크로스 유지\n· 볼린저밴드 현재가 위치 (하단 $42.83): 하단 접근 구간, 밴드폭 53.29%로 변동성 확대\n[지지·저항 구조]\n· 스윙 지지선 ($40.93): 5일/20일 저가 기반 지지선\n· 스윙 저항선 ($43.42): 5일 고가 기반 저항선\n· 5일/20일 고가·저가 패턴 (Higher Low / Lower High / 횡보): 5일 저가 $40.12, 20일 저가 $40.12로 횡보 패턴 확인\n[거래량·결론]\n· 거래량 비율 (5일 평균 대비 2.26배): 급증 거래량 동반 하락 확인\n· 현 구간 진단 (축적/분배/상승추세/하락추세): 하락추세 구간, 매수 중단",
-    "narrativeEn": "[Trend Position]\n· Current price ($41.20) vs SMA5/20/50 ($49.50/$58.39/$64.58) - confirms below short/mid-term trend\n· SMA100/200 ($69.84/$65.47) position - confirms strong long-term downtrend\n· 52-week position (7.6%) - near historical low levels\n[Momentum Indicators]\n· RSI trajectory (40.3->26.6) - entered oversold, downward momentum continues\n· MACD histogram trajectory (-0.1427->-1.0571) - weakness persists, dead cross maintained\n· Bollinger Band current price position (Lower $42.83) - approaching lower band, 53.29% band width indicates expanding volatility\n[Support & Resistance Structure]\n· Swing support ($40.93) - support based on 5-day/20-day lows\n· Swing resistance ($43.42) - resistance based on 5-day high\n· 5-day/20-day high/low pattern (Higher Low / Lower High / Sideways) - 5-day low $40.12, 20-day low $40.12 confirm sideways pattern\n[Volume & Conclusion]\n· Volume ratio (2.26x 5-day average) - decline accompanied by surge in volume confirmed\n· Current phase diagnosis (Accumulation/Distribution/Uptrend/Downtrend) - Downtrend phase, buy halt",
-    "patternNote": "5일 저가와 20일 저가가 $40.12로 동일하여 횡보 패턴 확인",
-    "patternNoteEn": "5-day low and 20-day low at $40.12 confirm a sideways pattern.",
+    "stop": 30.04,
+    "target": 63.52,
+    "invalidation": 30.04,
+    "weeklyConflict": "주봉 RSI 32.8로 과매도 구간 진입, 주봉 MACD 히스토그램 약세 지속. 일봉과 동일 방향.",
+    "weeklyConflictEn": "Weekly RSI at 32.8 in oversold territory, weekly MACD histogram continues weakness. Same direction as daily.",
+    "profitTarget1": 63.52,
+    "profitTarget2": 80.26,
+    "stopLoss": 30.04,
+    "narrative": "[추세 위치]\n· 현재가($41.20) vs SMA5/20/50($49.50/$58.39/$68.76): 하회, 단기·중기 약세 추세 확인\n· SMA100/200($69.84/$65.47) 대비 위치: 중장기 추세 하회, 약세 강도 높음\n· 52주 위치(7.6%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (40.3→26.6): 과매도 구간 진입, 하락 방향성 확인\n· MACD 히스토그램 궤적 (-0.1427→-1.0571): 약세 지속, 추세 전환 신호 없음\n· 볼린저밴드 현재가 위치 (하단 $42.83): 하단 접근, 밴드폭 53.29%로 넓음\n[지지·저항 구조]\n· 스윙 지지선 ($40.93): 피벗 및 5일/20일 저가 기반\n· 스윙 저항선 ($43.42): 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (Higher Low: 5일 저가 $40.12, 20일 저가 $40.12): 지지 확인\n[거래량·결론]\n· 거래량 비율 (2.26배): 급증, 하락 마감 신뢰도 상승\n· 현 구간 진단 (하락추세): 관망 유지, 지지선 $40.93 확인 후 매수 고려",
+    "narrativeEn": "[Trend Position]\n· Current price ($41.20) vs SMA5/20/50 ($49.50/$58.39/$68.76): below, confirming short-to-mid-term bearish trend\n· SMA100/200 ($69.84/$65.47) position: below, indicating strong long-term bearishness\n· 52-week position (7.6%) + current price near historical lows\n[Momentum Indicators]\n· RSI trajectory (40.3→26.6): entering oversold, confirming downward momentum\n· MACD histogram trajectory (-0.1427→-1.0571): continuing weakness, no trend reversal signal\n· Bollinger Band current price position (Lower band $42.83): approaching lower band, band width 53.29% wide\n[Support & Resistance]\n· Swing support ($40.93): based on pivot and 5/20-day lows\n· Swing resistance ($43.42): potential for short-term bounce if broken\n· 5-day/20-day high/low pattern (Higher Low: 5-day low $40.12, 20-day low $40.12): support confirmed\n[Volume & Conclusion]\n· Volume ratio (2.26x): surge, increasing confidence in the lower close\n· Current phase diagnosis (Downtrend): maintain caution, consider buying after confirmation of support at $40.93",
+    "patternNote": "5일 저가와 20일 저가가 $40.12로 동일하며 지지선 확인. 볼린저밴드 하단에 근접.",
+    "patternNoteEn": "5-day and 20-day lows at $40.12 confirm support. Approaching the lower Bollinger Band.",
     "keyPoints": [
-      "RSI 26.6으로 과매도 구간 진입, 5일 연속 하락으로 매수 중단 구간 진입",
-      "MACD 히스토그램 -1.0571로 약세 지속, 추가 하락 가능성",
-      "주봉 ADX 17.8로 추세 미형성 구간, 충격성 변동 가능성"
+      "최근 5거래일 -15.94% 급락 후 RSI 26.6 과매도 구간 진입",
+      "거래량 2.26배 급증하며 하락 마감, 지지선 $40.93 근접",
+      "주봉 RSI 32.8 과매도, 일봉과 동일 약세 추세"
     ],
     "keyPointsEn": [
-      "RSI at 26.6 enters oversold, 5 consecutive days of decline enter buy halt zone.",
-      "MACD histogram at -1.0571, weakness persists, potential for further decline.",
-      "Weekly ADX at 17.8 indicates no trend, possibility of shock-like volatility."
+      "Recent 5-day -15.94% decline, RSI at 26.6 entering oversold",
+      "Volume surge 2.26x on lower close, approaching support at $40.93",
+      "Weekly RSI at 32.8 oversold, same bearish trend as daily"
     ],
-    "riskNote": "주봉 ADX 17.8로 추세가 형성되지 않은 구간에서 급락이 발생하여 충격성 변동 가능성 상존",
-    "riskNoteEn": "Sharp decline occurred in a period with no established trend (Weekly ADX 17.8), leaving room for shock-like volatility.",
-    "continuity": "직전 2거래일 연속 관망 판독 유지. 금일 RSI 40.3→26.6 하락 및 MACD 히스토그램 -0.1427→-1.0571 악화로 관망 판독 지속.",
-    "continuityEn": "The wait-and-see read has now held for 2 consecutive sessions. Today's RSI decline from 40.3 to 26.6 and MACD histogram worsening from -0.1427 to -1.0571 maintain the wait-and-see stance.",
+    "riskNote": "ADX 33.8로 뚜렷한 추세 존재하나, -DI(42.7)가 +DI(16.7) 대비 우위로 하락 추세 강화 가능성.",
+    "riskNoteEn": "ADX at 33.8 indicates a clear trend, with -DI (42.7) dominating +DI (16.7), suggesting potential for further downside trend.",
+    "continuity": "직전 2거래일 연속 관망 판독 유지. 금일 RSI 26.6 과매도 진입 및 거래량 급증 하락 마감으로 관망 유지.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 2 sessions. Today's RSI entering oversold at 26.6 and the volume surge on the lower close support maintaining the cautious outlook.",
     "confluenceChecklist": {
       "volumeConfirmed": true,
       "resistanceReclaimed": false,
-      "adxLowRisk": true,
-      "higherTimeframeAligned": false,
+      "adxLowRisk": false,
+      "higherTimeframeAligned": true,
       "oversoldExtremeOrigin": true,
-      "score": "3/5",
-      "verdict": "초기 단계: 확인 관문 남음"
+      "score": "4/5",
+      "verdict": "진짜 반등/추세 가능성 높음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 0.69 < 1.5 · 손절폭 ATR 0.75배 < 1"
+    "levelsAdjustedReason": "손익비 1.39 < 1.5 · 손절폭 ATR 0.61배 < 1"
   }
 }
