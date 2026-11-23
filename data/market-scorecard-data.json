@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-11-23-21:50",
+      "timestamp_kst": "2026-11-23(월) 21:50 KST",
+      "key_event": {
+        "name": "기술주 프리마켓 반등",
+        "name_en": "Tech Stocks Rebound in Premarket",
+        "time": "2026-11-23 프리마켓",
+        "why": "직전 정규장 급락 후 저가 매수세 유입, AI 관련주 회복",
+        "why_en": "Bargain hunting after previous session's sharp decline, AI stocks recover"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI 섹터 반등 및 매크로 지표 완화로 긍정 우위",
+      "summary_en": "Positive bias due to AI sector rebound and easing macro indicators",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 관련주 저가 매수세 유입",
+          "name_en": "Bargain Hunting in AI-Related Stocks",
+          "desc": "직전 정규장 급락 이후 월스트리트 선물 반등 및 AI 관련주 강세. NVDA 시간외 +7.10% 상승",
+          "desc_en": "Wall Street futures rebound and AI stocks show strength after previous session's sharp decline. NVDA up +7.10% in premarket.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.91%(-2.77%), 미30년 국채금리 5.30%(-1.81%) 하락, 성장주 투자 매력 개선",
+          "desc_en": "US 10-year Treasury yield at 4.91% (-2.77%) and 30-year yield at 5.30% (-1.81%) decline, improving attractiveness of growth stocks.",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "매크로 지표 부담 지속",
+          "name_en": "Persistent Macro Indicator Burden",
+          "desc": "근원 PCE 물가상승률 3.12%, PCE 물가상승률 3.65%로 높은 수준 유지, 연준 긴축 기조 유지 가능성",
+          "desc_en": "Core PCE inflation at 3.12% and PCE inflation at 3.65% remain high, suggesting potential for continued Fed tightening.",
+          "category": "macro_data"
+        },
+        {
+          "score": 10,
+          "name": "AI 투자 둔화 우려",
+          "name_en": "Concerns over AI Investment Slowdown",
+          "desc": "일부 뉴스에서 AI 지출 둔화 및 투자 불확실성 언급, 관련 섹터 심리 위축 가능성",
+          "desc_en": "Some news reports mention a slowdown in AI spending and investment uncertainties, potentially dampening sentiment in the sector.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "주요 ETF 기술주 매도",
+          "name_en": "Major ETFs Selling Tech Stocks",
+          "desc": "QQQ, SPY 등 주요 ETF가 Apple, Meta, Alphabet 등 기술주 매도, 시장 전반의 수급 부담",
+          "desc_en": "Major ETFs like QQQ and SPY are selling tech stocks including Apple, Meta, and Alphabet, indicating broader market supply pressure.",
+          "category": "other"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "지수는 하락: 재료 판정과 반대",
+          "name_en": "Indexes fell, against the read of the drivers",
+          "desc": "QQQ 정규장 -5.67%·시간외 +3.23%, SPY 정규장 -3.64%·시간외 +2.38%. 재료는 긍정 쪽이 많지만 지수는 반대로 움직였고, 뚜렷한 원인은 확인되지 않음",
+          "desc_en": "QQQ regular session -5.67%, after hours +3.23%; SPY regular session -3.64%, after hours +2.38%. The drivers lean bullish, but the indexes moved the other way and no clear cause was identified",
+          "category": "other"
+        }
+      ],
+      "report": {
+        "overview": "- 11월20일(금, 뉴욕) 시장 총점: 긍정 60 대 부정 40으로 긍정 우위 마감.\n- 긍정 우위 원인: 직전 정규장 급락 이후 기술주 섹터의 저가 매수세 유입과 AI 관련주 반등이 주도.\n- 시장 전반 분위기: 매크로 지표 부담과 AI 투자 둔화 우려가 상존하며 상승폭 제한.\n- 주요 지표 동향: 미 국채금리 하락이 성장주 투자 매력을 높이며 긍정적 요인으로 작용.",
+        "positive": "- AI 관련주 저가 매수세 유입: 직전 정규장 급락 이후 월스트리트 선물 시장에서 반등 조짐이 나타나며 AI 관련주에 대한 저가 매수세가 유입. 특히 엔비디아(NVDA)는 시간외 거래에서 7.10% 상승하며 AI 섹터 회복을 주도.\n- 미 국채금리 하락: 미 10년 국채금리가 4.91%(-2.77%)로 2.77% 하락하고, 미 30년 국채금리도 5.30%(-1.81%)로 1.81% 하락. 이는 성장주에 대한 투자 매력을 개선시키는 요인으로 작용.",
+        "negative": "- 매크로 지표 부담 지속: 근원 PCE 물가상승률이 3.12%, PCE 물가상승률이 3.65%로 여전히 높은 수준을 유지. 이는 연방준비제도(Fed)의 긴축 기조 유지 가능성을 시사하며 시장에 부담으로 작용.\n- AI 투자 둔화 우려: 일부 뉴스에서 AI 관련 지출 둔화 및 투자 불확실성이 언급되며 관련 섹터의 심리 위축 가능성 제기.\n- 주요 ETF 기술주 매도: QQQ, SPY 등 주요 ETF에서 애플, 메타, 알파벳 등 대형 기술주 매도세가 관찰. 이는 시장 전반의 수급에 부담으로 작용.",
+        "mixed": "",
+        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 하락 여부 확인. 성장주 투자 심리에 지속적인 영향 예상.\n- AI 관련주 흐름: 엔비디아(NVDA)를 포함한 AI 관련주들의 상승세 지속 여부 및 저가 매수세 유입 강도 확인."
+      },
+      "report_at": "2026-11-23(월) 21:50 KST"
+    },
+    {
       "id": "2026-11-23-18:20",
       "timestamp_kst": "2026-11-23(월) 18:20 KST",
       "key_event": {
@@ -520,67 +596,8 @@
           "category": "oil_energy"
         }
       ]
-    },
-    {
-      "id": "2026-11-22-07:01",
-      "timestamp_kst": "2026-11-22(일) 07:01 KST",
-      "key_event": {
-        "name": "기술주 전반 투자 심리 위축 지속",
-        "name_en": "Continued Weakness in Tech Sector Sentiment",
-        "time": "직전 주 마감 기준",
-        "why": "Anthropic IPO 실망감, 매크로 지표 부담, 금리 수준",
-        "why_en": "Anthropic IPO disappointment, macro data burden, high interest rates"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "AI 섹터 실망감 및 매크로 지표 부담 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to ongoing AI sector disappointment and macro data concerns",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "미 국채금리 소폭 하락",
-          "name_en": "Slight Decrease in US Treasury Yields",
-          "desc": "미10년 국채금리 4.91%(-2.77%) 하락: 성장주 할인율 부담 일부 완화",
-          "desc_en": "US 10-year Treasury yield fell to 4.91% (-2.77%): partially easing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 85,
-          "name": "AI 섹터 투자 심리 위축",
-          "name_en": "Weakening AI Sector Investment Sentiment",
-          "desc": "Anthropic IPO 실망감 지속: 엔비디아(NVDA) 정규장 -14.01% 하락 등 기술주 전반 하락 압력",
-          "desc_en": "Continued disappointment from Anthropic IPO: NVIDIA (NVDA) regular session -14.01%, pressuring the broader tech sector",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "PCE 개인소비지출 발표 예정",
-          "name_en": "PCE Personal Consumption Expenditure Release Scheduled",
-          "desc": "11월 25일(수) 08:30 ET 발표 예정: 인플레이션 및 Fed 정책 방향에 대한 불확실성 잔존",
-          "desc_en": "Scheduled for November 25 (Wed) 08:30 ET: lingering uncertainty regarding inflation and Fed policy direction",
-          "category": "macro_data"
-        },
-        {
-          "name": "WTI 원유 소폭 상승",
-          "name_en": "WTI Crude Oil Slightly Up",
-          "desc": "WTI 원유 83.98(+0.93%) 소폭 상승: 인플레이션 압력 우려와 경기 둔화 우려가 상충",
-          "desc_en": "WTI crude oil slightly rose to 83.98 (+0.93%): conflicting concerns over inflation pressure and economic slowdown",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시장 판세: AI 섹터에 대한 투자 심리 실망감과 거시 경제 지표 부담이 지속되며 부정적인 시장 분위기 우세.\n- 주요 원인: Anthropic IPO에 대한 실망감이 기술주 전반의 하락 압력으로 작용하고, 높은 금리 수준과 매크로 지표에 대한 불확실성이 투자 심리를 위축시키는 상황.\n- 시장 하방 압력: 미 국채금리 소폭 하락에도 불구하고 기술주 전반의 투자 심리 위축이 시장의 주요 하방 요인으로 작용.",
-        "positive": "- 미 국채금리 소폭 하락: 미 10년 국채금리가 4.91%(-2.77%)로 2.77% 하락하며, 성장주에 대한 할인율 부담이 일부 완화되는 긍정적인 신호.",
-        "negative": "- AI 섹터 투자 심리 위축: Anthropic IPO에 대한 실망감이 지속되면서 엔비디아(NVDA) 주가가 정규장에서 14.01% 하락하는 등 기술주 전반에 걸쳐 하락 압력이 심화되는 상황.\n- 기술주 전반 투자 심리 위축 지속: Anthropic IPO 실망감, 높은 금리 수준, 그리고 매크로 지표 부담이 복합적으로 작용하며 기술주 전반의 투자 심리가 지속적으로 위축되는 양상.\n- 매크로 지표 부담: 10년 기대인플레이션이 2.15%로 소폭 하락했으나, 근원 PCE 물가상승률 3.12%와 PCE 물가상승률 3.65%가 전월 대비 상승하며 인플레이션 압력에 대한 우려가 잔존.",
-        "mixed": "- PCE 개인소비지출 발표 예정: 11월 25일(수) 08:30 ET에 10월분 PCE 개인소비지출 발표가 예정되어 있어, 인플레이션 추이 및 연방준비제도(Fed)의 향후 통화 정책 방향에 대한 불확실성이 잔존하는 상황.\n- WTI 원유 소폭 상승: WTI 원유 가격이 83.98달러로 0.93% 소폭 상승하며, 인플레이션 압력에 대한 우려와 경기 둔화 우려가 상충하는 혼조 양상.",
-        "watch": "- 미 10년 국채금리 추이: 현재 4.91%(-2.77%) 수준인 미 10년 국채금리의 추가적인 하락 또는 상승 여부를 통해 성장주 전반의 할인율 부담 변화 및 시장 투자 심리 영향 확인.\n- WTI 원유 가격 변동: 현재 83.98달러 수준인 WTI 원유 가격의 추가적인 변동을 통해 인플레이션 압력 및 경기 둔화 우려의 강도 변화 확인."
-      },
-      "report_at": "2026-11-22(일) 07:01 KST"
     }
   ],
-  "updated_at": "2026-11-23T09:21:38Z",
+  "updated_at": "2026-11-23T12:52:17Z",
   "max_entries": 10
 }
