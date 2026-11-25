@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "2026-11-25-11:50",
+      "timestamp_kst": "2026-11-25(수) 11:50 KST",
+      "key_event": {
+        "name": "높은 국채금리 수준 유지",
+        "name_en": "High Treasury Yields Persist",
+        "time": "11월 24일 정규장 마감 후",
+        "why": "미10년 국채금리 4.90%(-0.28%), 미30년 국채금리 5.29%(-0.04%)로 높은 수준 유지, 성장주 할인율 부담 지속",
+        "why_en": "US 10-year Treasury yield at 4.90% and 30-year at 5.29% remain high, maintaining discount rate pressure on growth stocks"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "AI 섹터 차익실현 및 매크로 지표 부담 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to ongoing profit-taking in the AI sector and macroeconomic pressures",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 100,
+          "name": "높은 국채금리 수준 유지",
+          "name_en": "High Treasury Yields Persist",
+          "desc": "미10년 국채금리 4.90%(-0.28%), 미30년 국채금리 5.29%(-0.04%)로 높은 수준 유지, 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield at 4.90% and 30-year at 5.29% remain high, maintaining discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "달러 약세 및 유가 상승",
+          "name_en": "Weaker Dollar and Rising Oil Prices",
+          "desc": "달러인덱스 DXY 103.87(-0.43%)로 약세, WTI 원유 80.91(+0.92%) 상승. 달러 약세는 긍정적이나 유가 상승은 인플레이션 압력 우려",
+          "desc_en": "DXY at 103.87 (-0.43%) shows dollar weakness, while WTI crude rises to 80.91 (+0.92%). Weaker dollar is positive, but rising oil prices raise inflation concerns",
+          "category": "dollar_fx"
+        }
+      ],
+      "one_sided": {
+        "empty": "positive",
+        "why": "direction",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
+        "floor": 0
+      }
+    },
+    {
       "id": "2026-11-25-08:20",
       "timestamp_kst": "2026-11-25(수) 08:20 KST",
       "key_event": {
@@ -468,84 +510,8 @@
         "watch": "- PCE 개인소비지출(10월분) 발표: 11월 25일(수) 08:30 ET에 발표될 예정인 PCE 개인소비지출 데이터는 연준의 통화 정책 방향에 중요한 영향을 미칠 수 있어 시장의 주요 관심사. 예상치를 상회하는 결과는 금리 인상 압력을 높여 시장에 부정적으로 작용할 수 있으며, 반대로 예상치 하회 시 금리 인상 완화 기대로 긍정적 영향을 미칠 수 있음.\n- 10년물 국채금리 추이: 현재 0.29%를 기록 중인 10년-2년 스프레드와 연방기금 실효금리 3.88% 등 매크로 지표와 연동되는 10년물 국채금리의 움직임은 시장의 위험 선호 심리에 직접적인 영향을 미칠 것으로 예상. 금리 상승은 기술주에 부담으로 작용할 수 있으며, 하락은 긍정적 요인으로 작용할 수 있음.\n- 주요 기술주 선물 지수 추이: 엔비디아 CEO 복귀 소식으로 기술주 선물 지수가 급등한 가운데, 향후 12시간 동안 기술주 선물 지수(예: 나스닥 100 선물)의 지속적인 상승 여부는 AI 섹터 반등의 지속 가능성을 판단하는 중요한 지표."
       },
       "report_at": "2026-11-23(월) 23:20 KST"
-    },
-    {
-      "id": "2026-11-23-21:50",
-      "timestamp_kst": "2026-11-23(월) 21:50 KST",
-      "key_event": {
-        "name": "기술주 프리마켓 반등",
-        "name_en": "Tech Stocks Rebound in Premarket",
-        "time": "2026-11-23 프리마켓",
-        "why": "직전 정규장 급락 후 저가 매수세 유입, AI 관련주 회복",
-        "why_en": "Bargain hunting after previous session's sharp decline, AI stocks recover"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 섹터 반등 및 매크로 지표 완화로 긍정 우위",
-      "summary_en": "Positive bias due to AI sector rebound and easing macro indicators",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 관련주 저가 매수세 유입",
-          "name_en": "Bargain Hunting in AI-Related Stocks",
-          "desc": "직전 정규장 급락 이후 월스트리트 선물 반등 및 AI 관련주 강세. NVDA 시간외 +7.10% 상승",
-          "desc_en": "Wall Street futures rebound and AI stocks show strength after previous session's sharp decline. NVDA up +7.10% in premarket.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.91%(-2.77%), 미30년 국채금리 5.30%(-1.81%) 하락, 성장주 투자 매력 개선",
-          "desc_en": "US 10-year Treasury yield at 4.91% (-2.77%) and 30-year yield at 5.30% (-1.81%) decline, improving attractiveness of growth stocks.",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "매크로 지표 부담 지속",
-          "name_en": "Persistent Macro Indicator Burden",
-          "desc": "근원 PCE 물가상승률 3.12%, PCE 물가상승률 3.65%로 높은 수준 유지, 연준 긴축 기조 유지 가능성",
-          "desc_en": "Core PCE inflation at 3.12% and PCE inflation at 3.65% remain high, suggesting potential for continued Fed tightening.",
-          "category": "macro_data"
-        },
-        {
-          "score": 10,
-          "name": "AI 투자 둔화 우려",
-          "name_en": "Concerns over AI Investment Slowdown",
-          "desc": "일부 뉴스에서 AI 지출 둔화 및 투자 불확실성 언급, 관련 섹터 심리 위축 가능성",
-          "desc_en": "Some news reports mention a slowdown in AI spending and investment uncertainties, potentially dampening sentiment in the sector.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "주요 ETF 기술주 매도",
-          "name_en": "Major ETFs Selling Tech Stocks",
-          "desc": "QQQ, SPY 등 주요 ETF가 Apple, Meta, Alphabet 등 기술주 매도, 시장 전반의 수급 부담",
-          "desc_en": "Major ETFs like QQQ and SPY are selling tech stocks including Apple, Meta, and Alphabet, indicating broader market supply pressure.",
-          "category": "other"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "지수는 하락: 재료 판정과 반대",
-          "name_en": "Indexes fell, against the read of the drivers",
-          "desc": "QQQ 정규장 -5.67%·시간외 +3.23%, SPY 정규장 -3.64%·시간외 +2.38%. 재료는 긍정 쪽이 많지만 지수는 반대로 움직였고, 뚜렷한 원인은 확인되지 않음",
-          "desc_en": "QQQ regular session -5.67%, after hours +3.23%; SPY regular session -3.64%, after hours +2.38%. The drivers lean bullish, but the indexes moved the other way and no clear cause was identified",
-          "category": "other"
-        }
-      ],
-      "report": {
-        "overview": "- 11월20일(금, 뉴욕) 시장 총점: 긍정 60 대 부정 40으로 긍정 우위 마감.\n- 긍정 우위 원인: 직전 정규장 급락 이후 기술주 섹터의 저가 매수세 유입과 AI 관련주 반등이 주도.\n- 시장 전반 분위기: 매크로 지표 부담과 AI 투자 둔화 우려가 상존하며 상승폭 제한.\n- 주요 지표 동향: 미 국채금리 하락이 성장주 투자 매력을 높이며 긍정적 요인으로 작용.",
-        "positive": "- AI 관련주 저가 매수세 유입: 직전 정규장 급락 이후 월스트리트 선물 시장에서 반등 조짐이 나타나며 AI 관련주에 대한 저가 매수세가 유입. 특히 엔비디아(NVDA)는 시간외 거래에서 7.10% 상승하며 AI 섹터 회복을 주도.\n- 미 국채금리 하락: 미 10년 국채금리가 4.91%(-2.77%)로 2.77% 하락하고, 미 30년 국채금리도 5.30%(-1.81%)로 1.81% 하락. 이는 성장주에 대한 투자 매력을 개선시키는 요인으로 작용.",
-        "negative": "- 매크로 지표 부담 지속: 근원 PCE 물가상승률이 3.12%, PCE 물가상승률이 3.65%로 여전히 높은 수준을 유지. 이는 연방준비제도(Fed)의 긴축 기조 유지 가능성을 시사하며 시장에 부담으로 작용.\n- AI 투자 둔화 우려: 일부 뉴스에서 AI 관련 지출 둔화 및 투자 불확실성이 언급되며 관련 섹터의 심리 위축 가능성 제기.\n- 주요 ETF 기술주 매도: QQQ, SPY 등 주요 ETF에서 애플, 메타, 알파벳 등 대형 기술주 매도세가 관찰. 이는 시장 전반의 수급에 부담으로 작용.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 하락 여부 확인. 성장주 투자 심리에 지속적인 영향 예상.\n- AI 관련주 흐름: 엔비디아(NVDA)를 포함한 AI 관련주들의 상승세 지속 여부 및 저가 매수세 유입 강도 확인."
-      },
-      "report_at": "2026-11-23(월) 21:50 KST"
     }
   ],
-  "updated_at": "2026-11-24T23:21:38Z",
+  "updated_at": "2026-11-25T02:51:40Z",
   "max_entries": 10
 }
