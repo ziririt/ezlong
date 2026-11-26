@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "2026-11-27-08:20",
+      "timestamp_kst": "2026-11-27(금) 08:20 KST",
+      "key_event": {
+        "name": "추수감사절 휴장 지속",
+        "name_en": "Thanksgiving Holiday Continues",
+        "time": "2026년 11월 27일(금) 뉴욕(ET)",
+        "why": "미국 주식시장 휴장, 거래량 감소 및 변동성 제한",
+        "why_en": "US stock market closed, reduced trading volume and limited volatility"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "추수감사절 휴장 지속으로 시장 거래 없음",
+      "summary_en": "No market trading due to continued Thanksgiving holiday",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 100,
+          "name": "추수감사절 휴장",
+          "name_en": "Thanksgiving Holiday",
+          "desc": "미국 주식시장 휴장으로 정규장 및 시간외 거래 없음",
+          "desc_en": "US stock market closed, no regular or after-hours trading",
+          "category": "other"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월25일(수, 뉴욕) 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-11-27-07:00",
       "timestamp_kst": "2026-11-27(금) 07:00 KST",
       "key_event": {
@@ -426,58 +461,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-11-25-18:20",
-      "timestamp_kst": "2026-11-25(수) 18:20 KST",
-      "key_event": {
-        "name": "PCE 물가 지표 발표 대기",
-        "name_en": "Anticipation for PCE Inflation Data",
-        "time": "11월 25일(수) 08:30 ET (약 4시간 뒤)",
-        "why": "연준 통화정책 주요 지표, 시장 변동성 확대 (11월 25일(수) 08:30 ET)",
-        "why_en": "Key Fed monetary policy indicator, increasing market volatility (Nov 25 (Wed) 08:30 ET)"
-      },
-      "positive_total": 0,
-      "negative_total": 100,
-      "summary": "AI 섹터 차익실현 및 매크로 지표 부담 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to AI sector profit-taking and ongoing macro data concerns",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 75,
-          "name": "AI 섹터 차익실현 지속",
-          "name_en": "Continued AI Sector Profit-Taking",
-          "desc": "NVDA 정규장 -5.86%, 프리마켓 -5.05% 하락: AI 관련주 전반에 걸쳐 차익실현 매물 출회",
-          "desc_en": "NVDA down -5.86% in regular session, -5.05% in pre-market: Profit-taking across AI-related stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "높은 국채금리 수준 유지",
-          "name_en": "High Treasury Yields Persist",
-          "desc": "미10년 국채금리 4.90%(-0.28%), 미30년 국채금리 5.29%(-0.04%)로 높은 수준 유지: 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield at 4.90% (-0.28%), 30-year at 5.29% (-0.04%), maintaining high levels: Continued discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "PCE 개인소비지출 발표 대기",
-          "name_en": "Anticipation for PCE Personal Consumption Expenditures",
-          "desc": "11월 25일(수) 08:30 ET 발표 예정: 연준의 금리 인상 결정에 중요한 영향, 관망세 지속",
-          "desc_en": "Scheduled for release on Nov 25 (Wed) at 08:30 ET: Significant impact on Fed's interest rate decisions, leading to continued wait-and-see approach",
-          "category": "macro_data"
-        }
-      ],
-      "one_sided": {
-        "empty": "positive",
-        "why": "direction",
-        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
-        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
-        "floor": 0
-      }
     }
   ],
-  "updated_at": "2026-11-26T22:01:47Z",
+  "updated_at": "2026-11-26T23:21:19Z",
   "max_entries": 10
 }
