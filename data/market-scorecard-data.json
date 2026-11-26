@@ -1,6 +1,56 @@
 {
   "entries": [
     {
+      "id": "2026-11-26-21:50",
+      "timestamp_kst": "2026-11-26(목) 21:50 KST",
+      "key_event": {
+        "name": "PCE 물가 상승 지속",
+        "name_en": "Persistent PCE Inflation",
+        "time": "2026-11-25 08:30 ET 발표",
+        "why": "연준 통화정책 주요 지표, 금리 인상 가능성 확대",
+        "why_en": "Key Fed policy indicator, increasing likelihood of rate hikes"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "PCE 물가 상승 지속 및 AI 섹터 차익실현으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to rising PCE inflation and ongoing AI sector profit-taking",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 75,
+          "name": "PCE 물가 상승 지속",
+          "name_en": "Persistent PCE Inflation",
+          "desc": "근원 PCE 물가 3.26%, PCE 물가 3.84%로 전월 대비 상승: 연준 금리 인상 압력 가중",
+          "desc_en": "Core PCE inflation at 3.26% and PCE inflation at 3.84%, rising from previous month: increasing Fed rate hike pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 25,
+          "name": "미국 국채금리 높은 수준 유지",
+          "name_en": "US Treasury Yields Remain High",
+          "desc": "미10년 국채금리 4.85%(-1.14%), 미30년 국채금리 5.24%(-1.08%): 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield at 4.85%, 30-year at 5.24%: continued discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "일론 머스크 AI 관련 경고",
+          "name_en": "Elon Musk's AI Warnings",
+          "desc": "머스크, 2027년 AI 현금 부족 경고: AI 산업의 미래 성장 잠재력과 투자 리스크에 대한 상반된 해석",
+          "desc_en": "Musk warns of AI cash shortage in 2027: conflicting interpretations on AI industry's future growth potential and investment risks",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "one_sided": {
+        "empty": "positive",
+        "why": "company_only",
+        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
+        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
+        "floor": 0
+      }
+    },
+    {
       "id": "2026-11-26-18:20",
       "timestamp_kst": "2026-11-26(목) 18:20 KST",
       "key_event": {
@@ -476,50 +526,8 @@
         "watch": "- PCE 개인소비지출(10월분) 발표: 11월 25일(수) 08:30 ET 예정. 연방준비제도(Fed)의 주요 인플레이션 지표로, 발표 결과에 따라 시장의 금리 인상 경로 우려이 변화하며 증시 방향성 결정.\n- 미 국채금리 추이: 미10년 및 미30년 국채금리가 현재 높은 수준에서 추가 상승 또는 하락하는지 여부 확인. 금리 변동은 성장주 전반의 밸류에이션에 직접적인 영향을 미치며 시장 심리 좌우.\n- WTI 원유 가격 변동: WTI 원유 가격이 추가 상승하여 인플레이션 압력을 가중시키는지, 혹은 안정화되는지 여부 확인. 유가 추이는 인플레이션 우려와 연준의 통화 정책에 대한 기대감에 영향을 미침."
       },
       "report_at": "2026-11-25(수) 08:20 KST"
-    },
-    {
-      "id": "2026-11-25-07:01",
-      "timestamp_kst": "2026-11-25(수) 07:01 KST",
-      "key_event": {
-        "name": "AI 섹터 차익실현 지속",
-        "name_en": "Continued Profit-Taking in AI Sector",
-        "time": "2026년 11월 24일 포스트마켓",
-        "why": "엔비디아 급등 후 차익실현, 기술주 전반 하락",
-        "why_en": "Profit-taking after Nvidia's surge, broad tech decline"
-      },
-      "positive_total": 0,
-      "negative_total": 100,
-      "summary": "AI 섹터 차익실현 및 매크로 지표 부담으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to AI sector profit-taking and macro data concerns",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 55,
-          "name": "AI 섹터 차익실현",
-          "name_en": "AI Sector Profit-Taking",
-          "desc": "엔비디아 정규장 -5.86%, 시간외 -1.54% 하락. SOXX -8.27% 급락",
-          "desc_en": "Nvidia down -5.86% in regular session, -1.54% after-hours. SOXX plunged -8.27%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 45,
-          "name": "높은 국채금리 수준",
-          "name_en": "Elevated Treasury Yields",
-          "desc": "미10년 국채금리 4.90%(-0.28%), 미30년 국채금리 5.29%(-0.04%)로 성장주 할인율 압박 지속",
-          "desc_en": "US 10-year Treasury yield at 4.90%, 30-year at 5.29%, maintaining pressure on growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [],
-      "one_sided": {
-        "empty": "positive",
-        "why": "direction",
-        "note": "긍정 재료 없음: 이번 회차에는 시장 전체를 움직인 긍정 재료가 확인되지 않았습니다. 시장 전체에 영향을 줄 정도가 아닌 개별 기업 뉴스와 가격 움직임 자체는 재료로 세지 않습니다.",
-        "note_en": "No positive drivers this round: nothing market-wide on the upside passed our checks. Single-company news and price moves by themselves are not counted.",
-        "floor": 0
-      }
     }
   ],
-  "updated_at": "2026-11-26T09:21:39Z",
+  "updated_at": "2026-11-26T12:51:33Z",
   "max_entries": 10
 }
