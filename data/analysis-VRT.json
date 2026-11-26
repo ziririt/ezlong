@@ -3,8 +3,8 @@
   "name": "버티브",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-11-25T23:49:30.708Z",
-  "analysisAt": "2026-11-25T23:49:30.708Z",
+  "updatedAt": "2026-11-26T23:15:40.220Z",
+  "analysisAt": "2026-11-26T23:15:40.220Z",
   "analysisPreserved": false,
   "price": {
     "current": 173.37,
@@ -13,7 +13,7 @@
     "high52": 379.935,
     "low52": 147.82,
     "pos52": 11,
-    "marketState": "POST",
+    "marketState": "CLOSED",
     "quoteTime": 1795640402,
     "extPrice": null,
     "extChange": null,
@@ -38,11 +38,11 @@
     },
     "adx": {
       "plusDI": 18.36,
-      "minusDI": 34.87,
+      "minusDI": 34.86,
       "adx": 23.24,
       "status": "추세 형성 초기"
     },
-    "atr": 17.7714
+    "atr": 17.7721
   },
   "levels": {
     "swingResistance": 180.875,
@@ -62,7 +62,7 @@
     "resistance": 180.88,
     "rsiStatus": "중립",
     "macdStatus": "약세수렴",
-    "bbStatus": "중단",
+    "bbStatus": "하단접근",
     "stage": "하락추세",
     "action": "매도",
     "buyScore": 3,
@@ -71,40 +71,40 @@
     "rsiTrajectory": "43.5 → 40.0 (중립 지속)",
     "rsiTrajectoryEn": "43.5 → 40.0 (staying neutral)",
     "macdTrajectory": "히스토 -0.2793 → -1.4842 (악화)",
-    "macdTrajectoryEn": "histogram -0.2793 → -1.4842 (worsening)",
-    "pricePattern": "Lower High 하락 추세 지속",
-    "pricePatternEn": "Lower High downtrend continuation",
+    "macdTrajectoryEn": "histo -0.2793 → -1.4842 (worsening)",
+    "pricePattern": "Lower High 형성 가능성, 5일 고가 $201.42 vs 20일 고가 $254.73",
+    "pricePatternEn": "Potential Lower High formation, 5-day high $201.42 vs 20-day high $254.73",
     "volComment": "거래량비 0.93 (정상)",
-    "bbPosition": "중단",
-    "reason": "현재가 $173.37은 SMA20 $198.65 하회, 52주 저가 $147.82 대비 11.0% 위치. RSI 40.0은 중립 구간 횡보, MACD 히스토그램은 -1.4842로 악화 지속. ADX 23.2로 추세 형성 초기 단계이나 -DI 34.9가 +DI 18.4 상회하며 하락 우위. 5일 저가 $160.03 대비 현재가 $173.37은 Higher Low 패턴 미형성. 주봉 RSI 38.2, 주봉 MACD 히스토그램 -9.9734로 약세. 4시간봉 RSI 44.1, MACD 히스토그램 -0.2965로 약세. ATR 10.25% 대비 손절폭 1.3배 설정 시 $173.37 - $17.77*1.3 = $150.27. 목표가는 손익비 1.5 적용 시 $173.37 - ($173.37 - $150.27)*1.5 = $139.47.",
-    "reasonEn": "Current price $173.37 below SMA20 $198.65, 11.0% from 52-week low $147.82. RSI 40.0 neutral range, MACD histogram worsening at -1.4842. ADX 23.2 in early trend formation, but -DI 34.9 above +DI 18.4 indicates downside bias. No Higher Low pattern formed relative to 5-day low $160.03. Weekly RSI 38.2, weekly MACD histogram -9.9734 show weakness. 4H RSI 44.1, MACD histogram -0.2965 also weak. Stop loss at 1.3x ATR ($17.77) implies $150.27. Target at 1.5 risk/reward implies $139.47.",
+    "bbPosition": "하단근처",
+    "reason": "현재가 $173.37은 52주 저가 $147.82 대비 11.0% 상단 위치. RSI 40.0은 중립 구간 횡보 중이며, MACD 히스토그램은 -0.2793에서 -1.4842로 악화되며 약세 수렴 구간 진입. 주봉 RSI 38.2, 주봉 MACD 히스토그램 -9.9734로 장기 추세 역시 약세. ADX 23.2로 추세 형성 초기 단계이나 -DI(34.9)가 +DI(18.4)보다 높아 하락 우위. 볼린저밴드 하단 $155.68에 접근 중.",
+    "reasonEn": "Current price $173.37 is 11.0% above 52-week low $147.82. RSI 40.0 is neutral and sideways, MACD histogram worsened from -0.2793 to -1.4842 entering weak convergence. Weekly RSI 38.2 and histogram -9.9734 indicate long-term weakness. ADX 23.2 shows early trend formation, but -DI (34.9) is higher than +DI (18.4), favoring downside. Approaching Bollinger Band lower band at $155.68.",
     "entry": 173.37,
     "stop": 232.06,
     "target": 55.99,
     "invalidation": 232.06,
-    "weeklyConflict": "주봉 RSI 38.2, 주봉 MACD 히스토그램 -9.9734로 약세이나, 일봉상 ADX 23.2로 추세 형성 초기 단계이므로 일봉 신호 우선.",
-    "weeklyConflictEn": "Weekly RSI 38.2 and MACD histogram -9.9734 are weak, but daily ADX 23.2 indicates early trend formation, prioritizing daily signals.",
+    "weeklyConflict": "주봉 SMA100($189.82) 하회하나 일봉 하락 추세 우선",
+    "weeklyConflictEn": "Below weekly SMA100 ($189.82) but daily downtrend takes precedence",
     "profitTarget1": 55.99,
     "profitTarget2": -32.04,
     "stopLoss": 232.06,
-    "narrative": "[추세 위치]\n· 현재가($173.37) vs SMA5($176.90)/SMA20($198.65)/SMA50($219.34): 단기·중기 추세 하회 진단\n· SMA100($246.80)/SMA200($271.02) 대비 큰 폭 하회: 중장기 추세 약세 강도\n· 52주 위치(11.0%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (43.5→40.0): 중립 구간 횡보 지속, 방향성 부재\n· MACD 히스토그램 궤적 (-0.2793→-1.4842): 악화 지속, 약세 수렴 신호\n· 볼린저밴드 현재가 위치 (중단 $198.65): 중단 부근 횡보, 방향성 결여\n[지지·저항 구조]\n· 스윙 지지선 ($172.35): 피벗 S1($137.36)보다 높은 위치\n· 스윙 저항선 ($180.88): 돌파 시 단기 반등 가능성 있으나 중장기 약세 추세 유지\n· 5일/20일 고가·저가 패턴 (Lower High 하락 추세 지속): 추세 하락 강화\n[거래량·결론]\n· 거래량 비율 (0.93): 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (하락추세): 매도 진입 조건 충족",
-    "narrativeEn": "[Trend Position]\n· Current price ($173.37) vs SMA5 ($176.90)/SMA20 ($198.65)/SMA50 ($219.34): short/mid-term trend below\n· Significantly below SMA100 ($246.80)/SMA200 ($271.02): strong mid/long-term downtrend\n· 52-week position (11.0%) + near historical lows\n[Momentum Indicators]\n· RSI trajectory (43.5→40.0): continued neutral range, lack of direction\n· MACD histogram trajectory (-0.2793→-1.4842): worsening, bearish convergence signal\n· Bollinger Band current price position (mid-band $198.65): trading around mid-band, directionless\n[Support & Resistance]\n· Swing support ($172.35): above Pivot S1 ($137.36)\n· Swing resistance ($180.88): potential short-term bounce if broken, but long-term bearish trend intact\n· 5-day/20-day High/Low pattern (Lower High downtrend continuation): strengthening downtrend\n[Volume & Conclusion]\n· Volume ratio (0.93): normal confidence in price movement\n· Current phase diagnosis (downtrend): sell entry conditions met",
-    "patternNote": "Lower High 패턴으로 하락 추세 지속 확인 구간.",
-    "patternNoteEn": "Lower High pattern confirms ongoing downtrend.",
+    "narrative": "[추세 위치]\n· 현재가($173.37) vs SMA5($176.90)/SMA20($198.65)/SMA50($219.34): 단기·중기 추세 하회, 약세 구간\n· SMA100($246.80)/SMA200($271.02) 대비 위치: 중장기 추세 하회, 강한 약세 강도\n· 52주 위치(11.0%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (43.5→40.0) + 중립 구간 횡보, 하락 압력 지속\n· MACD 히스토그램 궤적 (-0.2793→-1.4842) + 악화 진단, 약세 수렴 구간 진입\n· 볼린저밴드 현재가 위치 (하단 $155.68 근처) + 밴드폭 43.26% 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($172.35) + 피벗 기반 지지\n· 스윙 저항선 ($180.88) + 돌파 시 단기 반등 가능성\n· 5일/20일 고가·저가 패턴 (Lower High 형성 가능성) + 약화 신호\n[거래량·결론]\n· 거래량 비율 (0.93배) + 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (하락추세) + 매도 진입 조건 충족",
+    "narrativeEn": "[Trend Position]\n· Current price ($173.37) vs SMA5 ($176.90)/SMA20 ($198.65)/SMA50 ($219.34): below short/mid-term trends, weak zone\n· vs SMA100 ($246.80)/SMA200 ($271.02): below long-term trends, strong bearish intensity\n· 52-week position (11.0%) + current price level near historical lows\n[Momentum Indicators]\n· RSI trajectory (43.5→40.0) + neutral range sideways, downside pressure continues\n· MACD histogram trajectory (-0.2793→-1.4842) + worsening diagnosis, entering weak convergence zone\n· Bollinger Band current price position (near lower band $155.68) + band width 43.26% level interpretation\n[Support & Resistance Structure]\n· Swing support ($172.35) + pivot-based support\n· Swing resistance ($180.88) + potential for short-term bounce on breakout\n· 5-day/20-day high/low pattern (Potential Lower High formation) + weakening signal\n[Volume & Conclusion]\n· Volume ratio (0.93x) + normal confidence level for movement\n· Current zone diagnosis (Downtrend) + sell entry conditions met",
+    "patternNote": "5일 고가($201.42)가 20일 고가($254.73) 하회하며 Lower High 형성 가능성 시사, 하락 추세 지속 국면.",
+    "patternNoteEn": "5-day high ($201.42) below 20-day high ($254.73) suggests potential Lower High formation, continuing downtrend phase.",
     "keyPoints": [
-      "현재가 $173.37은 SMA20 $198.65 하회, 약세 추세 유지.",
-      "RSI 40.0 중립 구간 횡보, MACD 히스토그램 악화 지속.",
-      "ADX 23.2 추세 형성 초기, -DI 우위로 하락 압력 우세."
+      "현재가 $173.37은 52주 저가 $147.82 대비 11.0% 상단, 스윙 지지선 $172.35 근접",
+      "RSI 40.0 중립 구간 횡보, MACD 히스토그램 악화(-1.4842)로 약세 수렴 진입",
+      "주봉 RSI 38.2, 주봉 MACD 히스토그램 -9.9734로 장기 추세 약세 유지"
     ],
     "keyPointsEn": [
-      "Current price $173.37 below SMA20 $198.65, maintaining bearish trend.",
-      "RSI 40.0 neutral range, MACD histogram worsening.",
-      "ADX 23.2 early trend formation, -DI bias indicates downside pressure."
+      "Current price $173.37 is 11.0% above 52-week low $147.82, near swing support $172.35",
+      "RSI 40.0 sideways in neutral zone, MACD histogram worsened (-1.4842) entering weak convergence",
+      "Weekly RSI 38.2, weekly MACD histogram -9.9734 maintain long-term bearish trend"
     ],
-    "riskNote": "ADX 23.2로 추세 형성 초기 단계이므로 급격한 변동 가능성 상존.",
-    "riskNoteEn": "ADX 23.2 indicates early trend formation, with potential for sharp price swings.",
-    "continuity": "직전 4거래일 연속 관망 판독 유지. 금일 RSI 40.0 중립 구간 횡보 및 MACD 히스토그램 악화 지속으로 매도 판정 전환.",
-    "continuityEn": "The wait-and-see stance was maintained for the last 4 sessions. Today's trade shifts to sell as RSI remains neutral at 40.0 and MACD histogram continues to worsen.",
+    "riskNote": "ADX 23.2로 추세 형성 초기 단계이나 -DI(34.9)가 +DI(18.4)보다 높아 하락 우위, 볼린저밴드 하단 $155.68 접근 중.",
+    "riskNoteEn": "ADX 23.2 in early trend formation, but -DI (34.9) higher than +DI (18.4) favors downside, approaching Bollinger Band lower band at $155.68.",
+    "continuity": "직전 4거래일 연속 관망 판독 유지. 금일 매도 전환은 RSI 40.0 중립 구간 횡보 및 MACD 히스토그램 악화(-1.4842)로 인한 약세 수렴 진입 근거.",
+    "continuityEn": "The wait-and-see read was maintained for the past 4 sessions. Today's shift to sell is based on RSI 40.0 sideways in neutral zone and MACD histogram worsening (-1.4842) entering weak convergence.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "방향 불일치 · 손익비 1.47 < 1.5"
+    "levelsAdjustedReason": "손절폭 ATR 0.42배 < 1"
   }
 }
