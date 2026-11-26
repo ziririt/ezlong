@@ -3,8 +3,8 @@
   "name": "테슬라",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-11-26T08:17:54.395Z",
-  "analysisAt": "2026-11-26T08:17:54.395Z",
+  "updatedAt": "2026-11-26T11:03:17.096Z",
+  "analysisAt": "2026-11-26T11:03:17.096Z",
   "analysisPreserved": false,
   "price": {
     "current": 380.14,
@@ -68,16 +68,16 @@
     "buyScore": 5,
     "scoreReason": "RSI 중립 구간 횡보, MACD 악화 지속",
     "scoreReasonEn": "RSI neutral range, MACD worsening",
-    "rsiTrajectory": "50.3 → 50.3 (중립지속)",
-    "rsiTrajectoryEn": "50.3 → 50.3 (staying neutral)",
+    "rsiTrajectory": "51.1 → 50.3 (중립지속 중)",
+    "rsiTrajectoryEn": "51.1 → 50.3 (staying neutral)",
     "macdTrajectory": "히스토 -0.8468 → -0.8602 (악화)",
     "macdTrajectoryEn": "histo -0.8468 → -0.8602 (worsening)",
-    "pricePattern": "횡보 구간",
-    "pricePatternEn": "sideways range",
+    "pricePattern": "5일 저가 > 20일 저가 * 1.005 미충족, 5일 고가 < 20일 고가 * 0.995 미충족 → 횡보",
+    "pricePatternEn": "Neither higher low nor lower high pattern observed; range-bound.",
     "volComment": "거래량비 0.99 (정상)",
     "bbPosition": "중단근처",
-    "reason": "RSI 50.3으로 중립 구간 횡보 지속, MACD 히스토그램 -0.8602로 악화되며 추세 전환 신호 미약. SMA20 $382.15 저항 구간 진입. 5일 변동률 -1.18%로 약세 마감.",
-    "reasonEn": "RSI at 50.3 continues neutral range, MACD histogram at -0.8602 worsens, showing weak trend reversal signal. Entered resistance zone at SMA20 $382.15. Closed with 5-day -1.18% decline.",
+    "reason": "RSI 50.3으로 중립 구간 횡보 지속, MACD 히스토그램 -0.8602로 악화. 5일 연속 변동률 -1.18%로 약세 흐름 유지. ADX 11.3으로 추세 미형성 구간.",
+    "reasonEn": "RSI at 50.3, neutral range consolidation. MACD histogram at -0.8602, worsening. Recent 5-day volatility -1.18%, maintaining weak trend. ADX at 11.3 indicates no trend formation.",
     "entry": 380.14,
     "stop": 340.78,
     "target": 458.86,
@@ -87,24 +87,24 @@
     "profitTarget1": 458.86,
     "profitTarget2": 517.9,
     "stopLoss": 340.78,
-    "narrative": "[추세 위치]\n· 현재가($380.14) vs SMA5($374.10)/SMA20($382.15)/SMA50($377.17): 단기·중기 추세 위치 진단: SMA20 하회, SMA50 상회\n· SMA100($364.41)/SMA200($381.15) 대비 위치: 중장기 추세 강도 판단: SMA200 상회, SMA100 상회\n· 52주 위치(41.1%) + 현 가격대 역사적 의미: 52주 범위 중간 이하 위치\n[모멘텀 지표]\n· RSI 궤적 (50.3→50.3) + 중립 판단 + 방향성 해석: 중립 구간 횡보 지속\n· MACD 히스토그램 궤적 (히스토 -0.8468→-0.8602) + 악화 진단 + 추세 전환 신호 여부: 약세 전환 신호 강화\n· 볼린저밴드 현재가 위치 (중단 $382.15) + 밴드폭 수준 해석: 중단 부근 횡보, 밴드폭 17.15%\n[지지·저항 구조]\n· 스윙 지지선 ($373.04) + 근거: SMA50 기반 지지\n· 스윙 저항선 ($384.04) + 돌파 시 의미: SMA20 기반 저항, 돌파 시 상승 전환 기대\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 해석: 횡보 구간 지속\n[거래량·결론]\n· 거래량 비율 (0.99배) + 움직임의 신뢰도 판단: 정상 거래량, 움직임 신뢰도 보통\n· 현 구간 진단 (축적구간) + 진입·관망 조건 명시: 축적 구간, SMA20 돌파 시 매수 고려",
-    "narrativeEn": "[Trend Position]\n· Current Price($380.14) vs SMA5($374.10)/SMA20($382.15)/SMA50($377.17): Short/Mid-term trend position diagnosis: Below SMA20, Above SMA50\n· Position vs SMA100($364.41)/SMA200($381.15): Mid/Long-term trend strength diagnosis: Above SMA200, Above SMA100\n· 52-week Position (41.1%) + Historical significance of current price range: Below the midpoint of the 52-week range\n[Momentum Indicators]\n· RSI Trajectory (50.3→50.3) + Neutral diagnosis + Directional interpretation: Continued sideways movement in neutral zone\n· MACD Histogram Trajectory (Histo -0.8468→-0.8602) + Worsening diagnosis + Trend reversal signal status: Strengthening bearish reversal signal\n· Bollinger Band Current Price Position (Middle Band $382.15) + Bandwidth level interpretation: Sideways near middle band, bandwidth 17.15%\n[Support & Resistance Structure]\n· Swing Support ($373.04) + Basis: SMA50-based support\n· Swing Resistance ($384.04) + Significance of breakout: SMA20-based resistance, expectation of upward reversal upon breakout\n· 5-day/20-day High/Low Pattern (Sideways) + Trend interpretation: Continued sideways range\n[Volume & Conclusion]\n· Volume Ratio (0.99x) + Movement reliability assessment: Normal volume, moderate movement reliability\n· Current Range Diagnosis (Accumulation Zone) + Entry/Wait-and-see conditions: Accumulation zone, consider buying on SMA20 breakout",
-    "patternNote": "SMA20 저항 구간 진입, 횡보 구간 지속.",
-    "patternNoteEn": "Entered SMA20 resistance zone, continuing sideways range.",
+    "narrative": "[추세 위치]\n· 현재가($380.14) vs SMA5($374.10)/SMA20($382.15)/SMA50($377.17): 중단 부근 횡보, SMA20 하회\n· SMA100($364.41)/SMA200($381.15) 대비 위치: 중장기 지지선 근접\n· 52주 위치(41.1%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (51.1→50.3): 중립 구간 지속, 방향성 부재\n· MACD 히스토그램 궤적 (-0.8468→-0.8602): 악화 지속, 약세 신호\n· 볼린저밴드 현재가 위치 (중단 $382.15): 밴드폭 17.15%로 변동성 보통 수준\n[지지·저항 구조]\n· 스윙 지지선 ($373.04): SMA50 기반 지지 구간\n· 스윙 저항선 ($384.04): SMA20 기반 저항 구간, 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴: 횡보 구간, 추세 전환 신호 미확인\n[거래량·결론]\n· 거래량 비율 (0.99배): 움직임의 신뢰도 보통 수준\n· 현 구간 진단: 축적 구간, 관망하며 지표 변화 대기",
+    "narrativeEn": "[Trend Position]\n· Current price($380.14) vs SMA5($374.10)/SMA20($382.15)/SMA50($377.17): trading near mid-range, below SMA20\n· Position vs SMA100($364.41)/SMA200($381.15): approaching mid-to-long term support\n· 52-week position (41.1%) + current price level historically mid-range\n[Momentum Indicators]\n· RSI trajectory (51.1→50.3): neutral range continuation, lack of direction\n· MACD histogram trajectory (-0.8468→-0.8602): continued worsening, bearish signal\n· Bollinger Band current price position (Mid $382.15): band width 17.15%, moderate volatility\n[Support & Resistance]\n· Swing Support ($373.04): support zone based on SMA50\n· Swing Resistance ($384.04): resistance zone based on SMA20, potential for short-term bounce on breakout\n· 5-day/20-day High/Low Pattern: range-bound, no trend reversal signal confirmed\n[Volume & Conclusion]\n· Volume ratio (0.99x): moderate confidence in price movement\n· Current phase diagnosis: accumulation phase, awaiting indicator changes while observing",
+    "patternNote": "RSI 중립 구간 횡보 및 MACD 히스토그램 악화 지속으로 방향성 부재 구간.",
+    "patternNoteEn": "Range-bound phase with neutral RSI and worsening MACD histogram, indicating lack of directional momentum.",
     "keyPoints": [
-      "RSI 50.3 중립 구간 횡보 지속, MACD 히스토그램 악화.",
-      "SMA20 $382.15 저항 구간 진입, 5일 변동률 -1.18% 약세 마감.",
-      "축적 구간 진입, SMA20 돌파 시 매수 고려."
+      "RSI 50.3으로 중립 구간 횡보 지속",
+      "MACD 히스토그램 -0.8602로 악화",
+      "ADX 11.3으로 추세 미형성 구간"
     ],
     "keyPointsEn": [
-      "RSI 50.3 continues neutral range, MACD histogram worsens.",
-      "Entered SMA20 resistance zone at $382.15, closed with 5-day -1.18% decline.",
-      "Entered accumulation zone, consider buying on SMA20 breakout."
+      "RSI holding in neutral territory at 50.3",
+      "MACD histogram worsening to -0.8602",
+      "ADX at 11.3, indicating no trend formation"
     ],
-    "riskNote": "ADX 11.3로 추세 미형성, 충격성 변동 가능성.",
-    "riskNoteEn": "ADX at 11.3 indicates no trend formation, potential for shock-like volatility.",
-    "continuity": "직전 2거래일 연속 관망 판독 유지. 금일 RSI 50.3 중립 구간 횡보, MACD 히스토그램 악화 지속으로 관망 유지.",
-    "continuityEn": "The wait-and-see read has now held for 2 straight sessions. Today's RSI at 50.3 in neutral range and worsening MACD histogram sustain the wait-and-see stance.",
+    "riskNote": "ADX 11.3으로 추세 미형성 구간에서 변동성 확대 가능성.",
+    "riskNoteEn": "Potential for increased volatility in a non-trending market with ADX at 11.3.",
+    "continuity": "직전 2거래일 연속 관망 판독 유지. 금일 RSI 51.1→50.3 중립 유지, MACD 히스토그램 -0.8468→-0.8602 악화 지속으로 동일한 관망 판정 유지.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 2 sessions. Today's read continues this, with RSI staying neutral at 51.1→50.3 and MACD histogram worsening from -0.8468→-0.8602.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 0.64배 < 1"
+    "levelsAdjustedReason": "손익비 1.46 < 1.5 · 손절폭 ATR 0.23배 < 1"
   }
 }
