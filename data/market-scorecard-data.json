@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-11-27-23:20",
+      "timestamp_kst": "2026-11-27(금) 23:20 KST",
+      "key_event": {
+        "name": "기술주 프리마켓 반등",
+        "name_en": "Tech Stocks Rebound in Premarket",
+        "time": "2026-11-27 프리마켓",
+        "why": "AI 섹터 회복, 시장 심리 개선, 선물 지수 상승",
+        "why_en": "AI sector recovery, improved market sentiment, rising futures"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "기술주 프리마켓 반등으로 긍정 우위, PCE 물가 상승 우려 상쇄",
+      "summary_en": "Positive bias due to tech premarket rebound, offsetting PCE inflation concerns",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 섹터 회복 조짐",
+          "name_en": "Signs of AI Sector Recovery",
+          "desc": "엔비디아 주가 반등 및 관련 기술주 프리마켓 상승: AI 관련 투자 심리 개선",
+          "desc_en": "Nvidia stock rebound and related tech stocks rising in premarket: improved AI investment sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "애플 스마트폰 시장 점유율 확대",
+          "name_en": "Apple Smartphone Market Share Expansion",
+          "desc": "메모리 부족으로 안드로이드폰 출하량 감소: 애플의 미국 스마트폰 시장 점유율 57% 기록",
+          "desc_en": "Memory crunch squeezes Android phones: Apple now ships 57% of U.S. smartphones",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "PCE 물가 상승 지속",
+          "name_en": "Persistent PCE Inflation",
+          "desc": "근원 PCE 3.26%, PCE 3.84%로 연준 목표 상회: 금리 인하 기대 약화 및 긴축 장기화 우려",
+          "desc_en": "Core PCE at 3.26%, PCE at 3.84%, exceeding Fed target: weakening rate cut expectations and prolonged tightening concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward Pressure on US Treasury Yields",
+          "desc": "미10년 국채금리 4.91%(+1.20%) 상승: 높은 금리 수준 유지로 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rises to 4.91%(+1.20%): sustained high rates continue to pressure growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 상승 및 OPEC+ 회담",
+          "name_en": "WTI Oil Price Rise and OPEC+ Meeting",
+          "desc": "WTI 원유 84.42달러(+0.88%) 상승: 지정학적 긴장 및 OPEC+ 회담 결과에 대한 불확실성 공존",
+          "desc_en": "WTI crude oil rises to $84.42 (+0.88%): geopolitical tensions and uncertainty surrounding OPEC+ meeting outcomes coexist",
+          "category": "oil_energy"
+        },
+        {
+          "name": "엔비디아 칩 주문 동결 소식",
+          "name_en": "Nvidia Chip Order Freeze News",
+          "desc": "엔비디아의 동남아 4개국 칩 주문 동결 소식: 단기 공급망 우려와 장기 AI 수요 기대감 혼재",
+          "desc_en": "Nvidia freezing chip orders to four Southeast Asian countries: short-term supply chain concerns mixed with long-term AI demand expectations",
+          "category": "supply_chain"
+        }
+      ],
+      "report": {
+        "overview": "- 11월25일(수, 뉴욕)장 총점: 기술주 프리마켓 반등에 힘입어 긍정 55 대 부정 45로 긍정 우위 마감.\n- 주요 원인: AI 섹터의 회복 조짐과 애플의 스마트폰 시장 점유율 확대가 시장 심리 개선에 기여.\n- 하방 압력: PCE 물가 상승 지속 및 미 국채금리 상승 압력으로 인한 긴축 장기화 우려 상존.",
+        "positive": "- AI 섹터 회복 조짐: 엔비디아 주가 반등 및 관련 기술주 프리마켓 상승으로 AI 관련 투자 심리 개선, 선물 지수 상승 견인.\n- 애플 스마트폰 시장 점유율 확대: 메모리 부족으로 인한 안드로이드폰 출하량 감소 속, 애플의 미국 스마트폰 시장 점유율 57% 기록하며 시장 내 입지 강화.",
+        "negative": "- PCE 물가 상승 지속: 근원 PCE 3.26%, PCE 3.84%로 연준 목표 상회하며 금리 인하 기대 약화 및 긴축 장기화 우려 증폭.\n- 미 국채금리 상승 압력: 미10년 국채금리 4.91%(+1.20%) 상승하며 높은 금리 수준 유지, 성장주 할인율 부담 지속.",
+        "mixed": "- WTI 유가 상승 및 OPEC+ 회담: WTI 원유 84.42달러(+0.88%) 상승하며 지정학적 긴장 및 OPEC+ 회담 결과에 대한 불확실성 공존.\n- 엔비디아 칩 주문 동결 소식: 엔비디아의 동남아 4개국 칩 주문 동결 소식으로 단기 공급망 우려와 장기 AI 수요 기대감 혼재.",
+        "watch": "- 미 국채금리 추이: 미10년 국채금리 4.91%(+1.20%) 수준 유지 또는 추가 상승 여부 확인.\n- 유가 변동성: WTI 유가 84.42달러 수준 유지 또는 OPEC+ 회담 결과에 따른 추가 변동성 확인."
+      },
+      "report_at": "2026-11-27(금) 23:20 KST"
+    },
+    {
       "id": "2026-11-27-21:51",
       "timestamp_kst": "2026-11-27(금) 21:51 KST",
       "key_event": {
@@ -401,68 +476,8 @@
         "watch": "- 미 국채금리 추이: 미10년 국채금리 및 미30년 국채금리의 추가적인 하락 여부 확인. 금리 하락세가 지속될 경우 시장의 긍정적 요인으로 작용 가능.\n- 유가 변동성: 이란 지정학적 긴장 고조에 따른 국제 유가(WTI, 브렌트유)의 추가 상승 여부 확인. 유가 상승은 인플레이션 압력을 높여 시장에 부정적 영향.\n- AI 섹터 투자 심리: Nvidia, Palantir 등 주요 AI 관련 기업 주가의 추가 하락 또는 반등 여부 확인. AI 섹터의 투자 심리 변화는 기술주 전반의 방향성을 결정하는 주요 요인."
       },
       "report_at": "2026-11-26(목) 11:50 KST"
-    },
-    {
-      "id": "2026-11-26-08:20",
-      "timestamp_kst": "2026-11-26(목) 08:20 KST",
-      "key_event": {
-        "name": "PCE 물가 상승 지속",
-        "name_en": "PCE Inflation Continues to Rise",
-        "time": "2026-11-25 08:30 ET 발표",
-        "why": "연준 통화정책 주요 지표, 금리 인상 가능성 확대",
-        "why_en": "Key Fed monetary policy indicator, increasing likelihood of rate hikes"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "PCE 물가 상승 및 AI 섹터 차익실현 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to rising PCE inflation and continued AI sector profit-taking",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.85%(-1.14%) 하락: 성장주 투자 매력 소폭 개선",
-          "desc_en": "US 10-year Treasury yield fell to 4.85% (-1.14%): slightly improving attractiveness for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "PCE 물가 상승 지속",
-          "name_en": "PCE Inflation Continues to Rise",
-          "desc": "10월 근원 PCE 물가 3.26%(전월 대비 +0.12%p), PCE 물가 3.84%(전월 대비 +0.18%p) 상승: 연준 추가 금리 인상 압력",
-          "desc_en": "October Core PCE inflation rose to 3.26% (+0.12%p MoM), PCE inflation to 3.84% (+0.18%p MoM): increasing pressure for further Fed rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "AI 섹터 차익실현",
-          "name_en": "AI Sector Profit-Taking",
-          "desc": "NVDA 정규장 -3.91% 하락, SOXX 정규장 -0.50% 하락: AI 관련주 전반에 걸친 매도세 지속",
-          "desc_en": "NVDA fell -3.91% in regular session, SOXX fell -0.50%: continued selling pressure across AI-related stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "WTI 유가 상승",
-          "name_en": "WTI Oil Prices Rise",
-          "desc": "WTI 원유 83.83(+2.17%) 상승: 인플레이션 압력 가중 우려",
-          "desc_en": "WTI crude oil rose to 83.83 (+2.17%): concerns over increasing inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총평: PCE 물가 상승과 AI 섹터 차익실현 지속으로 부정적 분위기 우세, 총점 긍정 20 대 부정 80으로 마감.\n- 주요 원인: 연준의 통화정책 주요 지표인 PCE 물가 상승세가 지속되며 추가 금리 인상 가능성 확대, AI 관련 대형주들의 매도세가 시장 전반에 걸쳐 확산.\n- 하방 지지: 미 국채금리 하락이 성장주 투자 매력을 소폭 개선했으나, 전반적인 시장 하락 압력을 상쇄하기에는 역부족.\n- 시장 반응: S&P 500과 Nasdaq 지수가 하락 마감했으나, 장중 저점 대비 낙폭을 줄이며 일부 투자자들이 저가 매수에 나서는 모습.",
-        "positive": "- 미 국채금리 하락: 미 10년 국채금리가 4.85%(-1.14%)로 1.14% 하락하며 성장주 투자 매력이 소폭 개선, 기술주 중심의 시장에 긍정적인 영향을 미치는 요인으로 작용.",
-        "negative": "- PCE 물가 상승 지속: 10월 근원 PCE 물가가 전월 대비 0.12%p 상승한 3.26%, PCE 물가는 0.18%p 상승한 3.84%를 기록하며 연준의 추가 금리 인상 압력이 가중, 이는 연준의 통화정책 결정에 중요한 지표로 작용하여 시장에 부정적인 영향을 미침.\n- AI 섹터 차익실현: 엔비디아(NVDA) 주가가 정규장에서 3.91% 하락하고 반도체 지수(SOXX)도 0.50% 하락하는 등 AI 관련주 전반에 걸쳐 매도세가 지속, 이는 AI 기술주에 대한 투자 심리 위축 및 단기적인 차익실현 욕구 반영.\n- WTI 유가 상승: 서부 텍사스산 원유(WTI) 가격이 2.17% 상승한 83.83달러를 기록하며 인플레이션 압력 가중 우려를 높임, 이는 기업들의 생산 비용 증가 및 소비 심리 위축으로 이어질 수 있는 요인.",
-        "mixed": "",
-        "watch": "- 국채금리 추이: 미 10년 국채금리가 현재 수준을 유지하거나 추가 하락할 경우 성장주 투자 심리 개선 지속 여부 확인.\n- 유가 변동성: WTI 유가가 추가 상승하여 인플레이션 우려를 심화시키는지, 혹은 안정화되는지 여부 확인.\n- AI 섹터 동향: 엔비디아(NVDA) 등 주요 AI 관련 기술주들의 장 후반 및 다음 거래일 움직임을 통해 차익실현 매도세 지속 여부 또는 저가 매수 유입 여부 확인."
-      },
-      "report_at": "2026-11-26(목) 08:20 KST"
     }
   ],
-  "updated_at": "2026-11-27T12:52:02Z",
+  "updated_at": "2026-11-27T14:22:01Z",
   "max_entries": 10
 }
