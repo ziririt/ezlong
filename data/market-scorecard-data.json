@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "2026-11-27-11:50",
+      "timestamp_kst": "2026-11-27(금) 11:50 KST",
+      "key_event": {
+        "name": "추수감사절 휴장 지속",
+        "name_en": "Thanksgiving Holiday Closure Continues",
+        "time": "2026년 11월 26일(목) 뉴욕(ET)",
+        "why": "미국 주식시장 휴장, 거래량 감소 및 변동성 제한",
+        "why_en": "US stock market closed, reduced trading volume and limited volatility"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "추수감사절 휴장 지속으로 시장 거래 없음",
+      "summary_en": "No market activity due to continued Thanksgiving holiday closure",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 100,
+          "name": "추수감사절 휴장",
+          "name_en": "Thanksgiving Holiday Closure",
+          "desc": "미국 주식시장 휴장으로 거래량 감소 및 변동성 제한",
+          "desc_en": "US stock market closed, leading to reduced trading volume and limited volatility",
+          "category": "other"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월25일(수, 뉴욕) 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-11-27-08:20",
       "timestamp_kst": "2026-11-27(금) 08:20 KST",
       "key_event": {
@@ -402,67 +437,8 @@
         "watch": "- 국채금리 추이: 10년물 국채금리 및 2년물 국채금리의 움직임이 연준의 통화정책 기대감에 어떻게 반응하는지 확인 필요.\n- 유가 변동성: WTI 원유 가격이 현재 수준을 유지하거나 추가 하락하여 인플레이션 압력 완화에 기여하는지 지속적인 모니터링 필요.\n- 주요 지수 선물 동향: 다우, S&P 500, 나스닥 선물 지수가 개장 전 하락세를 이어갈지, 혹은 반등의 기미를 보일지 확인 필요."
       },
       "report_at": "2026-11-25(수) 23:20 KST"
-    },
-    {
-      "id": "2026-11-25-21:50",
-      "timestamp_kst": "2026-11-25(수) 21:50 KST",
-      "key_event": {
-        "name": "PCE 물가 지표 발표 대기",
-        "name_en": "Anticipation of PCE Inflation Data",
-        "time": "11월 25일(수) 08:30 ET",
-        "why": "연준 통화정책 주요 지표, 시장 변동성 확대 (11월 25일(수) 08:30 ET)",
-        "why_en": "Key Fed policy indicator, increasing market volatility (Nov 25 (Wed) 08:30 ET)"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "AI 섹터 차익실현 및 매크로 지표 부담 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to AI sector profit-taking and ongoing macro data concerns",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "AI 섹터 차익실현 심화",
-          "name_en": "Deepening Profit-Taking in AI Sector",
-          "desc": "INVESCO QQQ, Proshares Trust 등 주요 ETF의 Apple, NVIDIA 매도 지속, SOXX -4.79% 하락",
-          "desc_en": "Major ETFs like INVESCO QQQ and Proshares Trust continue to sell Apple and NVIDIA, SOXX down -4.79%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "기술주 전반 매도 압력",
-          "name_en": "Broad Selling Pressure on Tech Stocks",
-          "desc": "Nasdaq 선물 2% 이상 하락, 주요 기술주(TSLA -2.67%, MSFT -3.30%, GOOGL -3.36%) 프리마켓 하락",
-          "desc_en": "Nasdaq futures down over 2%, major tech stocks (TSLA -2.67%, MSFT -3.30%, GOOGL -3.36%) fall in premarket",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "시장 변동성 확대",
-          "name_en": "Increased Market Volatility",
-          "desc": "VIX 공포지수 30.74로 16.62% 상승, 투자 심리 위축",
-          "desc_en": "VIX Fear Index rises 16.62% to 30.74, dampening investor sentiment",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "name": "높은 국채금리 수준 유지",
-          "name_en": "High Treasury Yields Persist",
-          "desc": "미10년 국채금리 4.90%(-0.28%), 미30년 국채금리 5.29%(-0.04%)로 소폭 하락했으나 여전히 높은 수준 유지, 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield at 4.90% (-0.28%) and 30-year at 5.29% (-0.04%), slight decrease but still high, maintaining discount rate pressure on growth stocks",
-          "category": "rates_treasury",
-          "score": 15
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "PCE 물가 지표 발표 대기",
-          "name_en": "PCE Inflation Data Release Pending",
-          "desc": "연준 통화정책의 주요 지표인 PCE 개인소비지출(10월분) 발표 임박, 시장 불확실성 증대 (PCE 개인소비지출 11월 25일(수) 08:30 ET, CPI 소비자물가 12월 10일(목) 08:30 ET)",
-          "desc_en": "PCE Personal Consumption Expenditures (Oct) release imminent, increasing market uncertainty for Fed policy (PCE inflation Nov 25 (Wed) 08:30 ET, CPI Dec 10 (Thu) 08:30 ET)",
-          "category": "macro_data"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-11-26T23:21:19Z",
+  "updated_at": "2026-11-27T02:51:24Z",
   "max_entries": 10
 }
