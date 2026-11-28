@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-11-28-23:20",
+      "timestamp_kst": "2026-11-28(토) 23:20 KST",
+      "key_event": {
+        "name": "국채금리 상승 압력",
+        "name_en": "Treasury Yield Upward Pressure",
+        "time": "직전 정규장 마감 기준",
+        "why": "미10년 국채금리 4.94%(+1.82%), 미30년 국채금리 5.32%(+1.72%) 상승",
+        "why_en": "US 10-year Treasury yield rose to 4.94% (+1.82%), 30-year yield to 5.32% (+1.72%)"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "국채금리 상승 압력으로 부정 우위, AI 섹터 회복세 일부 상쇄",
+      "summary_en": "Negative bias on Treasury Yield Upward Pressure, partly offset by AI Sector Recovery",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 섹터 회복세",
+          "name_en": "AI Sector Recovery",
+          "desc": "SOXX (+4.76%) 강세, Nvidia (+0.80%) 등 AI 관련주 반등 지속",
+          "desc_en": "SOXX (+4.76%) showed strength, AI-related stocks like Nvidia (+0.80%) continued to rebound",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "국채금리 상승 압력",
+          "name_en": "Treasury Yield Upward Pressure",
+          "desc": "미10년 국채금리 4.94%(+1.82%), 미30년 국채금리 5.32%(+1.72%) 상승",
+          "desc_en": "US 10-year Treasury yield rose to 4.94% (+1.82%), 30-year yield to 5.32% (+1.72%)",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "인플레이션 우려 지속",
+          "name_en": "Persistent Inflation Concerns",
+          "desc": "근원 PCE 물가상승률 3.26%, PCE 물가상승률 3.84%로 연준 목표 상회",
+          "desc_en": "Core PCE inflation at 3.26% and PCE inflation at 3.84%, exceeding Fed targets",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "지수는 상승: 재료 판정과 반대",
+          "name_en": "Indexes rose, against the read of the drivers",
+          "desc": "QQQ 정규장 +2.69%, SPY 정규장 +1.62%. 재료는 부정 쪽이 많지만 지수는 반대로 움직였고, 뚜렷한 원인은 확인되지 않음",
+          "desc_en": "QQQ regular session +2.69%; SPY regular session +1.62%. The drivers lean bearish, but the indexes moved the other way and no clear cause was identified",
+          "category": "other"
+        }
+      ],
+      "report": {
+        "overview": "- 11월27일(금, 뉴욕) 미국 증시는 국채금리 상승 압력으로 부정적 흐름 우위: 총점 긍정 40점 대 부정 60점으로 마감.\n- 국채금리 급등이 시장 전반에 하방 압력으로 작용: 미10년 국채금리 4.94%(+1.82%), 미30년 국채금리 5.32%(+1.72%) 상승하며 인플레이션 우려 지속.\n- AI 섹터의 회복세가 일부 하방 압력을 상쇄: SOXX (+4.76%) 강세, Nvidia (+0.80%) 등 AI 관련주 반등 지속.",
+        "positive": "- AI 섹터 회복세: SOXX (+4.76%) 강세와 Nvidia (+0.80%) 등 AI 관련주 반등이 지속되며 기술주 전반에 긍정적 심리 작용.",
+        "negative": "- 국채금리 상승 압력: 미10년 국채금리 4.94%(+1.82%), 미30년 국채금리 5.32%(+1.72%) 상승하며 시장 전반에 강력한 하방 압력 작용. 이는 연방준비제도(Fed)의 추가 금리 인상 가능성과 긴축 장기화 우려를 심화시키는 요인.\n- 인플레이션 우려 지속: 근원 PCE 물가상승률 3.26%, PCE 물가상승률 3.84%로 연준 목표치를 상회하며 인플레이션 압력이 여전히 높은 수준 유지. 10월 연방기금 실효금리 3.88% (+0.13%p)와 10년 기대인플레이션 2.15%는 시장의 인플레이션 전망이 여전히 불안정함을 시사하며, 12월 Fed 금리 인상 가능성이 99%에 육박한다는 BigGo Finance 보도가 이러한 우려를 가중.",
+        "mixed": "",
+        "watch": "- 국채금리 추이: 미10년 국채금리 및 미30년 국채금리가 현재 수준에서 추가 상승할 경우 시장 전반의 투자 심리 위축 심화 예상. 반대로 금리 상승세가 진정될 경우 기술주 중심의 반등 시도 가능성.\n- 주요 지수 선물 흐름: S&P 500, Nasdaq, Dow 선물 지수의 움직임이 11월27일(금, 뉴욕) 장 개장 전 시장 분위기를 반영하며, 특히 S&P 500이 11월 최악의 성적을 피하기 위한 움직임을 보일지 주목."
+      },
+      "report_at": "2026-11-28(토) 23:20 KST"
+    },
+    {
       "id": "2026-11-28-21:50",
       "timestamp_kst": "2026-11-28(토) 21:50 KST",
       "key_event": {
@@ -553,43 +613,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-11-27-08:20",
-      "timestamp_kst": "2026-11-27(금) 08:20 KST",
-      "key_event": {
-        "name": "추수감사절 휴장 지속",
-        "name_en": "Thanksgiving Holiday Continues",
-        "time": "2026년 11월 27일(금) 뉴욕(ET)",
-        "why": "미국 주식시장 휴장, 거래량 감소 및 변동성 제한",
-        "why_en": "US stock market closed, reduced trading volume and limited volatility"
-      },
-      "positive_total": 0,
-      "negative_total": 100,
-      "summary": "추수감사절 휴장 지속으로 시장 거래 없음",
-      "summary_en": "No market trading due to continued Thanksgiving holiday",
-      "positive_factors": [],
-      "negative_factors": [
-        {
-          "score": 100,
-          "name": "추수감사절 휴장",
-          "name_en": "Thanksgiving Holiday",
-          "desc": "미국 주식시장 휴장으로 정규장 및 시간외 거래 없음",
-          "desc_en": "US stock market closed, no regular or after-hours trading",
-          "category": "other"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yields",
-          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 11월25일(수, 뉴욕) 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). 움직임이 작아 방향 판단은 유보",
-          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.85%(-1.14%) · 미30년 5.24%(-1.08%). Move too small to call: on hold",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-11-28T12:51:41Z",
+  "updated_at": "2026-11-28T14:21:43Z",
   "max_entries": 10
 }
